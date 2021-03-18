@@ -1,0 +1,1212 @@
+.table td, .table th{
+    padding: .25rem;
+}
+
+
+
+#patternBox .content {
+    width: 823px;
+    overflow-x: auto;
+}
+
+.border-none{
+    border: none !important;
+}
+
+.defaultTable th.menu {
+    border-top: 2px solid #0E609C;
+    border-right: 1px solid #D5D5D5;
+    background-color: #F1F1F1;
+    font-weight: normal;
+}
+.defaultTable th {
+    position: relative;
+}
+
+.defaultTable th a {
+    color: #000;
+    display: block;
+    text-decoration: none;
+    text-align: center;
+}
+.defaultTable a {
+    display: block;
+    height: 30px;
+    line-height: 30px;
+}
+.defaultTable th a.on {
+    position: absolute;
+    top: 0px;
+    left: -1px;
+    width: 100%;
+    color: #fff;
+    background-color: #127CCB;
+    border: 1px solid #0E609C;
+    border-top: none;
+}
+div.dateInfo {
+    position: relative;
+    height: 65px;
+    border: 1px solid #bfbfbf;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+div.date-box {
+    width: 500px;
+    position: relative;
+    float: left;
+    height: 65px;
+    color: #404040;
+    z-index: 1;
+    margin: 0 auto;
+}
+div.date-box span.date {
+    float: left;
+    line-height: 66px;
+    font-size: 23px;
+}
+/*div.date-box a.prev {*/
+/*    position: absolute;*/
+/*    left: 15px;*/
+/*    top: 21px;*/
+/*}*/
+
+/*div.date-box a.next {*/
+/*    position: absolute;*/
+/*    right: 123px;*/
+/*    top: 21px;*/
+/*}*/
+
+/*div.date-box a.today {*/
+/*    position: absolute;*/
+/*    right: 75px;*/
+/*    top: 16px;*/
+/*}*/
+/*.sp-date_today {*/
+/*    width: 33px;*/
+/*    height: 29px;*/
+/*    background: url(https://simg.powerballgame.co.kr/images/sp_log.png) -268px -10px;*/
+/*}*/
+
+div.date-box a.today{
+    float: left;
+    margin: 19px 1px 0 0;
+    padding: 0 20px;
+    height: 31px;
+    line-height: 31px;
+    border: 1px solid #d6d6d6;
+    background-color: #fff;
+}
+div.date-box .calendar {
+    width: 88px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 15px;
+    text-align: center;
+    background: #fff url(/assets/images/powerball/sprites_common.png) no-repeat right -227px;
+    padding: 0 31px 0 10px;
+    border: 1px solid #d6d6d6;
+    margin-top: 19px;
+}
+.sp-date_cal {
+    width: 33px;
+    height: 29px;
+    background: url(https://simg.powerballgame.co.kr/images/sp_log.png) -268px -108px;
+}
+div.timeBox {
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #D5D5D5;
+    text-align: center;
+    background-color: #646464;
+    font-size: 12px;
+    color: #fff;
+}
+
+div.timeBox .refresh {
+    float: right;
+    width: 100px;
+    background-color: #127CCB;
+    color: #fff;
+    border: 1px solid #0E609C;
+    margin-top: -1px;
+    margin-right: -1px;
+}
+
+div.timeBox .refresh a {
+    display: block;
+    color: #fff;
+}
+
+.powerballBox th.title {
+    height: 30px;
+    background-color: #F1F1F1;
+    color: #000;
+    font-size: 11px;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+}
+.powerballBox th,.powerballBox td,#patternBox th,#patternBox td , #sixBox th,#sixBox td{
+    vertical-align: middle !important;
+    text-align: center;
+}
+
+.sp-data_odd {
+    width: 64px;
+    height: 36px;
+    background: url(/assets/images/powerball/odd.png);
+    background-size: 36px;
+    background-repeat: no-repeat;
+    background-position: center;
+    vertical-align: middle;
+    color: #fff;
+    line-height: 36px;
+    margin: auto;
+}
+.powerballBox .oddColor {
+    color: #1265cd;
+}
+
+.sp-data_even {
+    width: 64px;
+    height: 36px;
+    background: url(/assets/images/powerball/even.png);
+    background-size: 36px;
+    background-repeat: no-repeat;
+    background-position: center;
+    vertical-align: middle;
+    color: #fff;
+    line-height: 36px;
+    margin: auto;
+}
+
+.powerballBox .evenColor {
+    color: #cd1212;
+}
+
+.sp-data_under {
+    width: 64px;
+    height: 36px;
+    background: url(https://simg.powerballgame.co.kr/images/sp_log.png) -184px -66px;
+    text-align: center;
+    vertical-align: middle;
+    color: #fff;
+    line-height: 36px;
+    margin: auto;
+}
+.powerballBox .oddColor {
+    color: #1265cd;
+}
+
+.sp-data_over {
+    width: 64px;
+    height: 36px;
+    background: url(https://simg.powerballgame.co.kr/images/sp_log.png) -94px -75px;
+    text-align: center;
+    vertical-align: middle;
+    color: #fff;
+    line-height: 36px;
+    margin: auto;
+}
+
+#patternBox th.title {
+    font-weight: bold;
+    background-color: #F1F1F1;
+    color: #5F6164;
+    border-bottom: 1px solid #D5D5D5;
+    font-size: 11px;
+    font-weight: normal;
+}
+#patternBox th, #sixBox th{
+    position: relative;
+}
+
+#patternBox th.btns {
+    border-right: 1px solid #D5D5D5;
+    background-color: #fff;
+    color: #5F6164;
+    font-size: 11px;
+    font-weight: normal;
+    padding-bottom: 0;
+    padding-top: 0;
+}
+
+#patternBox th a {
+    height: 30px;
+    line-height: 30px;
+    color: #5F6164;
+    display: block;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+#patternBox th a.on {
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: 100%;
+    color: #fff;
+    background-color: #127CCB;
+    border: 1px solid #0E609C;
+}
+
+.patternTable .innerTable {
+    background-color: #fff;
+}
+.patternTable .innerTable th.title_odd {
+    color: #1265cd;
+}
+.patternTable .innerTable th {
+    height: 30px;
+    font-size: 12px;
+    font-family: dotum;
+    background-color: #fff;
+    border-right: 1px solid #e4e4e4;
+    border-left: none;
+    border-bottom: 1px solid #e4e4e4;
+    padding: 0;
+}
+
+.patternTable .innerTable td .odd {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    background: url(/assets/images/powerball/odd.png);
+    background-size: 24px;
+    color: #fff;
+    text-align: center;
+    font-size: 11px;
+    margin: 0 5px;
+}
+.patternTable .innerTable th.title_even {
+    color: #cd1212;
+}
+.patternTable .innerTable td .even {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    background: url(/assets/images/powerball/even.png);
+    background-size: 24px;
+    color: #fff;
+    text-align: center;
+    font-size: 11px;
+    margin: 0 5px;
+}
+
+.patternTable .innerTable th.title_over {
+    color: #cd1212;
+}
+.patternTable .innerTable th.title_middle {
+    color: #14805E;
+}
+.patternTable .innerTable th.title_under {
+    color: #1265cd;
+}
+
+.patternTable .innerTable td {
+    width: 30px;
+    height: 30px;
+    border-top: 1px solid #e4e4e4;
+    border-right: 1px solid #e4e4e4;
+    border-left: none;
+    text-align: center;
+    padding: 0;
+}
+
+.p-none{
+    padding: 0 !important;
+}
+.patternTable .innerTable td.sum{
+    background-color: #f7f7f7;
+}
+
+.patternTable .innerTable td.order {
+    font-weight: bold;
+    background-color: #f7f7f7;
+    border-right: 1px solid #e4e4e4;
+    border-top: 1px solid #e4e4e4;
+}
+
+#sixBox th.title {
+    background-color: #F1F1F1;
+    color: #5F6164;
+    border-bottom: 1px solid #D5D5D5;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+.sp-icon_open {
+    width: 34px;
+    height: 16px;
+    background: url(https://simg.powerballgame.co.kr/images/sp_log.png) -10px -259px;
+}
+
+#sixBox .subTitle th {
+    height: 30px;
+    background-color: #FCFCFC;
+    color: #5F6164;
+    border: 1px solid #D5D5D5;
+    font-size: 11px;
+    font-weight: normal;
+}
+#sixBox .sixPatternCntBox td.btns {
+    color: #000;
+    font-size: 12px;
+    padding: 0;
+    border-top: 1px solid #6178aa;
+    border-right: 1px solid #6178aa;
+    border-bottom: 1px solid #6178aa;
+    background-color: #b1cbfe;
+}
+#sixBox th a {
+    height: 30px;
+    line-height: 30px;
+    color: #5F6164;
+    display: block;
+    text-decoration: none;
+}
+
+.patternTable .innerTable td .small {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 20px;
+    background-color: #1265cd;
+    border: 1px solid #0d50a3;
+    color: #fff;
+    text-align: center;
+    font-size: 11px;
+    margin: 0 5px;
+}
+.patternTable .innerTable td .big {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 20px;
+    background-color: #cd1212;
+    border: 1px solid #a30d0d;
+    color: #fff;
+    text-align: center;
+    font-size: 11px;
+    margin: 0 5px;
+}
+
+.patternTable .innerTable td .middle {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 20px;
+    background-color: #14805E;
+    border: 1px solid #0D513A;
+    color: #fff;
+    text-align: center;
+    font-size: 11px;
+    margin: 0 5px;
+}
+
+#resultBox {
+    position: relative;
+    display: none;
+}
+
+#resultBox .bar {
+    position: absolute;
+    top: 96px;
+    width: 824px;
+    height: 40px;
+}
+
+#resultBox .bar.even {
+    border: 3px solid #cd1212;
+}
+resultBox .bar.odd {
+    border: 3px solid #1265cd;
+}
+
+.periodBox {
+    position: relative;
+    margin: 0;
+    height: 54px;
+    top: 10px;
+    border: 1px solid #bfbfbf;
+    padding-top: 18px;
+    padding-left: 10px;
+}
+
+.periodBox .dateInput ,.round_area .dateInput{
+    width: 88px;
+    height:28px;
+    line-height: 28px;
+    font-size: 15px;
+    text-align: center;
+    background: #fff url(/assets/images/powerball/sprites_common.png) no-repeat right -227px;
+    padding: 0 31px 0 10px;
+    border: 1px solid;
+}
+.periodBox .dateBox ,.round_area  .dateBox{
+    float: left;
+    width: 50%;
+}
+.periodBox .dateBox input ,.round_area .dateBox input{
+    float: left;
+}
+
+.period-date{
+    font-size: 14px;
+}
+
+.periodBox .bar ,.round_area .bar{
+    float: left;
+    margin: 0 5px;
+    line-height: 44px;
+    font-size: 22px;
+}
+.periodBox .bar1 ,.round_area .bar1{
+    float: left;
+    margin: 0 5px;
+    line-height: 30px;
+    font-size: 22px;
+}
+.sp-search {
+    width: 46px;
+    height: 44px;
+    background: url(https://simg.powerballgame.co.kr/images/sp_log.png) -10px -131px;
+}
+.periodBox .dateBox a {
+    float: left;
+    margin-left: 5px;
+}
+
+.periodBox .btnBox ,.round_area .btnBox {
+    float: left;
+    width: 50%;
+}
+.powerballBox .oddText {
+    color: #1265cd;
+    font-family: DINWeb-Bold;
+}
+.powerballBox .evenText {
+    color: #cd1212;
+    font-family: DINWeb-Bold;
+}
+
+.powerballBox td {
+    border: 1px solid #D5D5D5;
+    font-size: 12px;
+    color: #5F6164;
+}
+
+.trEven {
+    background-color: #f1f1f1;
+}
+.trOdd {
+    background-color: #fff;
+}
+
+.patternSearchBox {
+    position: relative;
+    height: 45px;
+    line-height: 45px;
+    margin: 10px 0;
+}
+.patternSearchBox ul {
+    float: left;
+}
+
+#patternSet {
+    position: relative;
+    border: 1px solid #ADADAD;
+    border-top: none;
+    margin: 0;
+    padding: 0;
+}
+
+#patternSet li:first-child {
+    margin-left: 0;
+}
+
+#patternSet li {
+    float: left;
+    margin-left: -1px;
+    width: 37px;
+    height: 155px;
+    border: 1px solid #727272;
+    text-align: center;
+}
+#patternSet .round {
+    display: block;
+    height: 51px;
+    line-height: 51px;
+    background-color: #fff;
+}
+
+.patternBox .innerTable td.date {
+    width: 90px;
+    border-right: 1px solid #ADADAD;
+    vertical-align: middle;
+}
+.patternBox .bd {
+    border: 1px solid #ADADAD;
+}
+.patternBox .innerTable td.patternRound {
+    background-color: #717171;
+    border: 1px solid #151515;
+    color: #fff;
+    width: 40px;
+    height: 20px !important;
+    line-height: 20px;
+    text-align: center;
+}
+.patternBox .innerTable tr.line {
+    border-bottom: 1px solid #ADADAD;
+}
+.patternBox .innerTable {
+    width: 100%;
+    background-color: #fff;
+    border-bottom: 1px solid #ADADAD;
+}
+.patternBox .innerTable td.nextResult {
+    width: 82px;
+    text-align: center;
+    border-left: 1px solid #ADADAD;
+    border-right: none;
+}
+
+.patternTable .innerTable td .over {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    background: url(/assets/images/powerball/odd.png);
+    background-size: 24px;
+    color: #fff;
+    text-align: center;
+    font-size: 11px;
+    margin: 0 5px;
+}
+
+.patternTable .innerTable td .under {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    background: url(/assets/images/powerball/even.png);
+    background-size: 24px;
+    color: #fff;
+    text-align: center;
+    font-size: 11px;
+    margin: 0 5px;
+}
+#sixBox th a.on2 {
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: 100%;
+    color: #000;
+    background-color: #F1F1F1;
+    border: 1px solid #c2c2c2;
+}
+
+#sixBox td a.on1 {
+    top: -1px;
+    left: -1px;
+    color: #fff;
+    background: linear-gradient(
+        180deg
+        , #90b2fa,#7896d4);
+}
+#sixBox .content {
+    width:816px;
+    overflow-x: auto;
+}
+
+.powerballBox .middleText {
+    color: #14805E;
+    font-family: DINWeb-Bold;
+}
+.powerballBox .middleColor {
+    color: #14805E;
+}
+
+.sp-big {
+    width: 34px;
+    height: 34px;
+    background: url(/assets/images/powerball/black.png);
+    background-size: 34px;
+    line-height: 34px;
+    color: #fff;
+    font-size: 15px;
+    text-align: center;
+    margin: auto;
+}
+
+.sp-small {
+    width: 34px;
+    height: 34px;
+    background: url(/assets/images/powerball/black.png);
+    background-size: 34px;
+    line-height: 34px;
+    color: #fff;
+    font-size: 15px;
+    text-align: center;
+    margin: auto;
+}
+.sp-middle {
+    width: 34px;
+    height: 34px;
+    background: url(/assets/images/powerball/black.png);
+    background-size: 34px;
+    line-height: 34px;
+    color: #fff;
+    font-size: 15px;
+    text-align: center;
+    margin: auto;
+}
+#patternSet .img {
+    margin-top: 10px;
+    border-bottom: 1px solid #d6d6d6;
+    padding-bottom: 11px;
+    padding-right: 1px;
+    padding-left: 0px;
+    background-color: #fff;
+    width: 30px;
+    height: 30px;
+    background-size: 30px;
+    background-repeat: no-repeat;
+    line-height: 30px;
+    color: #fff;
+    margin-left: 2px;
+ }
+
+#patternBox .info {
+    padding-top: 12px;
+    height: 29px;
+    padding-bottom: 0px;
+}
+
+#patternBox .info li {
+    float: left;
+    line-height: 27px;
+}
+
+#patternBox .info .etc {
+    float: right;
+    padding-right: 20px;
+}
+
+#patternBox .info .ic {
+    float: left;
+    margin: 0 10px 0 20px;
+}
+
+
+#patternBox .info .tx {
+    float: left;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    margin-top: 5px;
+}
+
+.bar_graph .bar {
+    margin-bottom: 30px;
+    width: 100%;
+    height: 21px;
+    border-radius: 11px;
+    background-color: #ededed;
+}
+
+.bar_graph p {
+    position: relative;
+    height: 21px;
+    border-radius: 11px;
+    color: #555;
+}
+
+.bar_graph .left {
+    float: left;
+    max-width: 50px;
+}
+
+.bar_graph .left.on {
+    background-color: #4c89f1;
+    color: #fff;
+    max-width: 250px;
+}
+
+.bar_graph .left .per {
+    left: 9px;
+}
+.bar_graph .right .per {
+    right: 9px;
+}
+
+
+.bar_graph .per {
+    position: absolute;
+    top: 0;
+    line-height: 21px;
+    white-space: nowrap;
+    font-family: Tahoma;
+    font-size: 9px;
+    z-index: 1;
+}
+
+
+.bar_graph .right {
+    float: right;
+    max-width: 50px;
+}
+
+.bar_graph{
+    width: 100%
+}
+
+
+.bar_graph .left.on .tx {
+    background: url(/assets/images/powerball/odd.png);
+    background-size: 29px;
+    color: #fff;
+}
+
+.bar_graph .right.on .tx {
+    background: url(/assets/images/powerball/even.png);
+    background-size: 29px;
+    color: #fff;
+}
+
+.bar_graph .left .tx {
+    left: -41px;
+}
+
+.bar_graph .right .tx {
+    right: -41px;
+}
+
+.bar_graph .tx {
+    position: absolute;
+    top: -5px;
+    width: 29px;
+    height: 29px;
+    line-height: 29px;
+    text-align: center;
+    border: 1px solid #d8d8d8;
+    border-radius: 16px;
+    background-color: #fff;
+    color: #333;
+}
+
+.bar_graph dd {
+    padding: 0 71px;
+    width: 272px;
+}
+
+.bar_graph dl {
+    border-top: 1px solid #d6d6d6;
+}
+
+.bar_graph dt {
+    padding: 19px 0 28px;
+    text-align: center;
+}
+.infos li {
+    margin-bottom: 16px;
+    height: 15px;
+    line-height: 15px;
+    font-weight: 700;
+}
+
+
+.infos .big.on {
+    color: #e74c3c;
+    font-weight: 700;
+}
+
+.infos .big .ic {
+    background-color: #e74c3c;
+}
+
+.infos .middle .ic {
+    background-color: #3498db;
+}
+
+.infos .small .ic {
+    background-color: #27ae60;
+}
+
+.infos {
+    margin-top: 130px;
+    width: 207px;
+    position: absolute;
+    top: -1px;
+    right: 3px;
+}
+
+.infos .ic {
+    float: left;
+    margin: 1px 10px 0 0;
+    width: 11px;
+    height: 11px;
+    border-radius: 6px;
+}
+
+.small, small{
+    font-size: unset;
+    font-weight: unset;
+}
+
+.bar_graph .right.on {
+    background-color: #e42f35;
+    color: #fff;
+    max-width: 250px;
+}
+
+.from-date,.to-date{
+    height: 44px;
+    line-height: 44px;
+    font-size: 24px;
+}
+
+.switch_tab {
+    float: left;
+    margin: 11px 0 0 30px;
+}
+.switch_tab li {
+    float: left;
+    margin-right: 20px;
+    height: 21px;
+}
+
+.switch_tab .selected {
+    background: url(/assets/images/powerball/check.png) no-repeat;
+    background-size: 21px;
+}
+
+
+.switch_tab a {
+    display: block;
+    padding-left: 30px;
+    height: 21px;
+    line-height: 21px;
+    background: url(/assets/images/powerball/sp_label_bx.png) no-repeat;
+}
+.btn_refresh {
+    float: right;
+    margin: 6px 14px 0 0;
+    text-indent: -9999px;
+    overflow: hidden;
+}
+
+.btn_refresh .ic {
+    display: block;
+    background: url(/assets/images/powerball/sp_stats.png) no-repeat 0 -9999px;
+    margin: 8px;
+    width: 23px;
+    height: 17px;
+    background-position: -80px 0;
+}
+
+.evenText0{
+    font-weight: bold;
+    color: #dd6b6b;
+}
+.evenText1{
+    font-weight: bold;
+    color:#25a0fe;
+}
+
+.sp-date_next .ic {
+    display: block;
+    background: url(/assets/images/powerball/sp_stats.png) no-repeat -20px 0;
+    margin: 25px 30px;
+    width: 8px;
+    height: 15px;
+}
+
+.sp-date_prev .ic {
+    display: block;
+    background: url(/assets/images/powerball/sp_stats.png) no-repeat 0 0;;
+    margin: 25px 30px;
+    width: 8px;
+    height: 15px;
+
+}
+
+.sp-date_prev,.sp-date_next  {
+    float: left;
+    width: 68px;
+    height: 66px;
+    text-indent: -9999px;
+    overflow: hidden;
+}
+
+.sp-date_next:hover .ic{
+    background: url(/assets/images/powerball/sp_stats.png) no-repeat -60px 0px;
+}
+.sp-date_prev:hover .ic{
+    background: url(/assets/images/powerball/sp_stats.png) no-repeat -40px 0px;
+}
+
+.sub_tab {
+    padding: 15px 0 0 20px;
+    height: 36px;
+}
+.sub_tab li {
+    float: left;
+    margin-right: 30px;
+}
+
+.sub_tab a {
+    display: block;
+    padding-left: 30px;
+    height: 21px;
+    line-height: 21px;
+    background: url(/assets/images/powerball/sp_label_bx.png) no-repeat
+}
+
+.sub_tab .on2 {
+    background: url(/assets/images/powerball/check.png) no-repeat;
+    background-size: 20px;
+}
+
+
+.round_area .date {
+    float: left;
+    line-height: 68px;
+    font-size: 23px;
+}
+
+
+.round_area .btn_box {
+    float: left;
+    margin: 19px 1px 0 0;
+    padding: 0 20px;
+    height: 33px;
+    line-height: 33px;
+    border: 1px solid #d6d6d6;
+    background-color: #fff;
+}
+
+.round_area .selectbox {
+    display: inline-block;
+    margin-top: 19px;
+    padding-left: 10px;
+    height: 33px;
+    line-height: 33px;
+    border: 1px solid #d6d6d6;
+}
+.round_area .view_se1 .se1, .round_area .view_se2 .se2 {
+    display: block;
+    float: left;
+}
+
+#round_search_type:after{
+    clear: both;
+}
+
+.round_area .switch_tab {
+    float: left;
+    margin: 25px 0 0 30px;
+}
+
+
+.round_area .info {
+    height: 71px;
+    line-height: 71px;
+}
+
+.date_search_option{
+    position: relative;
+    margin: 0;
+    height: 54px;
+    top: 10px;
+    padding-top: 5px;
+    padding-left: 10px;
+}
+
+.round_area{
+    border: 1px solid #bfbfbf;
+}
+
+.round_area .se{
+    padding-left: 19px;
+}
+
+
+
+.roundbox-body td div.WAIT {
+    width: 31px;
+    height: 31px;
+    line-height: 31px;
+    border-radius: 16px;
+    text-align: center;
+    background-color: #d6d6d6;
+    color: #333;
+    margin: auto;
+}
+
+
+.roundbox-body td .tx {
+    display: block;
+    height: 51px;
+    line-height: 51px;
+    border-top: 1px solid #f2f2f2;
+    font-style: normal;
+    border: none;
+
+}
+
+
+.sp-odd.strong,.sp-even.strong{
+    width: 51px;
+    height: 51px;
+    line-height: 51px;
+    background-size: 51px;
+}
+
+.list_opt{
+    margin-bottom: 5px;
+    padding: 19px;
+    height: 31px;
+    border: 1px solid #d6d6d6;
+    background-color: #f2f2f7;
+}
+
+#filter-btns{
+    display: table;
+    margin: auto;
+    margin-top: 5px;
+}
+
+#filter-btns:before,#filter-btns:after{
+    display: table;
+    content: " ";
+}
+
+#filter-btns:after{
+    clear: both;
+}
+
+#filter-btns li{
+    display: inline-block;
+    margin-right: 15px;
+}
+
+#filter-btns li a{
+    height: 21px;
+    line-height: 21px;
+    display: block;
+    background: url(/assets/images/powerball/sp_label_bx.png) no-repeat;
+    padding-left: 30px;
+}
+
+#filter-btns li a.selected{
+    background: url(/assets/images/powerball/check.png) no-repeat;
+    background-size: 21px;
+}
+
+.option_area.type2 {
+    height: 120px;
+    border: 1px solid #bfbfbf;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.option_area .info {
+    height: 60px;
+    line-height: 60px;
+}
+
+.option_area .btn_date {
+    float: left;
+    width: 68px;
+    height: 71px;
+    text-indent: -9999px;
+    overflow: hidden;
+}
+
+.option_area .date {
+    float: left;
+    line-height: 71px;
+    font-size: 23px;
+    font-family: tahoma, 돋움, Dotum, sans-serif;
+}
+
+.option_area .btn_minus .ic, .option_area .btn_plus .ic {
+    margin: 28px;
+    width: 15px;
+    height: 15px;
+}
+
+.option_area .btn_plus .ic {
+    background: url(/assets/images/powerball/sp_stats.png) no-repeat 0 -9999px;
+    background-position: -20px -130px;
+    display: block;
+}
+
+.option_area .btn_minus .ic {
+    background: url(/assets/images/powerball/sp_stats.png) no-repeat 0 -9999px;
+    background-position: 0 -130px;
+    display: block;
+}
+
+.option_area .btn_refresh {
+    float: right;
+    margin: 19px 16px 0 0;
+    text-indent: -9999px;
+    overflow: hidden;
+}
+
+.btn-jin-green:focus,.btn-green:focus{
+    box-shadow: none;
+}
+
+
+#patternSet .count {
+    display: block;
+    width: 37px;
+    height: 51px;
+    line-height: 51px;
+    border-bottom: 1px solid #727272;
+    background: linear-gradient(#e7e7e7,#d6d6d6);
+    color: #000;
+}
+
+
+.pattern_select .inner {
+    float: left;
+    position: relative;
+    margin: 0 -1px;
+    width: 761px;
+    height: 157px;
+    background: url(/assets/images/powerball/bg_pattern.png) repeat-x;
+    overflow: hidden;
+}
+.pattern_select  .tit {
+    float: left;
+    width: 65px;
+    border-top: 1px solid #d6d6d6;
+    text-align: center;
+}
+
+.pattern_select .tit span {
+    display: block;
+    height: 51px;
+    line-height: 51px;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.pattern_select {
+    margin-bottom: 5px;
+    height: 157px;
+    border-left: 1px solid #d6d6d6;
+}
+
+/*#patternList .patternImg  div{*/
+/*    font-size: 12px;*/
+/*}*/
+
+/*#patternList .patternImg  div.sp-even,#patternList .patternImg  div.sp-odd,#patternList .patternImg  div.sp-under,#patternList .patternImg  div.sp-over,#patternList .patternImg  div.sp-small,#patternList .patternImg  div.sp-middle,#patternList .patternImg  div.sp-big{*/
+/*    width:35px;*/
+/*    height: 35px;*/
+/*    line-height: 35px;*/
+/*    background-size: 35px;*/
+/*}*/

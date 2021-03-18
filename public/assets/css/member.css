@@ -1,0 +1,205 @@
+
+.memberBox .titBox .table td {
+    border-bottom: 1px dotted #c6c6c6;
+    vertical-align: middle;
+}
+
+.memberBox .titBox .table th.tit {
+    margin: 0;
+    padding: 20px 0 0 20px;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: Gulim;
+    background-color: #EFEFEF;
+    vertical-align: top;
+    border-right: 1px solid #c6c6c6;
+    text-align: left;
+}
+
+.content {
+    padding: 10px;
+    font-size: 12px;
+    line-height: 20px;
+    border: 1px solid #CECECE;
+    border-top: none;
+    min-height: 500px;
+}
+
+.memberBox .titBox .table td .number {
+    margin-right: 2px;
+    color: #2962D9;
+}
+.memberBox .titBox .table .noneMsg {
+    font-size: 12px;
+    color: #b5b5b5;
+}
+.highlight {
+    color: #2962D9;
+}
+.itemList {
+    padding: 0 0 0 3px;
+}
+.itemList li {
+    display: inline-block;
+    width: 160px;
+    height: 180px;
+    border: 1px solid #C8C5C5;
+    background-color: #fff;
+    padding: 0 13px;
+    margin: 5px 3px;
+}
+.itemList li img {
+    margin: 5px auto;
+    display: block;
+}
+.itemList li .name {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.amountSet {
+    position: relative;
+    float: left;
+    width: 62px;
+    height: 29px;
+    background: url(https://simg.powerballgame.co.kr/images/bg_amount.png) no-repeat;
+}
+.amountSet input {
+    border: none;
+    width: 45px;
+    height: 27px;
+    line-height: 27px;
+    margin: 1px;
+    text-align: center;
+}
+.itemList li .btn {
+    margin-left: 5px;
+}
+
+.logBox tr.title {
+    background-color: #EFEFEF;
+    border: 1px solid #C8C5C5;
+}
+.logBox {
+    border: 1px solid #C8C5C5;
+}
+.exp-box span.text {
+    font-size: 11px;
+    color: #888;
+    margin-right: 3px;
+}
+
+.exp-box span.exp {
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0px;
+    margin-right: 2px;
+    color: #127CCB;
+}
+
+.exp-box span.ea {
+    font-size: 10px;
+    color: #888;
+}
+
+.box-level {
+    margin-top: 15px;
+    background: #f1f1ef;
+    border-radius: 15px;
+    padding: 26px 5px 26px 5px;
+    margin-bottom: 20px;
+    height: 30px;
+}
+
+.box-level li {
+    float: left;
+    position: relative;
+    width: 34px;
+}
+ .box-level li div {
+    display: block;
+    cursor: pointer;
+    text-align: center;
+    font-size: 11px;
+}
+.box-level li div p {
+    padding: 5px 0 0 0;
+}
+
+.box-level li div p {
+    line-height: 12px;
+}
+
+.box-level li div .text {
+    position: absolute;
+    bottom: 63px;
+    left: 9px;
+    color: #565656;
+    background: #fff;
+    padding: 5px 5px;
+    min-width: 90px;
+    border: 1px solid #127ccb;
+    text-align: left;
+    font-size: 11px;
+}
+
+
+
+.box-level li div .text .ar {
+    background: url(https://simg.powerballgame.co.kr/images/bg_arrow.png) no-repeat 100% 0;
+    width: 9px;
+    height: 5px;
+    position: absolute;
+    bottom: -5px;
+    left: 5px;
+    display: block;
+}
+.grayscale {
+    filter: url(data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='grayscale'><feColorMatrix type='saturate' values='0'/></filter></svg>#grayscale);
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1);
+    filter: gray;
+}
+
+.title {
+    height: 35px;
+    line-height: 35px;
+    font-size: 12px;
+    background-color: #aaaaaa;
+    border: 1px solid #999999;
+}
+.title ul li a.on {
+    display: block;
+    background-color: #4C4C4C;
+    color: #fff;
+    font-weight: bold;
+    border: 1px solid #3c3c3c;
+    height: 35px;
+    margin: -1px 0 0 -1px;
+}
+
+.title ul li a {
+    float: left;
+    padding: 0 9px;
+    border-right: 1px solid #999999;
+    color: #333;
+    text-decoration: none;
+}
+.amountSet .up {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 15px;
+    height: 14px;
+    cursor: pointer;
+}
+
+.amountSet .down {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 15px;
+    height: 14px;
+    cursor: pointer;
+}

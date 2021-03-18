@@ -1,0 +1,119 @@
+.speedkenoBetBox {
+    position: relative;
+    width: 826px;
+    height: 113px;
+    border: 2px solid #0E609C;
+    background-color: #fafafa;
+    margin-top: 0px;
+    display: none;
+}
+
+.speedkenoBetBox .title {
+    width: 15px;
+    height: 83px;
+    position: absolute;
+    background-color: #127CCB;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 15px 10px;
+    color: #fff;
+    border-right: 2px solid #0E609C;
+}
+.speedkenoBetBox ul.betting {
+    width: 780px;
+    padding-left: 40px;
+    margin: 12px auto;
+    text-align: center;
+}
+.speedkenoBetBox ul.betting li {
+    display: inline-block;
+    text-align: center;
+    margin: 0 5px;
+    padding-top: 10px;
+}
+.speedkenoBetBox ul.betting li span.titleBox {
+    width: 120px;
+    background-color: #3498DB;
+    border: 1px solid #127CCB;
+    color: #fff;
+}
+
+.speedkenoBetBox ul.betting li span {
+    display: inline-block;
+    width: 58px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #B2B2B2;
+    text-align: center;
+    font-weight: bold;
+    background-color: #fff;
+}
+.speedkenoBetBox ul.betting li.btnBox {
+    vertical-align: top;
+    padding-top: 10px;
+}
+.speedkenoBetBox ul.betting li.btnBox .left {
+    float: left;
+}
+.speedkenoBetBox ul.betting li.btnBox .right {
+    float: right;
+    margin-left: 5px;
+}
+.speedkenoBetBox ul.betting li.btnBox .left .pick {
+    width: 160px;
+    height: 67px;
+    line-height: 67px;
+}
+.speedkenoBetBox ul.betting li.btnBox span {
+    width: 120px;
+    line-height: 30px;
+    background-color: #C11A20;
+    border: 1px solid #921417;
+    color: #fff;
+    cursor: pointer;
+}
+.speedkenoBetBox ul.betting li.btnBox span.reset {
+    width: 80px;
+    background-color: #e7e7e7;
+    border: 1px solid #B2B2B2;
+    color: #000;
+}
+.speedkenoBetBox ul.betting li.btnBox .right .reset {
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    background-color: #e7e7e7;
+    border: 1px solid #B2B2B2;
+    color: #000;
+    cursor: pointer;
+    font-weight: bold;
+}
+.speedkenoBetBox ul.betting li .point {
+    margin-top: 5px;
+}
+.speedkenoBetBox ul.betting li.btnBox a.log {
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    display: inline-block;
+    font-weight: bold;
+    background-color: #e7e7e7;
+    border: 1px solid #B2B2B2;
+    color: #000;
+}
+
+.speedkenoBetBox ul li .pick-btn.odd.on {
+    background-color: #1265CD;
+    border: 1px solid #0d50a3;
+    color: #fff;
+}
+
+.speedkenoBetBox ul.betting li span.pick-btn {
+    cursor: pointer;
+}
+
+.speedkenoBetBox ul li .pick-btn.even.on {
+    background-color: #cd1212;
+    border: 1px solid #a30d0d;
+    color: #fff;
+}

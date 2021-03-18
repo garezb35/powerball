@@ -1,0 +1,1618 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\PbAutoHistory;
+use App\Models\PbAutoMatch;
+use App\Models\PbBetting;
+use App\Models\PbItemUse;
+use App\Models\PbMarket;
+use App\Models\TblWinning;
+use App\Models\User;
+use Faker\Provider\Base;
+use Illuminate\Http\Request;
+use App\Models\Pb_Result_Powerball;
+use App\Models\PbAutoSetting;
+use App\Models\PbBettingCtl;
+use Illuminate\Support\Facades\Auth;
+use DB;
+use DateTime;
+use Prophecy\Doubler\Generator\Node\ReturnTypeNode;
+use Ramsey\Uuid\Type\Time;
+
+class PowerballController extends Controller
+{
+
+    public function view(Request $request)
+    {
+
+        if (!$request->has("terms"))
+            $key = "date";
+        else
+            $key = $request->terms;
+//        if($key!="lates" && !Auth::check())
+//        {
+//            echo "<script>alert('잘못된 접근입니다.');window.parent.document.getElementById('mainFrame').height = '500px';</script>";
+//            return;
+//        }
+        switch ($key) {
+            case "date":
+                $from = !empty($request->from) ? $request->from : date("Y-m-d");
+                return view('powerball_date', [    "js" =>
+                                                        "powerball_date.js",
+                                                        "css" => "powerball_date.css",
+                                                        "pick_visible" => "none",
+                                                        "p_remain"=>TimeController::getTimer(2),
+                                                        "from"=>$from,
+                                                        "type"=>1,
+                                                        "title"=>date("Y",strtotime($from))."년 ".date("m",strtotime($from))."월 ".date("d",strtotime($from))."일 기준 오늘 통계데이터",
+                                                        "token"=>""
+                                                    ]
+                            );
+                break;
+            case "lates":
+                if($request->pageType == "late")
+                    $default = 50;
+                else
+                    $default =288;
+                $limit = !empty($request->limit) ? $request->limit : $default;
+
+                $next = $limit + 50;
+                if($next > 2000)
+                    $next = 50;
+                $prev = $limit-50;
+                if($prev < 50)
+                    $prev = 2000;
+                return view('powerball_lates', [   "js" => "powerball_lates.js",
+                                                        "css" => "powerball_date.css",
+                                                        "pick_visible" => "none",
+                                                        "p_remain"=>TimeController::getTimer(2),
+                                                        "from"=>"",
+                                                        "next"=>$next,
+                                                        "prev"=>$prev,
+                                                        "title"=>"최근 {$limit}회차 기준 오늘 통계데이터",
+                                                        "limit"=>$limit]
+                            );
+                break;
+            case "period":
+                if(!empty($request->dateType)){
+                    $request->dateType = $request->dateType-1;
+                    $to = date("Y-m-d");
+                    $from = date('Y-m-d', strtotime('-'.$request->dateType.' days', strtotime($to)));
+                }
+                else{
+                    $to = !empty($request->to) ? $request->to : date("Y-m-d");
+                    $from = !empty($request->from) ? $request->from : date('Y-m-d', strtotime('-14 days', strtotime($to)));
+                }
+                $date1 =  new \DateTime($from);
+                $date2 =  new \DateTime($to);
+                $interval = $date1->diff($date2);
+                $dif = $interval->days;
+                $dif++;
+                return view('powerball_period', [  "js" => "powerball_period.js",
+                                                        "css" => "powerball_date.css",
+                                                        "pick_visible" => "none",
+                                                        "from"=>$from,
+                                                        "to"=>$to,
+                                                        "p_remain"=>TimeController::getTimer(2),
+                                                        "diff"=>$dif,
+                                                        "title"=>date("Y",strtotime($from))."년 ".date("m",strtotime($from))."월 ".date("d",strtotime($from))."일부터 ".
+                                                            date("Y",strtotime($to))."년 ".date("m",strtotime($to))."월 ".date("d",strtotime($to))."일까지의 통계데이터"
+                                                     ]
+                            );
+                break;
+            case "pattern":
+                $model = Pb_Result_Powerball::orderBy("day_round","DESC")->first();
+                $last_round = !empty($model["day_round"]) ? $model["day_round"] : 0;
+                return view('powerball_pattern', [     "js" => "powerball_pattern.js",
+                                                            "css" => "powerball_date.css",
+                                                            "pick_visible" => "none",
+
+                                                            "next_round"=>$last_round+1]);
+                break;
+            case "round":
+                if(!empty($request->dateType)){
+                    $to = date("Y-m-d");
+                    $from = date('Y-m-d', strtotime('-'.$request->dateType.' days', strtotime($to)));
+                }
+                else{
+                    $to = !empty($request->to) ? $request->to : date("Y-m-d");
+                    $from = !empty($request->from) ? $request->from : date('Y-m-d', strtotime('-15 days', strtotime($to)));
+                }
+                $current = 0;
+                if($request->current == 1 || empty($request->toRound)){
+                    $powerball = Pb_Result_Powerball::orderBy("day_round","DESC")->first();
+                    if(empty($powerball)){
+                        echo "<script>alert('지난 내역이 없습니다.');window.parent.document.getElementById('mainFrame').height = '500px';</script>";
+                        return;
+                    }
+                    $current=$powerball["round"]+1;
+                }
+
+                if(!empty($request->toRound))
+                    $current = $request->toRound;
+                $next = $current + 1;
+                if($next > 288)
+                    $next = 1;
+                $prev = $current-1;
+                if($prev < 1)
+                    $prev = 288;
+                return view('powerball_round', [     "js" => "powerball_round.js",
+                    "css" => "powerball_date.css",
+                    "p_remain"=>TimeController::getTimer(2),
+                    "current_round"=>$current,
+                    "from"=>$from,
+                    "to"=>$to,
+                    "next"=>$next,
+                    "prev"=>$prev,
+                    "title"=>date("Y",strtotime($from))."년 ".date("m",strtotime($from))."월 ".date("d",strtotime($from))."일부터 ".
+                        date("Y",strtotime($to))."년 ".date("m",strtotime($to))."월 ".date("d",strtotime($to))."일 ".$current."회차 통계데이터",
+                    "pick_visible" => "none"]);
+                break;
+            case "roundbox":
+                $from_round =$request->fromRound;
+                $to_round = $request->toRound;
+                $mode = empty($request->mode) ? "pb_oe":$request->mode;
+                if(!empty($request->dateType)){
+                    $request->dateType = $request->dateType-1;
+                    $to = date("Y-m-d");
+                    $from = date('Y-m-d', strtotime('-'.$request->dateType.' days', strtotime($to)));
+                }
+                else{
+                    $to = !empty($request->to) ? $request->to : date("Y-m-d");
+                    $from = !empty($request->from) ? $request->from : date('Y-m-d', strtotime('-14 days', strtotime($to)));
+                }
+                if($request->current == 1 || empty($request->toRound)){
+                    $powerball = Pb_Result_Powerball::orderBy("day_round","DESC")->first();
+                    if(empty($powerball)){
+                        echo "<script>alert('지난 내역이 없습니다.');window.parent.document.getElementById('mainFrame').height = '500px';</script>";
+                        return;
+                    }
+                    $to_round=$powerball["round"]+1;
+                }
+                if(empty($request->fromRound))
+                    $from_round = $to_round-10;
+                if($from_round < 0) $from_round =$from_round+288;
+                if($from_round > $to_round)
+                {
+                    $temp = $to_round;
+                    $to_round = $from_round;
+                    $from_round = $temp;
+                }
+                return view('powerball_roundbox', [     "js" => "powerball_roundbox.js",
+                    "css" => "powerball_date.css",
+                    "p_remain"=>TimeController::getTimer(2),
+                    "from_round"=>$from_round,
+                    "to_round"=>$to_round,
+                    "from"=>$from,
+                    "to"=>$to,
+                    "mode"=>$mode,
+                    "title"=>date("Y",strtotime($from))."년 ".date("m",strtotime($from))."월 ".date("d",strtotime($from))."일 ~ ".
+                        date("Y",strtotime($to))."년 ".date("m",strtotime($to))."월 ".date("d",strtotime($to))."일  , ".$from_round."회차 ~ ".$to_round."회차 통계데이터",
+                    "pick_visible" => "none"]);
+                break;
+            default:
+                return "";
+                break;
+        }
+    }
+
+    /* 파워볼 픽 페이지 */
+    public function pick(Request $request)
+    {
+        if(!Auth::check())
+        {
+            echo "<script>alert('로그인 후 이용가능합니다..');window.history.go(-1);</script>";
+            return;
+        }
+        $user = Auth::user();
+        $current_picks = array();
+        $temp = array();
+        $current_records = PbBetting::select(
+            DB::raw("id"),
+            DB::raw("userId"),
+            DB::raw("round"),
+            DB::raw("CONCAT('{',GROUP_CONCAT(CONCAT('\"',game_code,'\"',':','{','\"pick\":',pick,',','\"is_win\":',is_win,'}') SEPARATOR ','),'}') as content"),
+            DB::raw("game_type"),
+            DB::raw("type"),
+            DB::raw("created_date"),
+            DB::raw("updated_date"),
+            DB::raw("created_date as pick_date")
+
+        )
+            ->where("userId",$user->userId)
+            ->where("game_type",1)
+            ->where("type",1)
+            ->where("is_win",-1)
+            ->orderBy("round","DESC")
+            ->groupBy("round")
+            ->groupBy("userId");
+        $history_picks = PbBettingCtl::where("game_type",1)->where("type",1)->where("userId",$user->userId)->orderBy("round","DESC");
+        return view('powerball_pick', [    "js" => "",
+                                                "css" => "pball-pick.css",
+                                                "pick_visible" => "block",
+                                                "p_remain"=>TimeController::getTimer(2),
+                                                "type"=>1,
+                                                "token"=>$user->api_token,
+                                                "picks" => $current_records->union($history_picks)->orderBy("round","DESC")->paginate(20)
+                                               ]);
+
+    }
+
+    /*  파워볼 분석 데이터  선형 자료*/
+    public function resultList(Request $request)
+    {
+        $skip = empty($request->skip) ? 0 : $request->skip;
+        $from = empty($request->from) ? "" : $request->from;
+        $to = empty($request->to) ? "" : $request->to;
+        $limit = empty($request->limit) ? 30 : $request->limit;
+        $from_year  = date("Y",strtotime($from));
+        $round = empty($request->round) ? 0 : $request->round;
+        if($from !="" && $to !=""){
+            if($from_year == date('Y'))
+                $powerball_list = new Pb_Result_Powerball;
+            else
+                $powerball_list = DB::connection("comm" . $from_year)->table("pb_result_powerball");
+            if($round > 0)
+                $powerball_list = $powerball_list->where("round",$round);
+            $powerball_list = $powerball_list->orderBy("day_round", "DESC");
+            if(!empty($from) && !empty($to)){
+                $powerball_list = $powerball_list->where("created_date", ">=", $from . " 00:00:00");
+                $powerball_list = $powerball_list->where("created_date", "<=", $to . " 23:59:59");
+                $powerball_list = $powerball_list->offset($skip)->take(30)->get()->toArray();
+
+            }
+        }
+        elseif ($limit !="")
+        {
+            $powerball_list = new Pb_Result_Powerball;
+            if($skip >=$limit)
+                $powerball_list = array();
+            else
+                $powerball_list = $powerball_list->offset($skip)->take(30)->orderBy("day_round", "DESC")->get()->toArray();
+        }
+
+        if(empty($powerball_list))
+            echo json_encode(array("status"=>0,"result"=>array()));
+        else {
+            $powerball_list = json_decode(json_encode($powerball_list));
+            echo json_encode(array("status" => 1, "result" => $powerball_list));
+        }
+    }
+
+    /*  파워볼 전체 분석 데이터  */
+    public function analyseDate(Request $request)
+    {
+        $total = array();
+        $poe = $puo = $nuo = $noe = $nsize = "";
+        $from_year = $to_year = 0;
+        $from = empty($request->from) ? "" : $request->from;
+        $to = empty($request->to) ? "" : $request->to;
+        $limit = empty($request->limit) ? "" : $request->limit;
+        $round = empty($request->round) ? 0 : $request->round;
+        if ($from != "" && $to != "")
+        {
+            $from_year  = date("Y",strtotime($from));
+            $to_year  = date("Y",strtotime($to));
+            for($i = $to_year ; $i >=$from_year;$i--) {
+                if ($i > date("Y")  || $i < "2013")
+                    continue;
+                if ($i == date("Y"))
+                    $powerball_list_to = new Pb_Result_Powerball;
+                if ($i < date("Y"))
+                    $powerball_list_to = DB::connection("comm" . $i)->table("pb_result_powerball");
+
+                $powerball_list_to = $powerball_list_to->orderBy("day_round", "DESC");
+                if ($i == $to_year || $i == $from_year) {
+                    $powerball_list_to = $powerball_list_to->where("created_date", ">=", $from . " 00:00:00");
+                    $powerball_list_to = $powerball_list_to->where("created_date", "<=", $to . " 23:59:59");
+                }
+                if(!empty($round))
+                    $powerball_list_to = $powerball_list_to->where("round", $round);
+                $powerball_list_to = $powerball_list_to->select(
+                    DB::raw("GROUP_CONCAT(pb_result_powerball.pb_uo ORDER BY day_round DESC  SEPARATOR ',') as `puo`"),
+                    DB::raw("GROUP_CONCAT(pb_result_powerball.pb_oe ORDER BY day_round DESC  SEPARATOR ',') as `poe`"),
+                    DB::raw("GROUP_CONCAT(pb_result_powerball.nb_oe ORDER BY day_round DESC  SEPARATOR ',') as `noe`"),
+                    DB::raw("GROUP_CONCAT(pb_result_powerball.nb_uo ORDER BY day_round DESC  SEPARATOR ',') as `nuo`"),
+                    DB::raw("GROUP_CONCAT(pb_result_powerball.nb_size ORDER BY day_round DESC  SEPARATOR ',') as `nsize`"));
+                $powerball_list_to = $powerball_list_to->groupBy("group")->get()->toArray();
+
+                if (!empty($powerball_list_to[0])) {
+                    if(!empty($poe))
+                        $poe .=",";
+                    if(!empty($puo))
+                        $puo .=",";
+                    if(!empty($noe))
+                        $noe .=",";
+                    if(!empty($nuo))
+                        $nuo .=",";
+                    if(!empty($nsize))
+                        $nsize .=",";
+                    $poe .= $i != date('Y') ? $powerball_list_to[0]->poe : $powerball_list_to[0]["poe"];
+                    $puo .= $i != date('Y') ? $powerball_list_to[0]->puo : $powerball_list_to[0]["puo"];
+                    $nuo .= $i != date('Y') ? $powerball_list_to[0]->nuo : $powerball_list_to[0]["nuo"];
+                    $noe .= $i != date('Y') ? $powerball_list_to[0]->noe : $powerball_list_to[0]["noe"];
+                    $nsize .= $i != date('Y') ? $powerball_list_to[0]->nsize : $powerball_list_to[0]["nsize"];
+                }
+            }
+            $total = array( "poe"=>$poe,
+                                    "puo"=>$puo,
+                                    "noe"=>$noe,
+                                    "nuo"=>$nuo,
+                                    "nsize"=>$nsize);
+
+
+        }
+        elseif ($limit !=""){
+            $powerball_list_to = new Pb_Result_Powerball;
+            if(!empty($round))
+                $powerball_list_to = $powerball_list_to->where("round", $round);
+            $powerball_list_to = $powerball_list_to->orderBy("day_round", "DESC");
+            $powerball_list_to = $powerball_list_to->select(
+                DB::raw("GROUP_CONCAT(pb_result_powerball.pb_uo ORDER BY day_round DESC SEPARATOR ',' ) as `puo`"),
+                DB::raw("GROUP_CONCAT(pb_result_powerball.pb_oe ORDER BY day_round DESC SEPARATOR ',' ) as `poe`"),
+                DB::raw("GROUP_CONCAT(pb_result_powerball.nb_oe ORDER BY day_round DESC SEPARATOR ',') as `noe`"),
+                DB::raw("GROUP_CONCAT(pb_result_powerball.nb_uo ORDER BY day_round DESC SEPARATOR ',' ) as `nuo`"),
+                DB::raw("GROUP_CONCAT(pb_result_powerball.nb_size ORDER BY day_round DESC SEPARATOR ',' ) as `nsize`"));
+
+            $powerball_list_to = $powerball_list_to->limit($limit)->groupBy("group")->get()->toArray();
+            $total = !empty($powerball_list_to[0]) ? $powerball_list_to[0] : array();
+        }
+
+        if(empty($total))
+        {
+            echo json_encode(array("status"=>0,"result"=>array()));
+            return;
+        }
+
+        $nuo_max=$noe_max=$puo_max=$poe_max = $noe_count = $nuo_count = $poe_count = $puo_count  = array(0,0);
+        $nsize_max = $nsize_count = array(1=>0,2=>0,3=>0);
+
+
+        if(!empty($total["poe"])){
+            $poe_array = $limit !="" ? explode(",",$this->delIndex($limit,$total["poe"])) : explode(",",$total["poe"]);
+            $poe_max = $this->getMax($poe_array,1);
+            $poe_count = array_count_values($poe_array);
+        }
+
+        if(!empty($total["puo"])){
+            $puo_array = $limit !="" ? explode(",",$this->delIndex($limit ,$total["puo"])) : explode(",",$total["puo"]);
+            $puo_max = $this->getMax($puo_array,1);
+            $puo_count = array_count_values($puo_array);
+        }
+
+        if(!empty($total["noe"])){
+            $noe_array = $limit !="" ? explode(",",$this->delIndex($limit,$total["noe"])) : explode(",",$total["noe"]);
+            $noe_max = $this->getMax($noe_array,1);
+            $noe_count = array_count_values($noe_array);
+        }
+
+        if(!empty($total["nuo"])){
+            $nuo_array = $limit !="" ? explode(",",$this->delIndex($limit ,$total["nuo"])) : explode(",",$total["nuo"]);
+            $nuo_max = $this->getMax($nuo_array,1);
+            $nuo_count = array_count_values($nuo_array);
+        }
+
+        if(!empty($total["nsize"])){
+            $nsize_array = $limit !="" ? explode(",",$this->delIndex($limit ,$total["nsize"])) : explode(",",$total["nsize"]);
+            $nsize_max = $this->getMax($nsize_array,2);
+            $nsize_count = array_count_values($nsize_array);
+        }
+
+        echo json_encode(   array(  "status"=>1,
+                                    "result"=>array(    "poe" => array("max"=>$poe_max,"count"=>$poe_count),
+                                                        "puo" => array("max"=>$puo_max,"count"=>$puo_count),
+                                                        "noe" => array("max"=>$noe_max,"count"=>$noe_count),
+                                                        "nuo" => array("max"=>$nuo_max,"count"=>$nuo_count),
+                                                        "nsize" => array("max"=>$nsize_max,"count"=>$nsize_count)
+                                        )));
+
+
+    }
+
+    /* 패턴별 분석 데이터 */
+    public function patternAnalyse(Request $request){
+        $from_year = $to_year = 0;
+        $from = empty($request->from) ? "" : $request->from;
+        $to = empty($request->to) ? "" : $request->to;
+        $limit = empty($request->limit) ? 288 : $request->limit;
+        $type = !empty($request->type) ? $request->type : "pb_oe";
+        $result = array();
+        $list = array();
+        if ($from != "" && $to != "")
+        {
+            $from_year  = date("Y",strtotime($from));
+            $to_year  = date("Y",strtotime($to));
+            for($i = $to_year ; $i >=$from_year;$i--) {
+                if ($i > date("Y")  || $i < "2013")
+                    continue;
+                if ($i == date("Y"))
+                    $powerball_list_to = new Pb_Result_Powerball;
+                if ($i < date("Y"))
+                    $powerball_list_to = DB::connection("comm" . $i)->table("pb_result_powerball");
+                $powerball_list_to = $powerball_list_to->orderBy("day_round", "ASC");
+                if ($i == $to_year || $i == $from_year) {
+                    $powerball_list_to = $powerball_list_to->where("created_date", ">=", $from . " 00:00:00");
+                    $powerball_list_to = $powerball_list_to->where("created_date", "<=", $to . " 23:59:59");
+                }
+                $powerball_list_to = json_decode(json_encode($powerball_list_to->get()->toArray()));
+                $list = array_merge($list,$powerball_list_to);
+            }
+
+            echo json_encode($this->getPatternDataFromArray($list,$type,$i));
+            return;
+        }
+
+        elseif ($limit != ""){
+            $powerball_list_to = new Pb_Result_Powerball;
+            $powerball_list_to = $powerball_list_to->orderBy("day_round", "DESC");
+            $powerball_list_to = $powerball_list_to->offset(0)->limit($limit)->get()->toArray();
+            $powerball_list_to = array_reverse($powerball_list_to);
+            $powerball_list_to = json_decode(json_encode($powerball_list_to));
+            $list = array_merge($list,$powerball_list_to);
+            echo json_encode($this->getPatternDataFromArray($list,$type,date('Y')));
+            return;
+        }
+
+        echo json_encode(array("status"=>0,"result"=>array()));
+    }
+
+
+    /* 육매 분석데이터 */
+    public function getSixAnalyse(Request $request){
+        $from_year = $to_year = 0;
+        $from = empty($request->from) ? "" : $request->from;
+        $to = empty($request->to) ? "" : $request->to;
+        $limit = empty($request->limit) ? "" : $request->limit;
+        $type = !empty($request->type) ? $request->type : "pb_oe";
+        $step  = !empty($request->step) ? $request->step : 6;
+        $result = array();
+        $list = array();
+
+        if ($from != "" && $to != "")
+        {
+            $from_year  = date("Y",strtotime($from));
+            $to_year  = date("Y",strtotime($to));
+            for($i = $to_year ; $i >=$from_year;$i--) {
+                if ($i > date("Y")  || $i < "2013")
+                    continue;
+                if ($i == date("Y"))
+                    $powerball_list_to = new Pb_Result_Powerball;
+                if ($i < date("Y"))
+                    $powerball_list_to = DB::connection("comm" . $i)->table("pb_result_powerball");
+                $powerball_list_to = $powerball_list_to->orderBy("day_round", "ASC")->select(DB::raw("SUBSTR(pb_result_powerball.day_round,5) as `data`"),DB::raw("pb_result_powerball.".$type." as type"));
+                if ($i == $to_year || $i == $from_year) {
+                    $powerball_list_to = $powerball_list_to->where("created_date", ">=", $from . " 00:00:00");
+                    $powerball_list_to = $powerball_list_to->where("created_date", "<=", $to . " 23:59:59");
+                }
+                $powerball_list_to = json_decode(json_encode($powerball_list_to->get()->toArray()));
+                $list = array_merge($list,$powerball_list_to);
+            }
+        }
+
+        elseif ($limit != "") {
+            $powerball_list_to = new Pb_Result_Powerball;
+            $powerball_list_to = $powerball_list_to->orderBy("day_round", "DESC")->select(DB::raw("SUBSTR(pb_result_powerball.day_round,5) as `data`"),DB::raw("pb_result_powerball.".$type." as type"));
+            $powerball_list_to = array_reverse($powerball_list_to->limit($limit)->get()->toArray());
+            $powerball_list_to = json_decode(json_encode($powerball_list_to));
+            $list = array_merge($list, $powerball_list_to);
+        }
+
+        if(!empty($list)){
+            foreach($list as $item){
+                $temp = $this->getTypePower($type,$item->type);
+                array_push($result,array("round"=>$item->data,"class"=>$temp[0],"alias"=>$temp[1]));
+            }
+        }
+
+        if(empty($result)){
+            echo json_encode(array("status"=>0,"result"=>array()));
+            return;
+        }
+
+        $result = array_chunk($result,$step);
+        echo json_encode(array("status"=>1,"result"=>array("list"=>$result,"step"=>$step)));
+    }
+
+
+
+    /*검색 기간내 최대/최소 통계 데이터 (무효처리 있는 날짜 제외)*/
+    public function analyseMinMax(Request $request){
+
+        $from_year = $to_year = 0;                             //2021,2021 년도
+        $from = empty($request->from) ? "" : $request->from;  // 언제부터 2021-02-10
+        $to = empty($request->to) ? "" : $request->to;        //언제까지 2021-02-14
+        $result = array();  //결과 담을 배렬
+        $temp = array();    // 처리부분 담을 배렬
+        /* 파워볼 ,숫자합 홀짝  대중소*/
+        $po = $pe = $no = $ne = $n3 = $n2 =  $n1 = array(array("date"=>"","counts"=>0),array("date"=>"","counts"=>288));
+        if($from !="" && $to !=""){
+            $from_year  = date("Y",strtotime($from));
+            $to_year  = date("Y",strtotime($to));
+
+            for($i = $to_year ; $i >=$from_year;$i--) {
+                if ($i > date("Y") || $i < "2013")
+                    continue;
+
+                // 파워볼 홀짝 최대
+                /* 해당 년도별로 자료기지 련결시켜준다.현재 년도이면 기종 련결을 리용한다 */
+                if ($i == date("Y"))
+                    $model1 = new Pb_Result_Powerball;
+                else
+                    $model1 = DB::connection("comm" . $i)->table("pb_result_powerball");
+                if ($i == $to_year || $i == $from_year) {
+                    $model1  = $model1->where("created_date", ">=", $from . " 00:00:00");
+                    $model1 = $model1->where("created_date", "<=", $to . " 23:59:59");
+                }
+
+                $m_1 =  $model1->select(DB::raw('DATE(created_date) as dates'), DB::raw('COUNT(id) as counts'),DB::raw('CONCAT("p",pb_oe) as ptype'))
+                    ->groupBy("dates")
+                    ->groupBy("pb_oe")
+                    ->orderByRaw('counts DESC');
+                $m_1 = DB::connection("comm" . $i)->table( DB::raw("({$m_1->toSql()}) as sub") )
+                    ->selectRaw("sub.*")
+                    ->mergeBindings($i == date('Y') ? $m_1->getQuery() : $m_1)
+                    ->groupBy(array("sub.ptype"))
+                    ->limit(2)
+                    ->get()
+                    ->toArray(); // 파워볼 홀짝 최대
+
+
+                // 숫자합 홀짝 최대
+                if ($i == date("Y"))
+                    $model2 = new Pb_Result_Powerball;
+                else
+                    $model2 = DB::connection("comm" . $i)->table("pb_result_powerball");
+                if ($i == $to_year || $i == $from_year) {
+                    $model2  = $model2->where("created_date", ">=", $from . " 00:00:00");
+                    $model2 = $model2->where("created_date", "<=", $to . " 23:59:59");
+                }
+
+                $m_2 =  $model2->select(DB::raw('DATE(created_date) as dates'), DB::raw('COUNT(id) as counts'),DB::raw('CONCAT("p",nb_oe) as ptype'))
+                    ->groupBy("dates")
+                    ->groupBy("nb_oe")
+                    ->orderByRaw('counts DESC');
+                $m_2 = DB::connection("comm" . $i)->table( DB::raw("({$m_2->toSql()}) as sub") )
+                    ->selectRaw("sub.*")
+                    ->mergeBindings($i == date('Y') ? $m_2->getQuery() : $m_2)
+                    ->groupBy(array("sub.ptype"))
+                    ->limit(2)
+                    ->get()
+                    ->toArray();  // 숫자합 홀짝 최대
+
+
+                // 숫자합 대 중 소 최대
+                if ($i == date("Y"))
+                    $model3 = new Pb_Result_Powerball;
+                else
+                    $model3 = DB::connection("comm" . $i)->table("pb_result_powerball");
+
+                if ($i == $to_year || $i == $from_year) {
+                    $model3  = $model3->where("created_date", ">=", $from . " 00:00:00");
+                    $model3 = $model3->where("created_date", "<=", $to . " 23:59:59");
+                }
+
+                $m_3 =  $model3->select(DB::raw('DATE(created_date) as dates'), DB::raw('COUNT(id) as counts'),DB::raw('CONCAT("p",nb_size) as ptype'))
+                    ->groupBy("dates")
+                    ->groupBy("nb_size")
+                    ->orderByRaw('counts DESC');
+
+                $m_3 = DB::connection("comm" . $i)->table( DB::raw("({$m_3->toSql()}) as sub") )
+                    ->selectRaw("sub.*")
+                    ->mergeBindings($i == date('Y') ? $m_3->getQuery() : $m_3)
+                    ->groupBy(array("sub.ptype"))
+                    ->limit(3)
+                    ->get()
+                    ->toArray();  // 숫자합 대 중 소 최대
+
+
+                // 파워볼 홀짝 최소
+                if ($i == date("Y"))
+                    $model4 = new Pb_Result_Powerball;
+                else
+                    $model4 = DB::connection("comm" . $i)->table("pb_result_powerball");
+
+                if ($i == $to_year || $i == $from_year) {
+                    $model4  = $model4->where("created_date", ">=", $from . " 00:00:00");
+                    $model4 = $model4->where("created_date", "<=", $to . " 23:59:59");
+                }
+
+                $m_4 =  $model4->select(DB::raw('DATE(created_date) as dates'), DB::raw('COUNT(id) as counts'),DB::raw('CONCAT("p",pb_oe) as ptype'))
+                    ->groupBy("dates")
+                    ->groupBy("pb_oe")
+                    ->orderByRaw('counts ASC');
+
+                $m_4 = DB::connection("comm" . $i)->table( DB::raw("({$m_4->toSql()}) as sub") )
+                    ->selectRaw("sub.*")
+                    ->mergeBindings($i == date('Y') ? $m_4->getQuery() : $m_4)
+                    ->groupBy(array("sub.ptype"))
+                    ->limit(2)
+                    ->get()
+                    ->toArray(); // 파워볼 홀짝 최소
+
+
+                // 숫자합 홀짝 최소
+                if ($i == date("Y"))
+                    $model5 = new Pb_Result_Powerball;
+                else
+                    $model5 = DB::connection("comm" . $i)->table("pb_result_powerball");
+                if ($i == $to_year || $i == $from_year) {
+                    $model5  = $model5->where("created_date", ">=", $from . " 00:00:00");
+                    $model5 = $model5->where("created_date", "<=", $to . " 23:59:59");
+                }
+                $m_5 =  $model5->select(DB::raw('DATE(created_date) as dates'), DB::raw('COUNT(id) as counts'),DB::raw('CONCAT("p",nb_oe) as ptype'))
+                    ->groupBy("dates")
+                    ->groupBy("nb_oe")
+                    ->orderByRaw('counts ASC');
+
+                $m_5 = DB::connection("comm" . $i)->table( DB::raw("({$m_5->toSql()}) as sub") )
+                    ->selectRaw("sub.*")
+                    ->mergeBindings($i == date('Y') ? $m_5->getQuery() : $m_5)
+                    ->groupBy(array("sub.ptype"))
+                    ->limit(2)
+                    ->get()
+                    ->toArray();  // 숫자합 홀짝 최소
+
+
+                // 숫자합 대 중 소 최소
+                if ($i == date("Y"))
+                    $model6 = new Pb_Result_Powerball;
+                else
+                    $model6 = DB::connection("comm" . $i)->table("pb_result_powerball");
+
+                if ($i == $to_year || $i == $from_year) {
+                    $model6  = $model6->where("created_date", ">=", $from . " 00:00:00");
+                    $model6 = $model6->where("created_date", "<=", $to . " 23:59:59");
+                }
+                $m_6 =  $model6->select(DB::raw('DATE(created_date) as dates'), DB::raw('COUNT(id) as counts'),DB::raw('CONCAT("p",nb_size) as ptype'))
+                    ->groupBy("dates")
+                    ->groupBy("nb_size")
+                    ->orderByRaw('counts ASC');
+
+                $m_6 = DB::connection("comm" . $i)->table( DB::raw("({$m_6->toSql()}) as sub") )
+                    ->selectRaw("sub.*")
+                    ->mergeBindings($i == date('Y') ? $m_6->getQuery() : $m_6)
+                    ->groupBy(array("sub.ptype"))
+                    ->limit(3)
+                    ->get()
+                    ->toArray();  // 숫자합 대 중 소 최소
+
+                /* 최대값 m_1~ m_3 */
+                if(!empty($m_1)) {
+                    $temp=array();
+                    foreach ($m_1 as $value)
+                        $temp[$value->ptype] = $value;
+
+                    if(!empty($temp["p1"]) && $temp["p1"]->counts > $po[0]["counts"] )
+                    {
+                        $po[0]["counts"] = $temp["p1"]->counts;
+                        $po[0]["date"] = $temp["p1"]->dates;
+                    }
+                    if(!empty($temp["p0"]) && $temp["p0"]->counts > $pe[0]["counts"] )
+                    {
+                        $pe[0]["counts"] = $temp["p0"]->counts;
+                        $pe[0]["date"] = $temp["p0"]->dates;
+                    }
+                }
+
+                if(!empty($m_2)) {
+                    $temp=array();
+                    foreach ($m_2 as $value)
+                        $temp[$value->ptype] = $value;
+
+                    if(!empty($temp["p1"]) && $temp["p1"]->counts > $no[0]["counts"] )
+                    {
+                        $no[0]["counts"] = $temp["p1"]->counts;
+                        $no[0]["date"] = $temp["p1"]->dates;
+                    }
+                    if(!empty($temp["p0"]) && $temp["p0"]->counts > $ne[0]["counts"] )
+                    {
+                        $ne[0]["counts"] = $temp["p0"]->counts;
+                        $ne[0]["date"] = $temp["p0"]->dates;
+                    }
+                }
+
+                if(!empty($m_3)) {
+                    $temp=array();
+                    foreach ($m_3 as $value)
+                        $temp[$value->ptype] = $value;
+
+                    if(!empty($temp["p1"]) && $temp["p1"]->counts > $n1[0]["counts"] )
+                    {
+                        $n1[0]["counts"] = $temp["p1"]->counts;
+                        $n1[0]["date"] = $temp["p1"]->dates;
+                    }
+                    if(!empty($temp["p2"]) && $temp["p2"]->counts > $n2[0]["counts"] )
+                    {
+                        $n2[0]["counts"] = $temp["p2"]->counts;
+                        $n2[0]["date"] = $temp["p2"]->dates;
+                    }
+
+                    if(!empty($temp["p3"]) && $temp["p3"]->counts > $n3[0]["counts"] )
+                    {
+                        $n3[0]["counts"] = $temp["p3"]->counts;
+                        $n3[0]["date"] = $temp["p3"]->dates;
+                    }
+                }
+
+
+                /* 최소값 m_4~ m_6 */
+                if(!empty($m_4)) {
+                    $temp=array();
+                    foreach ($m_4 as $value)
+                        $temp[$value->ptype] = $value;
+
+                    if(!empty($temp["p1"]) && $temp["p1"]->counts < $po[1]["counts"] )
+                    {
+                        $po[1]["counts"] = $temp["p1"]->counts;
+                        $po[1]["date"] = $temp["p1"]->dates;
+                    }
+                    if(!empty($temp["p0"]) && $temp["p0"]->counts < $pe[1]["counts"] )
+                    {
+                        $pe[1]["counts"] = $temp["p0"]->counts;
+                        $pe[1]["date"] = $temp["p0"]->dates;
+                    }
+                }
+
+                if(!empty($m_5)) {
+                    $temp=array();
+                    foreach ($m_5 as $value)
+                        $temp[$value->ptype] = $value;
+
+
+                    if(!empty($temp["p1"]) && $temp["p1"]->counts < $no[1]["counts"] )
+                    {
+                        $no[1]["counts"] = $temp["p1"]->counts;
+                        $no[1]["date"] = $temp["p1"]->dates;
+                    }
+                    if(!empty($temp["p0"]) && $temp["p0"]->counts < $ne[1]["counts"] )
+                    {
+                        $ne[1]["counts"] = $temp["p0"]->counts;
+                        $ne[1]["date"] = $temp["p0"]->dates;
+                    }
+
+                }
+
+                if(!empty($m_6)) {
+                    $temp=array();
+                    foreach ($m_6 as $value)
+                        $temp[$value->ptype] = $value;
+
+                    if(!empty($temp["p1"]) && $temp["p1"]->counts < $n1[1]["counts"] )
+                    {
+                        $n1[1]["counts"] = $temp["p1"]->counts;
+                        $n1[1]["date"] = $temp["p1"]->dates;
+                    }
+                    if(!empty($temp["p2"]) && $temp["p2"]->counts < $n2[1]["counts"] )
+                    {
+                        $n2[1]["counts"] = $temp["p2"]->counts;
+                        $n2[1]["date"] = $temp["p2"]->dates;
+                    }
+
+                    if(!empty($temp["p3"]) && $temp["p3"]->counts < $n3[1]["counts"] )
+                    {
+                        $n3[1]["counts"] = $temp["p3"]->counts;
+                        $n3[1]["date"] = $temp["p3"]->dates;
+                    }
+                }
+            }
+
+            echo  json_encode(array("status"=>1,"result"=>array(    $po,
+                                                                    $pe,
+                                                                    $no,
+                                                                    $ne,
+                                                                    $n3,
+                                                                    $n2,
+                                                                    $n1
+                                                                   )));
+            return;
+        }
+
+        echo json_encode(array("status"=>0,"result"=>array()));
+    }
+
+    /* 검색 기간내 최대/최소 통계 데이터 날자별로 모두 출력 */
+    public function anaylseMinMaxByDate(Request  $request){
+        $from_year = $to_year = 0;
+        $from = empty($request->from) ? "" : $request->from;
+        $to = empty($request->to) ? "" : $request->to;
+        $result = array();
+        if($from !="" && $to !="") {
+            $from_year = date("Y", strtotime($from));
+            $to_year = date("Y", strtotime($to));
+            for($i = $to_year ; $i >=$from_year;$i--) {
+                if ($i > date("Y")  || $i < "2013")
+                    continue;
+                if ($i == date("Y"))
+                    $powerball_list_to = new Pb_Result_Powerball;
+                if ($i < date("Y"))
+                    $powerball_list_to = DB::connection("comm" . $i)->table("pb_result_powerball");
+                if ($i == $to_year || $i == $from_year) {
+                    $powerball_list_to  = $powerball_list_to->where("created_date", ">=", $from . " 00:00:00");
+                    $powerball_list_to = $powerball_list_to->where("created_date", "<=", $to . " 23:59:59");
+                }
+
+                $powerball_list_to = $powerball_list_to->select(
+                    DB::raw("GROUP_CONCAT(pb_result_powerball.pb_uo ORDER BY day_round DESC  SEPARATOR ',') as `puo`"),
+                    DB::raw("GROUP_CONCAT(pb_result_powerball.pb_oe ORDER BY day_round DESC  SEPARATOR ',') as `poe`"),
+                    DB::raw("GROUP_CONCAT(pb_result_powerball.nb_oe ORDER BY day_round DESC  SEPARATOR ',') as `noe`"),
+                    DB::raw("GROUP_CONCAT(pb_result_powerball.nb_uo ORDER BY day_round DESC  SEPARATOR ',') as `nuo`"),
+                    DB::raw("GROUP_CONCAT(pb_result_powerball.nb_size ORDER BY day_round DESC  SEPARATOR ',') as `nsize`"),
+                    DB::raw("DATE(pb_result_powerball.created_date) as `dates`"));
+                $powerball_list_to = $powerball_list_to->orderBy("dates","DESC")->groupBy("dates")->get()->toArray();
+
+                if(!empty($powerball_list_to)){
+                    foreach($powerball_list_to as $value){
+                        $temp = array();
+                        $noe_max=$noe_max=$puo_max=$poe_max = $noe_count = $nuo_count = $poe_count = $puo_count  = array(0,0); // 최대값 담기 첨수 1:홀 0 :짝 , 1 소 2 중 3 대
+                        $nsize_max = $nsize_count = array(1=>0,2=>0,3=>0);
+                        $puo  = $poe = $noe = $nuo = $nsize = $dates =  "";
+
+                        if($i == date('Y'))
+                        {
+                            $puo = $value["puo"];
+                            $poe = $value["poe"];
+                            $noe = $value["noe"];
+                            $nuo = $value["nuo"];
+                            $nsize = $value["nsize"];
+                            $dates = $value["dates"];
+                        }
+
+                        else{
+                            $puo = $value->puo;
+                            $poe = $value->poe;
+                            $noe = $value->noe;
+                            $nuo = $value->nuo;
+                            $nsize = $value->nsize;
+                            $dates = $value->dates;
+                        }
+
+                        if(!empty($puo))
+                        {
+                            $power_init = explode(",",$puo);
+                            $puo_max = $this->getMax($power_init,1);
+                            $puo_count = array_count_values($power_init);
+                        }
+
+                        if(!empty($poe))
+                        {
+                            $power_init = explode(",",$poe);
+                            $poe_max = $this->getMax($power_init,1);
+                            $poe_count = array_count_values($power_init);
+                        }
+
+                        if(!empty($noe))
+                        {
+                            $power_init = explode(",",$noe);
+                            $noe_max = $this->getMax($power_init,1);
+                            $noe_count = array_count_values($power_init);
+                        }
+
+                        if(!empty($nuo))
+                        {
+                            $power_init = explode(",",$nuo);
+                            $nuo_max = $this->getMax($power_init,1);
+                            $nuo_count = array_count_values($power_init);
+                        }
+
+                        if(!empty($nsize))
+                        {
+                            $power_init = explode(",",$nsize);
+                            $nsize_max = $this->getMax($power_init,2);
+                            $nsize_count = array_count_values($power_init);
+                        }
+
+                        array_push($result,array(    "poe" => array("max"=>$poe_max,"count"=>$poe_count),
+                                                            "puo" => array("max"=>$puo_max,"count"=>$puo_count),
+                                                            "noe" => array("max"=>$noe_max,"count"=>$noe_count),
+                                                            "nuo" => array("max"=>$nuo_max,"count"=>$nuo_count),
+                                                            "nsize" => array("max"=>$nsize_max,"count"=>$nsize_count),
+                                                            "date"=>$dates
+                        ));
+                    }
+                }
+            }
+        }
+        if(empty($result))
+            echo json_encode(array("status"=>0,"result"=>array()));
+        echo json_encode(array("status"=>1,"result"=>$result));
+    }
+
+    /* 패턴별 분석 */
+    public function analysePattern(Request $request){
+        $type = empty($request->type) ? "pb_oe" :  $request->type;
+        $pattern = $request->pattern;
+        if(empty($pattern))
+        {
+            echo json_encode(array("status"=>0,"result"=>array(),"msg"=>"패턴요청이 들어오지 않았습니다."));
+            return;
+        }
+    }
+
+    public function checkedPattern(Request $request){
+        $type_list = array("pb_oe","pb_uo","nb_oe","nb_uo","nb_size");
+        $result = array();
+        $limit = empty($request->limit) ? 10 : $request->limit;
+        $types = empty($request->types ) ? "pb_oe": $request->types;
+
+        if($limit <0 || $limit >26){
+            echo json_encode(array("status"=>0,"msg"=>"설정한 패턴개수가 정확치 않습니다."));
+            return;
+        }
+
+        if(!in_array($types,$type_list)){
+            echo json_encode(array("status"=>0,"msg"=>"패턴이 지정되지 않았습니다."));
+            return;
+        }
+        $model_list = Pb_Result_Powerball::skip(0)->take($limit)->orderBy("day_round","DESC")->get()->toArray();
+        $model_list = array_reverse($model_list);
+
+        if(!empty($model_list))
+        {
+            foreach($model_list as $value){
+                $temp = array();
+                $arr_len = strlen($value["day_round"]) - 3;
+                $temp["round"] = substr($value["day_round"],$arr_len);
+                $temp["day_round"] = $value["day_round"];
+                $temp["code"] = $value[$types];
+                if($types=="pb_oe" || $types =="nb_oe"){
+                    $temp["class"] = $value[$types] == 1 ? "sp-odd":"sp-even";
+                    $temp["alias"] = $value[$types] == 1 ? "홀":"짝";
+                }
+                if($types =="pb_uo" || $types =="nb_uo"){
+                    $temp["alias"] = "";
+                    $temp["class"] = $value[$types] == 1 ? "sp-under":"sp-over";
+                }
+                if($types =="nb_size"){
+                    if($value[$types] == 1) {$temp["class"] = "sp-small";$temp["alias"] = "소";}
+                    if($value[$types] == 2) {$temp["class"] = "sp-middle";$temp["alias"] = "중";}
+                    if($value[$types] == 3) {$temp["class"] = "sp-big";$temp["alias"] = "대";}
+                }
+                array_push($result,$temp);
+            }
+            echo json_encode(array("status"=>1,"result"=>$result));
+        }
+        else
+            echo json_encode(array("status"=>0,"result"=>array()));
+    }
+
+    public function  patternTotal(Request $request){
+        $poe = $puo = $nuo = $noe = $nsize = array();
+        $type_list = array("pb_oe","pb_uo","nb_oe","nb_uo","nb_size");
+        $type = empty($request->type) ? "pb_oe" : $request->type;
+        $pattern = $request->pattern;
+        if(empty($pattern) || !in_array($type,$type_list)){
+            echo json_encode(array("status"=>0,"msg"=>"패턴이 지정되지 않았습니다."));
+            return;
+        }
+
+        for($from_year = 2013 ; $from_year <=date("Y");$from_year++){
+            echo $from_year;
+            if($from_year == date("Y"))
+                $pattern_model= $second_model = new Pb_Result_Powerball;
+            else
+                $pattern_model = $second_model= DB::connection("comm" . $from_year)->table("pb_result_powerball");
+
+            $patternByDate = $pattern_model->select(
+                DB::raw("GROUP_CONCAT(pb_result_powerball.".$type." ORDER BY day_round ASC SEPARATOR '') as `plist`"),
+                DB::raw("created_date")
+            )
+                ->groupBy("group")
+                ->orderBy("day_round","ASC")
+                ->get()
+                ->toArray();
+            if(!empty($patternByDate))
+            {
+                $patternByDate = json_decode(json_encode($patternByDate));
+                foreach ($patternByDate as $value){
+                    $pat = $this->getPatternPosition($value->plist,$pattern);
+                    $pat = array_reverse($pat);
+                    if(!empty($pat)){
+                        foreach ($pat as $indexes){
+                            if($from_year !=date("Y"))
+                                $second_model= DB::connection("comm" . $from_year)->table("pb_result_powerball");
+                            else
+                                $second_model = new Pb_Result_Powerball;
+                            $matched = $second_model
+                                ->skip($indexes)
+                                ->take(strlen($pattern)+1)
+                                ->orderBy("day_round","ASC")
+                                ->get()
+                                ->toArray();
+                            $matched = json_decode(json_encode($matched));
+                            if(!empty($matched)){
+                                foreach ($matched as $value){
+                                    array_push($poe,$value->pb_oe);
+                                    array_push($puo,$value->pb_uo);
+                                    array_push($noe,$value->nb_oe);
+                                    array_push($nuo,$value->nb_uo);
+                                    array_push($nsize,$value->nb_size);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $total = array( "poe"=>$poe,
+            "puo"=>$puo,
+            "noe"=>$noe,
+            "nuo"=>$nuo,
+            "nsize"=>$nsize);
+
+        $nuo_max=$noe_max=$puo_max=$poe_max = $noe_count = $nuo_count = $poe_count = $puo_count  = array(0,0);
+        $nsize_max = $nsize_count = array(1=>0,2=>0,3=>0);
+
+
+        if(!empty($total["poe"])){
+            $poe_array = $total["poe"];
+            var_dump($poe_array);
+            return;
+            $poe_max = $this->getMax($poe_array,1);
+            $poe_count = array_count_values($poe_array);
+        }
+
+        if(!empty($total["puo"])){
+            $puo_array = $total["puo"];
+            $puo_max = $this->getMax($puo_array,1);
+            $puo_count = array_count_values($puo_array);
+        }
+
+        if(!empty($total["noe"])){
+            $noe_array= $total["noe"];
+            $noe_max = $this->getMax($noe_array,1);
+            $noe_count = array_count_values($noe_array);
+        }
+
+        if(!empty($total["nuo"])){
+            $nuo_array = $total["nuo"];
+            $nuo_max = $this->getMax($nuo_array,1);
+            $nuo_count = array_count_values($nuo_array);
+        }
+
+        if(!empty($total["nsize"])){
+            $nsize_array = $total["nsize"];
+            $nsize_max = $this->getMax($nsize_array,2);
+            $nsize_count = array_count_values($nsize_array);
+        }
+        echo json_encode(   array(  "status"=>1,
+            "result"=>array(    "poe" => array("max"=>$poe_max,"count"=>$poe_count),
+                "puo" => array("max"=>$puo_max,"count"=>$puo_count),
+                "noe" => array("max"=>$noe_max,"count"=>$noe_count),
+                "nuo" => array("max"=>$nuo_max,"count"=>$nuo_count),
+                "nsize" => array("max"=>$nsize_max,"count"=>$nsize_count)
+            )));
+    }
+
+    public function patternLists(Request $request){
+        $type_list = array("pb_oe","pb_uo","nb_oe","nb_uo","nb_size");
+        $type = empty($request->type) ? "pb_oe" : $request->type;
+        $pattern = $request->pattern;
+        $round = $request->round;
+        $from = empty($request->from) ? date("Y-m-d") : $request->from;
+        $from_year = date("Y", strtotime($from));
+        $temp_count = 30;
+        $result = array();
+        $i = 0;
+
+        if(empty($pattern) || !in_array($type,$type_list)){
+            echo json_encode(array("status"=>0,"msg"=>"패턴이 지정되지 않았습니다."));
+            return;
+        }
+        if(empty($round))
+        {
+            echo json_encode(array("status"=>0,"msg"=>"자료가 존재하지 않습니다."));
+            return;
+        }
+
+        if($from_year == date("Y"))
+            $pattern_model= $second_model = new Pb_Result_Powerball;
+        else
+            $pattern_model = $second_model= DB::connection("comm" . $from_year)->table("pb_result_powerball");
+
+        while(true){
+            if($i > 0 && $temp_count !=0 && $from_year >2013){
+                $from_year  = $from_year-1;
+                $pattern_model = DB::connection("comm" . $from_year)->table("pb_result_powerball");
+            }
+            if($from_year == 2013)
+            {
+                if(sizeof($result) ==0){
+                    echo json_encode(array("status"=>0,"result"=>array(),"msg"=>"자료가 비였습니다"));
+                    return;
+                }
+                else{
+                    echo json_encode(array("status"=>1,"result"=>$result));
+                    return;
+                }
+            }
+            $patternByDate = $pattern_model->select(
+                DB::raw("GROUP_CONCAT(pb_result_powerball.".$type." ORDER BY day_round ASC SEPARATOR '') as `plist`"),
+                DB::raw("created_date")
+            )
+                ->whereDate("created_date","<=",$from)
+                ->where("day_round","<",$round)
+                ->groupBy("group")
+                ->orderBy("day_round","ASC")
+                ->get()
+                ->toArray();
+            if(!empty($patternByDate))
+            {
+                $patternByDate = json_decode(json_encode($patternByDate));
+                foreach ($patternByDate as $value){
+                    $pat = $this->getPatternPosition($value->plist,$pattern);
+                    $pat = array_reverse($pat);
+                    if(!empty($pat)){
+                        foreach ($pat as $indexes){
+                            if($temp_count ==0){
+                                echo json_encode(array("status"=>1,"result"=>$result));
+                                return;
+                            }
+                           if($from_year !=date("Y"))
+                               $second_model= DB::connection("comm" . $from_year)->table("pb_result_powerball");
+                           else
+                               $second_model = new Pb_Result_Powerball;
+                            $matched = $second_model
+                                ->whereDate("created_date","<=",$from)
+                                ->where("day_round","<",$round)
+                                ->skip($indexes)
+                                ->take(strlen($pattern)+1)
+                                ->orderBy("day_round","ASC")
+                                ->get()
+                                ->toArray();
+                            $matched = json_decode(json_encode($matched));
+                            if(sizeof($matched) < strlen($pattern)+1)
+                                continue;
+                            $temp = array();
+                            $temp["date"] = explode(" ",$matched[0]->created_date)[0];
+                            $temp["next"] = end($matched);
+                            $temp["type"] = $type;
+                            array_pop($matched);
+                            $temp["current"] = $matched;
+                            array_push($result,$temp);
+                            $temp_count = $temp_count-1;
+                        }
+                    }
+                }
+            }
+            $i++;
+        }
+    }
+
+    public function check(Request  $request){
+        $match = $matches3 = $matches2 = $matches1=  array();
+        if(!Auth::check())
+        {
+            echo "<script>alert('로그인 후 이용가능합니다.');window.history.go(-1);</script>";
+            return;
+        }
+        $userId = Auth::id();
+        $ana_title = PbMarket::where("code","PREMIUM_ANALYZER")->first();
+        if(empty($ana_title)){
+            echo "<script>alert('파워볼 모의배팅 아이템이 존재하지 않습니다.'):window.parent.document.getElementById('mainFrame').height = '500px';</script>";
+            return;
+        }
+        $item_use = PbItemUse::where("userId",$userId)
+                    ->where("terms1","<=",date("Y-m-d H:i:s"))
+                    ->where("terms2",">=",date("Y-m-d H:i:s"))
+                    ->where("market_id","PREMIUM_ANALYZER")
+                    ->first();
+        if(empty($item_use)){
+            echo "<script>alert(\"[{$ana_title['name']}] 아이템 구매 후 이용 가능합니다. 구매하신 분은 [아이템]에서  [사용] 눌러주세요\");
+                window.parent.document.getElementById('mainFrame').height = '500px';</script>";
+            return;
+        }
+        $type = empty($request->type) ? "PowOdd" : $request->type;
+        switch($type){
+            case "PowOdd":
+                $type = 1;
+                break;
+            case "PowUnder":
+                $type = 2;
+                break;
+            case "DefOdd":
+                $type =3;
+                break;
+            case "DefUnder":
+                $type = 4;
+                break;
+            default:
+                $type = 1;
+                break;
+        }
+
+        $auto_info = PbAutoSetting::where("userId",$userId )->first();
+
+        $auto_matches =PbAutoMatch::where("userId",$userId )->get()->toArray();
+        foreach($auto_matches as $autoes){
+            if(empty($match[$autoes["auto_type"]]))
+                $match[$autoes["auto_type"]] = array();
+            if(empty($match[$autoes["auto_type"]][$autoes["auto_kind"]]))
+                $match[$autoes["auto_type"]][$autoes["auto_kind"]] = array();
+                $match[$autoes["auto_type"]][$autoes["auto_kind"]][$autoes["auto_index"]] = $autoes;
+        }
+        $remain = array(0,0);
+        $autos = -1;
+        $current = 0;
+        if(!empty($auto_info) && $auto_info["state"] ==1 && $auto_info["betting_type"] == 1){
+            $remain = TimeController::getTimerInPast();
+            $autos = 1;
+        }
+        if(!empty($auto_info) && $auto_info["state"] ==1 && $auto_info["betting_type"] == 2)
+        {
+            $remain = TimeController::getTimer(2);
+            $autos = 2;
+        }
+        if($autos > 0 && $autos ==1){
+            $current = empty($auto_info["current_round"]) ? $auto_info["start_round"] : $auto_info["current_round"];
+        }
+        if($autos > 0 && $autos ==2){
+            $current = Pb_Result_Powerball::orderBy("day_round","DESC")->first()["day_round"]+1;
+        }
+        $history=PbAutoHistory::where("userId",$userId)->orderBy("id","DESC")->orderBy("created_at","DESC")->limit(30)->get()->toArray();
+        return view("pick.simulate", [
+                                            "css"=>"simulator.css",
+                                            "js"=>"simulator.js",
+                                            "auto_info"=>$auto_info,
+                                            "type"=>$type,
+                                            "matches"=>$match,
+                                            "time"=>strtotime("now"),
+                                            "remain"=>$remain,
+                                            "autos"=>$autos,
+                                            "current"=>$current,
+                                            "history"=>$history
+                                            ]);
+    }
+
+    public function setAutoConfig(Request  $request){
+        $insert = array();
+        if(!empty($request->step))
+            $insert["step"] = $request->step;
+
+        if(!empty($request->martin))
+            $insert["martin"] = $request->martin;
+
+        if(!empty($request->mny))
+            $insert["mny"] = $request->mny;
+
+        if(!empty($request->start_round)){
+            $insert["start_round"] = $request->start_round;
+        }
+
+        if(!empty($request->end_round)){
+            $insert["end_round"] = $request->end_round;
+        }
+        $insert["current_round"] = 0;
+        if(!empty($request->start_amount)){
+            $insert["start_amount"] = $request->start_amount;
+            $insert["user_amount"] = $request->start_amount;
+        }
+
+        PbAutoSetting::updateorCreate(
+            ["userId"=>Auth::user()->userId],$insert
+        );
+        echo json_encode(array("status"=>1,"msg"=>"successful"));
+    }
+
+    public function setAutoMatch(Request $request){
+        $insert_data = array();
+        $userId = Auth::id();
+        $var_type = $request->var_type; ///////////파워볼 패턴 종류
+        $type = $request->type;   //////////파워볼 종류
+        switch ($var_type){
+            case 1:
+                $pattern_step = $request->pattern_step;   /// 최종단계
+                $pattern = $request->pattern;  /// 오토 패턴
+                if(!empty($pattern)){
+                    PbAutoMatch::updateorCreate([
+                        "auto_type"=>$type,
+                        "auto_kind"=>$var_type,
+                        "userid"=>$userId
+                    ],[
+                        "auto_last_step"=>$pattern_step,
+                        "auto_pattern"=>$pattern
+                    ]);
+                }
+                else
+                    PbAutoMatch::where("userid",$userId)->where("auto_type",$type)->where("auto_kind",$var_type)->delete();
+                break;
+            case 2:
+                $pattern = $request->pattern;
+                $step = $request->step;
+                $auto_oppo = $request->oppo;
+                foreach($pattern as $key=>$value){
+                    if(!empty($value)){
+                        PbAutoMatch::updateorCreate([
+                            "auto_type"=>$request->type,
+                            "auto_kind"=>$request->var_type,
+                            "userid"=>$userId,
+                            "auto_index"=>$key+1
+                        ],[
+                            "auto_last_step"=>$step[$key],
+                            "auto_pattern"=>$pattern[$key],
+                            "auto_oppo"=>$auto_oppo[$key]
+                        ]);
+                    }
+                    else
+                        PbAutoMatch::where("auto_index",$key+1)->where("userid",$userId)->where("auto_kind",$request->var_type)->where("auto_type",$request->type)->delete();
+                }
+                break;
+            case 3:
+                $pattern_step = $request->pattern_step;   /// 최종단계
+                $pattern = $request->pattern;  /// 오토 패턴
+                $auto_oppo = $request->auto_oppo;
+                if(!empty($pattern)){
+                    PbAutoMatch::updateorCreate([
+                        "auto_type"=>$type,
+                        "auto_kind"=>$var_type,
+                        "userid"=>$userId
+                    ],[
+                        "auto_last_step"=>$pattern_step,
+                        "auto_pattern"=>$pattern,
+                        "auto_oppo"=>$auto_oppo,
+                    ]);
+                }
+                else
+                    PbAutoMatch::where("userid",$userId)->where("auto_type",$type)->where("auto_kind",$var_type)->delete();
+                break;
+            default:
+                break;
+        }
+        echo json_encode(array("status"=>1));
+    }
+
+    public function setAutoStart(Request $request){
+//        $check = PbAutoSetting::where("userId",Auth::user()->userId)->where("state",1)->first();
+//        if(!empty($check)){
+//            echo 2;
+//            return;
+//        }
+
+        $type = $request->type;
+        $code = $request->code;
+
+        if($code == -1)
+            $state = 1;
+        else
+            $state = 0;
+        PbAutoSetting::where("userid",Auth::user()->userId)->update([
+            "state"=>$state,
+            "betting_type"=>$type
+        ]);
+        echo 1;
+    }
+
+    public function winning(){
+        if(!Auth::check())
+        {
+            echo "<script>alert('로그인 후 이용가능합니다..');window.history.go(-1);;</script>";
+            return;
+        }
+        $ana_title = PbMarket::where("code","WINNING_MACHINE")->first();
+        if(empty($ana_title)){
+            echo "<script>alert('연승제조기 아이템이 존재하지 않습니다.');window.parent.document.getElementById('mainFrame').height = '500px';</script>";
+            return;
+        }
+        $userId = Auth::id();
+        $item_use = PbItemUse::where("userId",$userId)
+            ->where("terms1","<=",date("Y-m-d H:i:s"))
+            ->where("terms2",">=",date("Y-m-d H:i:s"))
+            ->where("market_id","WINNING_MACHINE")
+            ->first();
+        if(empty($item_use)){
+            echo "<script>alert(\"[{$ana_title['name']}] 아이템 구매 후 이용 가능합니다. 구매하신 분은 [아이템]에서  [사용] 눌러주세요\");
+                            window.parent.document.getElementById('mainFrame').height = '500px';</script>";
+            return;
+        }
+        $pb_oe = $pb_uo = $nb_oe = $nb_uo = array();
+        $data = TblWinning::get()->toArray();
+        if(!empty($data))
+            foreach($data as $value){
+                if($value["kind"] ==1)
+                    array_push($pb_oe,$value);
+                if($value["kind"] ==2)
+                    array_push($pb_uo,$value);
+                if($value["kind"] ==3)
+                    array_push($nb_oe,$value);
+                if($value["kind"] ==4)
+                    array_push($nb_uo,$value);
+            }
+        return view("pick.winning", [
+            "css"=>"winning.css",
+            "js"=>"winning.js",
+            "pb_oe"=>$pb_oe,
+            "pb_uo"=>$pb_uo,
+            "nb_oe"=>$nb_oe,
+            "nb_uo"=>$nb_uo
+        ]);
+    }
+
+    public function getRoundBox(Request $request){
+        $alias = array();
+        $alias["nb_oe"][1] = $alias["pb_oe"][1]=array("sp-odd","홀");
+        $alias["nb_oe"][0] = $alias["pb_oe"][0]=array("sp-even","짝");
+
+        $alias["nb_uo"][1] = $alias["pb_uo"][1]=array("sp-odd","언");
+        $alias["nb_uo"][0] = $alias["nb_uo"][0]=array("sp-even","오");
+        $from_round = $request->from_round;
+        $to_round = $request->to_round;
+        $pb_type = $request->pb_type;
+        $from_date = $request->from_date;
+        $to_date = $request->to_date;
+        $result = array();
+        $roundbox = array();
+        if(empty($from_round) || empty($to_round) || empty($pb_type) || empty($from_date) || empty($to_date)){
+            echo json_encode(array("status"=>0));
+            return;
+        }
+        $from_year  = date("Y",strtotime($from_date));
+        $to_year  = date("Y",strtotime($to_date));
+        for($i = $to_year ; $i >=$from_year;$i--) {
+            if ($i > date("Y") || $i < "2013")
+                continue;
+            if ($i == date("Y"))
+                $powerball_list_to = new Pb_Result_Powerball;
+            if ($i < date("Y"))
+                $powerball_list_to = DB::connection("comm" . $i)->table("pb_result_powerball");
+
+            $powerball_list_to = $powerball_list_to->orderBy("day_round", "DESC");
+            if ($i == $to_year || $i == $from_year) {
+                $powerball_list_to = $powerball_list_to->where("created_date", ">=", $from_date . " 00:00:00");
+                $powerball_list_to = $powerball_list_to->where("created_date", "<=", $to_date . " 23:59:59");
+            }
+            $powerball_list_to = $powerball_list_to->where("round",">=",$from_round)->where("round","<=",$to_round);
+            $powerball_list_to = $powerball_list_to->select(DB::raw("pb_result_powerball.".$pb_type." as `res`"),DB::raw("pb_result_powerball.round as round"),DB::raw("DATE(pb_result_powerball.created_date) as date"))->orderBy("date","DESC")->get()->toArray();
+            if(!empty($powerball_list_to)) {
+                $powerball_list_to = json_decode(json_encode($powerball_list_to));
+                foreach ($powerball_list_to as $value) {
+
+                    $result[$value->date][$value->round] = array("pick"=>$value->res,"alias"=>$alias[$pb_type][$value->res][1],"class"=>$alias[$pb_type][$value->res][0]);
+                    if(!isset($roundbox[$value->round][$value->res]))
+                        $roundbox[$value->round][$value->res] = 0;
+                    $roundbox[$value->round][$value->res]++;
+                }
+            }
+
+        }
+
+        $round_list = array();
+        for($i = $from_round;  $i <= $to_round;$i++){
+            array_push($round_list,$i);
+            if(!isset($roundbox[$i])){
+                $roundbox[$i][0]=$roundbox[$i][1] =0;
+            }
+        }
+
+        if(sizeof($result) > 0){
+            echo json_encode(array("status"=>1,"result"=>array("list"=>$result,"max"=>$roundbox,"terms"=>$round_list)));
+        }
+        else
+            echo json_encode(array("status"=>0));
+    }
+
+    /*  파워볼 연속 데이터 최대값 얻는 모듈  $type=1이면 홀짝,언오버 통계 2이면 대중소 통계*/
+    private function getMax($arrayList,$type)
+    {
+        if($type == 2){
+            $max[1] = $max[2] = $max[3] =0;
+            $temp[1] = $temp[2] =$temp[3] =0;
+        }
+
+        else
+        {
+            $max[1] = $max[0] = 0;
+            $temp[1] = $temp[0] = 0;
+        }
+        if(empty($arrayList))
+            return $max;
+        $previous_value=$arrayList[0];
+
+        for ($i =0; $i < sizeof($arrayList); $i++) {
+            $arrayList[$i] == intval($arrayList[$i]);
+            if ($arrayList[$i] == $previous_value) {
+                $temp[$arrayList[$i]]++;
+                if($i == sizeof($arrayList)-1)
+                    if ($max[$arrayList[$i]] < $temp[$arrayList[$i]])
+                        $max[$arrayList[$i]] = $temp[$arrayList[$i]];
+            } else {
+                $temp[$arrayList[$i]] =1;
+                if ($max[$previous_value] < $temp[$previous_value])
+                    $max[$previous_value] = $temp[$previous_value];
+                $temp[$previous_value] = 0;
+                $previous_value = $arrayList[$i];
+            }
+        }
+        return $max;
+    }
+
+    private function delIndex($limit,$array){
+        return substr($array,0,$limit*2-1);
+    }
+
+    private function getPatternDataFromArray($lists,$type){
+        $day_round = 0;
+        $pick_info = "";
+        $max_appear = 0;/* 최대 련속 나타날 개수 */
+        /* 비였다면 status값을 0으로 돌려 준다.*/
+
+        if(empty($lists))
+            return array("status"=>0,"result"=>array());
+        else
+        {
+            $day_round = $lists[0]->day_round;
+            $pick_info = $lists[0]->$type;
+            $arr_len = strlen($day_round) - 3;
+            $previous_list = array(substr($day_round,$arr_len));
+            $previous_item = strval($pick_info);
+            $pung =0;
+            $temp_pung = 1;
+            $result = array();
+            foreach ($lists as $key => $index){
+                $day_round = $index->day_round;
+                $pick_info = $index->$type;
+                if( $key ==0)
+                    continue;
+                $temp = $this->getTypePower($type,$previous_item);
+                if($previous_item ==  $pick_info){
+                    if($temp_pung > 1 && $temp_pung > $pung)
+                        $pung = $temp_pung;
+                    $temp_pung = 0;
+                    array_push($previous_list,substr($day_round,$arr_len));
+                    if($key == sizeof($lists)-1)
+                    {
+                        array_push($result,array("alias"=>$temp[1],"type"=>$temp[0],"list"=>$previous_list));
+                        if(sizeof($previous_list) > $max_appear)
+                            $max_appear = sizeof($previous_list);
+                    }
+                }
+                if($previous_item !=  $pick_info)
+                {
+                    $temp_pung++;
+                    array_push($result,array("alias"=>$temp[1],"type"=>$temp[0],"list"=>$previous_list));
+                    if(sizeof($previous_list) > $max_appear)
+                        $max_appear = sizeof($previous_list);
+                    $previous_list= array(substr($day_round,$arr_len));
+                    $previous_item =  $pick_info;
+                    if($key == sizeof($lists)-1)
+                    {
+                        $temp = $this->getTypePower($type,$previous_item);
+                        array_push($result,array("alias"=>$temp[1],"type"=>$temp[0],"list"=>$previous_list));
+                    }
+                }
+            }
+            return array("status"=>1,"result"=>array("max"=>$max_appear,"list"=>$result,"type"=>$type,"pung"=>$pung));
+        }
+    }
+
+    private function getTypePower($type,$pick){
+        $temp = array();
+        if($type == "pb_oe" || $type == "nb_oe"){
+            $temp = $pick == 1 ? array("odd","홀"):array("even","짝");
+        }
+
+        if($type == "pb_uo" || $type == "nb_uo"){
+            $temp = $pick == 1 ? array("under","언더"):array("over","오버");
+        }
+        if($type == "nb_size"){
+            if($pick ==1)
+                $temp = array("under","소");
+            if($pick ==2)
+                $temp = array("middle","중");
+            if($pick ==3)
+                $temp = array("over","대");
+        }
+
+        return $temp;
+    }
+
+    private function getPatternPosition($str,$toFind){
+        $start = 0;
+        $result = array();
+        while(($pos = strpos(($str),$toFind,$start)) !== false) {
+            array_push($result,$pos);
+            $start = $pos+1; // start searching from next position.
+        }
+        return $result;
+    }
+}

@@ -1,0 +1,184 @@
+.auto-info:after,.auto-left:after,.auto-right:after,.auto-content:after,.content-left:after,.content-right:after{
+    content: '';
+    display: block;
+    clear: both;
+}
+.auto-left{
+    width: 600px;
+    float: left;
+}
+.auto-right{
+    width: 220px;
+    float: right;
+}
+.content-left{
+    width: 566px;
+    float: left;
+}
+.content-right{
+    float: right;
+    width: 260px;
+}
+.start-btn{
+    width: 119px;
+    height: 29px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    background-color: #6c88bf;
+    border-radius: 8px;
+    color: white;
+}
+
+.start-btn:focus {
+    outline: none;
+}
+
+.start-btn:hover{
+    background-color: #1a366f;
+}
+
+
+.pattern-input1{
+    width: 55px;
+}
+
+.pattern-step{
+    width: 45px;
+}
+.table-pad tr,.table-pad td{
+    padding-left: 1px;
+    padding-right: 1px;
+}
+
+.pattern-input2,.pattern-input3{
+    padding: .5rem 0rem;
+    border: none;
+}
+
+.table-history{
+    max-height: 642px;
+    margin-bottom: 0;
+    width: 120px;
+    float: left;
+}
+
+.table-history tbody{
+    display: block;
+    max-height: 630px;
+    overflow-y: scroll;
+}
+
+.table-history td,.table-history th{
+    border-right: none;
+    border-left: none;
+}
+
+.left-td{
+    width: 47px;
+}
+.right-td{
+    width: 59px;
+}
+
+.table-martin{
+    width: 140px;
+}
+
+.table-history.table-bordered,.table-martin.table-bordered{
+    border: 1px solid #d9d9d9 !important;
+}
+#martin-apply {
+    cursor: pointer;
+    color: #000
+}
+
+#btn-money-keep{
+    background: #979797;
+    font-weight: bold;
+    color: white;
+    padding: 5px 22px 5px 22px;
+}
+
+#btn-money-keep:hover{
+    background: #464646;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+
+    background: #d9d9d9;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+
+.martin-content input {
+    width: calc(100% - 49px);
+    outline: none;
+    font-size: 13px;
+    padding: 2px 4px;
+    border-radius: 2px !important;
+    border: solid 1px #d9d9d9;
+    text-align: right;
+    color: black;
+}
+
+.martin-content span {
+    width: 20px;
+    text-align: left;
+    font-weight: bold;
+    padding-left: 10px;
+    color: #d9d9d9;
+    line-height: 21px;
+    height: 21px;
+}
+.martin-tr td{
+    padding-left:2px;
+    padding-right: 2px;
+    padding-bottom: 2px;
+}
+
+.martin-money-part{
+    max-height: 509px;
+    overflow-y: scroll;
+}
+
+#noti-input{
+    background: #ff6b6b;
+    color: white;
+    text-align: right;
+}
+
+.powerball-kind th{
+    cursor: pointer;
+}
+
+.btn-super-sm {
+    padding: .25rem .25rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: .2rem;
+    font-size: 12px;
+}
+.zulbtn{
+    cursor: pointer;
+    display: block;
+    height: 52px;
+    line-height: 52px;
+    background: linear-gradient(180deg, #e7e7e7, #d4d4d4, #e7e7e7);
+    color: #000;
+}
+
+.content-left td{
+    padding-left: .25rem;
+    padding-right: .25rem;
+}

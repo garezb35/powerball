@@ -1,0 +1,727 @@
+@import url("/assets/css/font.css");
+* {
+  margin: 0;
+  padding: 0;
+    font-family: "nexon_lv_thic";
+}
+ul, ol {
+  list-style: none;
+}
+
+body, input, textarea, select, table, button {
+  line-height: 15px;
+  font-size: 12px;
+}
+.disabled{
+    pointer-events: none;
+}
+
+.w-100{
+    width: 100%;
+}
+
+.position-absolute{
+    position: absolute;
+}
+
+.position-relative{
+    position: relative;
+}
+#container {
+  position: relative;
+  width: 1233px;
+  margin: auto;
+}
+#wrap {
+  width: 100%;
+}
+#topArea {
+  width: 1236px;
+  margin: 0 auto;
+  margin-top: 0px;
+  position: relative;
+}
+
+#topArea .logo {
+  margin-left: 60px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+img, fieldset, iframe {
+  border: 0 none;
+  vertical-align: top;
+}
+
+#topArea .text {
+  position: absolute;
+  top: 15px;
+  left: 250px;
+}
+
+#boardmenu.nav-tabs .nav-item{
+    margin-bottom: 0px !important;
+}
+
+#topArea .text .notice a {
+  font-size: 11px;
+  color: #0D568C;
+}
+
+#topArea .text .guide {
+  margin-top: 3px;
+}
+
+#topArea .text .guide a {
+  font-size: 11px;
+  color: #b70004;
+}
+
+#topArea .gnb ul li {
+  position: relative;
+  float: left;
+}
+
+#topArea .gnb {
+  width: 1172px;
+  height: 50px;
+    background: linear-gradient(180deg, #345598, #2f4d89, #345598);
+  border: 1px solid #0e609c;
+  /*margin-left: 58px;*/
+}
+
+#topArea .gnb ul li a {
+  display: block;
+  height: 49px;
+  line-height: 50px;
+  padding: 0 35px;
+  color: #fff;
+  letter-spacing: -1px;
+  font-size: 15px;
+}
+
+#topArea .gnb ul li a.on {
+  position: relative;
+  top: -1px;
+  left: -1px;
+    background: linear-gradient(180deg,#1c2c5f,#141f3b);
+  border: 1px solid #0c4d7c;
+}
+
+#box-ct {
+  *zoom: 1;
+  padding: 10px 0 21px 0;
+  /*padding-left: 57px;*/
+}
+
+#box-ct .inner-left {
+  width: 336px;
+  margin-right: 10px;
+}
+
+#box-ct .inner-left .box-login {
+  border-left: solid 1px #6d88bf;
+    border-right: solid 1px #6d88bf;
+    border-top: solid 1px #6d88bf;
+    border-bottom: solid 1px #6d88bf;
+  padding: 4px 0px 0px 0px;
+  position: relative;
+  margin-bottom: 0px;
+}
+
+.box-login .loginUserInfo {
+  float: left;
+  margin-top: 5px;
+  width: 155px;
+}
+
+.b {
+  font-weight: bold;
+}
+
+.box-login .loginUserInfo ul li.level {
+  font-size: 11px;
+  color: #7f7f7f;
+  margin-top: 5px;
+}
+
+.box-login .loginUserInfo ul li.exp {
+  font-size: 11px;
+  color: #7f7f7f;
+  margin-top: 5px;
+}
+
+.box-login .btn li {
+  height: 30px;
+  line-height: 30px;
+  float: left;
+  width: 33%;
+  text-align: center;
+  font-size: 11px;
+  border-right: 1px solid #CDCDCD;
+}
+.box-login .btn {
+
+}
+
+.box-login .btn li a {
+  display: block;
+  color: #747379;
+  padding-top: 11px;
+}
+
+.itemCntBox {
+    position: absolute;
+    top: 8px;
+    left: 71px;
+    width: 25px;
+    height: 31px;
+    background: url(/assets/images/mine/bell.png);
+    background-size: 25px;
+    color: #fff;
+    z-index: 99;
+    line-height: 31px;
+    text-align: center;
+    padding-right: 2px;
+}
+
+.box-login .loginUserInfo ul li .logout {
+  position: absolute;
+  top: 3px;
+  right: 0;
+  background: url(https://simg.powerballgame.co.kr/images/icon_logout.png) left center no-repeat;
+  font-size: 11px;
+  font-weight: normal;
+  color: #737478;
+  padding-left: 16px;
+}
+
+.box-login .loginCoinInfo {
+  float: right;
+  width: 150px;
+  border: 1px solid #dedddc;
+  background-color: #fdfdfd;
+}
+
+.box-login .loginCoinInfo ul li {
+  position: relative;
+  line-height: 13px;
+  border-bottom: 1px solid #f6f6f6;
+  padding: 3px;
+  font-size: 11px;
+  color: #8c8c8c;
+}
+
+.box-login .loginCoinInfo ul li.none {
+  border-bottom: none;
+}
+
+.box-login .loginCoinInfo ul li a.charge {
+  position: absolute;
+  top: 2px;
+  left: 30px;
+  width: 30px;
+  height: 13px;
+  line-height: 15px;
+  border: 1px solid #CC0000;
+  background-color: #EC0000;
+  color: #fff;
+  text-align: center;
+}
+
+.box-login .loginCoinInfo ul li a {
+  float: right;
+}
+
+#box-ct .inner-left .box-login .btn_login {
+  display: block;
+  text-align: center;
+  width: 284px;
+  height: 37px;
+  line-height: 37px;
+  color: #fff;
+  font-size: 16px;
+  letter-spacing: -1px;
+  border: 1px solid #0e609c;
+  border-radius: 3px;
+  box-sizing: border-box;
+  background: #127ccb;
+  vertical-align: top;
+}
+
+#box-ct .inner-left .box-login .login_menu {
+  width: 284px;
+  margin-top: 10px;
+}
+
+#box-ct .inner-left .box-login .login_menu .right {
+  float: right;
+}
+
+#box-ct .inner-left .box-login .notice {
+  position: relative;
+  overflow: hidden;
+  height: 23px;
+  background: #ececec;
+  z-index: 10;
+  position: relative;
+  padding-left: 50px;
+  margin: 0 -4px 0 -10px;
+}
+
+#box-ct .inner-left .box-login .notice a {
+  color: #454545;
+  display: block;
+  height: 23px;
+  line-height: 23px;
+}
+
+#box-ct .inner-left .box-login .notice img {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#box-ct .inner-left, #box-ct .inner-right {
+  float: left;
+  *zoom: 1;
+}
+
+#box-ct .inner-right {
+  width: 830px;
+}
+
+.boardBox .listBox {
+  width: 622px;
+  height: 170px;
+}
+
+.boardBox .listBox .left {
+  float: left;
+  width: 311px;
+  height: 170px;
+}
+
+.boardBox .listBox .bar {
+  float: left;
+  width: 1px;
+  height: 160px;
+  margin: 5px 0;
+  background-color: #ebebeb;
+}
+
+.boardBox .listBox .right {
+  float: right;
+  width: 310px;
+  height: 170px;
+}
+
+.boardBox .listBox ul.list {
+  clear: both;
+  width: 100%;
+  padding: 5px;
+}
+.boardBox .listBox ul.list li {
+  height: 27px;
+  line-height: 27px;
+}
+
+.boardBox .listBox ul.list li img {
+  vertical-align: middle;
+}
+
+.boardBox .listBox ul.list li .comment {
+  color: #C11A20;
+}
+
+#boardmenu{
+    border: 1px solid #6178aa;
+}
+
+#boardmenu .nav-item{
+    width: 155px;
+    text-align: center;
+    background-color: #b1cbfe;
+    border-radius: 0px;
+}
+
+#boardmenu .nav-item.show .nav-link, #boardmenu .nav-link.active {
+    background: linear-gradient(180deg, #90b2fa,#7896d4);
+    border-radius: 0px;
+    color: #fff;
+}
+
+#boardmenu  .nav-link.none {
+  width: 154px;
+  border-right: none ;
+}
+
+#boardmenu .nav-link{
+  border: none;
+    border-radius: 0px;
+  border-right: 1px solid #6178aa;
+}
+
+
+.boardBox {
+  float: left;
+  width: 624px;
+  height: 200px;
+  margin-bottom: 5px;
+  float: left;
+  border: 1px solid #D5D5D5;
+}
+
+.boardBox .listBox ul.list li.photo {
+  display: inline-block;
+  position: relative;
+  width: 84px;
+  height: 76px;
+  border: 1px solid #ddd;
+  overflow: hidden;
+}
+
+.boardBox .listBox ul.list li.photo .image {
+  position: absolute;
+  left: -9px;
+  top: -12px;
+  width: 100px;
+  height: 100px;
+}
+
+
+#footer dl {
+    padding: 15px 0 10px 0;
+}
+
+#box-ct .inner-left:after, #box-ct .inner-right:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+#box-ct:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+#footer {
+    width: 1236px;
+    border-top: 1px solid #deded9;
+    margin: 0 auto;
+    text-align: center;
+    padding-bottom: 30px;
+}
+
+
+
+.border-jinblue th{
+    border:1px solid #c0cee6;
+}
+
+.table-init{
+    margin: auto;
+}
+.table-init td,.table-init  th {
+    border:none
+}
+
+.table-init td, .table-init th{
+    padding: .34rem;
+}
+
+.back-gray{
+    background-color: #ebebeb;
+}
+
+.table-gray td{
+    border: 1px solid #d6d6d6;
+}
+
+thead.thead-gray{
+    background-color: #ebebeb;
+}
+.table-bordered thead td, .table-bordered thead th{
+    border-bottom-width:1px !important;
+}
+
+.border-left-none{
+    border-left: none !important;
+}
+.border-right-none{
+    border-right: none !important;
+}
+.border-top-none{
+    border-top: none !important;
+}
+.border-bottom-none{
+    border-bottom: none !important;
+}
+.pow-element {
+    font-size: 14px;
+    background: url(/assets/images/powerball/black.png) no-repeat;
+    background-size: 26px;
+    border-radius: 100px;
+    padding: 6px 6px;
+    margin-right: 4px;
+    color: white;
+    cursor: pointer;
+}
+
+.pow-element-red {
+    background: #e74c3c;
+    background: url(/assets/images/powerball/odd.png) no-repeat;
+    background-size: 26px;
+}
+.pow-element-blue {
+    background: url(/assets/images/powerball/even.png) no-repeat;
+    background-size: 26px;
+}
+
+.form-control-custom{
+    font-size: 1rem;
+    line-height: 1.25;
+    color: rgb(73, 80, 87);
+    background-color: rgb(255, 255, 255);
+    background-image: none;
+    background-clip: padding-box;
+    padding: 0.2rem 0.05rem;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.15);
+    border-image: initial;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+}
+
+.form-control-custom:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+}
+
+.td-green-btn{
+    background: #b6cdff;
+    border: #6279ab 1px solid !important;
+    cursor: pointer;
+}
+
+.td-green-btn:hover{
+    background: #8aabf3;
+}
+
+/*.table thead.border-jinblue th{*/
+/*    border: #6279ab 1px solid !important;*/
+/*}*/
+
+.table thead.border-jinblue th{
+    border: #6279ab 1px solid !important;
+    font-weight: normal;
+    font-size: 16px;
+}
+.table thead.jin-gradient{
+    background-image: linear-gradient(180deg, #99bbfb, #7f9ddb);
+    color: #fff;
+}
+
+.green-back td{
+    border: #6279ab 1px solid;
+}
+
+.green-back{
+    background: #b6cdff;
+}
+.gray_gradient{
+    background: linear-gradient(180deg, #e7e7e7, #d4d4d4, #e7e7e7);
+}
+
+.btn-green{
+    background: #b6cdff;
+    border: #6279ab 1px solid;
+    border-radius: 0px;
+}
+
+.btn-jin-green{
+    background: #6d88bf;
+    border: #6279ab 1px solid;
+    border-radius: 0px;
+    color: #fff;
+}
+
+.btn-jin-green:hover{
+    color: #fff;
+}
+
+.btn-gray{
+    background: linear-gradient(
+        180deg
+        , #e7e7e7, #d4d4d4, #e7e7e7);
+    color: #000;
+    border-radius: 0px;
+}
+
+.input-green{
+    border-color: #6d88bf;
+    border-radius: 0px;
+    line-height: 25px;
+    height: 25px;
+    border-width: 1px;
+}
+.input-green:focus{
+    border-color: #3b78ef !important;
+    border-width: 1px !important;
+    border-radius: 0px !important;
+    outline: none !important;
+    box-shadow: none;
+}
+
+.ft-btsize{
+    font-size: 12px;
+}
+.gray-gradient{
+
+}
+
+.sp-black{
+    width: 34px;
+    height: 34px;
+    background: url(/assets/images/powerball/black.png);
+    margin: auto;
+    background-size: 34px;
+    color: #fff;
+    font-size: 15px;
+    text-align: center;
+    background-repeat: no-repeat;
+    line-height: 34px;
+}
+
+.sp-pung{
+    width: 34px;
+    height: 34px;
+    background: url(/assets/images/powerball/pung.png);
+    margin: auto;
+    background-size: 34px;
+    color: #fff;
+    font-size: 15px;
+    text-align: center;
+    background-repeat: no-repeat;
+    line-height: 34px;
+}
+
+.sp-odd {
+    width: 34px;
+    height: 34px;
+    background: url(/assets/images/powerball/odd.png);
+    margin: auto;
+    background-size: 34px;
+    color: #fff;
+    font-size: 15px;
+    text-align: center;
+    background-repeat: no-repeat;
+    line-height: 34px;
+}
+.sp-even {
+    width: 34px;
+    height: 34px;
+    background: url(/assets/images/powerball/even.png);
+    margin: auto;
+    background-size: 34px;
+    color: #fff;
+    font-size: 15px;
+    text-align: center;
+    background-repeat: no-repeat;
+    line-height: 34px;
+}
+.sp-over {
+    width: 34px;
+    height: 29px;
+    background: url(/assets/images/powerball/over.png);
+    margin: auto;
+    background-size: 34px;
+    text-align: center;
+    color: #fff;
+    background-repeat: no-repeat;
+}
+
+.sp-under {
+    width: 34px;
+    height: 29px;
+    background: url(/assets/images/powerball/under.png);
+    margin: auto;
+    background-size: 34px;
+    text-align: center;
+    color: #fff;
+    background-repeat: no-repeat;
+}
+
+.sp-ball_bg {
+    width: 34px;
+    height: 34px;
+    background: url(/assets/images/powerball/pb.png);
+    background-size: 34px;
+    font-size: 14px;
+    color: #000;
+    line-height: 36px;
+    margin: auto;
+}
+
+.btn-green-gradient{
+    background-image: linear-gradient(180deg , #99bbfb, #7f9ddb);
+    color: #fff;
+}
+
+.btn-green-gradient.active{
+    background-image: linear-gradient(180deg, #acaeb3, #7f9ddb);
+}
+
+.btn-green-gradient.focus, .btn-green-gradient:focus{
+    box-shadow: none;
+}
+
+.border-round-none{
+    border-radius: 0px !important;
+}
+
+.text-pa{
+    color: #32aaff;
+}
+
+.text-gam{
+    color: #ff7803;
+}
+
+.list-item:before{
+    content: "";
+    width: 5px;
+    height: 50x;
+    height: 5px;
+    border-radius: 50%;
+    background: #233b69;
+    display: inline-block;
+    margin-right: 3px;
+    margin-left: 7px;
+    margin-bottom: 3px;
+}
+
+.user-info .list-item{
+    line-height: 18px;
+    height: 18px;
+}
+
+.coin_charge{
+    background: linear-gradient(180deg, #9ebcfa, #7e9ddd,#9ebcfa);
+    padding: 2px;
+    color: #fff;
+    border:1px solid #627aaa
+}
+
+.user-info td{
+    border-top:none;
+}

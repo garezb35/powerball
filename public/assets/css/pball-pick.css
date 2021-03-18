@@ -1,0 +1,122 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+.powerballBox  td,.powerballBox  th{
+    vertical-align: middle !important;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+
+.powerballBox td {
+    border: 1px solid #D5D5D5;
+    font-size: 11px;
+    color: #5F6164;
+}
+.powerballBox .thirdTitle th {
+    height: 25px;
+    background-color: #fff;
+    color: #5F6164;
+    border: 1px solid #D5D5D5;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.powerballBox .subTitle th {
+    height: 30px;
+    background-color: #FCFCFC;
+    color: #5F6164;
+    border: 1px solid #D5D5D5;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.defaultTable th {
+    position: relative;
+}
+
+.defaultTable th a.on {
+    position: absolute;
+    top: 0px;
+    left: -1px;
+    width: 100%;
+    color: #fff;
+    background-color: #127CCB;
+    border: 1px solid #0E609C;
+    border-top: none;
+}
+.defaultTable th.menu {
+    border-top: 2px solid #0E609C;
+    border-right: 1px solid #D5D5D5;
+    background-color: #F1F1F1;
+    font-weight: normal;
+}
+
+.defaultTable th a {
+    color: #000;
+    display: block;
+    text-decoration: none;
+    text-align: center;
+}
+.defaultTable a {
+    display: block;
+    height: 30px;
+    line-height: 30px;
+}
+.lotto1 {
+    display: inline-block;
+    width: 20px;
+    height: 15px;
+    border-radius: 20px;
+    background-color: #FEB500;
+    border: 1px solid #D59A00;
+    color: #fff;
+    text-align: center;
+    padding-top: 5px;
+}
+.lotto2 {
+    display: inline-block;
+    width: 20px;
+    height: 15px;
+    border-radius: 20px;
+    background-color: #007AF6;
+    border: 1px solid #0066CC;
+    color: #fff;
+    text-align: center;
+    padding-top: 5px;
+}
+.lotto3 {
+    display: inline-block;
+    width: 20px;
+    height: 15px;
+    border-radius: 20px;
+    background-color: #EE0000;
+    border: 1px solid #C40000;
+    color: #fff;
+    text-align: center;
+    padding-top: 5px;
+}
+.lotto4 {
+    display: inline-block;
+    width: 20px;
+    height: 15px;
+    border-radius: 20px;
+    background-color: #666666;
+    border: 1px solid #505050;
+    color: #fff;
+    text-align: center;
+    padding-top: 5px;
+}
+.lotto5 {
+    display: inline-block;
+    width: 20px;
+    height: 15px;
+    border-radius: 20px;
+    background-color: #32810C;
+    border: 1px solid #235909;
+    color: #fff;
+    text-align: center;
+    padding-top: 5px;
+}
+

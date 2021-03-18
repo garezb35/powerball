@@ -1,0 +1,45 @@
+.defaultTable th.menu {
+    border-top: 2px solid #0E609C;
+    border-right: 1px solid #D5D5D5;
+    background-color: #F1F1F1;
+    font-weight: normal;
+}
+.defaultTable th {
+    position: relative;
+    padding: 0;
+}
+.defaultTable th a.on {
+    position: absolute;
+    top: 0px;
+    left: -1px;
+    width: 100%;
+    color: #fff;
+    background-color: #127CCB;
+    border: 1px solid #0E609C;
+    border-top: none;
+}
+.defaultTable th a {
+    color: #000;
+    display: block;
+    text-decoration: none;
+}
+.defaultTable a {
+    display: block;
+    height: 30px;
+    line-height: 30px;
+}
+.defaultTable th.menu.none {
+    border-top: 2px solid #0E609C;
+    border-right: none;
+    background-color: #F1F1F1;
+    font-weight: normal;
+}
+#guideBox {
+    position: absolute;
+    top: 55px;
+    left: 185px;
+    background-color: #fff;
+    border: 1px solid #0e578d;
+    display: none;
+    z-index: 99;
+}

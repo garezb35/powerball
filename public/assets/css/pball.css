@@ -1,0 +1,46 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+ul, ol {
+    list-style: none;
+}
+
+*, ::after, ::before {
+    box-sizing: unset;
+}
+
+body, input, textarea, select, table, button {
+    line-height: 15px;
+    font-family: "돋움",Dotum,"굴림",Gulim,AppleGothic,Sans-serif;
+    font-size: 12px;
+}
+.moreBox {
+    margin-top: 5px;
+    border: 1px solid #D5D5D5;
+    background-color: #F1F1F1;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+
+.moreBox a {
+    display: block;
+    text-decoration: none;
+    color: #5F6164;
+}
+
+.poweeball-menu.nav-pills .nav-link{
+    border-top: 1px solid #6178aa;
+    border-right: 1px solid #6178aa;
+    border-bottom: 1px solid #6178aa;;
+    background-color: #b1cbfe;
+    border-radius: 0px;
+}
+
+.poweeball-menu.nav-pills .nav-link.active, .show>.poweeball-menu .nav-link{
+    color: #fff;
+    background: linear-gradient(
+        180deg
+        , #90b2fa,#7896d4);
+}

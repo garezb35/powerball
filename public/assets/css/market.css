@@ -1,0 +1,152 @@
+.marketBox {
+    color: #666666;
+}
+
+.marketBox .content {
+    background-color: #FCFCFC;
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 12px;
+    line-height: 20px;
+    border: 1px solid #D5D5D5;
+}
+.marketBox .title {
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+    background-color: #F1F1F1;
+    border: 1px solid #D5D5D5;
+    border-top: 2px solid #0E609C;
+}
+.marketBox .title ul li a.on {
+    display: block;
+    background-color: #127CCB;
+    color: #fff;
+    font-weight: bold;
+    border: 1px solid #0E609C;
+    height: 30px;
+    margin: -1px 0 0 -1px;
+}
+.marketBox .title ul li a {
+    float: left;
+    padding: 0 30px;
+    border-right: 1px solid #D5D5D5;
+    color: #333;
+    text-decoration: none;
+}
+.marketBox .title ul li.free {
+    float: right;
+    border-left: 1px solid #D5D5D5;
+    border-right: none;
+}
+.marketBox .title ul li.right {
+    float: right;
+    border-left: 1px solid #D5D5D5;
+    border-right: none;
+}
+.marketBox .title ul li.right a {
+    background-color: #0D568C;
+    color: #fff;
+    border: 1px solid #0E609C;
+    margin: -1px -1px 0 -1px;
+}
+.marketBox .title ul li.free a {
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #0E609C;
+    margin: -1px -1px 0 -1px;
+}
+.marketBox .content .tit.none {
+    margin-top: 0;
+}
+.marketBox .content .tit {
+    font-size: 11px;
+    height: 25px;
+    line-height: 25px;
+    background-color: #127CCB;
+    color: #fff;
+    padding: 0 10px;
+    margin: 10px 6px 0 6px;
+    border: 1px solid #0E609C;
+}
+.marketBox .itemList {
+    padding: 0 0 0 3px;
+}
+.marketBox .itemList li {
+    position: relative;
+    display: inline-block;
+    width: 160px;
+    height: 310px;
+    border: 1px solid #C8C5C5;
+    background-color: #fff;
+    padding: 0 13px;
+    margin: 5px 3px;
+    vertical-align: top;
+}
+.marketBox .itemList li .edge {
+    position: absolute;
+    top: -10px;
+    left: -5px;
+}
+.marketBox .itemList li img {
+    margin: 5px auto;
+    display: block;
+}
+.marketBox .itemList li .name {
+    font-size: 13px;
+    font-weight: bold;
+}
+.marketBox .itemList li .bonus {
+    font-size: 11px;
+}
+.marketBox .itemList li .desc {
+    margin: 10px 0;
+    font-size: 11px;
+    line-height: 16px;
+    max-height: 60px;
+    color: #8b8b8b;
+}
+.marketBox .itemList li .priceBox {
+    position: absolute;
+    bottom: 15px;
+}
+.marketBox .itemList li .price {
+    font-family: DINWeb-Bold;
+    margin: 10px 0;
+    color: #e80000;
+}
+.marketBox .amountSet .up {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 15px;
+    height: 14px;
+    cursor: pointer;
+}
+.marketBox .amountSet .down {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 15px;
+    height: 14px;
+    cursor: pointer;
+}
+.marketBox .amountSet input {
+    border: none;
+    width: 45px;
+    height: 27px;
+    line-height: 27px;
+    margin: 1px;
+    text-align: center;
+}
+.marketBox .amountSet {
+    position: relative;
+    float: left;
+    width: 62px;
+    height: 29px;
+    background: url(https://simg.powerballgame.co.kr/images/bg_amount.png) no-repeat;
+}
+.marketBox .itemList li .btn-g {
+    float: left;
+    margin-left: 5px;
+}

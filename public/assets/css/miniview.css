@@ -1,0 +1,144 @@
+.betBox {
+    position: relative;
+    width: 826px;
+    height: 113px;
+    border: 2px solid #8A0D0D;
+    background-color: #fafafa;
+    margin-top: 0px;
+}
+.betBox .title {
+    width: 15px;
+    height: 83px;
+    position: absolute;
+    background-color: #CD1212;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 15px 10px;
+    color: #fff;
+    border-right: 2px solid #8A0D0D;
+}
+.betBox ul.betting {
+    width: 780px;
+    padding-left: 40px;
+    margin: 10px auto;
+    text-align: center;
+}
+
+.betBox ul.betting li {
+    display: inline-block;
+    text-align: center;
+    margin: 0 5px;
+    padding-top: 25px;
+}
+.betBox ul.betting li span {
+    display: inline-block;
+    width: 40px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #B2B2B2;
+    text-align: center;
+    font-weight: bold;
+    background-color: #fff;
+}
+.betBox ul.betting li span.titleBox {
+    width: 80px;
+    background-color: #1265CD;
+    border: 1px solid #0D50A3;
+    color: #fff;
+}
+.betBox ul.betting li.btnBox {
+    vertical-align: top;
+    padding-top: 25px;
+}
+
+.bettingBtn a {
+    color: #fff;
+    display: block;
+    background-color: #CD1212;
+    border: 1px solid #8A0D0D;
+    color: #fff;
+    text-align: center;
+}
+.bettingBtn {
+    position: absolute;
+    left: 0;
+    width: 100px;
+    height: 25px;
+    line-height: 25px;
+    z-index: 99;
+}
+.miniViewBtn {
+    position: absolute;
+    right: 0;
+    width: 100px;
+    height: 25px;
+    line-height: 25px;
+    z-index: 99;
+}
+.miniViewBtn a {
+    color: #fff;
+    display: block;
+    background-color: #CD1212;
+    border: 1px solid #8A0D0D;
+    color: #fff;
+    text-align: center;
+}
+.betBox ul.betting li.btnBox a.log {
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    display: inline-block;
+    font-weight: bold;
+    background-color: #e7e7e7;
+    border: 1px solid #B2B2B2;
+    color: #000;
+}
+
+.betBox ul.betting li.btnBox .right .reset {
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    background-color: #e7e7e7;
+    border: 1px solid #B2B2B2;
+    color: #000;
+    cursor: pointer;
+    font-weight: bold;
+}
+.betBox ul.betting li.btnBox {
+    vertical-align: top;
+    padding-top: 25px;
+}
+
+.betBox ul.betting li.btnBox .left {
+    float: left;
+}
+.betBox ul.betting li.btnBox .right {
+    float: right;
+    margin-left: 5px;
+}
+.betBox ul.betting li.btnBox .left .pick {
+    width: 160px;
+    height: 67px;
+    line-height: 67px;
+}
+
+.betBox ul.betting li.btnBox span {
+    width: 120px;
+    line-height: 30px;
+    background-color: #C11A20;
+    border: 1px solid #921417;
+    color: #fff;
+    cursor: pointer;
+}
+.betBox ul.betting li .point {
+    margin-top: 5px;
+}
+
+.betBox ul li .pick-btn.on {
+    background-color: #C11A20;
+    border: 1px solid #921417;
+    color: #fff;
+}
+.betBox ul.betting li span.pick-btn {
+    cursor: pointer;
+}
