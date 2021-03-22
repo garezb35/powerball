@@ -11,9 +11,13 @@ class ChatController extends Controller
     public function index()
     {
         $item_count= 0;
+        $api_token = "";
         if(Auth::check())
+        {
             $item_count = PbPurItem::where("userId",Auth::id())->where("active",1)->sum("count");
-        return view('chat/home',["p_remain"=>TimeController::getTimer(2),"item_count"=>$item_count]);
+            $api_token = AUth::user()->api_token;
+        }
+        return view('chat/home',["p_remain"=>TimeController::getTimer(2),"item_count"=>$item_count,"api_token"=>$api_token]);
     }
 
     public function roomWait(){
