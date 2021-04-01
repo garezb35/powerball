@@ -15,9 +15,12 @@
         var remainTime = 0;
         var speedRemain = 0;
     </script>
+    @yield('script_header')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.2/socket.io.js" ></script>
     <script src="/assets/js/handlebars.js"></script>
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/jquery-ui.min.js"></script>
+    <script src="/assets/jplayer/jquery.jplayer.min.js"></script>
     <script src="/assets/chart/Chart.min.js"></script>
     <script src="/assets/js/common.js"></script>
     @empty(!$css)
@@ -39,6 +42,10 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div id="userLayer" style="display: none">
+        <div class="lutop"><span id="unickname">관리왕1</span></div>
+        <div class="game"></div>
     </div>
     @yield('header')
     @yield('content')

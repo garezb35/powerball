@@ -4,31 +4,42 @@ class Msg {
         this.msgs = []
     }
 
-    createMsg(id, name,item,level,mark,msg,nickname,sex,winFixCnt,clientId = "",roomIdx=""){
-        this.msgs.push({id, name,item,level,mark,msg,nickname,sex,winFixCnt,clientId,roomIdx})
+    createMsg(id,item,level,mark,msg,nickname,sex,winFixCnt,clientId = "",roomIdx="",userType){
+        this.msgs.push({id,item,level,mark,msg,nickname,sex,winFixCnt,clientId,roomIdx,userType})
         return this.msgs
     }
     getMsg(id){
         return this.msgs.filter(user => user.id === id)[0]
     }
-    getMsgFromRoomIdx(roomIdx){
+    getMsgLengthFromRoomIdx(roomIdx){
+        return this.msgs.filter(user => user.roomIdx === roomIdx).length
+    }
+
+    getFirstMsgByRoomIdx(roomIdx){
         return this.msgs.filter(user => user.roomIdx === roomIdx)[0]
     }
-    getMsgByClientId(clientId){
-        return this.msgs.filter(user => user.clientId === clientId)[0]
+
+    getMsgRoomIdx(roomIdx){
+        return  this.msgs.filter(x => x.roomIdx == roomIdx);
     }
+    deleteFirstMsgByIndex(index){
+        this.msgs = this.msgs.splice(index, 1);
+    }
+
+    getMsgByClientId(clientId){
+        return this.msgs.filter(msg => msg.clientId === clientId)[0]
+    }
+
     getMsg(){
         return this.msgs
     }
 
-    deleteMsgByUserToken(id){
-        let deletedUser = this.getUser(id)
-        this.msgs = this.msgs.filter((user) => user.id != id)
-        return deletedUser
+    deleteMsgByUserToken(token){
+        this.msgs = this.msgs.filter((msg) => msg.id != token)
     }
 
     deleteMsgByRoomIdx(roomIdx){
-        this.msgs = this.msgs.filter((user) => user.roomIdx != roomIdx)
+        this.msgs = this.msgs.filter((msg) => msg.roomIdx != roomIdx)
     }
 }
 

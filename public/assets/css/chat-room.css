@@ -11,8 +11,8 @@
     position: relative;
     padding: 0 15px;
     height: 40px;
-    background-color: #127CCB;
-    border-bottom: 1px solid #0E609C;
+    background:linear-gradient(180deg, #345696, #284476);
+    border-bottom: 1px solid #284476;
 }
 #header .newsticker li a {
     color: #F7E227;
@@ -26,10 +26,8 @@
 }
 #header .newsticker {
     position: absolute;
-    top: 14px;
-    left: 85px;
-    height: 25px;
-    overflow: hidden;
+    top: 13px;
+    left: 92px;
 }
 #container {
     position: relative;
@@ -49,9 +47,11 @@
     position: relative;
     padding: 0 15px;
     height: 29px;
-    border-top: 1px solid #1b93eb;
-    border-bottom: 1px solid #0b4977;
-    background-color: #127CCB;
+    border-top: 1px solid #284476;
+    border-bottom: 1px solid #274174;
+    background:linear-gradient(180deg, #284476, #233b69,#274174);
+
+
 }
 .mainBanner {
     padding: 8px;
@@ -81,15 +81,13 @@
     height: 29px;
     line-height: 29px;
     font-size: 11px;
-    font-family: '돋움',Dotum;
     color: #fff;
 }
 .leftArea .category a {
     float: left;
     height: 29px;
     line-height: 29px;
-    font-size: 11px;
-    font-family: '돋움',Dotum;
+    font-size: 12px;
     color: #fff;
 }
 
@@ -113,9 +111,9 @@
 
 .rightArea .btns {
     height: 29px;
-    background-color: #127CCB;
-    border-top: 1px solid #1b93eb;
-    border-bottom: 1px solid #0b4977;
+    background:linear-gradient(180deg, #284476, #233b69,#274174);
+    border-top: 1px solid #284476;
+    border-bottom: 1px solid #274174;
 }
 
 .rightArea .btns .create {
@@ -299,12 +297,24 @@
     background-color: #c11a20;
     border: 1px solid #8f1317;
 }
+.leftArea .roomList li .inner .winLose.lose {
+    background-color: #1265cd;
+    border: 1px solid #0e4c99;
+}
+.leftArea .roomList li .inner .winLose.draw {
+    background-color: #626262;
+    border: 1px solid #464646;
+}
 .leftArea .roomList li .inner .desc {
     position: absolute;
     top: 42px;
     font-size: 11px;
     font-family: tahoma,dotum;
     color: #8b8b8b;
+}
+
+.rightArea .userList ul li img {
+    vertical-align: middle;
 }
 
 .leftArea .roomList li .line {
@@ -494,7 +504,7 @@
     padding: 0 5px;
     margin: 3px 0;
     text-align: center;
-}   
+}
 
 #msgBox .recom {
     margin: 10px 0;
@@ -513,7 +523,7 @@
 .leftArea .category .cate {
     position: absolute;
     left: 15px;
-    margin-left: 65px;
+    margin-left: 62px;
 }
 
 #msgBox li {
@@ -526,7 +536,7 @@
 #msgBox li.manager {
     color: #2c55a0;
     font-weight: bold;
-}   
+}
 #msgBox li.opener {
     color: #A22B2B;
     font-weight: bold;
@@ -577,6 +587,7 @@
     background-color: #fff;
     border: 1px solid #0e578d;
     display: none;
+    left: 10px;
 }
 .leftArea .menuBox #helpBox ul {
     margin: 0;
@@ -847,12 +858,7 @@ fieldset {
     float: right;
 }
 
-.rightArea .btns {
-    height: 29px;
-    background-color: #127CCB;
-    border-top: 1px solid #1b93eb;
-    border-bottom: 1px solid #0b4977;
-}
+
 .rightArea .btns .exit {
     color: #fff;
     height: 29px;
@@ -909,29 +915,33 @@ fieldset {
 
 .rightArea .resultBox .content ul.resultList li .rs {
     display: table-cell;
-    width: 68px;
+    width: 60px;
     height: 60px;
     background: url(https://simg.powerballgame.co.kr/chat/images/sprite_pick.png) no-repeat;
-    background-position: 68px 0;
+    background-position: 60px 0;
 }
 
 .rightArea .resultBox .content ul.resultList li .rs.ready {
-    background-position: -1224px 0;
+    background: radial-gradient(#fcfcfc, #e3e3e3);
+    border-radius: 50%;
+    border: 1px solid #fff;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 .rightArea .resultBox .content ul.resultList li .blank {
     display: table-cell;
-    width: 5px;
+    width: 15px;
 }
 
 .rightArea .resultBox .content ul.resultList li .pick {
     position: relative;
     display: table-cell;
     margin-left: 143px;
-    width: 68px;
+    width: 60px;
     height: 60px;
-    background: url(https://simg.powerballgame.co.kr/chat/images/sprite_pick.png) no-repeat;
-    background-position: 68px 0;
+    background: url(/assets/images/powerball/pick_back.png) no-repeat;
+    background-position: 0 0;
 }
 
 .rightArea .resultBox .content ul.resultList li .pickResultText {
@@ -1287,8 +1297,6 @@ fieldset {
 .rightArea .resultBox .content ul.resultList li .rs.eeoom {background-position:-1088px -1020px;}
 .rightArea .resultBox .content ul.resultList li .rs.eeoos {background-position:-1156px -1020px;}
 
-.rightArea .resultBox .content ul.resultList li .pick {position:relative;display:table-cell;margin-left:143px;width:68px;height:60px;background:url(https://simg.powerballgame.co.kr/chat/images/sprite_pick.png) no-repeat;background-position:68px 0;}
-
 /* odd, even, under, over, period */
 .rightArea .resultBox .content ul.resultList li .pick.nnnnn {background-position:0 0;}
 .rightArea .resultBox .content ul.resultList li .pick.nnnnb {background-position:-68px 0;}
@@ -1316,7 +1324,6 @@ fieldset {
 .rightArea .resultBox .content ul.resultList li .pick.nnuob {background-position:-204px -60px;}
 .rightArea .resultBox .content ul.resultList li .pick.nnuom {background-position:-272px -60px;}
 .rightArea .resultBox .content ul.resultList li .pick.nnuos {background-position:-340px -60px;}
-.rightArea .resultBox .content ul.resultList li .pick.nnonn {background-position:-408px -60px;}
 .rightArea .resultBox .content ul.resultList li .pick.nnonb {background-position:-476px -60px;}
 .rightArea .resultBox .content ul.resultList li .pick.nnonm {background-position:-544px -60px;}
 .rightArea .resultBox .content ul.resultList li .pick.nnons {background-position:-612px -60px;}
@@ -1633,7 +1640,10 @@ fieldset {
 .rightArea .resultBox .content ul.resultList li .pick.eeoom {background-position:-1088px -1020px;}
 .rightArea .resultBox .content ul.resultList li .pick.eeoos {background-position:-1156px -1020px;}
 
-.rightArea .resultBox .content ul.resultList li .pick.pass {background-position:0 0;}
+.rightArea .resultBox .content ul.resultList li .pass {    background: radial-gradient(#fcfcfc, #e3e3e3);
+    border-radius: 50%;
+    border: 1px solid #fff;
+}
 
 /* pick result */
 .rightArea .resultBox .content ul.resultList li .pick span {position:absolute;width:68px;height:60px;background:url(https://simg.powerballgame.co.kr/chat/images/sprite_pick.png) no-repeat;}
@@ -1681,7 +1691,7 @@ fieldset {
     height: 47px;
     line-height: 47px;
     border-bottom: 1px dotted #bfbfbf;
-    padding-left: 5px;
+    padding-left: 3px;
 }
 .rightArea .resultBox .content .userListBox ul.userList img {
     vertical-align: middle;
@@ -1747,4 +1757,262 @@ fieldset {
     height: 13px;
     background: url(https://simg.powerballgame.co.kr/images/sp_chatRoomMark2.png) no-repeat 0 -13px;
     text-indent: -9999px;
+}
+
+.no-height{
+    height: unset !important;
+}
+
+.resultBox{
+    margin: 8px;
+}
+
+#msgBox .msg-guide {
+    background-color: #2943a3;
+    border: 1px solid #18275c;
+    min-height: 22px;
+    line-height: 22px;
+    color: #fff;
+    padding: 0 5px;
+    margin: 3px 0;
+}
+
+#msgBox li img {
+    vertical-align: middle;
+}
+
+#msgBox .msg-odd {
+    background-color: #156AEA;
+    border: 1px solid #1156bd;
+    min-height: 22px;
+    line-height: 22px;
+    color: #fff;
+    padding: 0 5px;
+    margin: 3px 0;
+    text-align: center;
+}
+
+#msgBox .msg-even {
+    background-color: #C11A20;
+    border: 1px solid #B01D1D;
+    min-height: 22px;
+    line-height: 22px;
+    color: #fff;
+    padding: 0 5px;
+    margin: 3px 0;
+    text-align: center;
+}
+
+#msgBox .msg-odd span, #msgBox .msg-even span {
+    color: yellow;
+}
+
+.odd-chat{
+    display: table-cell;
+    width: 60px;
+    height: 60px;
+    position: relative;
+}
+
+.chat-pbodd{
+    background: url(/assets/images/powerball/chat/top-left-odd.png);
+    width: 30px;
+    height: 30px;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    position: absolute;
+}
+.chat-pbeven{
+    background: url(/assets/images/powerball/chat/top-left-even.png);
+    width: 30px;
+    height: 30px;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    position: absolute;
+}
+
+.chat-nbodd{
+    background: url(/assets/images/powerball/chat/top-right-odd.png);
+    width: 30px;
+    height: 30px;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    position: absolute;
+    left: 30px;
+}
+
+.chat-nbeven{
+    background: url(/assets/images/powerball/chat/top-right-even.png);
+    width: 30px;
+    height: 30px;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    position: absolute;
+    left: 30px;
+}
+
+.chat-pbunder{
+    background: url(/assets/images/powerball/chat/bottom-left-under.png);
+    width: 30px;
+    height: 30px;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 30px;
+}
+.chat-pbover{
+    background: url(/assets/images/powerball/chat/bottom-left-over.png);
+    width: 30px;
+    height: 30px;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 30px;
+}
+
+.chat-nbunder{
+    background: url(/assets/images/powerball/chat/bottom-right-under.png);
+    width: 30px;
+    height: 30px;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 30px;
+    left: 30px;
+}
+
+.chat-nbover{
+    background: url(/assets/images/powerball/chat/bottom-right-over.png);
+    width: 30px;
+    height: 30px;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 30px;
+    left: 30px;
+}
+
+.chat-nbbig{
+    background: url(/assets/images/powerball/black.png);
+    background-size: 22px;
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    text-align: center;
+    line-height: 22px;
+    color: #fff;
+    left: 49px;
+    top: -4px;
+}
+
+.chat-nbmiddle{
+    background: url(/assets/images/powerball/black.png);
+    background-size: 22px;
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    text-align: center;
+    line-height: 22px;
+    color: #fff;
+    left: 49px;
+    top: 18px;
+}
+
+.chat-nbsmall{
+    background: url(/assets/images/powerball/black.png);
+    background-size: 22px;
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    text-align: center;
+    line-height: 22px;
+    color: #fff;
+    left: 49px;
+    top: 39px;
+}
+
+.pick-room-manager{
+    width: 60px;
+    height: 60px;
+    background: url(/assets/images/powerball/pick_back.png) no-repeat;
+    background-position: 0 0;
+    margin: auto;
+    position: relative;
+}
+
+.chat-nbodd.not div,.chat-nbeven.not div{
+    background: url(/assets/images/powerball/top-right-error.png);
+    width: 30px;
+    height: 30px;
+}
+
+.chat-pbodd.not div,.chat-pbeven.not div{
+    background: url(/assets/images/powerball/top-left-error.png);
+    width: 30px;
+    height: 30px;
+}
+
+.chat-pbunder.not div,.chat-pbover.not div{
+    background: url(/assets/images/powerball/bottom-left-error.png);
+    width: 30px;
+    height: 30px;
+}
+
+.chat-nbunder.not div,.chat-nbover.not div{
+    background: url(/assets/images/powerball/bottom-right-error.png);
+    width: 30px;
+    height: 30px;
+}
+
+.chat-nbbig.not div,.chat-nbmiddle.not div,.chat-nbsmall.not div{
+    background: #716a6a;
+    border-radius: 50%;
+}
+
+.close-modal{
+    background: url(/assets/images/powerball/close.png);
+    width: 29px;
+    height: 29px;
+    border: none;
+    outline: none;
+}
+
+#modify-chatroom .modal-body,#creatingWindow .modal-body{
+    background: url(/assets/images/powerball/BG.png) 100% 100% no-repeat;
+}
+
+.border-input{
+    border: 1px solid #335292;
+}
+#msgBox .msg-notice {
+    background-color: #cb500e;
+    border: 1px solid #652807;
+    min-height: 22px;
+    line-height: 22px;
+    color: #fff;
+    padding: 0 5px;
+    margin: 3px 0;
+}
+
+#userLayer {
+    display: block;
+    position: absolute;
+    min-width: 180px;
+    border: 1px solid #0E578D;
+    z-index: 10000;
+}
+
+#userLayer .lutop {
+    padding: 0 20px 0 10px;
+    height: 26px;
+    line-height: 25px;
+    font-weight: bold;
+    color: #fff;
+    background: #127CCB;
+}
+
+#userLayer .game {
+    background-color: #e4fce4;
+    padding: 3px 5px;
+    border-bottom: 1px dotted #d5d5d5;
 }

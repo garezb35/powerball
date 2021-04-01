@@ -1,4 +1,6 @@
 @extends("includes.chat_header")
+@section("script_header")
+@endsection
 @section("content")
 @include('chat.countdown')
 <div class="mb-2"></div>
@@ -41,3 +43,5 @@
 @endauth
 @include('chat.box-chatting')
 @endsection
+
+

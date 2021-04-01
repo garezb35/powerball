@@ -7,7 +7,12 @@ const http = require('http')
 const app = express()
 const port = process.env.PORT
 const server = http.createServer(app)
-module.exports.io = socketIO(server)
+module.exports.io = socketIO(server, {
+    cors: {
+        origin: "cake6978.com",
+        methods: ["GET", "POST"]
+    }
+});
 module.exports.knex = knex;
 require('./sockets/socket')
 

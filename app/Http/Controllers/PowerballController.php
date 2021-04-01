@@ -7,6 +7,7 @@ use App\Models\PbAutoMatch;
 use App\Models\PbBetting;
 use App\Models\PbItemUse;
 use App\Models\PbMarket;
+use App\Models\PbRoom;
 use App\Models\TblWinning;
 use App\Models\User;
 use Faker\Provider\Base;
@@ -25,16 +26,11 @@ class PowerballController extends Controller
 
     public function view(Request $request)
     {
-
         if (!$request->has("terms"))
             $key = "date";
         else
             $key = $request->terms;
-//        if($key!="lates" && !Auth::check())
-//        {
-//            echo "<script>alert('잘못된 접근입니다.');window.parent.document.getElementById('mainFrame').height = '500px';</script>";
-//            return;
-//        }
+
         switch ($key) {
             case "date":
                 $from = !empty($request->from) ? $request->from : date("Y-m-d");
@@ -215,6 +211,8 @@ class PowerballController extends Controller
             DB::raw("CONCAT('{',GROUP_CONCAT(CONCAT('\"',game_code,'\"',':','{','\"pick\":',pick,',','\"is_win\":',is_win,'}') SEPARATOR ','),'}') as content"),
             DB::raw("game_type"),
             DB::raw("type"),
+            DB::raw("roomIdx"),
+            DB::raw("status"),
             DB::raw("created_date"),
             DB::raw("updated_date"),
             DB::raw("created_date as pick_date")
@@ -228,6 +226,7 @@ class PowerballController extends Controller
             ->groupBy("round")
             ->groupBy("userId");
         $history_picks = PbBettingCtl::where("game_type",1)->where("type",1)->where("userId",$user->userId)->orderBy("round","DESC");
+
         return view('powerball_pick', [    "js" => "",
                                                 "css" => "pball-pick.css",
                                                 "pick_visible" => "block",
@@ -1139,6 +1138,7 @@ class PowerballController extends Controller
                 ->toArray();
             if(!empty($patternByDate))
             {
+
                 $patternByDate = json_decode(json_encode($patternByDate));
                 foreach ($patternByDate as $value){
                     $pat = $this->getPatternPosition($value->plist,$pattern);
@@ -1491,6 +1491,258 @@ class PowerballController extends Controller
             echo json_encode(array("status"=>0));
     }
 
+    public function calculateWinning(Request $request){
+        $round = Pb_Result_Powerball::orderBy("day_round","DESC")->first();
+        if(empty($round)){
+            echo json_encode(array("status"=>0));
+            return;
+        }
+        $end_round = $round["day_round"];
+
+        $month = intval(date("m"));
+        $year= intval(date("Y"));
+        $month = $month - 3;
+        if($month <= 0){
+            $month  += 12;
+            $year -= 1;
+        }
+        PbBettingCtl::where("pick_date","<=",$year."-".$month)->delete();
+
+        $raw = PbBettingCtl::with(["room","user"])->where("pb_betting_ctl.status",1)->get()->toArray();
+
+        if(empty($raw)){
+            echo json_encode(array("status"=>0,"msg"=>"empty picks"));
+            return;
+        }
+
+        if(!empty($raw)){
+            $userpicks = array();
+            foreach($raw as $index){
+                $insert_array = new \stdClass();
+                $pb_oe = $pb_uo = $nb_oe = $nb_uo = $nb_size = $total =  array(0,0);
+                $pb_oewin = $pb_uowin=  $nb_oewin = $nb_uowin = $nb_sizewin = array(0,0);
+                $current_win = 0;
+                $pick_result = (object)json_decode($index["content"],false);
+                $lose = false;
+                foreach($pick_result as $key=>$pick){
+                    if($pick->is_win ==1)
+                    {
+                        $total[0] += 1;
+                        $$key[0] += 1;
+                        $current_win += 1;
+                        if($key == "pb_oe")
+                            $pb_oewin[0] +=1;
+                        if($key == "pb_uo")
+                            $pb_uowin[0] +=1;
+                        if($key == "nb_oe")
+                            $nb_oewin[0] +=1;
+                        if($key == "nb_uo")
+                            $nb_uowin[0] +=1;
+                        if($key == "nb_size")
+                            $nb_sizewin[0] +=1;
+                    }
+                    if($pick->is_win ==2)
+                    {
+                        $lose = true;
+                        $total[1] +=1;
+                        $$key[1] +=1;
+                        $current_win = 0;
+                        if($key == "pb_oe")
+                        {
+                            if($pb_oewin[0] > $pb_oewin[1])
+                                $pb_oewin[1] = $pb_oewin[0];
+                            $pb_oewin[0] =0;
+                        }
+                        if($key == "pb_uo")
+                        {
+                            if($pb_uowin[0] > $pb_uowin[1])
+                                $pb_uowin[1] = $pb_uowin[0];
+                            $pb_uowin[0] =0;
+                        }
+                        if($key == "nb_oe")
+                        {
+                            if($nb_oewin[0] > $nb_oewin[1])
+                                $nb_oewin[1] = $nb_oewin[0];
+                            $nb_oewin[0] =0;
+                        }
+                        if($key == "nb_uo")
+                        {
+                            if($nb_uowin[0] > $nb_uowin[1])
+                                $nb_uowin[1] = $nb_uowin[0];
+                            $nb_uowin[0] =0;
+                        }
+                        if($key == "nb_size")
+                        {
+                            if($nb_sizewin[0] > $nb_sizewin[1])
+                                $nb_sizewin[1] = $nb_sizewin[0];
+                            $nb_sizewin[0] =0;
+                        }
+                    }
+                }
+
+                if($pb_oewin[0] > $pb_oewin[1])
+                    $pb_oewin[1] = $pb_oewin[0];
+
+                if($pb_uowin[0] > $pb_uowin[1])
+                    $pb_uowin[1] = $pb_uowin[0];
+
+                if($nb_oewin[0] > $nb_oewin[1])
+                    $nb_oewin[1] = $nb_oewin[0];
+
+                if($nb_uowin[0] > $nb_uowin[1])
+                    $nb_uowin[1] = $nb_uowin[0];
+
+                if($nb_sizewin[0] > $nb_sizewin[1])
+                    $nb_sizewin[1] = $nb_sizewin[0];
+
+                if(!empty($index["room"]) && !empty($index["user"]))
+                {
+                    $insert = array();
+                    $win_h = new \stdClass();
+                    if(!empty($index["room"]["winning_history"])){
+                        $win_h = (object)json_decode($index["room"]["winning_history"],false);
+                        $win_h->pb->win += $pb_oe[0]+$pb_uo[0];
+                        $win_h->pb->lose += $pb_oe[1]+$pb_uo[1];
+                        $win_h->nb->win += $nb_oe[0]+$nb_uo[0]+$nb_size[0];
+                        $win_h->nb->lose += $nb_oe[1]+$nb_uo[1]+$nb_size[1];
+                        $win_h->total->win += $pb_oe[0]+$pb_uo[0]+$nb_oe[0]+$nb_uo[0]+$nb_size[0];
+                        $win_h->total->lose += $pb_oe[1]+$pb_uo[1]+$nb_oe[1]+$nb_uo[1]+$nb_size[1];
+                        if($current_win ==0 || $lose)
+                            $win_h->current_win = 0;
+                        if($current_win > 0){
+                            $win_h->current_win += $current_win;
+                            if($win_h->current_win > $index["room"]["max_win"])
+                                $insert["max_win"] = $win_h->current_win;
+                        }
+                        $insert["winning_history"] = json_encode($win_h);
+                    }
+                    else{
+                        $win_h->pb  =new \stdClass();
+                        $win_h->nb  =new \stdClass();
+                        $win_h->total = new \stdClass();
+                        $win_h->current_win  =$current_win;
+                        $win_h->total->win = $pb_oe[0]+$pb_uo[0]+$nb_oe[0]+$nb_uo[0]+$nb_size[0];
+                        $win_h->total->lose= $pb_oe[1]+$pb_uo[1]+$nb_oe[1]+$nb_uo[1]+$nb_size[1];
+                        $win_h->pb->win= $pb_oe[0]+$pb_uo[0];
+                        $win_h->pb->lose= $pb_oe[1]+$pb_uo[1];
+                        $win_h->nb->win= $nb_oe[0]+$nb_uo[0]+$nb_size[0];
+                        $win_h->nb->lose= $nb_oe[1]+$nb_uo[1]+$nb_size[1];
+                        $insert["winning_history"] = json_encode($win_h);
+                        $insert["max_win"] = $current_win;
+                    }
+                    PbRoom::where("id",$index["room"]["id"])->update($insert);
+                }
+
+                if(!empty($index["user"])){
+                    $insert  = array();
+                    $win_h = new \stdClass();
+                    if(!empty($index["user"]["winning_history"])){
+                        $win_h = (object)json_decode($index["user"]["winning_history"],false);
+
+                        if($current_win ==0 || $lose)
+                            $win_h->current_win->p = 0;
+                        if($current_win > 0)
+                            $win_h->current_win->p += $current_win;
+
+                        if($pb_oewin[1] > 0 ){
+                            $win_h->pb_oe->current_win += $pb_oewin[1];
+                            if($win_h->pb_oe->current_win > $win_h->current_win->pb_oe)
+                                $win_h->current_win->pb_oe = $win_h->pb_oe->current_win;
+                        }
+                        else{
+                            $win_h->pb_oe->current_win = 0;
+                        }
+                        if($pb_uowin[1] > 0 ){
+                            $win_h->pb_uo->current_win += $pb_uowin[1];
+                            if($win_h->pb_uo->current_win > $win_h->current_win->pb_uo)
+                                $win_h->current_win->pb_uo = $win_h->pb_uo->current_win;
+                        }
+                        else{
+                            $win_h->pb_uo->current_win = 0;
+                        }
+                        if($nb_oewin[1] > 0 ){
+                            $win_h->nb_oe->current_win += $nb_oewin[1];
+                            if($win_h->nb_oe->current_win > $win_h->current_win->nb_oe)
+                                $win_h->current_win->nb_oe = $win_h->nb_oe->current_win;
+                        }
+                        else{
+                            $win_h->nb_oe->current_win = 0;
+                        }
+                        if($nb_uowin[1] > 0 ){
+                            $win_h->nb_uo->current_win += $nb_uowin[1];
+                            if($win_h->nb_uo->current_win > $win_h->current_win->nb_uo)
+                                $win_h->current_win->nb_uo = $win_h->nb_uo->current_win;
+                        }
+                        else{
+                            $win_h->nb_uo->current_win = 0;
+                        }
+                        if($nb_sizewin[1] > 0 ){
+                            $win_h->nb_size->current_win += $nb_sizewin[1];
+                            if($win_h->nb_size->current_win > $win_h->current_win->nb_size)
+                                $win_h->current_win->nb_size = $win_h->nb_size->current_win;
+                        }
+                        else{
+                            $win_h->nb_size->current_win = 0;
+                        }
+                        $win_h->pb_oe->win  += $pb_oe[0];
+                        $win_h->pb_oe->lose += $pb_oe[1];
+
+                        $win_h->pb_uo->win  += $pb_uo[0];
+                        $win_h->pb_uo->lose += $pb_uo[1];
+
+                        $win_h->nb_oe->win  += $nb_oe[0];
+                        $win_h->nb_oe->lose += $nb_oe[1];
+
+                        $win_h->nb_uo->win  += $nb_uo[0];
+                        $win_h->nb_uo->lose += $nb_uo[1];
+
+                        $win_h->nb_size->win  += $nb_size[0];
+                        $win_h->nb_size->lose += $nb_size[1];
+                    }
+                    else{
+                        $win_h->current_win = new \stdClass();
+                        $win_h->pb_oe = new \stdClass();
+                        $win_h->pb_uo = new \stdClass();
+                        $win_h->nb_oe = new \stdClass();
+                        $win_h->nb_uo = new \stdClass();
+                        $win_h->nb_size = new \stdClass();
+
+                        $win_h->current_win->p = $current_win;
+                        $win_h->current_win->pb_oe = $win_h->pb_oe->win = $win_h->pb_oe->current_win = $pb_oe[0];
+                        $win_h->pb_oe->lose = $pb_oe[1];
+
+                        $win_h->current_win->pb_uo = $win_h->pb_uo->win = $win_h->pb_uo->current_win = $pb_uo[0];
+                        $win_h->pb_uo->lose = $pb_uo[1];
+
+                        $win_h->current_win->nb_oe = $win_h->nb_oe->win = $win_h->nb_oe->current_win = $nb_oe[0];
+                        $win_h->nb_oe->lose = $nb_oe[1];
+
+                        $win_h->current_win->nb_uo = $win_h->nb_uo->current_win = $win_h->nb_uo->win = $nb_uo[0];
+                        $win_h->nb_uo->lose = $nb_uo[1];
+
+                        $win_h->current_win->nb_size = $win_h->nb_size->current_win = $win_h->nb_size->win =$nb_size[0];
+                        $win_h->nb_size->lose = $nb_size[1];
+                    }
+                    $insert["winning_history"] = json_encode($win_h);
+                    User::where("userId",$index["user"]["userId"])->update($insert);
+                }
+
+            }
+            PbBettingCtl::where("status",1)->update(["status"=>0]);
+        }
+        echo json_encode(array("status"=>1));
+    }
+    public function getChatPicks(Request $request){
+        $roomIdx = PbRoom::where("roomIdx",$request->roomIdx)->first();
+        if(empty($roomIdx)){
+            echo json_encode(array("status"=>0));
+            return;
+        }
+        $round = $roomIdx["round"];
+        $result = Pb_Result_Powerball::with("bettingData")->orderBy("pb_result_powerball.day_round","DESC")->skip(0)->limit(288)->get()->toArray();
+        echo json_encode(array("status"=>1,"result"=>array("list"=>$result,"round"=>$round)));
+    }
+
     /*  파워볼 연속 데이터 최대값 얻는 모듈  $type=1이면 홀짝,언오버 통계 2이면 대중소 통계*/
     private function getMax($arrayList,$type)
     {
@@ -1535,7 +1787,6 @@ class PowerballController extends Controller
         $pick_info = "";
         $max_appear = 0;/* 최대 련속 나타날 개수 */
         /* 비였다면 status값을 0으로 돌려 준다.*/
-
         if(empty($lists))
             return array("status"=>0,"result"=>array());
         else
@@ -1602,7 +1853,6 @@ class PowerballController extends Controller
             if($pick ==3)
                 $temp = array("over","대");
         }
-
         return $temp;
     }
 

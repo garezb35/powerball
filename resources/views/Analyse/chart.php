@@ -59,9 +59,9 @@
                 <canvas id="chart-area"></canvas>
             </div>
             <ul class="infos">
-                <li class="big {{#bigSmall this.nsize.count 3 2}}on{{/bigSmall}}"><span class="ic"></span>대 : {{#index_of nsize.count 3}}{{/index_of}}회 ({{#returnPer this.nsize.count 3}}{{/returnPer}}%) {{#index_of nsize.max 3}}{{/index_of}}연속</li>
-                <li class="middle {{#bigSmall this.nsize.count 2 2}}on{{/bigSmall}}"><span class="ic"></span>중 : {{#index_of nsize.count 2}}{{/index_of}}회 ({{#returnPer this.nsize.count 2}}{{/returnPer}}%) {{#index_of nsize.max 2}}{{/index_of}}연속</li>
-                <li class="small {{#bigSmall this.nsize.count 1 2}}on{{/bigSmall}}"><span class="ic"></span>소 : {{#index_of nsize.count 1}}{{/index_of}}회 ({{#returnPer this.nsize.count 1}}{{/returnPer}}%) {{#index_of nsize.max 1}}{{/index_of}}연속</li>
+                <li class="big {{#bigSmall this.nsize.count 3 2}}on{{/bigSmall}}"><span class="ic"></span>대 : {{#index_of nsize.count 3}}{{/index_of}}회 ({{#returnPer this.nsize.count 3}}{{/returnPer}}%) {{#ifEquals nsize.max.[3] -1}}{{else}}{{#index_of nsize.max 3}}{{/index_of}}연속{{/ifEquals}}</li>
+                <li class="middle {{#bigSmall this.nsize.count 2 2}}on{{/bigSmall}}"><span class="ic"></span>중 : {{#index_of nsize.count 2}}{{/index_of}}회 ({{#returnPer this.nsize.count 2}}{{/returnPer}}%) {{#ifEquals nsize.max.[3] -1}}{{else}}{{#index_of nsize.max 2}}{{/index_of}}연속{{/ifEquals}}</li>
+                <li class="small {{#bigSmall this.nsize.count 1 2}}on{{/bigSmall}}"><span class="ic"></span>소 : {{#index_of nsize.count 1}}{{/index_of}}회 ({{#returnPer this.nsize.count 1}}{{/returnPer}}%) {{#ifEquals nsize.max.[3] -1}}{{else}}{{#index_of nsize.max 1}}{{/index_of}}연속{{/ifEquals}}</li>
             </ul>
         </td>
     </tr>

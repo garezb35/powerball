@@ -45,7 +45,10 @@
             </ul>
         </div>
     </div>
-
+    @php
+    $title = "패턴별 통계데이터";
+    @endphp
+    @include("Analyse.patternTerms")
     <table id="patternLogBox" class="patternBox table table-bordered" style="margin-top: 5px;">
         <colgroup>
             <col width="89" />
@@ -74,4 +77,5 @@
     <div class="moreBox"><a href="#" onclick="searchPattern(2,date,round);return false;">더보기</a></div>
     @include("Analyse/pattern")
     @include("Analyse/pattern_next")
+    @include("Analyse.chart")
 @endsection

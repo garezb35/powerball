@@ -2,3 +2,24 @@
     font-family: 'nexon_lv_thic';
     src: URL('/assets/font/NEXON LV2 GOTHIC.TTF') format('truetype');
 }
+
+@font-face {
+    font-family: 'nexon_lv_light';
+    src: URL('/assets/font/NEXON LV2 GOTHIC LIGHT.TTF') format('truetype');
+}
+
+
+@font-face {
+    font-family: 'nexon_lv_otf';
+    src: URL('/assets/font/NEXON LV2 GOTHIC OTF.OTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'nexon_lv_otf_medium';
+    src: URL('/assets/font/NEXON LV2 GOTHIC OTF MEDIUM.OTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'nexon_lv_gothic_medium';
+    src: URL('/assets/font/NEXON LV2 GOTHIC MEDIUM.TTF') format('truetype');
+}

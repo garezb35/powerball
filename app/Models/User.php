@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\CodeDetail;
 use App\Models\PbAutoMatch;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\CodeDetail;
 
 class User extends Authenticatable
 {
@@ -30,7 +30,8 @@ class User extends Authenticatable
         'phoneNumber',
         'api_token',
         'old_nickname',
-        'userIdKey'
+        'userIdKey',
+        'fixed'
     ];
 
     /**
@@ -40,7 +41,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
+        'api_token',
     ];
 
     /**
@@ -66,6 +67,4 @@ class User extends Authenticatable
     public function getAutoMatches(){
         return $this->hasMany(PbAutoMatch::class,"userid","userId");
     }
-
-
 }

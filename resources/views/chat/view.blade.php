@@ -1,58 +1,77 @@
 @extends('includes.empty_header')
+@section("script_header")
+    <script>
+        var userIdToken = "{{$api_token}}";
+        var userIdKey = "{{$userIdKey}}";
+        var roomIdx ="{{$room["roomIdx"]}}";
+        var is_freeze = @if($room["frozen"] == "off"){{0}}@else{{1}}@endif;
+        var chatHistoryNum = 0;
+        var filterWordArr = 'ㅋㅌ,카톡,틱톡,http,www,co.kr,net,com,kr,net,org,abcgame,scoregame,스코어게임,스게,abc게임,자지,보지,섹스,쎅스,씨발,시발,병신,븅신,개세,개새자지,출장,섹파,자위,8아,18놈,18새끼,18년,18뇬,18노,18것,18넘,개년,개놈,개뇬,개새,개색끼,개세끼,개세이,개쉐이,개쉑,개쉽,개시키,개자식,개좆,게색기,게색끼,광뇬,뇬,눈깔,뉘미럴,니귀미,니기미,니미,도촬,되질래,뒈져라,뒈진다,디져라,디진다,디질래,병쉰,병신,뻐큐,뻑큐,뽁큐,삐리넷,새꺄,쉬발,쉬밸,쉬팔,쉽알,스패킹,스팽,시벌,시부랄,시부럴,시부리,시불,시브랄,시팍,시팔,시펄,실밸,십8,십쌔,십창,싶알,쌉년,썅놈,쌔끼,쌩쑈,썅,써벌,썩을년,쎄꺄,쎄엑,쓰바,쓰발,쓰벌,쓰팔,씨8,씨댕,씨바,씨발,씨뱅,씨봉알,씨부랄,씨부럴,씨부렁,씨부리,씨불,씨브랄,씨빠,씨빨,씨뽀랄,씨팍,씨팔,씨펄,씹,아가리,아갈이,엄창,접년,잡놈,재랄,저주글,조까,조빠,조쟁이,조지냐,조진다,조질래,존나,존니,좀물,좁년,좃,좆,좇,쥐랄,쥐롤,쥬디,지랄,지럴,지롤,지미랄,쫍빱,凸,퍽큐,뻑큐,빠큐,포경,ㅅㅂㄹㅁ,만남,전국망,대행,자살,스게,점수게임,모히또,토크온,페이스북,페북,매장,8394'.split(',');
+        @if(!empty($profile))
+        var levels = "{{$profile}}";
+        var level_images = JSON.parse(levels.replace(/&quot;/g,'"'));
+        @endif
+        var total_num = 0;
+        var is_repeatChat = false;
+        var lastMsgTime = new Date().getTime();
+        var sumMsgTerm = 0;
+        var msgTermArr = new Array();
+        var msgTermIdx = 0;
+        var msgStopTime = 10;
+        var blackListArr = ''.split(',');
+        var is_scroll_lock = false;
+        var is_scroll_lock_room = false;
+        var is_super = false;
+        var is_admin = @if($manager == 1) true @else false @endif;
+        var is_manager = false;
+        var fixed = "{{$room["roomandpicture"]["fixed"]}}"
+        var room_name ="{{$room["room_connect"]}}";
+        var is_forceFreeze = false;
+        var roomInfo = '{"roomIdx":"'+roomIdx+'","roomType":"@if($room["type"] == 1){{'normal'}}@else{{'premium'}}@endif","roomTitle":"{{$room["room_connect"]}}","roomDesc":"{{$room["description"]}}","roomPublic":"@if($room["public"] == 1){{'public'}}@else{{'private'}}@endif","joinLevel":"0","joinPoint":"0","maxUser":"{{$room["max_connect"]}}","curUser":"0","useridKey":"{{$room["roomandpicture"]["userIdKey"]}}","nickname":"{{$room["roomandpicture"]["nickname"]}}","level":"{{$room["roomandpicture"]["leve"]}}","sex":"{{$room["roomandpicture"]["sex"]}}","profile":"{{$room["roomandpicture"]["image"]}}","regDate":"{{$room["roomandpicture"]["created_date"]}}","manager":"{{$room["manager"]}}","fixMember":"{{$room["roomandpicture"]["fixed"]}}","recomCnt":"50"}';
+        var cur_bet = "";
+        @if(!empty($cur_bet))
+        cur_bet  = "{{$cur_bet}}";
+        @endif
+        var next_round = {{$next_round}};
+        var chatRoom_recomCnt = {{$room["recommend"]}};
+        var level = "{{$room["roomandpicture"]["level"]}}";
+    </script>
+@endsection
 @section("header")
 <div id="header">
     <div class="winLose">
-        전체 : <span class="totalWinCnt" rel="8">8</span>승 <span class="totalLoseCnt" rel="0">0</span>패 / <span class="winFix" rel="8">8</span>연승 &nbsp;&nbsp; 파워볼 : <span class="powerballWinCnt" rel="0">0</span>승
-        <span class="powerballLoseCnt" rel="0">0</span>패 &nbsp;&nbsp; 숫자합 : <span class="numberWinCnt" rel="8">8</span>승 <span class="numberLoseCnt" rel="0">0</span>패
+        @if(empty($win_room))
+            전체 : <span class="totalWinCnt" rel="0">0</span>승 <span class="totalLoseCnt" rel="0">0</span>패 / <span class="winFix" rel="0">0</span>연승 &nbsp;&nbsp; 파워볼 : <span class="powerballWinCnt" rel="0">0</span>승
+            <span class="powerballLoseCnt" rel="0">0</span>패 &nbsp;&nbsp; 숫자합 : <span class="numberWinCnt" rel="0">0</span>승 <span class="numberLoseCnt" rel="0">0</span>패
+        @else
+            전체 : <span class="totalWinCnt" rel="{{$win_room->total->win}}">{{$win_room->total->win}}</span>승 <span class="totalLoseCnt" rel="{{$win_room->total->lose}}">{{$win_room->total->lose}}</span>패 / <span class="winFix" rel="{{$win_room->current_win}}">{{$win_room->current_win}}</span>연승 &nbsp;&nbsp; 파워볼 : <span class="powerballWinCnt" rel="{{$win_room->pb->win}}">{{$win_room->pb->win}}</span>승
+            <span class="powerballLoseCnt" rel="{{$win_room->pb->lose}}">{{$win_room->pb->lose}}</span>패 &nbsp;&nbsp; 숫자합 : <span class="numberWinCnt" rel="{{$win_room->nb->win}}">{{$win_room->nb->win}}</span>승 <span class="numberLoseCnt" rel="{{$win_room->nb->lose}}">{{$win_room->nb->lose}}</span>패
+        @endif
+
     </div>
-    <h2 id="roomTitle" class="tit">✅슬램덩크 레전드 강백호 ✅</h2>
-    <p id="roomDesc" class="desc">1:1 개인프젝, 단체 프젝 환영</p>
-    <div class="profile"><img src="https://sfile.powerballgame.co.kr/profileImg/0306b44123062d60109cac22f164f1ab.gif?1596615578" /></div>
+    <h2 id="roomTitle" class="tit">{{$room["room_connect"]}}</h2>
+    <p id="roomDesc" class="desc">{{$room["description"]}}</p>
+    <div class="profile"><img src="@if(empty($room["roomandpicture"]["image"])){{'https://www.powerballgame.co.kr/images/profile.png'}}@else{{$room["roomandpicture"]["image"]}}@endif" /></div>
 </div>
 <div id="container">
     <div class="leftArea">
         <div class="category">
             <ul class="cate">
-                <li>방장 <em class="on">보테가R</em></li>
-                <li><span class="bar"></span><em>1시간전</em></li>
-                <li><span class="bar"></span>접속자 <em id="chatRoom_topUserCnt" class="on">78</em>명</li>
-                <li><span class="bar"></span>추천수 <em id="chatRoom_recomCnt" class="on">114</em></li>
-                <li><span class="bar"></span>누적 총알수 <em id="totalBulletCnt" rel="2970" class="on">2,970</em></li>
+                <li>방장 <em class="on">{{$room["roomandpicture"]["name"]}}</em></li>
+                <li><span class="bar"></span><span>{{getDiffTimes($room["created_at"])}}전</span></li>
+                <li><span class="bar"></span>접속자 <span id="chatRoom_topUserCnt" class="on">0</span>명</li>
+                <li><span class="bar"></span>추천수 <span id="chatRoom_recomCnt" class="on">{{number_format($room["recommend"])}}</span></li>
+                <li><span class="bar"></span>누적 총알수 <span id="totalBulletCnt" rel="{{number_format($room["bullet"])}}" class="on">{{number_format($room["bullet"])}}</span></li>
             </ul>
         </div>
         <div class="mainBanner">
-            <a href="http://qootoon.com/3c31ef24" target="_blank"><img src="https://simg.powerballgame.co.kr/ad/toptoon_728_90_1.jpg" style="display: none !important;"></a>
+            <a href="http://qootoon.com/3c31ef24" target="_blank"><img src="https://simg.powerballgame.co.kr/ad/toptoon_728_90_1.jpg" ></a>
         </div>
         <div id="recomLogBox"></div>
         <div id="bulletLogBox"></div>
         <div id="managerLogBox"></div>
-        <ul class="msgBox" id="msgBox" style="height: 379px;">
-            <li><p class="msg-system">방장에 의해 채팅방이 청소 되었습니다.</p></li>
-            <li>
-                <p class="recom">
-                    <img src="https://simg.powerballgame.co.kr/images/class/M2.gif" width="23" height="23"> <strong>
-                    <a href="#" class="uname nick" title="가양라끄빌" rel="ff514efc5a8dcccb6f9f7af184d0ba30">가양라끄빌</a></strong> 님이 대화방을 
-                    <img src="https://simg.powerballgame.co.kr/chat/images/bl_recom.png" width="18" height="18" class="icon"> <span>추천</span> 하였습니다.
-                </p>
-            </li>
-            <li><div class="pick nonnn"></div></li>
-            <li><p class="msg-pick"> 방장이 <span>02월08일-1062889</span>회차 <span> [숫자합] 패스</span> 을 선택하셨습니다.</p></li>
-            <li><p class="msg-system"><span>광고, 비방, 비매너, 카톡, 개인정보, 계좌</span> 발언시 차단됩니다.</p></li>
-            <li class="manager">
-                <img src="https://simg.powerballgame.co.kr/chat/images/mark_manager.gif" width="16" height="16"> 
-                <img src="https://simg.powerballgame.co.kr/images/class/M14.gif" width="23" height="23">
-                <strong>
-                    <a href="#" class="uname nick" title="수향이" rel="0824432fc26f58b601d86c301d3cf56e">수향이</a>
-                </strong> ㅌㅌ
-            </li>
-            <li class="opener">
-                <img src="https://simg.powerballgame.co.kr/chat/images/mark_opener.gif" width="16" height="16"> 
-                <img src="https://simg.powerballgame.co.kr/images/class/M15.gif" width="23" height="23"> 
-                <strong><a href="#" class="uname nick" title="보테가R" rel="cb7df5ba2a8f6787d8de4015f1a6465e">보테가R</a></strong> 
-                팸장 :: 보테가 :: 프로젝트 ::    [ ++ 출 45 만원 ++ 뱃후 ++&gt; 80.1 대기중 ]
-            </li>
-            <li><div class="bulletBox"><div class="cnt">20</div><img src="https://simg.powerballgame.co.kr/images/bullet1.png"></div></li>
-            <li><p class="msg-gift"><span>우주최강</span> 님이 <span>보테가R</span> 님에게 <span>총알 10개</span>를 선물하셨습니다.</p></li>
+        <ul class="msgBox" id="msgBox">
+
         </ul>
         <div class="menuBox">
             <div id="helpBox">
@@ -87,7 +106,7 @@
             </div>
             <div id="layer-bulletBox">
                 <div class="title">
-                    나의 총알 <span class="bullet" id="bullet" rel="40" giftcnt="0">40</span>개 <span class="bar">|</span> <span class="txt">보유 수량 한도 내에서  <span class="important">방장에게 선물</span>할 수 있으며, 부족할 경우 총알 구매 후 선물 가능합니다. <a href="/#http%3A%2F%2Fwww.powerballgame.co.kr%2F%3Fview%3Dmarket" target="_blank" class="important">총알 구매하기</a></span>
+                    나의 총알 <span class="bullet" id="bullet" rel="0" giftcnt="0">0</span>개 <span class="bar">|</span> <span class="txt">보유 수량 한도 내에서  <span class="important">방장에게 선물</span>할 수 있으며, 부족할 경우 총알 구매 후 선물 가능합니다. <a href="/#http%3A%2F%2Fwww.powerballgame.co.kr%2F%3Fview%3Dmarket" target="_blank" class="important">총알 구매하기</a></span>
                 </div>
                 <div class="content">
                     <div>
@@ -105,14 +124,33 @@
                     </div>
                 </div>
             </div>
-            <ul>
-                <li><a href="#" onclick="return false;" id="btn_giftBullet">총알 선물하기</a></li>
-                <li><a href="#" onclick="return false;" id="btn_recom">추천하기</a></li>
-                <li><a href="#" onclick="chatManager('clearChat');return false;">방청소</a></li>
-                <li><a href="#" onclick="return false;" id="btn_sound">사운드 끄기</a></li>
-                <li class="emoticon"><a href="#" onclick="return false;" id="btn_emoticon">이모티콘</a></li>
-                <li><a href="#" onclick="return false;" id="btn_favorite">즐겨찾기</a></li>
-                <li class="right"><a href="#" onclick="return false;" id="btn_pointBet">픽 열기</a></li>
+            <ul class="ml-2">
+                @if($manager == 0 && $admin == 0)
+                    <li><a href="#" onclick="return false;" id="btn_giftBullet">총알 선물하기</a></li>
+                    <li><a href="#" onclick="return false;" id="btn_recom">추천하기</a></li>
+                    <li><a href="#" onclick="chatManager('clearChat');return false;">방청소</a></li>
+                    <li><a href="#" onclick="return false;" id="btn_sound">사운드 끄기</a></li>
+{{--                    <li class="emoticon"><a href="#" onclick="return false;" id="btn_emoticon">이모티콘</a></li>--}}
+                    <li><a href="#" onclick="return false;" id="btn_favorite">즐겨찾기</a></li>
+                    <li class="right"><a href="#" onclick="return false;" id="btn_pointBet">픽 열기</a></li>
+                @else
+{{--                    <li><a href="#" onclick="return false;" id="btn_help">명령어</a></li>--}}
+                    @if($room["frozen"] == "off")
+                        <li><a href="#" onclick="return false;" id="btn_freezeOn">얼리기</a></li>
+                    @else
+                        <li><a href="#" onclick="return false;" id="btn_freezeOff">녹이기</a></li>
+                    @endif
+
+                    <li><a href="#" onclick="chatManager('clearChat');return false;">방청소</a></li>
+                    <li><a href="#"  id="btn_chatRoomSetting" data-target="#modify-chatroom" data-toggle="modal">설정</a></li>
+                    <li><a href="#" onclick="return false;" id="btn_chatRoomClose">삭제</a></li>
+                    <li><a href="#" onclick="return false;" id="btn_call">호출</a></li>
+                    <li><a href="#" onclick="return false;" id="btn_sound">사운드 끄기</a></li>
+{{--                    <li class="emoticon"><a href="#" onclick="return false;" id="btn_emoticon">이모티콘</a></li>--}}
+                    <li class="right"><a href="#" onclick="return false;" id="btn_pointBet">픽 열기</a></li>
+                @endif
+
+
             </ul>
         </div>
         <div class="inputBox">
@@ -123,17 +161,17 @@
         </div>
     </div>
     <div class="rightArea">
-        <div class="btns">	
+        <div class="btns">
             <a href="#" onclick="return false;" id="btn_exit" class="exit">채팅방 나가기</a>
         </div>
         <div style="margin: 8px">
             @include('chat.countdown')
-            @include('chat.oddChart')
+{{--            @include('chat.oddChart')--}}
         </div>
         <div class="resultBox">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
-                  <a class="nav-link" id="connection-tab" data-toggle="tab" href="#connection" role="tab" aria-controls="connection" aria-selected="true">접속자 <span id="chatRoom_userCnt">22</span>명</a>
+                  <a class="nav-link" id="connection-tab" data-toggle="tab" href="#connection" role="tab" aria-controls="connection" aria-selected="true">접속자 <span id="chatRoom_userCnt">0</span>명</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link active" id="pick-tab" data-toggle="tab" href="#pick" role="tab" aria-controls="pick" aria-selected="false">방장픽 정보</a>
@@ -143,115 +181,78 @@
                 <div class="tab-pane fade" id="connection" role="tabpanel" aria-labelledby="connection-tab">
                     <div class="userListBox" id="userList">
                         <ul class="userList" id="connectOpenerList">
-                            <li id="u-59cfc4aaf1cb00550f5cf8f109c06a8e">
-                                <img src="https://sfile.powerballgame.co.kr/profileImg/59cfc4aaf1cb00550f5cf8f109c06a8e.gif?1573740223" class="profile mark">
-                                <span class="icon_opener">방장</span>
-                                <img src="https://simg.powerballgame.co.kr/images/class/M20.gif" width="23" height="23">
-                                <a href="#" onclick="return false;" title="대표복구" rel="59cfc4aaf1cb00550f5cf8f109c06a8e" class="uname">대표복구</a>
-                                <div class="todayMsg">
-                                    <div class="inn">
-                                        <p>
-                                            <span>복구해드립니다^^</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </li>
+
                         </ul>
                         <ul class="userList" id="connectManagerList">
+
                         </ul>
                         <ul class="userList" id="connectUserList">
-                            <li id="u-036ecf6d877ec89ed8111417a5f1c1c3">
-                                <img src="https://www.powerballgame.co.kr/profileImg/036ecf6d877ec89ed8111417a5f1c1c3.jpg?1445665748" class="profile">
-                                <img src="https://simg.powerballgame.co.kr/images/class/M28.gif" width="23" height="23">
-                                <a href="#" onclick="return false;" title="모니터링요원" rel="036ecf6d877ec89ed8111417a5f1c1c3" class="uname">모니터링요원</a>
-                                <div class="todayMsg">
-                                    <div class="inn">
-                                        <p>
-                                            <span>개인정보 발언시 차단</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li id="u-35656d70d4845d0e89745d7762fd7d2e">
-                                <img src="https://www.powerballgame.co.kr/images/profile.png" class="profile">
-                                
-                                <img src="https://simg.powerballgame.co.kr/images/class/M15.gif" width="23" height="23">
-                                <a href="#" onclick="return false;" title="왕수박" rel="35656d70d4845d0e89745d7762fd7d2e" class="uname">왕수박</a>
-                                
-                            </li>
-                            <li id="u-7708d9f79d44c8e0f1ac1dd6c999e40b">
-                                <img src="https://www.powerballgame.co.kr/images/profile.png" class="profile mark">
-                                <span class="icon_fixMember">고정</span>
-                                <img src="https://simg.powerballgame.co.kr/images/class/M13.gif" width="23" height="23">
-                                <a href="#" onclick="return false;" title="이쁜미실이" rel="7708d9f79d44c8e0f1ac1dd6c999e40b" class="uname">이쁜미실이</a>
-                            </li>
-                            <li id="u-b05dea204cd799f7b3086b62c59a9eb1">
-                                <img src="https://www.powerballgame.co.kr/images/profile.png" class="profile mark">
-                                <span class="icon_fixMember">고정</span>
-                                <img src="https://simg.powerballgame.co.kr/images/class/M12.gif" width="23" height="23">
-                                <a href="#" onclick="return false;" title="어디로가" rel="b05dea204cd799f7b3086b62c59a9eb1" class="uname">어디로가</a>
-                                
-                            </li>
+
                         </ul>
                     </div>
                 </div>
                 <div class="tab-pane fade show active" id="pick" role="tabpanel" aria-labelledby="pick-tab">
                     <ul class="resultList" id="resultList">
-                        <li id="pick-1063070" style="display: list-item;">
-                            <div class="num">
-                                02월08일<br />
-                                1063070회
-                            </div>
-                            <div class="rs ready"></div>
-                            <div class="blank"></div>
-                            <div class="pick" oddeven_powerball="" oddeven_number="" underover_powerball="" underover_number="" period=""></div>
-                            <div class="pickResultText"></div>
-                        </li>
-                        <li id="pick-1063069" regdate="0">
-                            <div class="num">
-                                02월08일<br />
-                                1063069회
-                            </div>
-                            <div class="rs eooom"></div>
-                            <div class="blank"></div>
-                            <div class="pick onnnn" oddeven_powerball="o" oddeven_number="n" underover_powerball="n" underover_number="n" period="n"><span class="lose_tl"></span></div>
-                            <div class="pickResultText"><span class="win">0</span>승<span class="bar">/</span><span class="lose">1</span>패</div>
-                        </li>
-                        <li id="pick-1063068" regdate="2021-02-08 16:12:53">
-                            <div class="num">
-                                02월08일<br />
-                                1063068회
-                            </div>
-                            <div class="rs eeuum"></div>
-                            <div class="blank"></div>
-                            <div class="pick nnonn" oddeven_powerball="n" oddeven_number="n" underover_powerball="o" underover_number="n" period="n"><span class="lose_bl"></span></div>
-                            <div class="pickResultText"><span class="win">0</span>승<span class="bar">/</span><span class="lose">1</span>패</div>
-                        </li>
-                        <li id="pick-1063067" regdate="2021-02-08 16:07:53" class="win_all">
-                            <div class="num">
-                                02월08일<br />
-                                1063067회
-                            </div>
-                            <div class="rs ooous"></div>
-                            <div class="blank"></div>
-                            <div class="pick nnonn" oddeven_powerball="n" oddeven_number="n" underover_powerball="o" underover_number="n" period="n"></div>
-                            <div class="pickResultText"><span class="win">1</span>승<span class="bar">/</span><span class="lose">0</span>패</div>
-                        </li>
-                        <li id="pick-1063066" regdate="2021-02-08 16:02:52">
-                            <div class="num">
-                                02월08일<br />
-                                1063066회
-                            </div>
-                            <div class="rs eeuob"></div>
-                            <div class="blank"></div>
-                            <div class="pick" oddeven_powerball="" oddeven_number="" underover_powerball="" underover_number="" period=""></div>
-                            <div class="pickResultText"><div style="width: 60px; text-align: center;">개설전</div></div>
-                        </li>
-                        
-                    </ul>           
+
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div id="callSound"></div>
+<div id="pickSound"></div>
+<div class="modal"  id="modify-chatroom" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header jin-gradient">
+                <h5 class="modal-title light-medium text-white">채팅방 설정</h5>
+                <button type="button" class="close-modal" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-borderless">
+                    <tr>
+                        <td class="align-middle"><span class="light-medium">방제목</span></td>
+                        <td class="align-middle">
+                            <input type="text" autocomplete="off" name="roomTitle" id="current_roomTitle" maxlength="40" value="{{$room["room_connect"]}}" class="form-control pr-0 pl-0 pt-1 pb-1 border-round-none border-input">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle"><span class="light-medium">설명</span></td>
+                        <td class="align-middle"><input name="roomDesc" id="current_roomDesc" cols="30" rows="2" maxlength="40" value="{{$room["description"]}}" class="form-control pr-0 pl-0 pt-1 pb-1 border-round-none border-input"></td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle"><span class="light-medium">방종류</span></td>
+                        <td class="align-middle">
+                            @if($room["type"] == 1 )
+                            일반
+                            @else
+                                프리미엄
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle"><span class="light-medium">공개여부</span></td>
+                        <td class="align-middle">
+                            <select name="roomPublic" id="current_roomPublic" class="custom-select no-height border-input">
+                                <option value="1" @if($room["public"] == 1 ){{'selected'}}@endif>전체공개</option>
+                                <option value="2" @if($room["public"] == 2 ){{'selected'}}@endif>비공개</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle"><span class="light-medium">참여인원</span></td>
+                        <td class="align-middle">{{$room["max_connect"]}}명</td>
+                    </tr>
+                </table>
+                <div class="text-center">
+                    <a href="#" id="btn_modifyChatRoom" type="button" class="btn btn-jin-gradient border-round-none pr-5 pl-5 btn-sm create_room">채팅방 수정</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    @include("chat.view-list")
+    @include("chat.opener-picks")
 @endsection

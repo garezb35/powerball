@@ -53,15 +53,17 @@ function  getMinMax(str,index){
     return max;
 }
 
-function compileJson(from,to,json,type=1,frame_reset = 1){
+function compileJson(from,to,json,type=1,frame_reset = true){
 
     var template = $(from).html();
     var compiled_template = Handlebars.compile(template);
     var rendered = compiled_template(json);
     if(type == 2)
         $(to).append(rendered);
-    else
+    if(type ==1)
         $(to).html(rendered);
+    if(type == 10)
+        $(to).prepend(rendered);
     if(frame_reset)
         heightResize();
 }
@@ -205,7 +207,16 @@ Handlebars.registerHelper('returnPer', function(context,index) {
     return (100 * (parseFloat(context[index])/sum)).toFixed(2);
 });
 
+Handlebars.registerHelper('compareBig', function(arg1,arg2,options) {
+    if(parseInt(arg1) > parseInt(arg2))
+        return options.fn(this);
+    else
+        return options.inverse(this);
+});
+
 Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
+    if(arg1 == null || typeof arg1 =='undefined') arg1 = "";
+    if(arg2 == null || typeof arg2 =='undefined') arg2 = "";
     if(!isNaN(arg1)){
         arg1 = arg1.toString();
     }
@@ -338,6 +349,73 @@ Handlebars.registerHelper('oddClassAlias', function(arg1,arg2) {
     return pattern_alias[arg2]["p"+arg1[arg2]];
 });
 
+Handlebars.registerHelper('loadLevelImage', function(arg) {
+    return level_images[arg]
+});
+
+Handlebars.registerHelper("displayKTime",function(arg){
+    return diff_minutes(calcTime("+9"),arg);
+});
+
+Handlebars.registerHelper('processBettingData', function(arg1,arg2) {
+
+    const betting_data = JSON.parse(arg1);
+    let lose = 0;
+    let win = 0;
+    let html = "";
+    let label = "";
+    for(var key in betting_data){
+        let classs = "";
+        if(key == "pb_oe"){
+            if(betting_data[key].pick == 1) classs = "chat-pbodd";
+            else classs = "chat-pbeven";
+        }
+        if(key == "pb_uo"){
+            if(betting_data[key].pick == 1) classs = "chat-pbunder";
+            else classs = "chat-pbover";
+        }
+        if(key == "nb_oe"){
+            if(betting_data[key].pick == 1) classs = "chat-nbodd";
+            else classs = "chat-nbeven";
+        }
+        if(key == "nb_uo"){
+            if(betting_data[key].pick == 1) classs = "chat-nbunder";
+            else classs = "chat-nbover";
+        }
+        if(key == "nb_size"){
+            if(betting_data[key].pick == 3) {
+                label = "대";
+                classs = "chat-nbbig";
+            }
+            if(betting_data[key].pick == 2) {
+                label = "중";
+                classs = "chat-nbmiddle";
+            }
+            if(betting_data[key].pick == 1) {
+                label = "소";
+                classs = "chat-nbsmall";
+            }
+        }
+        if(betting_data[key].is_win == 2)
+        {
+            classs = classs+" " + "not";
+            lose +=1;
+        }
+        else
+            win +=1;
+        html += "<div class='"+classs+"'><div>"+label+"</div></div>";
+    }
+    var first = "<div class=\"pick nnonn\">"+html+"</div>";
+    if( typeof arg2[0] != 'undefined' && typeof arg2[0]["nnn"] != 'undefined' && arg2[0]["nnn"] == -1)
+    {
+    }
+    else
+        first = first + "<div class=\"pickResultText\"><span class=\"win\">"+win+"</span>승<span class=\"bar\">/</span><span class=\"lose\">"+lose+"</span>패</div>";
+    return first
+
+});
+
+
 function number_format(user_input){
     var filtered_number = user_input.replace(/[^0-9]/gi, '');
     var length = filtered_number.length;
@@ -358,4 +436,39 @@ function number_format(user_input){
     return formated_number;
 }
 
+function calcTime(offset) {
+    // create Date object for current location
+    var d = new Date();
 
+    // convert to msec
+    // subtract local time zone offset
+    // get UTC time in msec
+    var utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+
+    // create new Date object for different city
+    // using supplied offset
+    var nd = new Date(utc + (3600000*offset));
+
+    // return time as a string
+    return nd;
+}
+
+function diff_minutes(dt2, dt1)
+{
+    var diff =(dt2 - dt1) / 1000;
+    var return_obj="";
+    var minute = Math.abs(Math.round(diff / 60));
+    var sec = Math.abs(Math.round(diff % 60));
+    if(minute < 1)
+    {
+        if(sec ==0)
+            return_obj = "방금";
+        else
+            return_obj = sec+"초";
+    }
+    if(minute >= 1 && minute < 60)
+        return_obj = minute+"분";
+    if(minute >=60)
+        return_obj = Math.abs(Math.round(minute/60))+"시간";
+    return return_obj;
+}

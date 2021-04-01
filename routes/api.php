@@ -24,6 +24,18 @@ Route::middleware('auth:api')->group(function(){
     Route::post("/setAutoStart",[App\Http\Controllers\PowerballController::class,'setAutoStart']);
     Route::post("/buyItem",[App\Http\Controllers\MarketController::class,'buyItem']);
     Route::post("/useItem",[App\Http\Controllers\MarketController::class,'useItem']);
+
+    Route::post("/checkActiveRoom",[App\Http\Controllers\ChatController::class,'checkActiveRoom']);
+    Route::post("/checkOtherRoom",[App\Http\Controllers\ChatController::class,'checkOtherRoom']);
+    Route::post("/createRoom",[App\Http\Controllers\ChatController::class,'createRoom'])->name("createRoom");
+    Route::post("/getChatPicks",[App\Http\Controllers\PowerballController::class,'getChatPicks'])->name("getChatPicks");
+    Route::post("/recommendChatRoom",[App\Http\Controllers\ChatController::class,'reChatRoom']);
+    Route::post("/setFavorite",[App\Http\Controllers\ChatController::class,'setFavorite']);
+    Route::post("/setFroze",[App\Http\Controllers\ChatController::class,'setFroze']);
+    Route::post("/modifyRoom",[App\Http\Controllers\ChatController::class,'modifyRoom']);
+    Route::post("/deleteChatRoom",[App\Http\Controllers\ChatController::class,'deleteChatRoom']);
+    Route::post("/getBullet",[App\Http\Controllers\ChatController::class,'getBullet']);
+    Route::post("/giveBullet",[App\Http\Controllers\ChatController::class,'giveBullet']);
 });
 
 Route::post("/get_more/powerball",[App\Http\Controllers\PowerballController::class,'resultList']);
@@ -39,5 +51,6 @@ Route::post("/checkedPattern",[App\Http\Controllers\PowerballController::class,'
 Route::get("/processSimulatorBet",[App\Http\Controllers\BetController::class,'processSimulatorBet']);
 Route::post("/getRoundBox",[App\Http\Controllers\PowerballController::class,'getRoundBox']);
 Route::get("/patternTotal",[App\Http\Controllers\PowerballController::class,'patternTotal']);
+Route::get("/calculateWinning",[App\Http\Controllers\PowerballController::class,'calculateWinning']);
 
 

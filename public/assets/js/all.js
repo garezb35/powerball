@@ -186,6 +186,127 @@ function heightResize()
     catch(e){}
 }
 
+// user layer handler
+function userLayerHandler(e)
+{
+    var target = $(e.target);
+
+    if(target.is('a'))
+    {
+        if(target.attr('rel').substring(0,5) == 'guest')
+        {
+            $('#userLayer').hide();
+        }
+        else
+        {
+            eval(setUserLayer(target.attr('rel'),target.attr('title'),e));
+            $('#userLayer').show();
+        }
+        e.stopPropagation();
+    }
+    else if(target.parent().is('a'))
+    {
+        if(target.parent().attr('rel').substring(0,5) == 'guest')
+        {
+            $('#userLayer').hide();
+        }
+        else
+        {
+            eval(setUserLayer(target.parent().attr('rel'),target.parent().attr('title'),e));
+            $('#userLayer').show();
+        }
+        e.stopPropagation();
+    }
+}
+
+// user layer set
+function setUserLayer(useridKey,nickname,e)
+{
+    var str = '';
+
+    if(this.userIdKey != useridKey)
+    {
+        str += '<ul>';
+
+        if(roomIdx != 'lobby' && is_admin && useridKey != 'dc5de9ce5f7cfb22942da69e58156b68' && useridKey != '98fcb9f71155698ab70389d897d7345b' && useridKey != JSON.parse(roomInfo).useridKey)
+        {
+            str += '<li><a href="#" onclick="adminCmd(\'fixMemberOn\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">고정멤버임명</span></a></li>';
+            str += '<li><a href="#" onclick="adminCmd(\'fixMemberOff\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">고정멤버해제</span></a></li>';
+            str += '<li><a href="#" onclick="adminCmd(\'managerOn\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">매니저임명</span></a></li>';
+            str += '<li><a href="#" onclick="adminCmd(\'managerOff\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">매니저해제</span></a></li>';
+            str += '<li><a href="#" onclick="adminCmd(\'muteOn\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">벙어리</span></a></li>';
+            str += '<li><a href="#" onclick="adminCmd(\'muteOff\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">벙어리 해제</span></a></li>';
+            str += '<li><a href="#" onclick="adminCmd(\'kickOn\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">강퇴</span></a></li>';
+            str += '<li><a href="#" onclick="adminCmd(\'kickOff\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">강퇴 해제</span></a></li>';
+        }
+        else if(roomIdx != 'lobby' && is_manager && useridKey != 'dc5de9ce5f7cfb22942da69e58156b68' && useridKey != '98fcb9f71155698ab70389d897d7345b' && useridKey != JSON.parse(roomInfo).useridKey)
+        {
+            str += '<li><a href="#" onclick="adminCmd(\'muteOn\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">벙어리</span></a></li>';
+            str += '<li><a href="#" onclick="adminCmd(\'muteOff\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">벙어리 해제</span></a></li>';
+            str += '<li><a href="#" onclick="adminCmd(\'kickOn\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">강퇴</span></a></li>';
+            str += '<li><a href="#" onclick="adminCmd(\'kickOff\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">강퇴 해제</span></a></li>';
+        }
+
+        str += '<li><a href="#" onclick="chatManager(\'friendList\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">친구추가</span></a></li>';
+        str += '<li><a href="#" onclick="chatManager(\'blackList\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">블랙리스트</span></a></li>';
+        str += '</ul>';
+    }
+
+    $('#unickname').html(nickname);
+
+    $('#userLayer .ubody').remove();
+
+    if(str)
+    {
+        $('#userLayer').append('<div class="ubody">'+str+'</div>');
+    }
+
+    var bettingStr = '';
+
+    // $.ajax({
+    //     type:'POST',
+    //     dataType:'json',
+    //     url:'/',
+    //     data:{
+    //         view:'action',
+    //         action:'bettingResultLayer',
+    //         useridKey:useridKey
+    //     },
+    //     timeout:1000,
+    //     success:function(data,textStatus){
+    //
+    //         bettingStr += '<ul>';
+    //         bettingStr += '<li>올킬 - <span class="'+data.totalWinClass+'">'+data.totalWinFix+'</span>연승</li>';
+    //         bettingStr += '<li>파워볼홀짝 - <span class="'+data.powerballOddEvenWinClass+'">'+data.powerballOddEvenWinFix+'</span>연승, <span class="win">'+data.powerballOddEvenWin+'</span>승<span class="lose">'+data.powerballOddEvenLose+'</span>패('+data.powerballOddEvenRate+')</li>';
+    //         bettingStr += '<li>파워볼언더오버 - <span class="'+data.powerballUnderOverWinClass+'">'+data.powerballUnderOverWinFix+'</span>연승, <span class="win">'+data.powerballUnderOverWin+'</span>승<span class="lose">'+data.powerballUnderOverLose+'</span>패('+data.powerballUnderOverRate+')</li>';
+    //         bettingStr += '<li>숫자합홀짝 - <span class="'+data.numberOddEvenWinClass+'">'+data.numberOddEvenWinFix+'</span>연승, <span class="win">'+data.numberOddEvenWin+'</span>승<span class="lose">'+data.numberOddEvenLose+'</span>패('+data.numberOddEvenRate+')</li>';
+    //         bettingStr += '<li>숫자합언더오버 - <span class="'+data.numberUnderOverWinClass+'">'+data.numberUnderOverWinFix+'</span>연승, <span class="win">'+data.numberUnderOverWin+'</span>승<span class="lose">'+data.numberUnderOverLose+'</span>패('+data.numberUnderOverRate+')</li>';
+    //         bettingStr += '</ul>';
+    //
+    //         $('#userLayer .game').html(bettingStr);
+    //
+    //         // layer position
+    //         var layerTop = 0;
+    //         var layerBottom = $('body').height() - e.pageY - $('#userLayer').height();
+    //
+    //         if(layerBottom < 0)
+    //         {
+    //             layerTop = e.pageY - $('#userLayer').height();
+    //         }
+    //         else
+    //         {
+    //             layerTop = e.pageY;
+    //         }
+    //
+    //         $('#userLayer').css({'left':e.pageX + 10,'top':layerTop});
+    //     },
+    //     error:function (xhr,textStatus,errorThrown){
+    //         alert('error'+(errorThrown?errorThrown:xhr.status));
+    //     }
+    // });
+}
+
+
 $(document).ready(function(){
     $(".hiddenBorard").click(function(){
         if($(this).attr("rel") == "hidden")
@@ -193,4 +314,18 @@ $(document).ready(function(){
         else
             $(".boardBox").show();
     })
+    $("body").ajaxError(
+        function(e,request) {
+            if (request.status == 401) {
+                alert("로그아웃상태이므로 요청을 수락할수 없습니다.");
+            }
+        }
+    );
+    // user layer
+    $(document).on('click','a.uname',userLayerHandler);
+
+    $(document).click(function(){
+        $('#userLayer:visible').hide();
+    });
 })
+

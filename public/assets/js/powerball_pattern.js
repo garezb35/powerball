@@ -4,6 +4,8 @@ var type = "pb_oe";
 var limit = 10;
 var index = 0;
 var patt = "";
+var pb_oe = new Array(),pb_uo = new Array(),nb_oe = new Array(),nb_uo = new Array(),nb_size = new Array()
+let patternAll = {}
 jQuery.fn.extend({
     live: function (event, callback) {
         if (this.selector) {
@@ -23,45 +25,6 @@ $(document).ready(function (){
             searchPattern(1,date,round);
         },500);
     });
-
-    // $('#patternSet').on('click','li',function(){
-    //     if($(this).find('.img').hasClass('sp-even'))
-    //     {
-    //         $(this).find('.img').removeClass('sp-even').addClass('sp-odd');
-    //         $(this).data("code",1);
-    //     }
-    //     else if($(this).find('.img').hasClass('sp-odd'))
-    //     {
-    //         $(this).find('.img').removeClass('sp-odd').addClass('sp-even');
-    //         $(this).data("code",0);
-    //     }
-    //     else if($(this).find('.img').hasClass('sp-under'))
-    //     {
-    //         $(this).find('.img').removeClass('sp-under').addClass('sp-over');
-    //         $(this).data("code",1);
-    //     }
-    //     else if($(this).find('.img').hasClass('sp-over'))
-    //     {
-    //         $(this).find('.img').removeClass('sp-over').addClass('sp-under');
-    //         $(this).data("code",0);
-    //     }
-    //     else if($(this).find('.img').hasClass('sp-big'))
-    //     {
-    //         $(this).find('.img').removeClass('sp-big').addClass('sp-middle');
-    //         $(this).data("code",2);
-    //
-    //     }
-    //     else if($(this).find('.img').hasClass('sp-middle'))
-    //     {
-    //         $(this).find('.img').removeClass('sp-middle').addClass('sp-small');
-    //         $(this).data("code",1);
-    //     }
-    //     else if($(this).find('.img').hasClass('sp-small'))
-    //     {
-    //         $(this).find('.img').removeClass('sp-small').addClass('sp-big');
-    //         $(this).data("code",3);
-    //     }
-    // })
 })
 
 function initPattern(limit=10,type="pb_oe",callback){
@@ -102,9 +65,6 @@ function initPattern(limit=10,type="pb_oe",callback){
 }
 
 function searchPattern(append = 1,var_date=old_date,var_round=old_round){
-
-    // if(append ==1)
-
     if(index ==0 || append ==1){
         patt = "";
         $("#patternList").html("");
@@ -132,11 +92,56 @@ function searchPattern(append = 1,var_date=old_date,var_round=old_round){
                 date = data.result[length-1].current[0].created_date.split(" ")[0];
                 round = data.result[length-1].current[0].day_round;
                 index++;
+                if(data.result.length > 0 ){
+                    for(var item in data.result){
+                        for(var i = 0; i < data.result[item].current.length;i++){
+                            pb_oe.push(data.result[item].current[i].pb_oe)
+                            pb_uo.push(data.result[item].current[i].pb_uo)
+                            nb_oe.push(data.result[item].current[i].nb_oe)
+                            nb_uo.push(data.result[item].current[i].nb_uo)
+                            nb_size.push(data.result[item].current[i].nb_size)
+                        }
+                        if(typeof data.result[item].next !="undefined"){
+                            pb_oe.push(data.result[item].next.pb_oe)
+                            pb_uo.push(data.result[item].next.pb_uo)
+                            nb_oe.push(data.result[item].next.nb_oe)
+                            nb_uo.push(data.result[item].next.nb_uo)
+                            nb_size.push(data.result[item].next.nb_size)
+                        }
+                    }
+                    let patternAll = {};
+                    patternAll["poe"] = {};
+                    patternAll["puo"] = {};
+                    patternAll["noe"] = {};
+                    patternAll["nuo"] = {};
+                    patternAll["nsize"] = {};
+                    patternAll["poe"]["max"] = new Array();
+                    patternAll["poe"]["count"] = new Array();
+                    patternAll["puo"]["max"] = new Array();
+                    patternAll["puo"]["count"] = new Array();
+                    patternAll["noe"]["max"] = new Array();
+                    patternAll["noe"]["count"] = new Array();
+                    patternAll["nuo"]["max"] = new Array();
+                    patternAll["nuo"]["count"] = new Array();
+                    patternAll["nsize"]["max"] = {};
+                    patternAll["nsize"]["count"] = {};
+                    patternAll["poe"]["max"][0] = -1;patternAll["poe"]["max"][1] = -1;
+                    patternAll["puo"]["max"][0] = -1; patternAll["puo"]["max"][1] = -1;
+                    patternAll["noe"]["max"][0] = -1; patternAll["noe"]["max"][1] = -1;
+                    patternAll["nuo"]["max"][0] = -1; patternAll["nuo"]["max"][1] = -1;
+                    patternAll["nsize"]["max"]["1"] = -1; patternAll["nsize"]["max"]["2"] = -1; patternAll["nsize"]["max"]["3"] = -1;
+                    patternAll["poe"]["count"] = pb_oe.reduce(function(acc,e){acc[e] = (e in acc ? acc[e]+1 : 1); return acc}, {});
+                    patternAll["puo"]["count"] = pb_uo.reduce(function(acc,e){acc[e] = (e in acc ? acc[e]+1 : 1); return acc}, {});
+                    patternAll["noe"]["count"] = nb_oe.reduce(function(acc,e){acc[e] = (e in acc ? acc[e]+1 : 1); return acc}, {});
+                    patternAll["nuo"]["count"] = nb_uo.reduce(function(acc,e){acc[e] = (e in acc ? acc[e]+1 : 1); return acc}, {});
+                    patternAll["nsize"]["count"] = nb_size.reduce(function(acc,e){acc[e] = (e in acc ? acc[e]+1 : 1); return acc}, {});
+                    compileJson("#chart-data",".chart-power",patternAll);
+                    douPie([patternAll["nsize"]["count"]["3"],patternAll["nsize"]["count"]["2"],patternAll["nsize"]["count"]["1"]],"chart-area","");
+                }
             }
             if(data.status ==0)
             {
                 $(".moreBox a").addClass("disabled");
-                // goErrorPopup();
             }
         })
     }

@@ -130,7 +130,7 @@ function speedkenoBetting()
 
 }
 
-function powerballBetting()
+function powerballBetting(in_room = -1)
 {
     var fn = document.forms.bettingForm;
 
@@ -153,7 +153,17 @@ function powerballBetting()
             if(data.status == 1)
             {
                 goErrorPopup(data.message);
-                document.location.reload();
+                if(data.room == 1)
+                    document.location.reload()
+                else
+                {
+                    if(typeof socket !="undefined" && socket !=null)
+                        sendProcess("ADMINCMD",data.picks)
+                    resetPowerballBetting()
+                    $('.sm-message').modal('hide')
+                    $('#betBox').slideToggle('fast')
+                    setScroll();
+                }
             }
             else
             {

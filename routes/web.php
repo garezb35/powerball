@@ -31,7 +31,6 @@ Route::get("/market",[App\Http\Controllers\MarketController::class, 'view'])->na
 Route::get("/chatRoom",[App\Http\Controllers\ChatController::class,'roomWait'])->name('room_wait');
 Route::get("/discussion",[App\Http\Controllers\ChatController::class,'viewChat'])->name('view-chat');
 Route::get("/updateLevelUsers",[App\Http\Controllers\PbUsersController::class,'getUpdateUserLevel']);
-
 Route::prefix('pick')->group(function () {
     Route::get("/powerball",[App\Http\Controllers\PowerballController::class, 'pick'])->name("pick-powerball");
     Route::get("/speedkeno",[App\Http\Controllers\SpeedkenoController::class, 'pick'])->name("pick-speedkeno");

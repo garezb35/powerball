@@ -7,5 +7,5 @@ $(document).ready(function (){
 
 function openChatRoom()
 {
-    chatRoomPop = window.open('/chatRoom','chatRoom','width=500px,height=500px,status=no,scrollbars=no,toolbar=no');
+    chatRoomPop = window.open('/chatRoom','chatRoom','width=1233px,height=565px,status=no,scrollbars=no,toolbar=no');
 }

@@ -1,6 +1,15 @@
 <script> var pick_type  = @if(empty($type))-1 @else {{$type}} @endif; </script>
 <script src="/assets/js/miniview.js"></script>
 <link rel="stylesheet" href="/assets/css/miniview.css">
+@php
+    $iroom = 1;
+    $roomIdx = "";
+    if(!empty($room)){
+        $roomIdx = $room["roomIdx"];
+    }
+    if(!empty($in_room))
+        $iroom = $in_room;
+@endphp
 <div class="betBox" id="betBox" style="display:{{$pick_visible}}">
     <div class="title">픽</div>
     <form name="bettingForm" id="bettingForm" method="post" action="{{route('processBet')}}">
@@ -13,6 +22,8 @@
         <input type="hidden" name="numberUnderOver" id="numberUnderOver" />
         <input type="hidden" name="numberPeriod" id="numberPeriod" />
         <input type="hidden" name="api_token" value="{{$token}}" />
+        <input type="hidden" name="roomIdx" value = "{{$roomIdx}}" />
+        <input type="hidden" name="in_room" value="{{$iroom}}" />
         <ul class="betting">
             <li>
                 <span class="titleBox">파워볼</span>

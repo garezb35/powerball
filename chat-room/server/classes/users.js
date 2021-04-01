@@ -4,28 +4,37 @@ class User {
         this.users = []
     }
 
-    addUser(id, name,level,nickname,sex,winFixCnt,clientId = "",roomIdx=""){
-        this.users.push({id, name,level,nickname,sex,winFixCnt,clientId,roomIdx})
+    addUser(id, name,level,nickname,sex,winFixCnt,clientId = "",roomIdx="",time=0,mark="",item="",lobby="",image="",today="",userType=0){
+        this.users.push({id, name,level,nickname,sex,winFixCnt,clientId,roomIdx,time,mark,item,lobby,image,today,userType})
         return this.users
     }
     getUser(id){
         return this.users.filter(user => user.id === id)[0]
     }
-    getUserFromIdAndRoomIdx(id,roomIdx){
-        return this.users.filter(user => user.id === id && user.roomIdx === roomIdx)[0]
+    getUserFromIdAndRoomIdx(id,lobby){
+        return this.users.filter(user => user.id === id && user.lobby === lobby)[0]
     }
+
+    getUserFromClientIdAndRoomIdx(clientId,roomIdx){
+        return this.users.filter(user => user.clientId === clientId && user.roomIdx === roomIdx)[0]
+    }
+
     getUserByClientId(clientId){
-        return this.users.filter(user => user.clientId === clientId)[0]
+        return this.users.filter(user => user.id !== 'NULL' && user.clientId === clientId)[0]
     }
-    getUserByName(name){
-        return this.users.filter(user => user.name == name)[0]
+
+    getUserFromOnlyRoom(){
+        return this.users.filter(user => user.roomIdx != 'channel1' && user.roomIdx != "lobby")
     }
+
+    getUsersByRoomIdx(roomIdx){
+        return this.users.filter(user => user.roomIdx === roomIdx)
+    }
+
     getUsers(){
         return this.users
     }
-    getUsersFromChatRoom(chatRoom){
 
-    }
     deleteUser(id){
         let deletedUser = this.getUser(id)
         this.users = this.users.filter((user) => user.id != id)
@@ -34,6 +43,10 @@ class User {
 
     deleteUserByClientId(clientId){
         this.users = this.users.filter((user) => user.clientId != clientId)
+    }
+
+    deleteUserByRoomIdx(roomIdx){
+        this.users = this.users.filter((user) => user.roomIdx != roomIdx)
     }
 }
 

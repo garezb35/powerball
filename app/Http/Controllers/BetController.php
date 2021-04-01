@@ -6,6 +6,7 @@ use App\Models\PbAutoHistory;
 use App\Models\PbAutoMatch;
 use App\Models\PbAutoSetting;
 use App\Models\PbBettingCtl;
+use App\Models\PbRoom;
 use App\Models\PowerballRange;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,16 +19,16 @@ class BetController extends Controller
 {
     /* 사용자 베팅요청부분 */
     public function processBet(Request $request){
-
-        $userId = Auth::id();
+        $socket_powerball = array();
+        $user = Auth::user();
+        $roomIdx = $request->roomIdx;
         /* 로그인 유저가 아니면 되돌린다 */
         if (!Auth::check()) {
             echo json_encode(array("status"=>0,"message"=>"로그인후 이용하실수 있습니다."));
             return;
         }
-
         /* 다른 테이블에 다시 갱신된 베팅자료들이 있으므로 이미 처리된 베팅자료들은 지워준다. */
-        PbBetting::where("is_win",">",'-1')->where("userId",$userId)->delete();
+        PbBetting::where("is_win",">",'-1')->where("userId",$user->userId)->delete();
 
         /* 게임 픽 이름 */
         $powerball_picks = array("pb_oe"=>"pb_oe","pb_uo"=>"pb_uo","nb_oe"=>"nb_oe","nb_uo"=>"nb_uo","nb_size"=>"nb_size");
@@ -36,6 +37,16 @@ class BetController extends Controller
         /* 방장픽인지 일반픽인지 검사 1이면 일반픽 2이면 방장픽 */
         $in_room = $request->in_room;
         $in_room = empty($in_room) ? 1 : 2;
+
+        /* 유저아이디에 따르는 채팅방이 있는지 검사한다  존재하지 않으면 일반픽으로 고정한다*/
+        if($in_room == 2 && !empty($request->roomIdx)){
+            $checked_room = PbRoom::where("super",$user->userIdKey)->where("roomIdx",$roomIdx)->where("active",1)->first();
+            if(empty($checked_room))
+            {
+                $in_room = 1;
+                $roomIdx = "";
+            }
+        }
 
         /* Bulk INSERT자료 */
         $bulk_items = array();
@@ -83,7 +94,7 @@ class BetController extends Controller
                 return;
             }
 
-            $current_state = PbBetting::where("round",$next_round)->where("game_type",1)->where("userId",$userId)->first();
+            $current_state = PbBetting::where("round",$next_round)->where("game_type",1)->where("userId",$user->userId)->first();
             if(!empty($current_state))
             {
                 echo json_encode(array("status"=>0,"message"=>"한 회차당 한번만 참여할수 있습니다."));
@@ -93,16 +104,22 @@ class BetController extends Controller
             foreach ($powerball_picks as $key => $index){
                 $pick_content = $key;
                 if(in_array($$pick_content,array("0","1","2","3")))
+                {
                     array_push($bulk_items,array(    "round"=>$next_round,
                         "game_type"=>1,
                         "type"=>$in_room,
                         "game_code"=>$index,
-                        "userId"=>$userId,
+                        "userId"=>$user->userId,
+                        "roomIdx"=>$roomIdx,
                         "pick"=>$$pick_content,
                         "created_date"=>date("Y-m-d H:i:s"),
                         "updated_date"=>date("Y-m-d H:i:s")));
+                    $socket_powerball[$index]["pick"] = $$pick_content;
+                    $socket_powerball[$index]["is_win"] = -1;
+                }
             }
         }
+
 
         if($game_type == "speedkenoBetting"){
             $nb_oe=  $request->numberSumOddEven;
@@ -112,7 +129,7 @@ class BetController extends Controller
                 echo json_encode(array("status"=>0,"message"=>"두개중 한개이상을 선태해주세요."));
                 return;
             }
-            $current_state = PbBetting::where("round",$next_round)->where("game_type",2)->where("userId",$userId)->first();
+            $current_state = PbBetting::where("round",$next_round)->where("game_type",2)->where("userId",$user->userId)->first();
             if(!empty($current_state))
             {
                 echo json_encode(array("status"=>0,"message"=>"한 회차당 한번만 참여할수 있습니다."));
@@ -125,8 +142,9 @@ class BetController extends Controller
                         "game_type"=>2,
                         "type"=>$in_room,
                         "game_code"=>$index,
-                        "userId"=>$userId,
+                        "userId"=>$user->userId,
                         "pick"=>$$pick_content,
+                        "roomIdx"=>$roomIdx,
                         "created_date"=>date("Y-m-d H:i:s"),
                         "updated_date"=>date("Y-m-d H:i:s")));
             }
@@ -135,13 +153,22 @@ class BetController extends Controller
         if(!empty($bulk_items))
         {
             PbBetting::insert($bulk_items);
-            echo json_encode(array("status"=>1,"message"=>"픽이 완료되였습니다."));
-            $bet_count = PbBettingCtl::where("userId",$userId)->count();
+
+            $bet_count = PbBettingCtl::where("userId",$user->userId)->count();
             if($bet_count % 20 == 19 ){
                 $user = Auth::user();
                 $user->bread = $user->bread+1;
                 $user->save();
             }
+
+//            PbBettingCtl::where("userId",$user->userId)->update([
+//               "status"=>1
+//            ]);
+
+            if($in_room == 1)
+                echo json_encode(array("status"=>1,"room"=>$in_room ,"message"=>"픽이 완료되였습니다."));
+            else
+                echo json_encode(array("status"=>1,"room"=>$in_room,"message"=>"픽이 완료되였습니다.","picks"=>array("round"=>$next_round,"result"=>$socket_powerball,"roomIdx"=>$roomIdx,"date"=>date("m")."월 ".date("d")."일")));
             return;
         }
         else

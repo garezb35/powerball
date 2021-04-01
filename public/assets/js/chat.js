@@ -10,13 +10,14 @@ if('WebSocket' in window)
 
 var socket =  null;
 $(document).ready(function(){
-    connect();
+
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         e.target // newly activated tab
         e.relatedTarget // previous active tab
     });
     if(browser_ws == true)
     {
+        connect();
         socket.on('receive',function(data){
             receiveProcess(data);
         });
@@ -42,7 +43,128 @@ $(document).ready(function(){
         }
     }
 
+    $('#sendBtn').click(function(){
+        sendMsg();
+    });
+    $(window).on("unload",function(e){
+        if(browser_ws == true)
+        {
+            socket.disconnect();
+        }
+    });
+    $('#msg').bind('keypress',function(event){
+        if((event.keyCode || event.which) == 13)
+        {
+            $('#sendBtn').click();
+        }
+        else if((event.keyCode || event.which) == 34 && !$('#msg').val())
+        {
+            if(whisperNick)
+            {
+                event.preventDefault();
+                $('#msg').val('"'+whisperNick+' ');
+            }
+        }
+    });
+
+    $('#msg').bind('keydown',function(event){
+        if((event.keyCode || event.which) == 38)
+        {
+            event.preventDefault();
+
+            var chatMsg = getChatHistory(chatHistoryNum);
+            if(chatMsg)
+            {
+                $(this).val(chatMsg);
+                chatHistoryNum++;
+            }
+        }
+        else if((event.keyCode || event.which) == 40)
+        {
+            event.preventDefault();
+
+            var chatMsg = getChatHistory(chatHistoryNum-2);
+            if(chatMsg)
+            {
+                $(this).val(chatMsg);
+                chatHistoryNum--;
+            }
+            else
+            {
+                $(this).val('');
+                chatHistoryNum = 0;
+            }
+        }
+    });
+
+    $('#msg').focus(function(){
+        $('.input-chatting .label').hide();
+    });
+    $('#msg').blur(function(){
+        if(!$(this).val())
+        {
+            $('.input-chatting .label').show();
+        }
+    });
+
+// sound
+    if(!getCookie('powerballResultSound'))
+    {
+        setCookie('powerballResultSound','on');
+    }
+
+    $(document).on('click','#roomList .tit,#roomList .thumb,.joinRoom',function(){
+
+        var roomIdx = $(this).attr('rel');
+        chatRoomPop = window.open('','chatRoom','width=5px,height=5px,status=no,scrollbars=no,toolbar=no');
+
+        $.ajax({
+            type:'POST',
+            dataType:'json',
+            url:'/api/checkActiveRoom',
+            data:{api_token:userIdToken,room:$(this).attr("rel")},
+            success:function(data,textStatus){
+                if(data.status == 1)
+                {
+                    chatRoomPop = window.open('/discussion?token='+data.token,'chatRoom','width=500px,height=500px,status=no,scrollbars=no,toolbar=no');
+                    chatRoomPop.focus();
+                }
+                else
+                {
+                    if(data.code == 'needPasswd')
+                    {
+                        if(chatRoomPop != null)
+                        {
+                            chatRoomPop.close();
+                        }
+
+                        var topPos = ($(window).height() - 180) / 2;
+                        var leftPos = ($(window).width() - 250) / 2;
+
+                        $('#modal_passwordInput').css({'top':topPos+'px','left':leftPos+'px'});
+                        $('.modalLayer').show();
+                        $('#modal_passwordInput').show(function(){
+                            $(this).find('.input').val('');
+                            $(this).find('.input').focus();
+                            $(this).find('.btn_join').attr('rel',roomIdx);
+                        });
+                    }
+                    else
+                    {
+                        if(chatRoomPop != null)
+                        {
+                            chatRoomPop.close();
+                        }
+                        alert(data.msg);
+                    }
+                }
+            }
+        });
+    });
 })
+
+$(window).ready(windowResize);
+$(window).bind('resize',windowResize);
 
 function browserIEChk()
 {
@@ -109,7 +231,7 @@ function sendProcess(type,data)
             },
             'body' : {
                 'cmd' : 'LOGIN',
-                'userToken' : userIdToken,
+                'userToken' : userIdKey,
                 'roomIdx' : this.roomIdx
             }
         }
@@ -420,7 +542,6 @@ function sendMsg()
     $('#msg').focus();
 }
 
-
 function receiveProcess(data)
 {
     var hPacket = data.header;
@@ -436,8 +557,8 @@ function receiveProcess(data)
                     case 'DUPLICATE':
 
                         printSystemMsg('guide','중복 로그인으로 인해 이전 접속을 종료합니다.');
-                        // socket.disconnect();
-                        // document.location.href = '/chat';
+                        socket.disconnect();
+                        document.location.href = '/chat?state=doubled_display';
                         break;
                 }
                 break;
@@ -461,7 +582,6 @@ function receiveProcess(data)
     }
     else if(hPacket.type == 'CMDMSG')
     {
-
         switch(bPacket.cmd)
         {
             case 'notice':
@@ -561,7 +681,7 @@ function receiveProcess(data)
             case 'powerballResult':
                 if(getCookie('powerballResultSound') == 'on')
                 {
-                    $('#powerballResultSound').jPlayer('play');
+                    // $('#powerballResultSound').jPlayer('play');
                 }
                 printSystemMsg('powerballResult_'+bPacket.powerballOddEven,'<span>['+bPacket.date+'-'+bPacket.round+'회]</span> 파워볼 결과 [<span class="b">'+bPacket.powerball+'</span>][<span class="b">'+bPacket.powerballOddEvenMsg+'</span>][<span class="b">'+bPacket.powerballUnderOverMsg+'</span>]');
                 printSystemMsg('powerballResult_'+bPacket.numberOddEven,'<span>['+bPacket.date+'-'+bPacket.round+'회]</span> 숫자합 결과 [<span class="b">'+bPacket.numberSum+'</span>][<span class="b">'+bPacket.numberOddEvenMsg+'</span>][<span class="b">'+bPacket.numberUnderOverMsg+'</span>][<span class="b">'+bPacket.numberPeriodMsg+'</span>]');
@@ -654,14 +774,6 @@ function receiveProcess(data)
                 }
                 break;
 
-            case 'gasEventNoti':
-                printSystemMsg('macro','<span>'+bPacket.round+'회차</span>에 가스가 누출되었습니다. <span>방독면</span> 아이템을 사용한 상태로 픽 적중시 <span>보너스 경험치 5배</span>를 획득할 수 있습니다.');
-                $('#msgBox').addClass('gasBg');
-                break;
-
-            case 'gasEventWin':
-                printSystemMsg('macro','<span>'+bPacket.nickList+'</span> 님이 <span>방독면 아이템</span> 사용 후 <span>['+bPacket.date+'-'+bPacket.round+'회차] ['+bPacket.resultMsg+']</span> 맞춰서 <span>보너스 경험치 5배</span>를 획득하셨습니다.');
-                break;
 
             case 'admin':
                 printSystemMsg('admin',bPacket.msg);
@@ -684,12 +796,14 @@ function receiveProcess(data)
     }
     else if(hPacket.type == 'INITMSG')
     {
+        compileJson("#users","#connectList",bPacket.connectList,1,false);
+        total_num = bPacket.connectList.length;
+        $("#connectUserCnt").html(number_format(total_num.toString()));
         $('#msgBox').empty();
-
-        for(var i in bPacket.data)
+        for(var i in bPacket.msgList)
         {
-            var dataInfo = bPacket.data[i];
-            printChatMsg(dataInfo.level,dataInfo.sex,dataInfo.mark,dataInfo.useridKey,dataInfo.nickname,dataInfo.msg,dataInfo.item,dataInfo.winFixCnt);
+            var dataInfo = bPacket.msgList[i];
+            printChatMsg(dataInfo.level,dataInfo.sex,dataInfo.mark,dataInfo.id,dataInfo.nickname,dataInfo.msg,dataInfo.item,dataInfo.winFixCnt);
         }
 
         printSystemMsg('guide','<span>'+roomName(bPacket.roomIdx)+'</span>에 입장 하셨습니다.');
@@ -783,6 +897,17 @@ function receiveProcess(data)
                 break;
 
             case 'NOT_LOGIN':
+                compileJson("#users","#connectList",bPacket.connectList,0,false);
+                if(typeof bPacket.connectList != "undefined"){
+                    total_num = bPacket.connectList.length;
+                    $("#connectUserCnt").html(number_format(total_num.toString()));
+                    $('#msgBox').empty();
+                    for(var i in bPacket.msgList)
+                    {
+                        var dataInfo = bPacket.msgList[i];
+                        printChatMsg(dataInfo.level,dataInfo.sex,dataInfo.mark,dataInfo.id,dataInfo.nickname,dataInfo.msg,dataInfo.item,dataInfo.winFixCnt);
+                    }
+                }
                 printSystemMsg('guide','채팅에 참여하려면 로그인이 필요합니다.');
                 break;
 
@@ -799,12 +924,29 @@ function receiveProcess(data)
                 break;
         }
     }
+    else if(hPacket.type == "ListUser"){
+        if(typeof bPacket.users != "undefined"){
+            var ss = new Array();
+            ss[0] = bPacket.users;
+            compileJson("#users","#connectList",ss,2,false);
+            total_num = total_num+1;
+            $("#connectUserCnt").html(number_format(total_num.toString()));
+        }
+
+    }
+    else if(hPacket.type == "LeaveUserId")
+    {
+        total_num = total_num-1;
+        if(total_num < 0)
+            total_num = 1;
+        $("#"+bPacket.userIdKey).remove();
+        $("#connectUserCnt").html(number_format(total_num.toString()));
+    }
 }
 
 function browserWsChk()
 {
     var result = false;
-
     // 안드로이드
     if(navigator.userAgent.indexOf('Android') != -1)
     {
@@ -894,3 +1036,323 @@ function getCookie(name)
     }
     return '';
 }
+function roomName(roomIdx)
+{
+    var returnName = '';
+
+    switch(roomIdx)
+    {
+        case 'channel1':
+            returnName = '연병장';
+            break;
+
+        case 'channel2':
+            returnName = '생활관';
+            break;
+    }
+
+    return returnName;
+}
+
+
+function fixNotice(state,msg)
+{
+    if(state == 'on')
+    {
+        $('#fixNoticeBox').show();
+    }
+    else if(state == 'off')
+    {
+        $('#fixNoticeBox').hide();
+    }
+
+    if(msg)
+    {
+        $('#fixNoticeBox .msg').html(msg);
+
+    }
+}
+
+function chatManager(type,nick)
+{
+    if(type == 'refresh')
+    {
+        location.reload();
+    }
+    else if(type == 'clearChat')
+    {
+        if($('#msgBox').is(':hidden') == false)
+        {
+            $('#msgBox').html('');
+            printSystemMsg('guide','채팅창을 지웠습니다.');
+        }
+    }
+    else if(type == 'popupChat')
+    {
+        windowOpen('/chat.php','chatPopup',330,575,'no');
+    }
+    else if(type == 'help')
+    {
+        if($('#helpBox').css('display') == 'none')
+        {
+            $('#helpBox').show();
+        }
+        else
+        {
+            $('#helpBox').hide();
+        }
+    }
+    else if(type == 'whisper')
+    {
+        setCookie('whisperNick',nick,1);
+        whisperNick = nick;
+
+        $('#msg').focus();
+        $('#msg').val('"'+nick+' ');
+    }
+    else if(type == 'memo')
+    {
+        windowOpen('/?view=memo&type=write&receiveName='+nick,'memo',600,600,'auto');
+    }
+    else if(type == 'muteOn' || type == 'muteOff' || type == 'banOn' || type == 'banipOn' || type == 'banipOff')
+    {
+        $('#msg').val('/'+type+' '+nick);
+        $('#sendBtn').click();
+    }
+    else if(type == 'muteOnTime1')	// 벙어리(1시간)
+    {
+        $('#msg').val('/muteOnTime '+nick+' 1');
+        $('#sendBtn').click();
+    }
+    else if(type == 'muteOnTime')	// 벙어리(영구)
+    {
+        $('#msg').val('/'+type+' '+nick+' 10000');
+        $('#sendBtn').click();
+    }
+    else if(type == 'freezeOn')
+    {
+        printSystemMsg('system','운영자가 채팅창을 얼렸습니다.');
+        is_freeze = 'on';
+    }
+    else if(type == 'freezeOff')
+    {
+        printSystemMsg('system','운영자가 채팅창을 녹였습니다.');
+        is_freeze = 'off';
+    }
+    else if(type == 'friendList')
+    {
+        if(confirm('['+nick+']님을 친구 추가하시겠습니까?'))
+        {
+            $.ajax({
+                type:'POST',
+                dataType:'json',
+                url:'/',
+                data:{
+                    view:'action',
+                    action:'member',
+                    actionType:'friendList',
+                    nickname:nick
+                },
+                success:function(data,textStatus){
+                    if(data.state == 'success')
+                    {
+                        alert('['+data.friendNickname+']님을 친구 추가했습니다.');
+                    }
+                    else
+                    {
+                        alert(data.msg);
+                    }
+                },
+                error:function (xhr,textStatus,errorThrown){
+                    //alert('error'+(errorThrown?errorThrown:xhr.status));
+                }
+            });
+        }
+    }
+    else if(type == 'blackList')
+    {
+        if(confirm('['+nick+']님을 블랙리스트에 추가하시겠습니까?'))
+        {
+            $.ajax({
+                type:'POST',
+                dataType:'json',
+                url:'/',
+                data:{
+                    view:'action',
+                    action:'member',
+                    actionType:'blackList',
+                    nickname:nick
+                },
+                success:function(data,textStatus){
+                    if(data.state == 'success')
+                    {
+                        blackListArr.push(data.blackUseridKey);
+                        alert('['+data.blackNickname+']님을 블랙리스트에 추가했습니다.');
+                    }
+                    else
+                    {
+                        alert(data.msg);
+                    }
+                },
+                error:function (xhr,textStatus,errorThrown){
+                    //alert('error'+(errorThrown?errorThrown:xhr.status));
+                }
+            });
+        }
+    }
+}
+
+function repeatChatFilter()
+{
+    var totalTime = 0;
+    var curDate = new Date();
+
+    msgTermArr[msgTermIdx % 8] = curDate.getTime() - lastMsgTime;
+    lastMsgTime = curDate.getTime();
+    msgTermIdx++;
+
+    for(var i=0;i<msgTermArr.length;i++)
+    {
+        totalTime += msgTermArr[i];
+    }
+
+    if(msgTermArr.length == 8 && totalTime < 5 * 1000)
+    {
+        is_repeatChat = true;
+        printSystemMsg('guide','[도배금지] ' + msgStopTime + '초간 채팅이 제한됩니다.');
+        setTimeout(clearRepeatChat,msgStopTime * 1000);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+function clearRepeatChat()
+{
+    msgTermIdx = 0;
+    msgTermArr = new Array();
+    is_repeatChat = false;
+}
+
+
+function printChatMsg(level,sex,mark,useridKey,nickname,msg,item,winFixCnt)
+{
+    // black list
+    if((','+blackListArr.join()+',').indexOf(','+useridKey+',') != -1)
+    {
+        return;
+    }
+
+    var msgLength = $('#msgBox li').length;
+
+    if(msgLength > 150)
+    {
+        for(i=0;i<msgLength-150;i++)
+        {
+            $('#msgBox li').eq(i).remove();
+        }
+    }
+
+    msgLength = null;
+
+    var addClass = '';
+    if(level == 30)
+    {
+        addClass = ' class="admin"';
+    }
+    else if(level == 29)
+    {
+        addClass = ' class="devadmin"';
+    }
+
+    var itemView = '';
+    var gasmaskClass = '';
+    var levelImg = sex+level;
+    if(item)
+    {
+        if(item.indexOf('superChat') != -1)
+        {
+            addClass = ' class="superchat"';
+        }
+
+        if(item.indexOf('levelupx4') != -1)
+        {
+            itemView = '<span style="position:absolute;left:-3px;z-index:-1;"><img src="https://simg.powerballgame.co.kr/images/levelupx4.gif" width="29" height="23"></span>';
+        }
+        else if(item.indexOf('levelupx2') != -1)
+        {
+            itemView = '<span style="position:absolute;left:-3px;z-index:-1;"><img src="https://simg.powerballgame.co.kr/images/levelupx2.gif" width="29" height="23"></span>';
+        }
+
+        if(item.indexOf('gasmask') != -1)
+        {
+            gasmaskClass = ' class="gasmask"';
+            levelImg = 'gasmask';
+        }
+    }
+
+    var familyNick = '';
+    var familyNickView = '';
+    var badgeCnt = '';
+    if(item)
+    {
+        if(item.indexOf('familyNick') != -1 || item.indexOf('badge') != -1)
+        {
+            var itemArr = item.split('#::#');
+
+            for(var i=0;i<itemArr.length;i++)
+            {
+                if(itemArr[i].indexOf('familyNick') != -1)
+                {
+                    familyNick = itemArr[i].replace('familyNick_','');
+                }
+                else if(itemArr[i].indexOf('badge') != -1)
+                {
+                    var badgeCnt = itemArr[i].replace('badge','');
+                    itemView += '<span style="position:absolute;left:-3px;bottom:-9px;z-index:99;"><div class="sp-badge'+badgeCnt+'" title="'+badgeCnt+'연승 훈장"></div></span>';
+                }
+            }
+
+            familyNickView = '<span class="familyNick">'+familyNick+'</span>';
+        }
+    }
+
+    var markView = '';
+    if(mark == 'pickster')
+    {
+        markView = '<img src="https://simg.powerballgame.co.kr/images/bl_pickster.gif" width="16" height="16" class="king" title="베스트픽스터"> ';
+    }
+
+    if(level == 30)
+    {
+        $('#msgBox').append('<li><p class="msg-admin">'+msg+'</p></li>');
+    }
+    else
+    {
+        // 연승 표현
+        var winFixCntView = '';
+        if(winFixCnt > 0)
+        {
+            winFixCntView = '<span style="position:absolute;right:-3px;bottom:-9px;z-index:99;"><div class="sp-win'+winFixCnt+'" title="'+winFixCnt+'연승"></div></span>';
+        }
+
+        $('#msgBox').append('<li'+addClass+'>'+markView+'<span style="position:relative;"><img src="'+level_images[level]+'" width="23" height="23" orgLevel="'+sex+level+'"'+gasmaskClass+'/>'+itemView+winFixCntView+'</span> <strong><a href="#" onclick="return false;" title="'+nickname+'" rel="'+useridKey+'" class="uname">'+familyNickView+nickname+'</a></strong> '+msg+'</li>');
+    }
+
+    addClass = null;
+
+    setScroll();
+}
+
+function windowResize()
+{
+    var msgBoxHeight = $('body').height();
+    $('#msgBox').height(msgBoxHeight-190);
+    $('#connectList').height(msgBoxHeight-160);
+    $('#roomList').height(msgBoxHeight-185);
+    $('#ruleBox').height(msgBoxHeight-203);
+    msgBoxHeight = null;
+}
+

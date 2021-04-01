@@ -414,4 +414,51 @@ img, fieldset, iframe {
     color: #fff;
 }
 
+#msgBox .msg-odd {
+    background-color: #156AEA;
+    border: 1px solid #1156bd;
+    min-height: 22px;
+    line-height: 22px;
+    color: #fff;
+    padding: 0 5px;
+    margin: 3px 0;
+    text-align: center;
+}
+
+#msgBox .msg-even {
+    background-color: #C11A20;
+    border: 1px solid #B01D1D;
+    min-height: 22px;
+    line-height: 22px;
+    color: #fff;
+    padding: 0 5px;
+    margin: 3px 0;
+    text-align: center;
+}
+#msgBox .msg-odd span, #msgBox .msg-even span {
+    color: yellow;
+}
+.box-chatting .list-room {
+    overflow: auto;
+    border-left: 1px solid #cecece;
+    border-right: 1px solid #cecece;
+    padding: 0;
+}
+
+.box-chatting .list-connect {
+    position: relative;
+    overflow: auto;
+    border-left: 1px solid #cecece;
+    border-right: 1px solid #cecece;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+#ruleBox .borderBox ul {
+    margin-top: 5px;
+    margin-left: 5px;
+    font-size: 11px;
+    line-height: 18px;
+}
+
 

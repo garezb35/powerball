@@ -725,3 +725,32 @@ thead.thead-gray{
 .user-info td{
     border-top:none;
 }
+
+
+.btn-jin-gradient{
+    background: linear-gradient(180deg, #335292, #233b69);
+    border: #172a4a 1px solid;
+    font-family: nexon_lv_otf_medium;
+    color: #fff;
+}
+
+.btn-jin-gradient:hover,.btn-jin-gradient:focus,.btn-jin-gradient:active{
+    background: linear-gradient(
+        180deg
+        , #335292, #5378bd);
+    color: #fff
+;
+}
+
+.light-medium{
+    font-family: nexon_lv_otf_medium;
+    font-weight: bold;
+}
+
+.modal-sm-custom {
+    max-width: 500px;
+}
+
+.jin-gradient{
+    background: linear-gradient(180deg, #335292, #233b69);
+}

@@ -1,4 +1,27 @@
 @extends('includes.empty_header')
+@section("script_header")
+    <script>
+        var userIdToken = "{{$api_token}}";
+        var userIdKey = "{{$userIdKey}}";
+        var roomIdx ="lobby";
+        var is_admin = false;
+        var is_freeze = 'off';
+        var chatHistoryNum = 0;
+        var filterWordArr = 'ㅋㅌ,카톡,틱톡,http,www,co.kr,net,com,kr,net,org,abcgame,scoregame,스코어게임,스게,abc게임,자지,보지,섹스,쎅스,씨발,시발,병신,븅신,개세,개새자지,출장,섹파,자위,8아,18놈,18새끼,18년,18뇬,18노,18것,18넘,개년,개놈,개뇬,개새,개색끼,개세끼,개세이,개쉐이,개쉑,개쉽,개시키,개자식,개좆,게색기,게색끼,광뇬,뇬,눈깔,뉘미럴,니귀미,니기미,니미,도촬,되질래,뒈져라,뒈진다,디져라,디진다,디질래,병쉰,병신,뻐큐,뻑큐,뽁큐,삐리넷,새꺄,쉬발,쉬밸,쉬팔,쉽알,스패킹,스팽,시벌,시부랄,시부럴,시부리,시불,시브랄,시팍,시팔,시펄,실밸,십8,십쌔,십창,싶알,쌉년,썅놈,쌔끼,쌩쑈,썅,써벌,썩을년,쎄꺄,쎄엑,쓰바,쓰발,쓰벌,쓰팔,씨8,씨댕,씨바,씨발,씨뱅,씨봉알,씨부랄,씨부럴,씨부렁,씨부리,씨불,씨브랄,씨빠,씨빨,씨뽀랄,씨팍,씨팔,씨펄,씹,아가리,아갈이,엄창,접년,잡놈,재랄,저주글,조까,조빠,조쟁이,조지냐,조진다,조질래,존나,존니,좀물,좁년,좃,좆,좇,쥐랄,쥐롤,쥬디,지랄,지럴,지롤,지미랄,쫍빱,凸,퍽큐,뻑큐,빠큐,포경,ㅅㅂㄹㅁ,만남,전국망,대행,자살,스게,점수게임,모히또,토크온,페이스북,페북,매장,8394'.split(',');
+        @if(!empty($profile))
+        var levels = "{{$profile}}";
+        var level_images = JSON.parse(levels.replace(/&quot;/g,'"'));
+        @endif
+        var total_num = 0;
+        var is_repeatChat = false;
+        var lastMsgTime = new Date().getTime();
+        var sumMsgTerm = 0;
+        var msgTermArr = new Array();
+        var msgTermIdx = 0;
+        var msgStopTime = 10;
+        var blackListArr = ''.split(',');
+    </script>
+@endsection
 @section("header")
 <div id="header">
     <h2>채팅대기실</h2>
@@ -14,11 +37,12 @@
     <div class="leftArea">
         <div class="category">
             <ul class="order">
-                <li><a class="on" href="./?ct=total&amp;order=winRate">승률순</a><span class="bar"></span></li>
-                <li><a class="" href="./?ct=total&amp;order=userCnt">참여자순</a><span class="bar"></span></li>
-                <li><a class="" href="./?ct=total&amp;order=recomCnt">추천순</a><span class="bar"></span></li>
-                <li><a class="" href="./?ct=total&amp;order=new">최신순</a><span class="bar"></span></li>
-                <li><a href="./?ct=favorite&amp;order=winRate">즐겨찾기(<em id="bookmark_room_count">6</em>)</a></li>
+                <li><a href="javascript:void(0)">전체(<span id="chatRoomCnt">{{$room_count}}</span>)</a><span class="bar"></span></li>
+                <li><a class="@if(empty(Request::get("rtype")) || Request::get("rtype") =="winRate"){{'on'}}@endif" href="{{route("room_wait")}}?rtype=winRate">승률순</a><span class="bar"></span></li>
+                <li><a class="@if(Request::get("rtype") =="userCnt"){{'on'}}@endif" href="{{route("room_wait")}}?rtype=userCnt">참여자순</a><span class="bar"></span></li>
+                <li><a class="@if(Request::get("rtype") =="recommend"){{'on'}}@endif" href="{{route("room_wait")}}?rtype=recommend">추천순</a><span class="bar"></span></li>
+                <li><a class="@if(Request::get("rtype") =="latest"){{'on'}}@endif" href="{{route("room_wait")}}?rtype=latest">최신순</a><span class="bar"></span></li>
+                <li><a class="@if(Request::get("rtype") =="favor"){{'on'}}@endif" href="{{route("room_wait")}}?rtype=favor">즐겨찾기(<span id="bookmark_room_count">{{$favor_count}}</span>)</a></li>
             </ul>
         </div>
         <div class="mainBanner">
@@ -26,144 +50,163 @@
                 <img src="https://simg.powerballgame.co.kr/ad/toptoon_728_90_1.jpg" style="display: none !important;">
             </a>
         </div>
-        <ul id="bestList" class="roomList best"><li id="room-e96f202b9c54f9e5df399b1042d21197" data-trate="2.0167" data-prate="1.05" data-nrate="2.0167" data-recomcnt="26" data-curuser="14" data-time="1612706026" data-usercnt="8">
-			<div class="thumb red"><img src="https://sfile.powerballgame.co.kr/profileImg/965ff7b3c3d2d1ac75dca49048998589.gif?1605863502" class="roomImg"><div class="winFixCnt">5</div></div>
-                <div class="inner">
-                    <span class="winLose win"><span>6</span>승 <span>0</span>패</span>
-                    <span class="winFix"><span>6</span>연승</span>
-                    <span class="tit">★★ 겐 조 ★★</span>
-                    <div class="desc">★★★★★⭐★★★★★⭐★★★★★⭐★★★★★</div>
-                </div>
-                <div class="userCntBox">
-                    <div class="userCnt"><span class="curCnt">23</span> / <span class="maxCnt">300</span></div>
-                    <div class="date">47분전</div>
-                </div>
-                <div class="line">&nbsp;</div>
-                <div class="userInfo">
-                    <div class="user">
-                        <img src="https://simg.powerballgame.co.kr/images/class/M15.gif" width="23" height="23">
-                        <a href="#" onclick="return false;" title="럭셔리겐조" rel="965ff7b3c3d2d1ac75dca49048998589" class="uname">럭셔리겐조</a>
+        <ul id="bestList" class="roomList best">
+            @if(!empty($best) && !empty($best["roomandpicture"]))
+                <li id="room-{{$best["roomIdx"]}}">
+                    <div class="thumb">
+                        <img src="@if(!empty($best["roomandpicture"]["image"])){{$best["roomandpicture"]["image"]}}@else{{'https://simg.powerballgame.co.kr/images/profile.png'}}@endif" class="roomImg">
+{{--                        <div class="winFixCnt">5</div>--}}
                     </div>
-                    <a href="#" onclick="return false;" rel="e96f202b9c54f9e5df399b1042d21197" class="enterBtn">채팅방 입장하기</a>
-                </div>
-            </li>
+                    <div class="inner">
+                        <span class="winLose @if(($best["win"]-$best["lose"]) ==0){{'draw'}}@endif @if(($best["win"]-$best["lose"]) > 0){{'win'}}@endif @if(($best["win"]-$best["lose"]) < 0){{'lose'}}@endif"><span>{{$best["win"]}}</span>승 <span>{{$best["lose"]}}</span>패</span>
+                        @if(!empty($best["current_win"]))<span class="winFix"><span>{{$best["current_win"]}}</span>연승</span>@endif
+                        <span class="tit">{{$best["room_connect"]}}</span>
+                        <div class="desc">{{$best["description"]}}</div>
+                    </div>
+                    <div class="userCntBox">
+                        <div class="userCnt"><span class="curCnt">{{$best["members"]}}</span> / <span class="maxCnt">{{$best["max_connect"]}}</span></div>
+                        <div class="date">{{getDiffTimes($best["created_at"])}}전</div>
+                    </div>
+                    <div class="line">&nbsp;</div>
+                    <div class="userInfo">
+                        <div class="user">
+                            <img src="{{$best["roomandpicture"]["get_user_class"]["value3"]}}" width="23" height="23">
+                            <a href="#" onclick="return false;" title="{{$best["roomandpicture"]["nickname"]}}" rel="965ff7b3c3d2d1ac75dca49048998589" class="uname">{{$best["roomandpicture"]["nickname"]}}</a>
+                        </div>
+                        <a href="#" onclick="return false;" rel="{{$best["roomIdx"]}}" class="enterBtn">채팅방 입장하기</a>
+                    </div>
+                </li>
+            @endif
         </ul>
         <ul id="roomList" class="roomList" style="height: 395px;">
-            <li id="room-324c4ce4c75330648343735b8995f4b1" data-trate="2.5682" data-prate="1.35" data-nrate="2.5682" data-recomcnt="34" data-curuser="3" data-time="1612706141" data-usercnt="70">
-                <div class="thumb red">
-                    <img src="https://sfile.powerballgame.co.kr/profileImg/365844f232fd177b2be850c56b706314.gif?1611279167" class="roomImg" />
-                    <div class="winFixCnt">4</div>
-                </div>
-                <div class="inner">
-                    <span class="winLose win"><span>9</span>승 <span>1</span>패</span>
-        
-                    <span class="winFix"><span>7</span>연승</span>
-        
-                    <span class="tit">❤️복돼지❤️</span>
-                    <div class="desc">❤️❤️돼지꿈 꾸셧나요? 럭키돼지 ^^❤️</div>
-                </div>
-                <div class="userCntBox">
-                    <div class="userCnt"><span class="curCnt">73</span> / <span class="maxCnt">300</span></div>
-                    <div class="date">54분전</div>
-                </div>
-                <div class="line">&nbsp;</div>
-                <div class="userInfo">
-                    <div class="user">
-                        <img src="https://simg.powerballgame.co.kr/images/class/M17.gif" width="23" height="23" />
-                        <a href="#" onclick="return false;" title="잘해요복돼지" rel="365844f232fd177b2be850c56b706314" class="uname">잘해요복돼지</a>
-                    </div>
-                    <a href="#" onclick="return false;" rel="324c4ce4c75330648343735b8995f4b1" class="enterBtn">채팅방 입장하기</a>
-                </div>
-            </li>
-            <li id="room-cfea19092959b542de8894c35252abfe" data-trate="2.575" data-prate="2.45" data-nrate="2.5071" data-recomcnt="19" data-curuser="3" data-time="1612707230" data-usercnt="7">
-                <div class="thumb red">
-                    <img src="https://sfile.powerballgame.co.kr/profileImg/44c94a7dd20ef5019c270bf3b4cb7149.gif?1611422628" class="roomImg" />
-                    <div class="winFixCnt">2</div>
-                </div>
-                <div class="inner">
-                    <span class="winLose win"><span>7</span>승 <span>1</span>패</span>
-            
-                    <span class="winFix"><span>7</span>연승</span>
-            
-                    <span class="tit">미친놈이 이기는 세상</span>
-                    <div class="desc hidden"></div>
-                </div>
-                <div class="userCntBox">
-                    <div class="userCnt"><span class="curCnt">9</span> / <span class="maxCnt">100</span></div>
-                    <div class="date">40분전</div>
-                </div>
-                <div class="line">&nbsp;</div>
-                <div class="userInfo">
-                    <div class="user">
-                        <img src="https://simg.powerballgame.co.kr/images/class/M14.gif" width="23" height="23" />
-                        <a href="#" onclick="return false;" title="천하무적시라소니" rel="44c94a7dd20ef5019c270bf3b4cb7149" class="uname">천하무적시라소니</a>
-                    </div>
-                    <a href="#" onclick="return false;" rel="cfea19092959b542de8894c35252abfe" class="enterBtn">채팅방 입장하기</a>
-                </div>
-                <div style="position: absolute; top: 0; right: 230px; z-index: 96;" title="일주일 내에 5연승 기록이 있습니다"><img src="https://simg.powerballgame.co.kr/images/badge5.png" width="46" height="68" /></div>
-            </li>            
-        </ul>        
+            @if(!empty($list))
+                @foreach($list as $value)
+                    <li id="room-{{$value["roomIdx"]}}">
+                        <div class="thumb">
+                            <img src="@if(!empty($value["roomandpicture"]["image"])){{$value["roomandpicture"]["image"]}}@else{{'https://simg.powerballgame.co.kr/images/profile.png'}}@endif" class="roomImg">
+                            {{--                        <div class="winFixCnt">5</div>--}}
+                        </div>
+                        <div class="inner">
+                            <span class="winLose @if(($value["win"]-$value["lose"]) ==0){{'draw'}}@endif @if(($value["win"]-$value["lose"]) > 0){{'win'}}@endif @if(($value["win"]-$value["lose"]) < 0){{'lose'}}@endif"><span>{{$value["win"]}}</span>승 <span>{{$value["lose"]}}</span>패</span>
+                            @if(!empty($value["current_win"]))<span class="winFix"><span>{{$value["current_win"]}}</span>연승</span>@endif
+                            <span class="tit">{{$value["room_connect"]}}</span>
+                            <div class="desc">{{$value["description"]}}</div>
+                        </div>
+                        <div class="userCntBox">
+                            <div class="userCnt"><span class="curCnt">{{$value["members"]}}</span> / <span class="maxCnt">{{$value["max_connect"]}}</span></div>
+                            <div class="date">{{getDiffTimes($best["created_at"])}}전</div>
+                        </div>
+                        <div class="line">&nbsp;</div>
+                        <div class="userInfo">
+                            <div class="user">
+                                <img src="{{$value["roomandpicture"]["get_user_class"]["value3"]}}" width="23" height="23">
+                                <a href="#" onclick="return false;" title="{{$value["roomandpicture"]["nickname"]}}" rel="965ff7b3c3d2d1ac75dca49048998589" class="uname">{{$value["roomandpicture"]["nickname"]}}</a>
+                            </div>
+                            <a href="#" onclick="return false;" rel="{{$value["roomIdx"]}}" class="enterBtn">채팅방 입장하기</a>
+                        </div>
+                    </li>
+                @endforeach
+            @endif
+        </ul>
     </div>
     <div class="rightArea">
         <div class="btns">
-            <a href="#" onclick="return false;" id="btn_createChatRoomBox" class="create">채팅방 개설하기</a><span class="bar"></span>
+            <a href="#"  id="btn_createChatRoomBox" class="create" data-toggle="modal" data-target="#creatingWindow">채팅방 개설하기</a><span class="bar"></span>
             <a href="#" onclick="return false;" id="btn_joinMyChatRoom" class="myroom">나의 채팅방 입장하기</a>
         </div>
         <div class="myInfo">
 			<div class="tit">내정보</div>
 			<div class="inner">
-				<img src="https://simg.powerballgame.co.kr/images/class/M6.gif" width="23" height="23">
-				<a href="#" onclick="return false;" title="관리왕1" rel="ae4dc42db84518b74dac088daa545bf8" class="uname">관리왕1</a>
+				<img src="{{$level["value3"]}}" width="23" height="23">
+				<a href="#" onclick="return false;" title="{{$user["nickname"]}}" rel="{{$user["userIdKey"]}}" class="uname">{{$user["nickname"]}}</a>
 			</div>
         </div>
         <div class="userList">
-            <div class="tit">대기실 <span id="lobby_userCnt">305</span>명</div>
+            <div class="tit">대기실 <span id="lobby_userCnt"></span>명</div>
             <ul id="lobbyUser">
-                <li id="u-1fac799403b0d3c8ff77615dc0b579d4">
-                    <img src="https://sfile.powerballgame.co.kr/profileImg/1fac799403b0d3c8ff77615dc0b579d4.jpg?1598490809" class="profile">
-                    <img src="https://simg.powerballgame.co.kr/images/class/F20.gif" width="23" height="23">
-                    <a href="#" onclick="return false;" title="독보적일류님" rel="1fac799403b0d3c8ff77615dc0b579d4" class="uname">독보적일류님</a>
-                    <div class="todayMsg">
-                        <div class="inn">
-                            <p>
-                                <span>˚⭐4주연속 베픽1위  전설의 일류⭐˚</span>
-                            </p>
-                        </div>
-                    </div>
-                </li>
-                <li id="u-4ada725b272a7ac29e0b63227ced8001">
-                    <img src="https://sfile.powerballgame.co.kr/profileImg/4ada725b272a7ac29e0b63227ced8001.gif?1586439603" class="profile">
-                    
-                    <img src="https://simg.powerballgame.co.kr/images/class/M20.gif" width="23" height="23">
-                    <a href="#" onclick="return false;" title="조선김삿갓" rel="4ada725b272a7ac29e0b63227ced8001" class="uname">조선김삿갓</a>
-                    
-                    <div class="todayMsg">
-                        <div class="inn">
-                            <p>
-                                <span>복구#프젝#수익문의#</span>
-                            </p>
-                        </div>
-                    </div>
-                </li>
-                <li id="u-1ea730d33fa7e95e5b8f1d33c160ff84">
-                    <img src="https://sfile.powerballgame.co.kr/profileImg/1ea730d33fa7e95e5b8f1d33c160ff84.gif?1594035044" class="profile">
-                    <img src="https://simg.powerballgame.co.kr/images/class/M20.gif" width="23" height="23">
-                    <a href="#" onclick="return false;" title="김닥터" rel="1ea730d33fa7e95e5b8f1d33c160ff84" class="uname">김닥터</a>
-                </li>
-                <li id="u-3ba0f158125c8914fab152da1f12abb7">
-                    <img src="https://sfile.powerballgame.co.kr/profileImg/3ba0f158125c8914fab152da1f12abb7.gif?1611497257" class="profile">
-                    <img src="https://simg.powerballgame.co.kr/images/class/M17.gif" width="23" height="23">
-                    <a href="#" onclick="return false;" title="빙그레님" rel="3ba0f158125c8914fab152da1f12abb7" class="uname">빙그레님</a>
-                    <div class="todayMsg">
-                        <div class="inn">
-                            <p>
-                                <span>안전수익 프젝문의</span>
-                            </p>
-                        </div>
-                    </div>
-                </li>
+
             </ul>
         </div>
-    </div>    
+    </div>
 </div>
+
+<div class="modal" id="creatingWindow">
+    <div class="modal-dialog modal-sm-custom" role="document">
+        <div class="modal-content">
+            <div class="modal-header jin-gradient">
+                <h5 class="modal-title light-medium text-white" id="exampleModalLabel">채팅방 개설하기</h5>
+                <button type="button" class="close-modal" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                {!! Form::open(['action' =>'App\Http\Controllers\ChatController@createRoom', 'method' => 'post',"id"=>"form-room"]) !!}
+                   <table class="table table-borderless">
+                       <tr>
+                           <td class="border-top-none align-middle">
+                               <span class="light-medium">방제목</span>
+                           </td>
+                           <td class="border-top-none align-middle">
+                               {!! Form::hidden('api_token',$api_token,["id"=>'api_token']); !!}
+                               {!! Form::text('roomTitle', '', array_merge(['class' => 'form-control pr-0 pl-0 pt-1 pb-1 border-round-none border-input','placeholder'=>"제목을 입력해주세요",'autocomplete'=>"off","id"=>"roomTitle"],["required"])) !!}
+                           </td>
+                       </tr>
+                       <tr>
+                           <td class="border-top-none align-middle">
+                               <span class="light-medium">설명</span>
+                           </td>
+                           <td class="border-top-none align-middle">
+                               {!! Form::text('roomDesc', '', ['class' => 'form-control pr-0 pl-0 pt-1 pb-1 border-round-none border-input','autocomplete'=>"off"]) !!}
+                           </td>
+                       </tr>
+                       <tr>
+                           <td class="border-top-none align-middle">
+                               <span class="light-medium">방종류</span>
+                           </td>
+                           <td class="border-top-none align-middle">
+                               {!! Form::select('roomType',['normal' => '일반','premium' => '프리미엄'],null,['class'=>"custom-select no-height border-input"]) !!}
+                           </td>
+                       </tr>
+                       <tr>
+                           <td class="border-top-none align-middle">
+                               <span class="light-medium">공개여부</span>
+                           </td>
+                           <td class="border-top-none align-middle">
+                               {!! Form::select('roomPublic',['public' => '전체공개','private' => '비공개'],null,['class'=>"custom-select no-height border-input"]) !!}
+                           </td>
+                       </tr>
+                       <tr>
+                           <td class="border-top-none align-middle">
+                               <span class="light-medium">참여인원</span>
+                           </td>
+                           <td class="border-top-none align-middle">
+                               {!! Form::select('maxUser',['50' => '50명','100' => '100명','200' => '200명','300' => '300명','500' => '500명','1000' => '1,000명'],null,['class'=>"custom-select no-height border-input"]) !!}
+                           </td>
+                       </tr>
+                       <tr>
+                           <td class="border-top-none align-middle">
+                               <span class="light-medium">일반개설권</span>
+                           </td>
+                           <td class="border-top-none align-middle">
+                               <span class="text-danger font-weight-bold">{{$normal_count}}개</span>
+                           </td>
+                       </tr>
+                       <tr>
+                           <td class="border-top-none align-middle">
+                               <span class="light-medium">프리미엄 개설권</span>
+                           </td>
+                           <td class="border-top-none align-middle">
+                               <span class="text-danger font-weight-bold">{{$premium_count}}개</span>
+                           </td>
+                       </tr>
+                   </table>
+                <div class="text-center">
+                    {!! Form::submit("확인",["class"=>"btn btn-jin-gradient border-round-none pr-5 pl-5 btn-sm create_room"]) !!}
+                </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
+</div>
+
+@include("chat.chat-waiting")
 @endsection

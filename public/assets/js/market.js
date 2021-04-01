@@ -138,7 +138,7 @@ $(document).ready(function(){
     $('.btn_buy').click(function(){
 
         var itemCode = $(this).attr('itemCode');
-        var itemName = $(this).attr('title');
+        var itemName = $(this).attr('title').trim();
         var itemCnt = Number($(this).parent().prev('.amountSet').find('input').attr('rel'));
 
         if(confirm('['+itemName+'] 아이템을 구매하시겠습니까?'))
