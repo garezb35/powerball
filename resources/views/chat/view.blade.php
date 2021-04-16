@@ -24,7 +24,7 @@
         var is_super = false;
         var is_admin = @if($manager == 1) true @else false @endif;
         var is_manager = false;
-        var fixed = "{{$room["roomandpicture"]["fixed"]}}"
+        var fixed = "{{$room["roomandpicture"]["fixed"]}}";
         var room_name ="{{$room["room_connect"]}}";
         var is_forceFreeze = false;
         var roomInfo = '{"roomIdx":"'+roomIdx+'","roomType":"@if($room["type"] == 1){{'normal'}}@else{{'premium'}}@endif","roomTitle":"{{$room["room_connect"]}}","roomDesc":"{{$room["description"]}}","roomPublic":"@if($room["public"] == 1){{'public'}}@else{{'private'}}@endif","joinLevel":"0","joinPoint":"0","maxUser":"{{$room["max_connect"]}}","curUser":"0","useridKey":"{{$room["roomandpicture"]["userIdKey"]}}","nickname":"{{$room["roomandpicture"]["nickname"]}}","level":"{{$room["roomandpicture"]["leve"]}}","sex":"{{$room["roomandpicture"]["sex"]}}","profile":"{{$room["roomandpicture"]["image"]}}","regDate":"{{$room["roomandpicture"]["created_date"]}}","manager":"{{$room["manager"]}}","fixMember":"{{$room["roomandpicture"]["fixed"]}}","recomCnt":"50"}';
@@ -57,11 +57,11 @@
     <div class="leftArea">
         <div class="category">
             <ul class="cate">
-                <li>방장 <em class="on">{{$room["roomandpicture"]["name"]}}</em></li>
-                <li><span class="bar"></span><span>{{getDiffTimes($room["created_at"])}}전</span></li>
-                <li><span class="bar"></span>접속자 <span id="chatRoom_topUserCnt" class="on">0</span>명</li>
-                <li><span class="bar"></span>추천수 <span id="chatRoom_recomCnt" class="on">{{number_format($room["recommend"])}}</span></li>
-                <li><span class="bar"></span>누적 총알수 <span id="totalBulletCnt" rel="{{number_format($room["bullet"])}}" class="on">{{number_format($room["bullet"])}}</span></li>
+                <li class="custom">방장 <em class="on">{{$room["roomandpicture"]["name"]}}</em></li>
+                <li class="custom"><span>{{getDiffTimes($room["created_at"])}}전</span></li>
+                <li class="custom">접속자 <span id="chatRoom_topUserCnt" class="on">0</span>명</li>
+                <li class="custom">추천수 <span id="chatRoom_recomCnt" class="on">{{number_format($room["recommend"])}}</span></li>
+                <li class="custom">누적 당근수 <span id="totalBulletCnt" rel="{{number_format($room["bullet"])}}" class="on">{{number_format($room["bullet"])}}</span></li>
             </ul>
         </div>
         <div class="mainBanner">
@@ -89,7 +89,7 @@
                 </ul>
             </div>
 
-            <div id="pointBetBox" style="position:absolute;width:100%;bottom:25px;">
+            <div id="pointBetBox" style="position:absolute;width:100%;bottom:37px;">
                 @include("pick/pick1")
             </div>
             <div id="layer-emoticonBox">
@@ -106,7 +106,7 @@
             </div>
             <div id="layer-bulletBox">
                 <div class="title">
-                    나의 총알 <span class="bullet" id="bullet" rel="0" giftcnt="0">0</span>개 <span class="bar">|</span> <span class="txt">보유 수량 한도 내에서  <span class="important">방장에게 선물</span>할 수 있으며, 부족할 경우 총알 구매 후 선물 가능합니다. <a href="/#http%3A%2F%2Fwww.powerballgame.co.kr%2F%3Fview%3Dmarket" target="_blank" class="important">총알 구매하기</a></span>
+                    나의 당근 <span class="bullet" id="bullet" rel="0" giftcnt="0">0</span>개 <span class="bar">|</span> <span class="txt">보유 수량 한도 내에서  <span class="important">방장에게 선물</span>할 수 있으며, 부족할 경우 당근 구매 후 선물 가능합니다. <a href="/#http%3A%2F%2Fwww.powerballgame.co.kr%2F%3Fview%3Dmarket" target="_blank" class="important">당근 구매하기</a></span>
                 </div>
                 <div class="content">
                     <div>
@@ -124,9 +124,9 @@
                     </div>
                 </div>
             </div>
-            <ul class="ml-2">
+            <ul class="pl-2 bott-menu" style="height: 39px;background: #ebeded;">
                 @if($manager == 0 && $admin == 0)
-                    <li><a href="#" onclick="return false;" id="btn_giftBullet">총알 선물하기</a></li>
+                    <li><a href="#" onclick="return false;" id="btn_giftBullet">당근 선물하기</a></li>
                     <li><a href="#" onclick="return false;" id="btn_recom">추천하기</a></li>
                     <li><a href="#" onclick="chatManager('clearChat');return false;">방청소</a></li>
                     <li><a href="#" onclick="return false;" id="btn_sound">사운드 끄기</a></li>

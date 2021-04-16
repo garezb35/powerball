@@ -9,10 +9,9 @@
 
 #header {
     position: relative;
-    padding: 0 15px;
-    height: 40px;
-    background:linear-gradient(180deg, #345696, #284476);
-    border-bottom: 1px solid #284476;
+    padding: 0px 12px;
+    height: 26px;
+    background: #2e3333;
 }
 #header .newsticker li a {
     color: #F7E227;
@@ -33,7 +32,7 @@
     position: relative;
 }
 .leftArea {
-    background-color: #d2d2d2;
+    background-color: #fff;
     padding-right: 316px;
 }
 .rightArea {
@@ -41,20 +40,16 @@
     top: 0;
     right: 0;
     width: 316px;
-    background-color: #d2d2d2;
+    background-color: #fff;
 }
 .leftArea .category {
     position: relative;
     padding: 0 15px;
-    height: 29px;
-    border-top: 1px solid #284476;
-    border-bottom: 1px solid #274174;
-    background:linear-gradient(180deg, #284476, #233b69,#274174);
-
-
+    height: 50px;
+    background: #00b4b4;
 }
 .mainBanner {
-    padding: 8px;
+    padding: 4px;
     text-align: center;
 }
 .leftArea .roomList {
@@ -78,17 +73,20 @@
 
 .leftArea .category li {
     float: left;
-    height: 29px;
-    line-height: 29px;
+    height: 34px;
+    line-height: 34px;
     font-size: 11px;
     color: #fff;
+    margin-top: 16px;
 }
 .leftArea .category a {
     float: left;
-    height: 29px;
-    line-height: 29px;
+    height: 34px;
+    line-height: 34px;
     font-size: 12px;
+    width: 100px;
     color: #fff;
+    text-align: center;
 }
 
 .leftArea .category .bar {
@@ -102,27 +100,35 @@
 
 .leftArea .category a.on {
     font-weight: bold;
-    color: #F7E227;
+    background: white;
+    color: #00b4b4;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
 }
 .leftArea .category .order {
-    float: right;
+    float: left;
+    margin-left: -65px;
 }
 
-
 .rightArea .btns {
-    height: 29px;
-    background:linear-gradient(180deg, #284476, #233b69,#274174);
-    border-top: 1px solid #284476;
-    border-bottom: 1px solid #274174;
+    height: 50px;
+    background: #00b4b4;
 }
 
 .rightArea .btns .create {
-    color: #fff;
+    color: #00b4b4;
     height: 29px;
     line-height: 29px;
     font-weight: bold;
     float: right;
     margin-right: 15px;
+    background: #fff;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-radius: 23px;
+    margin-top: 7px;
 }
 
 .rightArea .btns .bar {
@@ -135,11 +141,20 @@
 }
 
 .rightArea .btns .myroom {
-    color: #fff;
+    color: #00b4b4;
     height: 29px;
     line-height: 29px;
     font-weight: bold;
     float: right;
+    margin-right: 15px;
+    background: #fff;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-radius: 23px;
+    margin-top: 7px;
+    margin-right: 10px;
 }
 
 .rightArea .myInfo {
@@ -149,7 +164,7 @@
 }
 
 .rightArea .myInfo .tit {
-    background-color: #127CCB;
+    background-color: #00b4b4;
     height: 25px;
     line-height: 25px;
     font-weight: bold;
@@ -174,7 +189,7 @@
 }
 
 .rightArea .userList .tit {
-    background-color: #127CCB;
+    background-color: #00b4b4;
     height: 25px;
     line-height: 25px;
     font-weight: bold;
@@ -248,7 +263,7 @@
 }
 .leftArea .roomList.best li {
     border-bottom: none;
-    background-color: #FFFFD9;
+    background-color: #dff7f7;
 }
 .leftArea .roomList li .thumb.red {
     border: 1px solid #A30D0D;
@@ -349,7 +364,7 @@
     color: #8B8B8B;
 }
 .leftArea .roomList li .userCntBox .userCnt .curCnt {
-    color: #127CCB;
+    color: #00b4b4;
 }
 .leftArea .roomList li .userCntBox .date {
     height: 26px;
@@ -381,18 +396,19 @@
 
 .leftArea .roomList li .userInfo .enterBtn {
     display: block;
-    width: 120px;
-    height: 20px;
-    line-height: 20px;
+    width: 103px;
+    height: 26px;
+    line-height: 26px;
     padding: 0 5px;
     font-weight: normal;
     font-size: 11px;
     margin-right: 5px;
-    margin-top: 4px;
-    background-color: #f1f1f1;
-    color: #8e8e8e;
-    border: 1px solid #d8d8d8;
+    margin-top: 2px;
+    background-color: #fff;
+    color: #00b4b4;
+    border: 1px solid #00b4b4;
     text-align: center;
+    border-radius: 14px;
 }
 
 
@@ -421,11 +437,17 @@
     margin-right: 5px;
 }
 
+.leftArea .category li.custom span,.leftArea .category li.custom em{
+    color: #f9ea60;
+    font-weight: bold;
+    font-style: normal;
+}
+
 #header .winLose {
     float: left;
-    height: 40px;
-    line-height: 40px;
-    color: #f9ea60;
+    height: 26px;
+    line-height: 26px;
+    color: #fff;
     margin-left: 65px;
     font-weight: bold;
 }
@@ -436,8 +458,9 @@
     left: 5px;
     width: 60px;
     height: 60px;
-    border: 1px solid #fff;
+    border-radius: 6px;
 }
+
 #header .profile img {
     width: 60px;
     height: 60px;
@@ -445,8 +468,8 @@
 
 #header h2 {
     float: left;
-    height: 40px;
-    line-height: 40px;
+    height: 26px;
+    line-height: 26px;
     font-size: 12px;
     color: #fff;
     margin-left: 15px;
@@ -472,12 +495,10 @@
     font-size: 11px;
     word-wrap: break-word;
     overflow-y: scroll;
-    /* white-space: -moz-pre-wrap;
-    white-space: pre-wrap; */
     background-color: #fff;
     margin: 2px 0 0 8px;
     height: 530px;
-    border: 1px solid #0e578d;
+    border: 1px solid #bec2c2;
 }
 
 #msgBox li div.pick.nonnn {
@@ -515,10 +536,7 @@
     color: yellow;
 }
 
-.leftArea .category li .on {
-    font-weight: bold;
-    color: #F7E227;
-}
+
 
 .leftArea .category .cate {
     position: absolute;
@@ -558,8 +576,8 @@
 }
 
 #msgBox .msg-gift {
-    background-color: #1C701C;
-    border: 1px solid #155515;
+    background-color: #00b4b4;
+    border: 1px solid #00b4b4;
     min-height: 22px;
     line-height: 22px;
     color: #fff;
@@ -574,9 +592,8 @@
 
 .leftArea .menuBox {
     position: relative;
-    height: 25px;
-    background-color: #127CCB;
-    border: 1px solid #0e578d;
+    height: 36px;
+    border: 1px solid #bec2c2;
     border-top: none;
     border-bottom: 1px dotted #0b4230;
     margin-left: 8px;
@@ -609,7 +626,7 @@
     position: absolute;
     width: 100%;
     height: 82px;
-    bottom: 26px;
+    bottom: 37px;
     left: 0px;
     border-top: 1px solid #0e578d;
     background: #F7F7F7;
@@ -806,10 +823,15 @@
     color: #fff;
     cursor: pointer;
 }
-.leftArea .menuBox ul li {
+.leftArea .menuBox ul.bott-menu li {
     float: left;
-    margin-right: 30px;
+    margin-right: 12px;
     text-align: center;
+    background: #00b4b4;
+    padding-right: 23px;
+    padding-left: 23px;
+    border-radius: 12px;
+    margin-top: 6px;
 }
 .leftArea .menuBox ul li a {
     font-size: 11px;
@@ -820,18 +842,20 @@
 
 .leftArea .inputBox {
     position: relative;
-    padding: 5px 32px 0 5px;
+    padding: 0px 32px 0 0px;
     height: 32px;
     background-color: #f2f2f2;
-    margin: 0 0 8px 8px;
-    border: 1px solid #0e578d;
+    margin: 0 0 8px 7px;
     border-top: none;
-    background-color: #127CCB;
 }
 .leftArea .inputBox .input {
-    border: 1px solid #39302D;
+    border: 1px solid #bec2c2;
     border-right: none;
-    height: 25px;
+    height: 31px;
+}
+
+.leftArea .inputBox .input input:active,.leftArea .inputBox .input input:focus{
+    outline: none !important;
 }
 fieldset {
     font-size: 0;
@@ -839,19 +863,20 @@ fieldset {
 .leftArea .inputBox .input input {
     border: none;
     width: 100%;
-    height: 25px;
-    line-height: 25px;
+    height:31px;
+    line-height: 31px;
     background-color: #f9f9f9;
     color: #949494;
     padding: 0 5px;
 }
 .leftArea .inputBox .btns {
     position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 27px;
-    height: 27px;
-    background: url(https://simg.powerballgame.co.kr/images/btn_send.png) no-repeat;
+    top: 0px;
+    right: 0px;
+    width: 32px;
+    height: 32px;
+    background: url(/assets/images/enter.png) no-repeat;
+    background-size: 32px;
 }
 
 .leftArea .menuBox ul li.right {
@@ -860,12 +885,17 @@ fieldset {
 
 
 .rightArea .btns .exit {
-    color: #fff;
+    color: #00b4b4;
     height: 29px;
     line-height: 29px;
     font-weight: bold;
     float: right;
     margin-right: 15px;
+    background: white;
+    width: 92px;
+    text-align: center;
+    margin-top: 10px;
+    border-radius: 16px;
 }
 
 .resultBox .nav-tabs .nav-item{
@@ -875,8 +905,8 @@ fieldset {
 }
 
 .resultBox .nav-tabs .nav-item.show .nav-link,.resultBox .nav-tabs .nav-link.active {
-    background-color: #127CCB;
-    border-bottom: 1px solid #127CCB;
+    background-color: #00b4b4;
+    border-bottom: 1px solid #00b4b4;
     color: #fff;
 }
 
@@ -1997,9 +2027,10 @@ fieldset {
 #userLayer {
     display: block;
     position: absolute;
-    min-width: 180px;
+    min-width: 200px;
     border: 1px solid #0E578D;
     z-index: 10000;
+    top: -1000px
 }
 
 #userLayer .lutop {
@@ -2015,4 +2046,127 @@ fieldset {
     background-color: #e4fce4;
     padding: 3px 5px;
     border-bottom: 1px dotted #d5d5d5;
+}
+
+#userLayer .game ul li {
+    height: 22px;
+    line-height: 22px;
+    font-size: 11px;
+    font-family: tahoma,dotum;
+    color: #535353;
+}
+
+#userLayer .ubody a {
+    display: block;
+    margin-bottom: -1px;
+    padding-left: 5px;
+    height: 21px;
+    border: 1px solid #f8f8f8;
+    font-size: 11px;
+    overflow: hidden;
+    color: #535353;
+}
+#userLayer .ubody a .ico {
+    float: left;
+    margin: 3px 3px 0 0;
+    width: 0;
+    height: 0;
+}
+#userLayer .ubody a .txt {
+    float: left;
+    margin-top: 4px !important;
+    height: 14px;
+    line-height: 14px;
+}
+
+#userLayer .ubody {
+    padding: 4px;
+    background-color: #f8f8f8;
+}
+
+#userLayer .game ul li .win {
+    color: red;
+}
+#userLayer .game ul li .lose {
+    color: blue;
+}
+
+#userLayer .ubody a:hover {
+    position: relative;
+    border: 1px solid #dad9d8;
+    background-color: #f0f0f0;
+    color: #000;
+    z-index: 10;
+}
+
+.rightArea .resultBox .content .userListBox ul.userList li .icon_manager {
+    position: absolute;
+    top: 32px;
+    left: 5px;
+    width: 32px;
+    height: 13px;
+    background: url(https://simg.powerballgame.co.kr/images/sp_chatRoomMark2.png) no-repeat 0 -26px;
+    text-indent: -9999px;
+}
+
+.wrm{
+    float: right;
+}
+
+.wrm li a{
+    color: #fff;
+}
+
+.wrm li.favs .on{
+    color: yellow;
+}
+
+.wrm li{
+    line-height: 26px;
+    height: 26px;
+    float: left;
+    width: 86px;
+    text-align: center;
+}
+
+
+.wrm li.tot a{
+    color: #00b4b4b4;
+    font-weight: bold;
+    padding-right: 5px;
+}
+
+
+.wrm li.tot {
+    border-right: 1px solid #000;
+    text-align: center;
+}
+
+.leftArea .category li.custom {
+    float: left;
+    height: 50px;
+    line-height: 50px;
+    font-size: 13px;
+    color: #fff;
+    margin-top: 0px;
+    margin-right: 20px;
+}
+
+#chatTimer{
+    background: #00b4b4;
+    color: #fff;
+}
+#timeRound, .minute, .second{
+    color: #fff !important;
+}
+
+.betBox{
+    width: 99% !important;
+    margin: auto;
+}
+
+.betBox form{
+    display: block;
+    height: 112px;
+    margin-left: 48px;
 }

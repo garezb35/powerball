@@ -14,6 +14,10 @@
     </script>
 </head>
 <body>
+<div id="userLayer" style="display: none">
+    <div class="lutop"><span id="unickname">관리왕1</span></div>
+    <div class="game"></div>
+</div>
     <div id="wrap">
         <div id="topArea">
             <div class="logo"><a href="/" class="none"><img src="{{Request::root()}}/assets/images/logo.png" width="163" height="60"></a></div>
@@ -22,18 +26,17 @@
             </div>
             <div class="gnb">
                 <ul>
-                    <li><a href="{{route('p_analyse')}}?terms=lates&pageType=display" target="mainFrame" class="on hiddenBorard" >파워볼분석</a></li>
-                    <li><a href="{{route('pick-powerball')}}" target="mainFrame" style="width:80px;text-align:center;" class="hiddenBorard">픽</a></li>
-                    <li><a href="{{route('pick-simulator')}}" target="mainFrame" rel="hidden" class="hiddenBorard">파워모의배팅</a></li>
-                    <li><a href="{{route('pick-win')}}" target="mainFrame" rel="hidden" class="hiddenBorard">연승제조기</a></li>
-                    <li><a href="{{route('market')}}" target="mainFrame" class="hiddenBorard">샵</a></li>
-                    <li><a href="#" onclick="openChatRoom();return false;" class="hiddenBorard">방채팅</a></li>
-                    <li><a href="{{route('board')}}" target="mainFrame" class="hiddenBorard">커뮤니티</a></li>
-                    <li><a href="/bbs/board.php?bo_table=qna" target="mainFrame" class="hiddenBorard">문의 및 요청</a></li>
-                    <li><a href="/bbs/board.php?bo_table=custom" target="mainFrame" class="hiddenBorard">고객센터</a></li>
+                    <li><a href="{{route('p_analyse')}}?terms=lates&pageType=display" target="mainFrame" class="on hiddenBorard" >파워볼분석 <div class="border-half"></div></a></li>
+                    <li><a href="{{route('psadari_analyse')}}?terms=lates&pageType=display" target="mainFrame" class="hiddenBorard" >파워사다리분석<div class="border-half"></div></a></li>
+                    <li><a href="{{route('pick-powerball')}}" target="mainFrame" style="width:80px;text-align:center;" class="hiddenBorard">픽<div class="border-half"></div></a></li>
+                    <li><a href="{{route('pick-simulator')}}" target="mainFrame" rel="hidden" class="hiddenBorard">파워모의배팅<div class="border-half"></div></a></li>
+                    <li><a href="{{route('pick-win')}}" target="mainFrame" rel="hidden" class="hiddenBorard">연승제조기<div class="border-half"></div></a></li>
+                    <li><a href="{{route('market')}}" target="mainFrame" class="hiddenBorard">샵<div class="border-half"></div></a></li>
+                    <li><a href="#" onclick="openChatRoom();return false;" class="hiddenBorard">방채팅<div class="border-half"></div></a></li>
+                    <li><a href="{{route('board')}}" target="mainFrame" class="hiddenBorard">커뮤니티<div class="border-half"></div></a></li>
+                    <li><a href="/bbs/board.php?bo_table=qna" target="mainFrame" class="hiddenBorard">문의 및 요청<div class="border-half"></div></a></li>
+                    <li><a href="/bbs/board.php?bo_table=custom" target="mainFrame" class="hiddenBorard">고객센터<div class="border-half"></div></a></li>
                    <li><a href="/?view=attendance" target="mainFrame" class="hiddenBorard">출석체크</a></li>
-
-
                 </ul>
             </div>
         </div>

@@ -67,4 +67,8 @@ class User extends Authenticatable
     public function getAutoMatches(){
         return $this->hasMany(PbAutoMatch::class,"userid","userId");
     }
+
+    public function item(){
+        return $this->hasMany(PbPurItem::class,"userId","userId");
+    }
 }

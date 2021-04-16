@@ -17,30 +17,40 @@ body, input, textarea, select, table, button {
 }
 .moreBox {
     margin-top: 5px;
-    border: 1px solid #D5D5D5;
-    background-color: #F1F1F1;
+    border: 1px solid #00b4b4;
+    background-color: white;
     height: 30px;
     line-height: 30px;
     text-align: center;
+    margin: auto;
 }
 
 .moreBox a {
     display: block;
     text-decoration: none;
-    color: #5F6164;
+    color: #00b4b4;
 }
 
 .poweeball-menu.nav-pills .nav-link{
-    border-top: 1px solid #6178aa;
-    border-right: 1px solid #6178aa;
-    border-bottom: 1px solid #6178aa;;
-    background-color: #b1cbfe;
+    border-top: 1px solid #cfd2d4;
+    border-right: 1px solid #cfd2d4;
+    border-bottom: 1px solid #cfd2d4;
+    background-color: #f2f5f7;
     border-radius: 0px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    font-size: 16px;
 }
 
 .poweeball-menu.nav-pills .nav-link.active, .show>.poweeball-menu .nav-link{
     color: #fff;
-    background: linear-gradient(
-        180deg
-        , #90b2fa,#7896d4);
+    background: #00b2b3;
+    font-weight: bold;
+}
+.poweeball-menu .nav-item:first-child a{
+    border-top-left-radius: 5px;
+}
+
+.poweeball-menu .nav-item:last-child a{
+    border-top-right-radius: 5px;
 }

@@ -12,7 +12,7 @@
             <li><a href="{{route("market")}}" target="mainFrame" @if(empty(Request::get("type"))) class="on" @endif>전체</a></li>
             <li><a href="{{route("market")}}?type=item" target="mainFrame" @if(Request::get("type") =="item") class="on" @endif>아이템</a></li>
             <li><a href="{{route("market")}}?type=use" target="mainFrame" @if(Request::get("type") =="use") class="on" @endif>이용권</a></li>
-            <li class="free"><a href="/?view=market&amp;type=freeCharge" target="mainFrame">무료충전소</a></li>
+
             <li class="right"><a href="/?view=market&amp;type=charge" target="mainFrame">코인충전</a></li>
         </ul>
     </div>
@@ -25,7 +25,7 @@
             @endforeach
         @endif
         </ul>
-		<div class="tit"><strong>건빵</strong> 으로 구매 가능한 아이템입니다.</div>
+		<div class="tit"><strong>도토리</strong> 로 구매 가능한 아이템입니다.</div>
 		<ul class="itemList">
             @if(!empty($item[2]))
                 @foreach($item[2] as $value)

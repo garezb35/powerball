@@ -16,7 +16,7 @@
             <span class="down"></span>
         </div>
         <div class="btn-g">
-            <a href="#" class="btn_buy btn btn-danger btn-sm" itemcode="{{$list["code"]}}" title="{{$list["name"]}}">구매</a>
+            <a href="#" class="btn_buy btn btn-sm" itemcode="{{$list["code"]}}" title="{{$list["name"]}}">구매</a>
             @if(!empty($list["gift_used"]))
             <a href="#" class="btn_gift btn btn-outline-secondary btn-sm" itemcode="{{$list["code"]}}" title="{{$list["name"]}}" >선물</a>
             @endif

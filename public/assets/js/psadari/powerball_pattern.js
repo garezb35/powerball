@@ -1,10 +1,10 @@
 var checked = new Array();
 var loading = false;
-var type = "pb_oe";
+var type = "odd_even";
 var limit = 10;
 var index = 0;
 var patt = "";
-var pb_oe = new Array(),pb_uo = new Array(),nb_oe = new Array(),nb_uo = new Array(),nb_size = new Array()
+var left_right = new Array(),odd_even = new Array(),three_four = new Array(),total_lines = new Array()
 let patternAll = {}
 jQuery.fn.extend({
     live: function (event, callback) {
@@ -20,11 +20,32 @@ $(document).ready(function (){
         initPattern($(this).val(),type);
         limit = $(this).val();
     })
-    initPattern(10,"pb_oe",function(){
+    initPattern(10,"odd_even",function(){
         setTimeout(function(){
             searchPattern(1,date,round);
         },500);
     });
+
+    $(".btn_plus").click(function(){
+        if(limit > 19) return false;
+        limit++;
+        $(".tx").text(limit)
+        initPattern(limit,type,function(){
+            setTimeout(function(){
+                searchPattern(1,date,round);
+            },500);
+        });
+    })
+    $(".btn_minus").click(function(){
+        if(limit < 4) return false;
+        limit--;
+        $(".tx").text(limit)
+        initPattern(limit,type,function(){
+            setTimeout(function(){
+                searchPattern(1,date,round);
+            },500);
+        });
+    })
 })
 
 function initPattern(limit=10,type="pb_oe",callback){
@@ -35,7 +56,7 @@ function initPattern(limit=10,type="pb_oe",callback){
         setTimeout(function() {
             $.ajax({
                 type: "post",
-                url: "/api/checkedPattern",
+                url: "/api/psadari/checkedPattern",
                 data:{limit:limit,types:type},
                 dataType:"json",
                 beforeSend: function() {
@@ -75,14 +96,13 @@ function searchPattern(append = 1,var_date=old_date,var_round=old_round){
     if(patt.trim() !="" && !loading){
         $.ajax({
             type: "post",
-            url: "/api/pattern-lists",
+            url: "/api/psadari/pattern-lists",
             data:{from:var_date,round:var_round,type:type,limit:limit,pattern:patt},
             dataType:"json",
             beforeSend: function() {
                 loading=true;
                 moreLoad(1)
-            },
-
+            }
         }).done(function(data) {
             moreLoad(0);
             loading = false;
@@ -93,50 +113,57 @@ function searchPattern(append = 1,var_date=old_date,var_round=old_round){
                 round = data.result[length-1].current[0].day_round;
                 index++;
                 if(data.result.length > 0 ){
+                    if(append == 1){
+                        left_right = new Array();
+                        odd_even = new Array();
+                        three_four = new Array();
+                        total_lines = new Array();
+                    }
                     for(var item in data.result){
                         for(var i = 0; i < data.result[item].current.length;i++){
-                            pb_oe.push(data.result[item].current[i].pb_oe)
-                            pb_uo.push(data.result[item].current[i].pb_uo)
-                            nb_oe.push(data.result[item].current[i].nb_oe)
-                            nb_uo.push(data.result[item].current[i].nb_uo)
-                            nb_size.push(data.result[item].current[i].nb_size)
+                            left_right.push(setAliasSadari(data.result[item].current[i].nb1,"left_right"))
+                            odd_even.push(setAliasSadari(data.result[item].current[i].nb1,"odd_even"))
+                            three_four.push(setAliasSadari(data.result[item].current[i].nb1,"three_four"))
+                            total_lines.push(setAliasSadari(data.result[item].current[i].nb1,"total_lines"))
                         }
                         if(typeof data.result[item].next !="undefined"){
-                            pb_oe.push(data.result[item].next.pb_oe)
-                            pb_uo.push(data.result[item].next.pb_uo)
-                            nb_oe.push(data.result[item].next.nb_oe)
-                            nb_uo.push(data.result[item].next.nb_uo)
-                            nb_size.push(data.result[item].next.nb_size)
+                            left_right.push(setAliasSadari(data.result[item].next.nb1,"left_right"))
+                            odd_even.push(setAliasSadari(data.result[item].next.nb1,"odd_even"))
+                            three_four.push(setAliasSadari(data.result[item].next.nb1,"three_four"))
+                            total_lines.push(setAliasSadari(data.result[item].next.nb1,"total_lines"))
                         }
                     }
                     let patternAll = {};
-                    patternAll["poe"] = {};
-                    patternAll["puo"] = {};
-                    patternAll["noe"] = {};
-                    patternAll["nuo"] = {};
-                    patternAll["nsize"] = {};
-                    patternAll["poe"]["max"] = new Array();
-                    patternAll["poe"]["count"] = new Array();
-                    patternAll["puo"]["max"] = new Array();
-                    patternAll["puo"]["count"] = new Array();
-                    patternAll["noe"]["max"] = new Array();
-                    patternAll["noe"]["count"] = new Array();
-                    patternAll["nuo"]["max"] = new Array();
-                    patternAll["nuo"]["count"] = new Array();
-                    patternAll["nsize"]["max"] = {};
-                    patternAll["nsize"]["count"] = {};
-                    patternAll["poe"]["max"][0] = -1;patternAll["poe"]["max"][1] = -1;
-                    patternAll["puo"]["max"][0] = -1; patternAll["puo"]["max"][1] = -1;
-                    patternAll["noe"]["max"][0] = -1; patternAll["noe"]["max"][1] = -1;
-                    patternAll["nuo"]["max"][0] = -1; patternAll["nuo"]["max"][1] = -1;
-                    patternAll["nsize"]["max"]["1"] = -1; patternAll["nsize"]["max"]["2"] = -1; patternAll["nsize"]["max"]["3"] = -1;
-                    patternAll["poe"]["count"] = pb_oe.reduce(function(acc,e){acc[e] = (e in acc ? acc[e]+1 : 1); return acc}, {});
-                    patternAll["puo"]["count"] = pb_uo.reduce(function(acc,e){acc[e] = (e in acc ? acc[e]+1 : 1); return acc}, {});
-                    patternAll["noe"]["count"] = nb_oe.reduce(function(acc,e){acc[e] = (e in acc ? acc[e]+1 : 1); return acc}, {});
-                    patternAll["nuo"]["count"] = nb_uo.reduce(function(acc,e){acc[e] = (e in acc ? acc[e]+1 : 1); return acc}, {});
-                    patternAll["nsize"]["count"] = nb_size.reduce(function(acc,e){acc[e] = (e in acc ? acc[e]+1 : 1); return acc}, {});
+                    patternAll["left_right"] = {};
+                    patternAll["three_four"] = {};
+                    patternAll["odd_even"] = {};
+                    patternAll["total_lines"] = {};
+
+                    patternAll["left_right"]["max"] = new Array();
+                    patternAll["left_right"]["count"] = new Array();
+                    patternAll["three_four"]["max"] = new Array();
+                    patternAll["three_four"]["count"] = new Array();
+                    patternAll["odd_even"]["max"] = new Array();
+                    patternAll["odd_even"]["count"] = new Array();
+                    patternAll["total_lines"]["max"] = new Array();
+                    patternAll["total_lines"]["count"] = new Array();
+
+                    patternAll["left_right"]["max"][0] = -1;patternAll["left_right"]["max"][1] = -1;
+                    patternAll["three_four"]["max"][0] = -1; patternAll["three_four"]["max"][1] = -1;
+                    patternAll["odd_even"]["max"][0] = -1; patternAll["odd_even"]["max"][1] = -1;
+                    patternAll["total_lines"]["max"][0] = -1; patternAll["total_lines"]["max"][1] = -1;
+
+                    patternAll["left_right"]["count"] = left_right.reduce(function(acc,e){acc[e] = (e in acc ? acc[e]+1 : 1); return acc}, {});
+                    patternAll["three_four"]["count"] = three_four.reduce(function(acc,e){acc[e] = (e in acc ? acc[e]+1 : 1); return acc}, {});
+                    patternAll["odd_even"]["count"] = odd_even.reduce(function(acc,e){acc[e] = (e in acc ? acc[e]+1 : 1); return acc}, {});
+                    patternAll["total_lines"]["count"] = total_lines.reduce(function(acc,e){acc[e] = (e in acc ? acc[e]+1 : 1); return acc}, {});
+
                     compileJson("#chart-data",".chart-power",patternAll);
-                    douPie([patternAll["nsize"]["count"]["3"],patternAll["nsize"]["count"]["2"],patternAll["nsize"]["count"]["1"]],"chart-area",["대","중","소"]);
+                    douPie([patternAll["total_lines"]["count"]["LEFT4ODD"],patternAll["total_lines"]["count"]["RIGHT3ODD"],patternAll["total_lines"]["count"]["LEFT3EVEN"],patternAll["total_lines"]["count"]["RIGHT4EVEN"]],"chart-area","",[
+                        window.chartColors1.red,
+                        window.chartColors1.orange,
+                        window.chartColors1.yellow,
+                        window.chartColors1.pick]);
                 }
             }
             if(data.status ==0)
@@ -147,11 +174,10 @@ function searchPattern(append = 1,var_date=old_date,var_round=old_round){
     }
 }
 
-$('body').on('click','.tabMenu a',function(){
-    $('.tabMenu a').removeClass('btn-jin-green');
-    $('.tabMenu a').addClass('btn-green');
-    $(this).addClass('btn-jin-green');
-    $(this).removeClass('btn-green');
+$('body').on('click','#pattern-sec a.nav-link',function(){
+    if(loading) return false;
+    $('#pattern-sec a.nav-link').removeClass('on1');
+    $(this).addClass('on1');
     type = $(this).attr('rel');
     initPattern($("#patternCnt").val(),$(this).attr('rel'),function(){
         setTimeout(function(){
@@ -159,4 +185,3 @@ $('body').on('click','.tabMenu a',function(){
         },500);
     });
 });
-

@@ -49,7 +49,7 @@
             <input type="text" name="from" value="{{$from}}" class="dateInput sp-dayspace_bg" id="startDate">
             <div class="bar1">~</div>
             <input type="text" name="to" value="{{$to}}" class="dateInput sp-dayspace_bg" id="endDate">
-            <input type="submit" class="btn-jin-green btn btn-sm ml-2 pl-3 pr-3" value="검색">
+            <input type="submit" class="btn-jin-greenoutline btn btn-sm ml-2 pl-3 pr-3" value="검색">
         </div>
         <div class="btnBox">
             <div class="btn-group" role="group" aria-label="Basic example">
@@ -71,15 +71,11 @@
         <li><a type="button" value="sp-even" class="">짝강조</a></li>
     </ul>
 </div>
-    <div style="width: 100%;overflow-x: scroll">
-        <table class="table powerballBox mt-2">
-            <thead class="border-jinblue jin-gradient">
-            <tr>
-                <th colspan="{{$to_round-$from_round+2}}" height="30">{{$title}}</th>
-            </tr>
-            </thead>
-            <tbody class="roundbox-body"></tbody>
-        </table>
-    </div>
-    @include("Analyse/roundbox")
+<div style="width: 100%;overflow-x: scroll;padding-top:15px">
+    <h5 class="text-center">{{$title}}<div class="half-label" style="width: 608px"></div></h5>
+    <table class="table powerballBox mt-2">
+        <tbody class="roundbox-body"></tbody>
+    </table>
+</div>
+@include("Analyse/roundbox")
 @endsection

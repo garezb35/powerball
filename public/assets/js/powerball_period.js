@@ -64,7 +64,7 @@ $(document).ready(function(){
                 pattern_header["nb_uo"] = data.result.nuo;
                 pattern_header["nb_size"] = data.result.nsize;
                 compileJson("#chart-data",".chart-power",data.result);
-                douPie([pattern_header["nb_size"].count[3],pattern_header["nb_size"].count[2],pattern_header["nb_size"].count[1]],"chart-area","");
+                douPie([pattern_header["nb_size"].count[3],pattern_header["nb_size"].count[2],pattern_header["nb_size"].count[1]],"chart-area");
             }
         })
         $.ajax({

@@ -3,7 +3,6 @@
     @include('Analyse/analyse-menu')
 @endsection
 @section("content")
-
     <script>
         var old_date=date = "{{date("Y-m-d")}}";
         var old_round=round = {{$next_round}};
@@ -18,20 +17,28 @@
                     <span class="date tx">10</span>
                     <a class="btn_date btn_plus" href="javascript:;" rel="up"><span class="ic">패턴삭제</span></a>
                 </form>
-                <a class="btn_refresh" id="btn_refresh" href="javascript:void(0);" onclick="location.reload();" title="새로고침"><span class="ic">새로고침</span></a>
-            </div>
-            <div class="date_search_option">
-                <div class="tab_area">
-                    <ul class="tab tabMenu btn-group" role="group" aria-label="Basic example">
-                        <a href="javascript:void(0)" class="btn btn-jin-green btn-sm pl-3 pr-3" rel="pb_oe">파워볼 홀/짝</a>
-                        <a href="javascript:void(0)" class="btn btn-green btn-sm pl-3 pr-3" rel="pb_uo">파워볼 언더/오버</a>
-                        <a href="javascript:void(0)" class="btn btn-green btn-sm pl-3 pr-3" rel="nb_oe">숫자합 홀/짝</a>
-                        <a href="javascript:void(0)" class="btn btn-green btn-sm pl-3 pr-3" rel="nb_uo">숫자합 언더/오버</a>
-                        <a href="javascript:void(0)" class="btn btn-green btn-sm pl-3 pr-3" rel="nb_size">숫자합 대/중/소</a>
-                    </ul>
-                </div>
+                <a class="btn_refresh" id="btn_refresh" href="javascript:location.reload();" title="새로고침"><span class="ic"></span><span id="refresh-element">새로고침</span></a>
             </div>
         </div>
+    </div>
+    <div class="">
+        <ul class="nav nav-tabs" id="pattern-sec" role="tablist">
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="btn btn-jin-green btn-sm pl-3 pr-3 nav-link on1" rel="pb_oe">파워볼 홀/짝</a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="btn btn-green btn-sm pl-3 pr-3 nav-link" rel="pb_uo">파워볼 언더/오버</a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="btn btn-green btn-sm pl-3 pr-3 nav-link" rel="nb_oe">숫자합 홀/짝</a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="btn btn-green btn-sm pl-3 pr-3 nav-link" rel="nb_uo">숫자합 언더/오버</a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="btn btn-green btn-sm pl-3 pr-3 nav-link" rel="nb_size">숫자합 대/중/소</a>
+            </li>
+        </ul>
     </div>
     <div class="pattern_select">
         <div class="tit">

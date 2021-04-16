@@ -10009,3 +10009,26 @@ h3 {
   width:400px
 }
 
+
+.btn_buy{
+  background: #00b4b4;
+  border: #00b4b4 1px solid;
+  color: #fff;
+}
+
+.btn_buy.active, .btn_buy:active, .show>.btn_buy.dropdown-toggle,.btn_buy:hover{
+  background: white;
+  color: #00b4b4;
+}
+
+
+.btn_buyoutline{
+  background: white;
+  border: #00b4b4 1px solid;
+  color: #00b4b4;
+}
+
+.btn_buyoutline.active, .btn_buyoutline:active, .show>.btn_buyoutline.dropdown-toggle,.btn_buyoutline:hover{
+  background: #00b4b4;
+  color: #fff;
+}

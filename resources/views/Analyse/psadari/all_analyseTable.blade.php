@@ -8,7 +8,7 @@
 {{--        </tbody>--}}
 {{--    </table>--}}
 {{--</div>--}}
-@include('Analyse/patternTerms')
-@include(("Analyse/chart"))
+@include('Analyse/psadari/patternTerms')
+@include(("Analyse/psadari/chart"))
 
 

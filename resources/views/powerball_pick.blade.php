@@ -31,32 +31,32 @@
     </colgroup>
     <tbody>
         <tr>
-            <th height="30" colspan="12" class="title">파워볼게임 픽 내역 (최근 3개월만 보관됩니다.)</th>
+            <th height="30" colspan="12" class="title pt-2 pb-2 border-top-bora ggray">파워볼게임 픽 내역 (최근 3개월만 보관됩니다.)</th>
         </tr>
-        <tr class="subTitle">
-            <th rowspan="3" style="height: 60px;">회차</th>
-            <th rowspan="3">참여시간</th>
-            <th colspan="2" rowspan="2">홀/짝</th>
-            <th colspan="2" rowspan="2">언더/오버</th>
-            <th rowspan="2">대중소</th>
-            <th colspan="5">적중여부</th>
+        <tr class="subTitle ggray">
+            <th class="ggray" rowspan="3" style="height: 60px;">회차</th>
+            <th class="ggray" rowspan="3">참여시간</th>
+            <th class="ggray" colspan="2" rowspan="2">홀/짝</th>
+            <th class="ggray" colspan="2" rowspan="2">언더/오버</th>
+            <th class="ggray" rowspan="2">대중소</th>
+            <th class="ggray" colspan="5">적중여부</th>
         </tr>
-        <tr class="subTitle">
-            <th colspan="2">홀/짝</th>
-            <th colspan="2">언더/오버</th>
-            <th>대중소</th>
+        <tr class="subTitle ggray">
+            <th class="ggray" colspan="2">홀/짝</th>
+            <th class="ggray" colspan="2">언더/오버</th>
+            <th class="ggray">대중소</th>
         </tr>
-        <tr class="thirdTitle">
-            <th style="height: 40px;">파워볼</th>
-            <th>숫자합</th>
-            <th>파워볼</th>
-            <th>숫자합</th>
-            <th>숫자합</th>
-            <th>파워볼</th>
-            <th>숫자합</th>
-            <th>파워볼</th>
-            <th>숫자합</th>
-            <th>숫자합</th>
+        <tr class="thirdTitle ggray">
+            <th class="ggray" style="height: 40px;">파워볼</th>
+            <th class="ggray">숫자합</th>
+            <th class="ggray">파워볼</th>
+            <th class="ggray">숫자합</th>
+            <th class="ggray">숫자합</th>
+            <th class="ggray">파워볼</th>
+            <th class="ggray">숫자합</th>
+            <th class="ggray">파워볼</th>
+            <th class="ggray">숫자합</th>
+            <th class="ggray">숫자합</th>
         </tr>
         @if(!empty($current_picks))
 
@@ -71,9 +71,9 @@
             <td align="center">
                 @if(!empty($pick_content->pb_oe))
                     @if($pick_content->pb_oe->pick == "1" )
-                        <img src="https://simg.powerballgame.co.kr/images/odd.png" width="29" height="29" />
+                        <div class="sp-odd">홀</div>
                     @else
-                        <img src="https://simg.powerballgame.co.kr/images/even.png" width="29" height="29" />
+                        <div class="sp-even">짝</div>
                     @endif
                 @else
                     -
@@ -83,9 +83,9 @@
             <td align="center">
                 @if(!empty($pick_content->nb_oe))
                     @if($pick_content->nb_oe->pick == "1" )
-                        <img src="https://simg.powerballgame.co.kr/images/odd.png" width="29" height="29" />
+                        <div class="sp-odd">홀</div>
                     @else
-                        <img src="https://simg.powerballgame.co.kr/images/even.png" width="29" height="29" />
+                        <div class="sp-even">짝</div>
                     @endif
                 @else
                     -
@@ -94,9 +94,9 @@
             <td align="center">
                 @if(!empty($pick_content->pb_uo))
                     @if($pick_content->pb_uo->pick == "1" )
-                        <img src="https://simg.powerballgame.co.kr/images/under.png" width="29" height="29" />
+                        <div class="sp-under"></div>
                     @else
-                        <img src="https://simg.powerballgame.co.kr/images/over.png" width="29" height="29" />
+                        <div class="sp-over"></div>
                     @endif
                 @else
                     -
@@ -105,9 +105,9 @@
             <td align="center">
                 @if(!empty($pick_content->nb_uo))
                     @if($pick_content->nb_uo->pick == "1" )
-                        <img src="https://simg.powerballgame.co.kr/images/under.png" width="29" height="29" />
+                        <div class="sp-under"></div>
                     @else
-                        <img src="https://simg.powerballgame.co.kr/images/over.png" width="29" height="29" />
+                        <div class="sp-over"></div>
                     @endif
                 @else
                     -
@@ -116,11 +116,11 @@
             <td align="center">
                 @if(!empty($pick_content->nb_size))
                     @if($pick_content->nb_size->pick == "1" )
-                        소
+                        <div class="sp-small">소</div>
                     @elseif($pick_content->nb_size->pick == "2" )
-                        중
+                        <div class="sp-middle">중</div>
                     @else
-                        대
+                        <div class="sp-big">대</div>
                     @endif
                 @else
                     -

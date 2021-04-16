@@ -52,10 +52,19 @@ class ChatController extends Controller
         $count = $favor_count = 0;
         $rtype = empty($request->rtype) ? "winRate" : $request->rtype;
         $user = Auth::user();
-        $premium_count = PbPurItem::where("market_id","PREMIUM_CHATROOM")->where("userId",$user->userId)->first();
-        $normal_count = PbPurItem::where("market_id","CHATROOM")->where("userId",$user->userId)->first();
-        $premium_count = empty($premium_count) ? 0 : $premium_count["count"];
-        $normal_count = empty($normal_count) ? 0 : $normal_count["count"];
+        $premium_count = PbPurItem::select(DB::raw("SUM(count) as counts"))
+                                    ->where("market_id","LIKE","%PREMIUM_CHATROOM%")
+                                    ->where("userId",$user->userId)
+                                    ->get()->toArray();
+        $normal_count = PbPurItem::select(DB::raw("SUM(count) as counts"))
+                                    ->where(function($query)
+                                    {
+                                        $query->where("market_id","CHATROOM")
+                                            ->orWhere("market_id","CHATROOM_20");
+                                    })
+                                    ->where("userId",$user->userId)->get()->toArray();
+        $premium_count = empty($premium_count) ? 0 : $premium_count[0]["counts"];
+        $normal_count = empty($normal_count) ? 0 : $normal_count[0]["counts"];
 
         $best = $list= $pb_rooms =   array();
         $p = new PbRoom();
@@ -141,6 +150,10 @@ class ChatController extends Controller
             echo "<script>alert('해당 채팅방은 존재하지 않습니다.');window.history.go(-1);</script>";
             return;
         }
+        if(!empty($pb_room["blocked"]) && str_contains($pb_room["blocked"],$user->userIdKey)){
+            echo "<script>alert('방장으로부처 강제 퇴장되었습니다.');window.history.go(-1);</script>";
+            return;
+        }
         if(!empty($pb_room["winning_history"]))
             $win_room = json_decode($pb_room["winning_history"]);
 
@@ -199,13 +212,26 @@ class ChatController extends Controller
         if($type == "normal") {
             $prefix = "일반 채팅방";
             $condition = "CHATROOM";
+            $raw = PbPurItem::where("userId",$user->userId)
+                                ->where(function($query){
+                                    $query->where("market_id","CHATROOM");
+                                    $query->orwhere("market_id","CHATROOM_20");
+                                })
+                                ->where("count",">", 0)
+                                ->where("active",1)->first();
         }
         else {
             $prefix = "프리미엄 채팅방";
             $condition = "PREMIUM_CHATROOM";
+            $raw = PbPurItem::where("userId",$user->userId)
+                ->where(function($query){
+                    $query->where("market_id","PREMIUM_CHATROOM");
+                    $query->orwhere("market_id","PREMIUM_CHATROOM_20");
+                })
+                ->where("count",">", 0)
+                ->where("active",1)->first();
         }
 
-        $raw = PbPurItem::where("userId",$user->userId)->where("market_id",$condition)->where("active",1)->first();
         $count = empty($raw) ? 0 : $raw["count"];
         if($count <= 0)
         {
@@ -238,7 +264,7 @@ class ChatController extends Controller
             "public"=>$pub == "public" ? 1 : 2,
             "round"=>$round
         ]);
-        PbPurItem::where("userId",$user->userId)->where("market_id",$condition)->update([
+        PbPurItem::where("id",$raw["id"])->update([
             "count"=>$count - 1
         ]);
         echo json_encode(array("status"=>1,"msg"=>"성공적으로 개설하였습니다.","list"=>array("roomType"=>$type,"nickname"=>$user->nickname,"roomTitle"=>$title,"roomIdx"=>$token)));
@@ -246,10 +272,10 @@ class ChatController extends Controller
 
     }
 
-
     public function checkActiveRoom(Request $request){
         $user = Auth::user();
-        $days_ago = date('Y-m-d', strtotime('-26  hours', strtotime('now')));
+
+        $days_ago = date('Y-m-d H:i:s', strtotime('-26  hours', strtotime("now")));
         $checkd = PbRoom::where("roomIdx",$request->room)->where("created_at","<=",$days_ago)->first();
         if(!empty($checkd)){
             PbRoom::find($checkd["id"])->delete();

@@ -21,4 +21,5 @@ function getDiffTimes($date){
     else
         return $minute.$prefix;
 }
+
 ?>

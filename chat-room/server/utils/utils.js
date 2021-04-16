@@ -22,6 +22,9 @@ function checkInPacket(data,obj,io){
     let duplicated = 0;
     switch (data.header.type){
         case "login":
+            let mute = "muteOff";
+            let mute1 = "muteOff";
+            let bytime=  "";
             if(data.body.cmd =="LOGIN"){
                 let token  = "";
                 if(data.body.userToken.trim() == "")
@@ -110,17 +113,23 @@ function checkInPacket(data,obj,io){
                                 let room = await knex("pb_room").where("pb_room.roomIdx",data.body.roomIdx);
                                 let userType = 5;
                                 if(await room != 'undefined'){
+
                                     if( room[0]['super'] == token){
                                         userType = 1;
                                     }
+
                                     if(room[0]['manager'] !=null && room[0]['manager'].includes(token)){
                                         userType = 2;
                                     }
 
+                                    if(typeof room[0]["mute"] !="undefined" && room[0]["mute"] != "" && room[0]["mute"] !=null && room[0]["mute"].includes(user[0]["userIdKey"]))
+                                    {
+                                        mute = "muteOn";
+                                    }
                                     let profile_img = "https://simg.powerballgame.co.kr/images/profile.png"
                                     if(user[0]["image"] != "" && user[0]["image"] !==null)
                                         profile_img = user[0]["image"]
-                                    listUsers.addUser(token, user[0]["name"], user[0]["level"], user[0]["nickname"], user[0]["sex"], 0, obj.id, data.body.roomIdx,date.getTime(),"","","lobby",profile_img,user[0]["today_word"],userType)
+                                    listUsers.addUser(token, user[0]["name"], user[0]["level"], user[0]["nickname"], user[0]["sex"], 0, obj.id, data.body.roomIdx,date.getTime(),"","","lobby",profile_img,user[0]["today_word"],userType,mute)
                                     obj.to(data.body.roomIdx).emit("receive",{header:{type:"ListUser"},body:{users:listUsers.getUserByClientId(obj.id)}})
                                     obj.emit("receive",{header:{type:"INIT"},body:{freezeOnOff:room[0]['frozen'],users:listUsers.getUsersByRoomIdx(data.body.roomIdx),msgList:listMsg.getMsgRoomIdx(data.body.roomIdx)}})
                                 }
@@ -146,13 +155,19 @@ function checkInPacket(data,obj,io){
                 obj.emit("receive",return_obj)
             }
             else{
-                return_obj = {header:{type:"MSG"},body:createMessage(user.id,user.nickname,user.item,user.level,user.mark,data.body.msg,user.sex,user.winFixCnt,user.userType)};
-                if(listMsg.getMsgLengthFromRoomIdx(data.body.roomIdx) >= 30){
-                    let msg = listMsg.getFirstMsgByRoomIdx(data.body.roomIdx);
-                    listMsg.deleteMsgByUserToken(msg.id);
+                if(user.mute == "muteOn"){
+                    obj.emit("receive",{header:{type:"NOTICE"},body:{type:"MUTEMSG"}})
                 }
-                listMsg.createMsg(user.id,"",user.level,"",data.body.msg,user.nickname,user.sex,user.winFixCnt,obj.id,data.body.roomIdx,user.userType);
-                io.to(data.body.roomIdx).emit("receive",return_obj)
+                else{
+                    return_obj = {header:{type:"MSG"},body:createMessage(user.id,user.nickname,user.item,user.level,user.mark,data.body.msg,user.sex,user.winFixCnt,user.userType)};
+                    if(listMsg.getMsgLengthFromRoomIdx(data.body.roomIdx) >= 30){
+                        let msg = listMsg.getFirstMsgByRoomIdx(data.body.roomIdx);
+                        listMsg.deleteMsgByUserToken(msg.id);
+                    }
+                    listMsg.createMsg(user.id,"",user.level,"",data.body.msg,user.nickname,user.sex,user.winFixCnt,obj.id,data.body.roomIdx,user.userType);
+                    io.to(data.body.roomIdx).emit("receive",return_obj)
+                }
+
             }
 
             break;
@@ -214,6 +229,14 @@ function getUserFromIdAndRoomIdx(id,roomIdx="lobby"){
     return listUsers.getUserFromIdAndRoomIdx(id,roomIdx);
 }
 
+function setUserMuteById(state,id,roomIdx){
+    return listUsers.setUserMuteById(state,id,roomIdx)
+}
+
+function setUserManageById(state,id,roomIdx){
+    return listUsers.setUserManageById(state,id,roomIdx)
+}
+
 module.exports = {
     createMessage,
     checkInPacket,
@@ -225,5 +248,7 @@ module.exports = {
     getUserByRoomIdxAndClientId,
     deleteMsgByRoomIdx,
     deleteCharRooom,
-    getUserFromIdAndRoomIdx
+    getUserFromIdAndRoomIdx,
+    setUserMuteById,
+    setUserManageById
 }

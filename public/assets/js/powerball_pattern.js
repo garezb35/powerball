@@ -25,6 +25,26 @@ $(document).ready(function (){
             searchPattern(1,date,round);
         },500);
     });
+    $(".btn_plus").click(function(){
+        if(limit > 19) return false;
+        limit++;
+        $(".tx").text(limit)
+        initPattern(limit,type,function(){
+            setTimeout(function(){
+                searchPattern(1,date,round);
+            },500);
+        });
+    })
+    $(".btn_minus").click(function(){
+        if(limit < 4) return false;
+        limit--;
+        $(".tx").text(limit)
+        initPattern(limit,type,function(){
+            setTimeout(function(){
+                searchPattern(1,date,round);
+            },500);
+        });
+    })
 })
 
 function initPattern(limit=10,type="pb_oe",callback){
@@ -93,6 +113,14 @@ function searchPattern(append = 1,var_date=old_date,var_round=old_round){
                 round = data.result[length-1].current[0].day_round;
                 index++;
                 if(data.result.length > 0 ){
+                    if(append == 1)
+                    {
+                        pb_oe = new Array();
+                        pb_uo = new Array();
+                        nb_oe = new Array();
+                        nb_uo = new Array();
+                        nb_size = new Array();
+                    }
                     for(var item in data.result){
                         for(var i = 0; i < data.result[item].current.length;i++){
                             pb_oe.push(data.result[item].current[i].pb_oe)
@@ -136,7 +164,7 @@ function searchPattern(append = 1,var_date=old_date,var_round=old_round){
                     patternAll["nuo"]["count"] = nb_uo.reduce(function(acc,e){acc[e] = (e in acc ? acc[e]+1 : 1); return acc}, {});
                     patternAll["nsize"]["count"] = nb_size.reduce(function(acc,e){acc[e] = (e in acc ? acc[e]+1 : 1); return acc}, {});
                     compileJson("#chart-data",".chart-power",patternAll);
-                    douPie([patternAll["nsize"]["count"]["3"],patternAll["nsize"]["count"]["2"],patternAll["nsize"]["count"]["1"]],"chart-area","");
+                    douPie([patternAll["nsize"]["count"]["3"],patternAll["nsize"]["count"]["2"],patternAll["nsize"]["count"]["1"]],"chart-area");
                 }
             }
             if(data.status ==0)
@@ -147,11 +175,10 @@ function searchPattern(append = 1,var_date=old_date,var_round=old_round){
     }
 }
 
-$('body').on('click','.tabMenu a',function(){
-    $('.tabMenu a').removeClass('btn-jin-green');
-    $('.tabMenu a').addClass('btn-green');
-    $(this).addClass('btn-jin-green');
-    $(this).removeClass('btn-green');
+$('body').on('click','#pattern-sec a.nav-link',function(){
+    if(loading) return false;
+    $('#pattern-sec a.nav-link').removeClass('on1');
+    $(this).addClass('on1');
     type = $(this).attr('rel');
     initPattern($("#patternCnt").val(),$(this).attr('rel'),function(){
         setTimeout(function(){

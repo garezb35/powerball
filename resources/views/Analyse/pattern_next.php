@@ -7,15 +7,15 @@
             <tbody>
             <tr>
                 {{#each this.current}}
-                <td width="10" class="border-none">
-                    <table>
+                <td width="10" class="border-none p-0">
+                    <table class="table-bordered">
                         <tbody>
-                        <tr>
-                            <td class="patternRound border-none">{{#subRoundUntilThr this.day_round}}{{/subRoundUntilThr}}</td>
-                        </tr>
-                        <tr>
-                            <td class="patternImg border-none"><div class="{{#oddClass this ../this.type}}{{/oddClass}}">{{#oddClassAlias this ../this.type}}{{/oddClassAlias}}</div></td>
-                        </tr>
+                            <tr>
+                                <td class="patternImg border-none"><div class="{{#oddClass this ../this.type}}{{/oddClass}}">{{#subRoundUntilThr this.day_round}}{{/subRoundUntilThr}}</div></td>
+                            </tr>
+                            <tr>
+                                <td class="patternRound border-none">{{#oddClassAlias this ../this.type}}{{/oddClassAlias}}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </td>
@@ -28,10 +28,10 @@
         <table width="100%">
             <tbody>
             <tr>
-                <td class="patternRound border-none">{{#subRoundUntilThr this.next.day_round}}{{/subRoundUntilThr}}</td>
+                <td class="patternImg border-none"><div class="{{#oddClass this.next this.type}}{{/oddClass}}">{{#subRoundUntilThr this.next.day_round}}{{/subRoundUntilThr}}</div></td>
             </tr>
             <tr>
-                <td class="patternImg border-none"><div class="{{#oddClass this.next this.type}}{{/oddClass}}">{{#oddClassAlias this.next this.type}}{{/oddClassAlias}}</div></td>
+                <td class="patternRound border-none">{{#oddClassAlias this.next this.type}}{{/oddClassAlias}}</td>
             </tr>
             </tbody>
         </table>
@@ -39,3 +39,4 @@
 </tr>
 {{/each}}
 </script>
+

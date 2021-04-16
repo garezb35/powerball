@@ -1,8 +1,6 @@
 #chatTimer{
     height:25px;
     line-height:25px;
-    background-color:#646464;
-    color:#fff;
     text-align:center;
 }
 .chatgraph{
@@ -87,4 +85,8 @@
     display: block;
     color: #cd1212;
     font-family: DINWeb-Bold;
+}
+
+#timeRound,.minute,.second{
+    color: #b30000;
 }

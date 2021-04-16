@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PbItemUse;
+use App\Models\PbLog;
 use App\Models\PbMarket;
 use App\Models\PbPurItem;
 use App\Models\User;
@@ -69,13 +70,17 @@ class MarketController extends Controller
         if(!empty($pur_item))
         {
             $insert_count = $pur_item["count"];
-//            if($count + $pur_item["count"] > $item["limit"]){
-//                echo json_encode(array("status"=>0,"code"=>17,"message"=>"해당 상품의 1회 최대구매 수량을 초과하였습니다.\n구매한 아이템 내역에서 확인해주세요."));
-//                return;
-//            }
         }
         $price = $item['price'] * $count;
         $new_exp = $user->exp + $count * $item["bonus"];
+        if(!empty($item["bonus"])){
+            PbLog::create([
+                "type"=>1,
+                "content"=>json_encode(array("exp"=>$item["bonus"],"msg"=>"[{$item["name"]}] 구매 보너스 경험치 지급")),
+                "userId"=>$user->userId,
+                "ip"=>$request->ip()
+            ]);
+        }
         if($item["price_type"] ==1){
             if($price > $user->coin){
                 echo json_encode(array("status"=>0,"code"=>0,"message"=>"코인이 부족합니다.\n코인 충전 페이지로 이동하시겠습니까?"));
@@ -85,7 +90,7 @@ class MarketController extends Controller
         }
         if($item["price_type"] ==2){
             if($price > $user->bread){
-                echo json_encode(array("status"=>0,"code"=>1,"message"=>"건빵이 부족합니다.\n건빵 획득후 이용하시기 바랍니다."));
+                echo json_encode(array("status"=>0,"code"=>1,"message"=>"도토리가 부족합니다.\n도토리 획득후 이용하시기 바랍니다."));
                 return;
             }
             $insert_price = ["bread"=>$user->bread - $price , "exp"=>$new_exp];
@@ -108,6 +113,12 @@ class MarketController extends Controller
                 [
                     "count"=>$count * $item["detail_count"] + $insert_count
                 ]);
+            PbLog::create([
+                "type"=>2,
+                "content"=>json_encode(array("class"=>"purchase","use"=>"구매","name"=>$item["name"],"count"=>$count,"price"=>$price)),
+                "userId"=>$user->userId,
+                "ip"=>$request->ip()
+            ]);        
 
         echo json_encode(array("status"=>1));
     }
@@ -164,8 +175,14 @@ class MarketController extends Controller
                 "terms1"=>$terms1,
                 "terms_type"=>$terms_type
             ]);
-
+                   
             PbPurItem::where("id",$pur_item["id"])->update(["count"=>$pur_item["count"]-1]);
+            PbLog::create([
+                "type"=>2,
+                "content"=>json_encode(array("class"=>"use","use"=>"사용","name"=>$pur_item->items->name,"count"=>1,"price"=>$pur_item->items->price)),
+                "userId"=>$user->userId,
+                "ip"=>$request->ip()
+            ]); 
             echo json_encode(array("status"=>1,"code"=>-100));
             return;
         }
@@ -193,8 +210,13 @@ class MarketController extends Controller
             echo json_encode(array("status"=>1,"code"=>-2));
         }
         else if($code == "PICK_INIT"){
-            //후에
             echo json_encode(array("status"=>1,"code"=>-1));
         }
+        PbLog::create([
+            "type"=>2,
+            "content"=>json_encode(array("class"=>"use","use"=>"사용","name"=>$pur_item->items->name,"count"=>1,"price"=>$pur_item->items->price)),
+            "userId"=>$user->userId,
+            "ip"=>$request->ip()
+        ]); 
     }
 }

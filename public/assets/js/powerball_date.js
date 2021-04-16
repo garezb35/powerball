@@ -55,20 +55,17 @@ $(document).ready(function(){
                 moreClick();
                 ajaxPattern('pb_oe',date,date,"");
                 compileJson("#chart-data",".chart-power",data.result)
-                douPie([pattern_header["nb_size"].count[3],pattern_header["nb_size"].count[2],pattern_header["nb_size"].count[1]],"chart-area","");
+                douPie([pattern_header["nb_size"].count[3],pattern_header["nb_size"].count[2],pattern_header["nb_size"].count[1]],"chart-area",["대","중","소"]);
                 ajaxSixPattern(6,"pb_oe",date);
             })
         })
     })
 
-    $('#sixBox .patternCnt .btns a').click(function(){
+    $('#boardmenu-sec .nav-item a').click(function(){
 
-        $('#sixBox .patternCnt .btns a').removeClass('on1');
+        $('#boardmenu-sec .nav-item a').removeClass('on1');
         $(this).addClass('on1');
-
-        $('#sixBox .patternType .btns a').removeClass('on2');
         $('#sixBox .patternType .btns').find('[sixType='+six_alias+']').addClass('on2');
-
         six_num = $(this).attr('rel');
         ajaxSixPattern(six_num,six_alias,date);
 
@@ -89,7 +86,7 @@ $(document).ready(function(){
 
 function ajaxPattern(type,date,dateTo="",round="")
 {
-    $('#patternBox a').each(function(){
+    $('#patternBox-head a').each(function(){
         $(this).removeClass('on');
         if ($(this).attr('type') == type)
         {

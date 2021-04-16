@@ -18,9 +18,14 @@ if('WebSocket' in window)
 }
 var socket = null;
 var browser_ws = browserWsChk();
+$(document).on('click','a.uname',userLayerHandler);
+
+$(document).click(function(){
+    $('#userLayer:visible').hide();
+});
 $(document).ready(function() {
     // size init
-    top.resizeTo(1250, 895);
+    top.resizeTo(1250, 780);
     windowResize();
 
     if(browser_ws == true)
@@ -54,6 +59,19 @@ $(document).ready(function() {
     $('#sendBtn').click(function(){
         sendMsg();
     });
+
+    $('#btn_exit').click(function(){
+
+            if(!confirm('채팅방을 나가시겠습니까?'))
+            {
+                return false;
+            }
+            else
+            {
+                location.href = "/chatRoom";
+            }
+        });
+
 
     $('#msg').bind('keypress',function(event){
         if((event.keyCode || event.which) == 13)
@@ -464,7 +482,7 @@ $(document).ready(function() {
                 success:function(data,textStatus){
                     if(data.status == 1)
                     {
-                        debugger;
+
                         $('#bullet').attr('rel',data.bullet);
                         $('#bullet').html(data.bullet);
                         giftManager('bullet',JSON.parse(roomInfo).useridKey,giftCnt);
@@ -628,7 +646,7 @@ function receiveProcess(data)
         for(var i in bPacket.msgList)
         {
             var dataInfo = bPacket.msgList[i];
-            printChatMsg(dataInfo.userType,dataInfo.level,dataInfo.sex,dataInfo.mark,dataInfo.useridKey,dataInfo.nickname,dataInfo.msg,dataInfo.item);
+            printChatMsg(dataInfo.userType,dataInfo.level,dataInfo.sex,dataInfo.mark,dataInfo.id,dataInfo.nickname,dataInfo.msg,dataInfo.item);
         }
         printSystemMsg('guide','<span>'+room_name+'</span> 채팅방에 입장 하셨습니다.');
         printSystemMsg('system','<span>광고, 비방, 비매너, 카톡, 개인정보, 계좌</span> 발언시 차단됩니다.');
@@ -667,6 +685,7 @@ function receiveProcess(data)
     }
     else if(hPacket.type == 'CMDMSG')
     {
+
         switch(bPacket.cmd)
         {
 
@@ -721,7 +740,6 @@ function receiveProcess(data)
                 managerOnOff('On',bPacket.tuseridKey);
                 if(this.useridKey == bPacket.tuseridKey)
                 {
-                    updateState(bPacket.cmd);
                     is_manager = true;
                 }
                 break;
@@ -729,16 +747,15 @@ function receiveProcess(data)
             case 'managerOff':
                 printSystemMsg('system','<span>'+bPacket.tnickname+'</span> 님이 매니저 해제 되었습니다.');
                 managerOnOff('Off',bPacket.tuseridKey);
-                if(this.useridKey == bPacket.tuseridKey)
+                if(this.userIdKey == bPacket.tuseridKey)
                 {
-                    updateState(bPacket.cmd);
                     is_manager = false;
                 }
                 break;
 
             case 'kickOn':
                 printSystemMsg('system','<span>'+bPacket.tnickname+'</span> 님이 강제 퇴장 되었습니다.');
-                if(this.useridKey == bPacket.tuseridKey)
+                if(this.userIdKey == bPacket.tuseridKey)
                 {
                     modalLayerControl('kick');
                 }
@@ -750,10 +767,10 @@ function receiveProcess(data)
 
             case 'muteOn':
                 printSystemMsg('system','<span>'+bPacket.tnickname+'</span> 님이 벙어리 되었습니다.');
-                if(this.useridKey == bPacket.tuseridKey)
-                {
-                    updateState(bPacket.cmd);
-                }
+                // if(this.useridKey == bPacket.tuseridKey)
+                // {
+                //     updateState(bPacket.cmd);
+                // }
                 break;
 
             case 'muteOnTime':
@@ -770,10 +787,10 @@ function receiveProcess(data)
 
             case 'muteOff':
                 printSystemMsg('system','<span>'+bPacket.tnickname+'</span> 님이 벙어리 해제 되었습니다.');
-                if(this.useridKey == bPacket.tuseridKey)
-                {
-                    updateState(bPacket.cmd);
-                }
+                // if(this.useridKey == bPacket.tuseridKey)
+                // {
+                //     updateState(bPacket.cmd);
+                // }
                 break;
 
             case 'freezeOn':
@@ -1459,6 +1476,41 @@ function adminCmd(cmd,tuseridKey,tnickname)
                 }
             });
         }
+        else if(cmd == 'muteOn' || cmd == 'muteOff' || cmd == "kickOn" || cmd == "managerOn" || cmd == "managerOff") {
+            let url = "/api/setMute";
+            if(cmd == "kickOn")
+                url = "/api/kickUser"
+            if(cmd == "managerOn" || cmd == "managerOff"){
+                url = "/api/updateManage"
+            }
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: url,
+                data: {
+                    cmd: cmd,
+                    api_token: userIdToken,
+                    roomIdx: roomIdx,
+                    tuseridKey : tuseridKey
+                },
+                success: function (data, textStatus) {
+                    if (data.status == 1) {
+                        var data = {
+                            cmd: cmd,
+                            roomIdx: roomIdx,
+                            tuseridKey:tuseridKey
+                        };
+                        sendProcess('ADMINCMD', data);
+                    } else {
+                        alert(data.msg);
+                    }
+                },error:function(xhr){
+                    console.log(xhr)
+                }
+            });
+        }
+
+
         else
         {
             var data = {
@@ -1564,7 +1616,7 @@ function modalLayerControl(type)
         $('.modalLayer,#modal_notice').show();
 
         setTimeout(function(){
-            location.href = '/';
+            location.href = '/chatRoom';
         },3000);
     }
 }
@@ -1577,7 +1629,7 @@ function windowResize()
     var adHeight = 90;
     var inputHeight = 38 + 72;
 
-    var msgBoxHeight = bodyHeight - headerHeight - footerHeight - adHeight - inputHeight;
+        var msgBoxHeight = bodyHeight - headerHeight - inputHeight;
 
     $('#msgBox').css('height',msgBoxHeight);
 }
@@ -2244,4 +2296,122 @@ function giftManager(type,tuseridKey,cnt)
     };
 
     sendProcess('GIFT',data);
+}
+
+// user layer handler
+function userLayerHandler(e)
+{
+    var target = $(e.target);
+    if(target.is('a'))
+    {
+        if(target.attr('rel').substring(0,5) == 'guest')
+        {
+            $('#userLayer').hide();
+        }
+        else
+        {
+            eval(setUserLayer(target.attr('rel'),target.attr('title'),e,target.offset().left));
+
+        }
+        e.stopPropagation();
+    }
+    else if(target.parent().is('a'))
+    {
+        if(target.parent().attr('rel').substring(0,5) == 'guest')
+        {
+            $('#userLayer').hide();
+        }
+        else
+        {
+            eval(setUserLayer(target.parent().attr('rel'),target.parent().attr('title'),e,target.offset().left));
+
+        }
+        e.stopPropagation();
+    }
+}
+
+// user layer set
+function setUserLayer(useridKey,nickname,e,left)
+{
+    var str = '';
+
+    if(this.userIdKey != useridKey)
+    {
+        str += '<ul>';
+
+        if(roomIdx != 'lobby' && is_admin && useridKey != JSON.parse(roomInfo).useridKey)
+        {
+            str += '<li><a href="#" onclick="adminCmd(\'fixMemberOn\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">고정멤버임명</span></a></li>';
+            str += '<li><a href="#" onclick="adminCmd(\'fixMemberOff\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">고정멤버해제</span></a></li>';
+            str += '<li><a href="#" onclick="adminCmd(\'managerOn\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">매니저임명</span></a></li>';
+            str += '<li><a href="#" onclick="adminCmd(\'managerOff\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">매니저해제</span></a></li>';
+            str += '<li><a href="#" onclick="adminCmd(\'muteOn\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">벙어리</span></a></li>';
+            str += '<li><a href="#" onclick="adminCmd(\'muteOff\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">벙어리 해제</span></a></li>';
+            str += '<li><a href="#" onclick="adminCmd(\'kickOn\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">강퇴</span></a></li>';
+            // str += '<li><a href="#" onclick="adminCmd(\'kickOff\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">강퇴 해제</span></a></li>';
+        }
+        else if(roomIdx != 'lobby' && is_manager  && useridKey != JSON.parse(roomInfo).useridKey)
+        {
+            str += '<li><a href="#" onclick="adminCmd(\'muteOn\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">벙어리</span></a></li>';
+            str += '<li><a href="#" onclick="adminCmd(\'muteOff\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">벙어리 해제</span></a></li>';
+            str += '<li><a href="#" onclick="adminCmd(\'kickOn\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">강퇴</span></a></li>';
+            // str += '<li><a href="#" onclick="adminCmd(\'kickOff\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">강퇴 해제</span></a></li>';
+        }
+        str += '<li><a href="#" onclick="chatManager(\'friendList\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">친구추가</span></a></li>';
+        str += '<li><a href="#" onclick="chatManager(\'blackList\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">블랙리스트</span></a></li>';
+        str += '</ul>';
+    }
+
+    $('#unickname').html(nickname);
+
+    $('#userLayer .ubody').remove();
+
+    if(str)
+    {
+        $('#userLayer').append('<div class="ubody">'+str+'</div>');
+    }
+
+    var bettingStr = '';
+
+    $.ajax({
+        type:'POST',
+        dataType:'json',
+        url:'/api/bettingResultLayer',
+        data:{
+            useridKey:useridKey
+        },
+        timeout:1000,
+        success:function(r,textStatus){
+            if(r.status == 1){
+                let data = r.result;
+                bettingStr += '<ul>';
+                bettingStr += '<li>올킬 - <span class="'+data.totalWinClass+'">'+data.totalWinFix+'</span>연승</li>';
+                bettingStr += '<li>파워볼홀짝 - <span class="'+data.powerballOddEvenWinClass+'">'+data.powerballOddEvenWinFix+'</span>연승, <span class="win">'+data.powerballOddEvenWin+'</span>승<span class="lose">'+data.powerballOddEvenLose+'</span>패('+data.powerballOddEvenRate+')</li>';
+                bettingStr += '<li>파워볼언더오버 - <span class="'+data.powerballUnderOverWinClass+'">'+data.powerballUnderOverWinFix+'</span>연승, <span class="win">'+data.powerballUnderOverWin+'</span>승<span class="lose">'+data.powerballUnderOverLose+'</span>패('+data.powerballUnderOverRate+')</li>';
+                bettingStr += '<li>숫자합홀짝 - <span class="'+data.numberOddEvenWinClass+'">'+data.numberOddEvenWinFix+'</span>연승, <span class="win">'+data.numberOddEvenWin+'</span>승<span class="lose">'+data.numberOddEvenLose+'</span>패('+data.numberOddEvenRate+')</li>';
+                bettingStr += '<li>숫자합언더오버 - <span class="'+data.numberUnderOverWinClass+'">'+data.numberUnderOverWinFix+'</span>연승, <span class="win">'+data.numberUnderOverWin+'</span>승<span class="lose">'+data.numberUnderOverLose+'</span>패('+data.numberUnderOverRate+')</li>';
+                bettingStr += '<li>숫자합대중소 - <span class="'+data.numberPeriodWinClass+'">'+data.numberPeriodWinFix+'</span>연승, <span class="win">'+data.numberPeriodWin+'</span>승<span class="lose">'+data.numberPeriodLose+'</span>패('+data.numberPeriodRate+')</li>';
+
+                bettingStr += '</ul>';
+
+                $('#userLayer .game').html(bettingStr);
+
+                // layer position
+                var layerTop = 0;
+                var layerBottom = $('body').height() - e.pageY - $('#userLayer').height();
+
+                if(layerBottom < 0)
+                {
+                    layerTop = e.pageY - $('#userLayer').height();
+                }
+                else
+                {
+                    layerTop = e.pageY;
+                }
+
+                $('#userLayer').css({'left':left + 10,'top':layerTop});
+                $('#userLayer').show();
+            }
+        }
+    });
 }

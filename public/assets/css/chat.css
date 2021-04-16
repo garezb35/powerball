@@ -21,18 +21,17 @@ img, fieldset, iframe {
     width: 100%;
     position: relative;
     z-index: 10;
-    border-top: 2px solid #71757b;
-    border-bottom: 1px solid #71757b;
     background: #fff;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
 }
 
 .box-chatting .btn-etc {
     position: relative;
     z-index: 10;
     background: #efefef;
-    border-left: 1px solid #cecece;
-    border-right: 1px solid #cecece;
-    border-bottom: 1px solid #cecece;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
 }
 
 .box-chatting .btn-etc .cnt {
@@ -108,7 +107,6 @@ img, fieldset, iframe {
     z-index: 10;
     background: #fff;
     border-right: 1px solid #cecece;
-    border-bottom: 1px solid #cecece;
 }
 
 
@@ -133,7 +131,7 @@ img, fieldset, iframe {
 .box-chatting .list-chatting li {
     color: #5e5e5e;
     padding: 0 0 0 0;
-    margin: 2px 0;
+    margin: 5px 0 !important;
     line-height: 24px;
 }
 
@@ -160,8 +158,8 @@ img, fieldset, iframe {
 }
 
 #msgBox .msg-guide {
-    background-color: #2943a3;
-    border: 1px solid #18275c;
+    background-color: #00b4b4;
+    border: 1px solid #00b4b4;
     min-height: 22px;
     line-height: 22px;
     color: #fff;
@@ -200,11 +198,6 @@ img, fieldset, iframe {
 .box-chatting .input-chatting {
     position: relative;
     background: #e2e2e2;
-    padding: 2px 36px 2px 2px;
-    border-left: 1px solid #cecece;
-    border-right: 1px solid #cecece;
-    border-top: 1px solid #cecece;
-    border-top: 1px solid #cecece;
     margin-bottom: 0px;
 }
 
@@ -217,11 +210,14 @@ img, fieldset, iframe {
 
 .box-chatting .input-chatting .input-1 {
     width: 100%;
-    height: 20px;
-    line-height: 20px;
-    border: 1px solid #949494;
+    height: 40px;
+    line-height: 40px;
+    border: 1px solid #e9ecef;
     color: #949494;
     padding: 0 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    outline: none !important;
 }
 
 .box-chatting .input-chatting .input-2 {
@@ -246,6 +242,7 @@ img, fieldset, iframe {
 
 #myTab{
     background: #e2e2e2;
+    border-bottom: none;
 }
 
 .table-type-1 .nav-link{
@@ -253,19 +250,23 @@ img, fieldset, iframe {
 }
 
 .table-type-1 .nav-tabs .nav-item.show .nav-link, .table-type-1 .nav-tabs .nav-link.active {
-    color: #e2e2e2;
-    background: #696969;
-    font-weight: bold;
-    border: 1px solid #464646;
+
+    border-top: #00b4b4 1px solid;
+    border-right: #00b4b4 1px solid;
+    border-left: #00b4b4 1px solid !important;
+    font-weight: 700;
+    background: white;
 }
 
 .table-type-1 .nav-tabs  .nav-link{
-    display: block;
-    height: 26px;
-    line-height: 26px;
-    text-align: center;
-    color: #737373;
     border-radius: 0px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #00b4b4;
+    background: #f4f5f7fa;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    font-size: 15px;
+    color: #000;
 }
 
 .box-chatting .list-room li {
@@ -384,7 +385,6 @@ img, fieldset, iframe {
 #ruleBox .borderBox {
     background-color: #F5F5F5;
     margin: 5px;
-    border: 1px solid #CECECE;
     padding: 10px;
 }
 #ruleBox .borderBox .tit {
@@ -462,3 +462,77 @@ img, fieldset, iframe {
 }
 
 
+#userLayer {
+    display: block;
+    position: absolute;
+    min-width: 200px;
+    border: 1px solid #0E578D;
+    z-index: 10000;
+    top: -1000px;
+}
+
+#userLayer .lutop {
+    padding: 0 20px 0 10px;
+    height: 26px;
+    line-height: 25px;
+    font-weight: bold;
+    color: #fff;
+    background: #00b4b4;
+}
+
+#userLayer .game {
+    background-color: #e4fce4;
+    padding: 3px 5px;
+    border-bottom: 1px dotted #d5d5d5;
+}
+
+#userLayer .game ul li {
+    height: 22px;
+    line-height: 22px;
+    font-size: 11px;
+    font-family: tahoma,dotum;
+    color: #535353;
+}
+
+#userLayer .ubody a {
+    display: block;
+    margin-bottom: -1px;
+    padding-left: 5px;
+    height: 21px;
+    border: 1px solid #f8f8f8;
+    font-size: 11px;
+    overflow: hidden;
+    color: #535353;
+}
+#userLayer .ubody a .ico {
+    float: left;
+    margin: 3px 3px 0 0;
+    width: 0;
+    height: 0;
+}
+#userLayer .ubody a .txt {
+    float: left;
+    margin-top: 4px !important;
+    height: 14px;
+    line-height: 14px;
+}
+#userLayer .ubody {
+    padding: 4px;
+    background-color: #f8f8f8;
+}
+
+
+#userLayer .game ul li .win {
+    color: red;
+}
+#userLayer .game ul li .lose {
+    color: blue;
+}
+
+#userLayer .ubody a:hover {
+    position: relative;
+    border: 1px solid #dad9d8;
+    background-color: #f0f0f0;
+    color: #000;
+    z-index: 10;
+}

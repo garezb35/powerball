@@ -21,7 +21,7 @@
                 <li><a  href="/p_analyse?terms=date">하루씩 보기</a></li>
                 <li><a class="selected" href="/p_analyse?terms=period&dateType=15">기한으로 보기</a></li>
             </ul>
-            <a class="btn_refresh" id="btn_refresh" href="javascript:location.reload();" title="새로고침"><span class="ic">새로고침</span></a>
+            <a class="btn_refresh" id="btn_refresh" href="javascript:location.reload();" title="새로고침"><span class="ic"></span><span id="refresh-element">새로고침</span></a>
         </div>
     </div>
     <div class="periodBox">
@@ -31,7 +31,7 @@
             <input type="text" name="from" value="{{$from}}" class="dateInput sp-dayspace_bg " id="startDate"/>
             <div class="bar1">~</div>
             <input type="text" name="to" value="{{$to}}" class="dateInput sp-dayspace_bg " id="endDate"/>
-            <input type="submit" class="btn-jin-green btn btn-sm ml-2 pl-3 pr-3" value="검색">
+            <button type="submit" class="btn-jin-greenoutline btn btn-sm ml-2 pl-3 pr-3" ><i class="fa fa-search"></i>&nbsp;&nbsp;검색</button>
             {!! Form::close() !!}
         </div>
 
@@ -51,43 +51,5 @@
     <div class="mt-4"></div>
     @include('Analyse/all_analyseTable')
     @include('Analyse/maxminAnalyse')
-    <table  id="ladderLogBox" class="powerballBox table table-bordered mt-1">
-        <colgroup>
-            <col width="10%" />
-            <col width="8%" />
-            <col width="8%" />
-            <col width="8%" />
-            <col width="8%" />
-            <col width="8%" />
-            <col width="8%" />
-            <col width="8%" />
-            <col width="8%" />
-            <col width="8%" />
-            <col width="8%" />
-            <col width="8%" />
-        </colgroup>
-        <thead>
-        <tr class="subTitle">
-            <th height="80" rowspan="2">날짜</th>
-            <th colspan="4">파워볼</th>
-            <th colspan="7">일반볼합</th>
-        </tr>
-        <tr class="thirdTitle">
-            <th>홀</th>
-            <th>짝</th>
-            <th>언더</th>
-            <th>오버</th>
-            <th>홀</th>
-            <th>짝</th>
-            <th>언더</th>
-            <th>오버</th>
-            <th>대</th>
-            <th>중</th>
-            <th>소</th>
-        </tr>
-        </thead>
-        <tbody class = "minmaxday-t">
-        </tbody>
-    </table>
     @include("Analyse/maxminDay")
 @endsection

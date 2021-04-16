@@ -1,9 +1,9 @@
 .betBox {
     position: relative;
-    width: 826px;
-    height: 113px;
-    border: 2px solid #8A0D0D;
-    background-color: #fafafa;
+    width: 820px;
+    height: 159px;
+    border: 1px solid #b0b0b0;
+    background-color: #fff;
     margin-top: 0px;
 }
 .betBox .title {
@@ -18,9 +18,7 @@
     border-right: 2px solid #8A0D0D;
 }
 .betBox ul.betting {
-    width: 780px;
-    padding-left: 40px;
-    margin: 10px auto;
+    width: 100%;
     text-align: center;
 }
 
@@ -32,19 +30,17 @@
 }
 .betBox ul.betting li span {
     display: inline-block;
-    width: 40px;
-    height: 30px;
-    line-height: 30px;
-    border: 1px solid #B2B2B2;
+    width: 50px;
+    height: 32px;
+    line-height: 32px;
     text-align: center;
     font-weight: bold;
-    background-color: #fff;
+    margin-left: -3px;
+    color: #fff;
 }
 .betBox ul.betting li span.titleBox {
     width: 80px;
-    background-color: #1265CD;
-    border: 1px solid #0D50A3;
-    color: #fff;
+    color: #000;
 }
 .betBox ul.betting li.btnBox {
     vertical-align: top;
@@ -84,14 +80,8 @@
     text-align: center;
 }
 .betBox ul.betting li.btnBox a.log {
-    width: 80px;
-    height: 30px;
-    line-height: 30px;
-    display: inline-block;
     font-weight: bold;
-    background-color: #e7e7e7;
-    border: 1px solid #B2B2B2;
-    color: #000;
+    color: #fff;
 }
 
 .betBox ul.betting li.btnBox .right .reset {
@@ -116,29 +106,43 @@
     float: right;
     margin-left: 5px;
 }
-.betBox ul.betting li.btnBox .left .pick {
-    width: 160px;
-    height: 67px;
-    line-height: 67px;
-}
 
 .betBox ul.betting li.btnBox span {
-    width: 120px;
-    line-height: 30px;
-    background-color: #C11A20;
-    border: 1px solid #921417;
+    background-color: #bec2c2;
+    border: 1px solid #9c9f9f;
     color: #fff;
     cursor: pointer;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    border-radius: 50%;
+    margin-right: 10px;
 }
+
+.betBox ul.betting li.btnBox span:hover,.betBox ul.betting li.btnBox span:focus,.betBox ul.betting li.btnBox span.pick{
+    background: white;
+    color: #00b4b4;
+    border-color: #00b4b4;
+}
+
+.betBox ul.betting li.btnBox span:hover a ,.betBox ul.betting li.btnBox span:focus a{
+    color: #00b4b4;
+}
+
 .betBox ul.betting li .point {
     margin-top: 5px;
 }
 
 .betBox ul li .pick-btn.on {
-    background-color: #C11A20;
-    border: 1px solid #921417;
     color: #fff;
+    background: url(/assets/images/powerball/pick-blue.png);
 }
 .betBox ul.betting li span.pick-btn {
     cursor: pointer;
+}
+
+
+.betting li.btnBox{
+    margin-left: 20px !important;
 }

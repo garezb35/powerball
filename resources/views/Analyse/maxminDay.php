@@ -1,7 +1,7 @@
 <script id="minmaxday-data" type="text/x-handlebars-template">
     {{#each this}}
     <tr>
-        <td height="70" rowspan="3" align="center"><span class="date">{{this.date}}</span></td>
+        <td class="thirdTitle" height="70" rowspan="3" align="center"><span class="date">{{this.date}}</span></td>
         <td height="45" align="center">
             <div class="{{#bigSmall this.poe.count 1 1}}evenText0{{/bigSmall}}">{{#index_of this.poe.count 1}}{{/index_of}}</div>
 

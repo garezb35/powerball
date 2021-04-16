@@ -1,5 +1,5 @@
 <div class="box-chatting">
-    <div class="btn-etc mb-2">
+    <div class="btn-etc">
         <span class="cnt">
             <div class="sp-bl_pp"></div>
             <span id="connectUserCnt" rel=""></span>명
@@ -70,7 +70,7 @@
                 </ul>
                 <p class="input-chatting">
                     <input type="text" name="msg" id="msg" class="input-1" autocomplete="off" placeholder="내용을 입력해주세요...">
-                    <input type="button" class="input-2 sp-btn_enter" id="sendBtn">
+                    <input type="hidden" class="input-2 sp-btn_enter" id="sendBtn">
                     <a href="#" class="scrollBottom" id="scrollBottom" style="display: none;"></a>
                 </p>
             </div>

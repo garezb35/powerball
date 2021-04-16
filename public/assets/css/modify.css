@@ -1,0 +1,90 @@
+.modifyBox {
+    color: #5A5552;
+    background-color: #fff;
+}
+
+.modifyBox .title {
+    height: 40px;
+    line-height: 40px;
+    padding-left: 10px;
+    font-size: 13px;
+    font-weight: bold;
+    background-color: #00b4b4;
+    color: #fff;
+}
+
+.modifyBox .content {
+    margin: 10px;
+}
+
+.modifyBox .btnBox {
+    margin: 20px auto;
+    text-align: center;
+}
+
+.modifyBox .btnBox .confirm {
+    display: inline-block;
+    width: 180px;
+    height: 40px;
+    margin: 0 auto;
+    text-shadow: 1px 1px 1px #2f447f;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 40px;
+    color: #fff !important;
+    font-size: 16px;
+    background-color: #CC3300;
+    border: 1px solid #9c1818;
+    border-radius: 3px;
+}
+.highlight {
+    color: #00b4b4;
+}
+.modifyBox .table td input {
+    border: 1px solid #D9D9D8;
+    height: 30px;
+    width: 120px;
+    line-height: 30px;
+    padding: 0 5px;
+    background-color: #f8f8f8;
+    color: #8d8d8d;
+}
+.modifyBox .table td.tit {
+    margin: 0;
+    padding: 20px 0 0 10px;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: Gulim;
+    background-color: #EFEFEF;
+    vertical-align: top;
+    border-right: 1px solid #c6c6c6;
+    text-align: left;
+}
+
+.modifyBox .btnBox .cancel {
+    display: inline-block;
+    width: 180px;
+    height: 40px;
+    margin: 0 auto;
+    text-shadow: 1px 1px 1px #2f447f;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 40px;
+    color: #fff;
+    font-size: 16px;
+    background-color: #8a8a8a;
+    border: 1px solid #696969;
+    border-radius: 3px;
+}
+.modifyBox .btn_set {
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    background-color: #efefef;
+    color: #000;
+    border: 1px solid #c6c6c6;
+    text-align: center;
+}

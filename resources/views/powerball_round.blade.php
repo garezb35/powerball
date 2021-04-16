@@ -40,7 +40,7 @@
                 <input type="text" name="from" value="{{$from}}" class="dateInput sp-dayspace_bg" id="startDate">
                 <div class="bar1">~</div>
                 <input type="text" name="to" value="{{$to}}" class="dateInput sp-dayspace_bg" id="endDate">
-                <input type="submit" class="btn-jin-green btn btn-sm ml-2 pl-3 pr-3" value="검색">
+                <input type="submit" class="btn-jin-greenoutline btn btn-sm ml-2 pl-3 pr-3" value="검색">
             </div>
             <div class="btnBox">
                 <div class="btn-group" role="group" aria-label="Basic example">

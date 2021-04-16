@@ -13,12 +13,14 @@
         {{/each}}
     </tr>
     {{/each}}
+
+    {{#ifEquals this.type "odd_even"}}
     <tr>
         <td><div class="sp-odd">홀</div></td>
         {{#each terms}}
         <td>
-            <em class="tx">{{#index_ofWithKey ../max this 1}}{{/index_ofWithKey}}번</em>
-            <em class="tx">{{#index_ofWithKeyPer ../max this 1}}{{/index_ofWithKeyPer}}%</em>
+            <em class="tx">{{#index_ofWithKey ../max this "odd"}}{{/index_ofWithKey}}번</em>
+            <em class="tx">{{#index_ofWithKeyPerSadari ../max this "odd"}}{{/index_ofWithKeyPerSadari}}%</em>
         </td>
         {{/each}}
     </tr>
@@ -26,9 +28,91 @@
         <td><div class="sp-even">짝</div></td>
         {{#each terms}}
         <td>
-            <em class="tx">{{#index_ofWithKey ../max this 0}}{{/index_ofWithKey}}번</em>
-            <em class="tx">{{#index_ofWithKeyPer ../max this 0}}{{/index_ofWithKeyPer}}%</em>
+            <em class="tx">{{#index_ofWithKey ../max this "even"}}{{/index_ofWithKey}}번</em>
+            <em class="tx">{{#index_ofWithKeyPerSadari ../max this "even"}}{{/index_ofWithKeyPerSadari}}%</em>
         </td>
         {{/each}}
     </tr>
+    {{/ifEquals}}
+    {{#ifEquals this.type "left_right"}}
+    <tr>
+        <td><div class="sp-odd">좌</div></td>
+        {{#each terms}}
+        <td>
+            <em class="tx">{{#index_ofWithKey ../max this "LEFT"}}{{/index_ofWithKey}}번</em>
+            <em class="tx">{{#index_ofWithKeyPerSadari ../max this "LEFT"}}{{/index_ofWithKeyPerSadari}}%</em>
+        </td>
+        {{/each}}
+    </tr>
+    <tr>
+        <td><div class="sp-even">우</div></td>
+        {{#each terms}}
+        <td>
+            <em class="tx">{{#index_ofWithKey ../max this "RIGHT"}}{{/index_ofWithKey}}번</em>
+            <em class="tx">{{#index_ofWithKeyPerSadari ../max this "RIGHT"}}{{/index_ofWithKeyPerSadari}}%</em>
+        </td>
+        {{/each}}
+    </tr>
+    {{/ifEquals}}
+    {{#ifEquals this.type "three_four"}}
+    <tr>
+        <td><div class="sp-odd">3</div></td>
+        {{#each terms}}
+        <td>
+            <em class="tx">{{#index_ofWithKey ../max this "_3"}}{{/index_ofWithKey}}번</em>
+            <em class="tx">{{#index_ofWithKeyPerSadari ../max this "_3"}}{{/index_ofWithKeyPerSadari}}%</em>
+        </td>
+        {{/each}}
+    </tr>
+    <tr>
+        <td><div class="sp-even">4</div></td>
+        {{#each terms}}
+        <td>
+            <em class="tx">{{#index_ofWithKey ../max this "_4"}}{{/index_ofWithKey}}번</em>
+            <em class="tx">{{#index_ofWithKeyPerSadari ../max this "_4"}}{{/index_ofWithKeyPerSadari}}%</em>
+        </td>
+        {{/each}}
+    </tr>
+    {{/ifEquals}}
+    {{#ifEquals this.type "total"}}
+    <tr>
+        <td><div class="sp-odd">좌4홀</div></td>
+        {{#each terms}}
+        <td>
+            <em class="tx">{{#index_ofWithKey ../max this "LEFT4ODD"}}{{/index_ofWithKey}}번</em>
+            <em class="tx">{{#index_ofWithKeyPerSadari ../max this "LEFT4ODD"}}{{/index_ofWithKeyPerSadari}}%</em>
+        </td>
+        {{/each}}
+    </tr>
+    <tr>
+        <td><div class="sp-even">좌3짝</div></td>
+        {{#each terms}}
+        <td>
+            <em class="tx">{{#index_ofWithKey ../max this "LEFT3EVEN"}}{{/index_ofWithKey}}번</em>
+            <em class="tx">{{#index_ofWithKeyPerSadari ../max this "LEFT3EVEN"}}{{/index_ofWithKeyPerSadari}}%</em>
+        </td>
+        {{/each}}
+    </tr>
+    <tr>
+        <td><div class="sp-even">우4짝</div></td>
+        {{#each terms}}
+        <td>
+            <em class="tx">{{#index_ofWithKey ../max this "RIGHT4EVEN"}}{{/index_ofWithKey}}번</em>
+            <em class="tx">{{#index_ofWithKeyPerSadari ../max this "RIGHT4EVEN"}}{{/index_ofWithKeyPerSadari}}%</em>
+        </td>
+        {{/each}}
+    </tr>
+    <tr>
+        <td><div class="sp-even">우3홀</div></td>
+        {{#each terms}}
+        <td>
+            <em class="tx">{{#index_ofWithKey ../max this "RIGHT3ODD"}}{{/index_ofWithKey}}번</em>
+            <em class="tx">{{#index_ofWithKeyPerSadari ../max this "RIGHT3ODD"}}{{/index_ofWithKeyPerSadari}}%</em>
+        </td>
+        {{/each}}
+    </tr>
+    {{/ifEquals}}
+    {{#ifEquals this.type "left_right"}}{{/ifEquals}}
+    {{#ifEquals this.type "left_right"}}{{/ifEquals}}
+    {{#ifEquals this.type "left_right"}}{{/ifEquals}}
 </script>

@@ -44,7 +44,7 @@ $(document).ready(function(){
             moreClick();
             ajaxPattern('pb_oe','','',limit);
             compileJson("#chart-data",".chart-power",data.result)
-            douPie([pattern_header["nb_size"].count[3],pattern_header["nb_size"].count[2],pattern_header["nb_size"].count[1]],"chart-area","");
+            douPie([pattern_header["nb_size"].count[3],pattern_header["nb_size"].count[2],pattern_header["nb_size"].count[1]],"chart-area");
         });
     });
 
@@ -73,7 +73,7 @@ $(document).ready(function(){
 
 function ajaxPattern(type,from='',to='',limit)
 {
-    $('#patternBox a').each(function(){
+    $('#patternBox-head a').each(function(){
         $(this).removeClass('on');
         if ($(this).attr('type') == type)
         {
@@ -83,7 +83,10 @@ function ajaxPattern(type,from='',to='',limit)
                     type: "POST",
                     url: "/api/get_more/analysePattern",
                     data:{type:type,limit:limit},
-                    dataType:"json"
+                    dataType:"json",
+                    error:function(xhr){
+                        console.log(xhr)
+                    }
                 }).done(function(data) {
                     if(data.status ==1){
                         pattern[type] = data.result;

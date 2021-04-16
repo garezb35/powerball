@@ -2,7 +2,7 @@
     <tr>
         <td class="p-0">
             <div class="bar_graph">
-                <dl>
+                <dl class="border-top-none">
                     <dt>파워볼</dt>
                     <dd>
                         <div class="bar">

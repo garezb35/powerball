@@ -4,22 +4,51 @@ pattern_alias["nb_size"] =  new Array();
 pattern_alias["pb_uo"] = new Array();
 pattern_alias["nb_oe"] = new Array();
 pattern_alias["nb_uo"] = new Array();
+pattern_alias["left_right"] = new Array();
+pattern_alias["odd_even"] = new Array();
+pattern_alias["three_four"] = new Array();
+pattern_alias["total"] = new Array();
 
 pattern_alias["pb_oe"]["p1"] = "홀";
 pattern_alias["pb_oe"]["p0"] = "짝";
-pattern_alias["pb_uo"]["p1"] = "";
-pattern_alias["pb_uo"]["p0"] = "";
+pattern_alias["pb_uo"]["p1"] = "언";
+pattern_alias["pb_uo"]["p0"] = "오";
 pattern_alias["nb_oe"]["p1"] = "홀";
 pattern_alias["nb_oe"]["p0"] = "짝";
-pattern_alias["nb_uo"]["p1"] = "";
-pattern_alias["nb_uo"]['p0'] = "";
+pattern_alias["nb_uo"]["p1"] = "언";
+pattern_alias["nb_uo"]['p0'] = "오";
 pattern_alias["nb_size"]['p1'] = "소";
 pattern_alias["nb_size"]['p2'] = "중";
 pattern_alias["nb_size"]['p3'] = "대";
+
+pattern_alias["left_right"]["p1"] = "좌";
+pattern_alias["left_right"]["p0"] = "우";
+pattern_alias["odd_even"]["p1"] = "홀";
+pattern_alias["odd_even"]["p0"] = "짝";
+pattern_alias["three_four"]["p1"] = "3";
+pattern_alias["three_four"]["p0"] = "4";
+
+pattern_alias["total"]["p1"] = "좌4";
+pattern_alias["total"]["p2"] = "우3";
+pattern_alias["total"]["p3"] = "좌3";
+pattern_alias["total"]["p4"] = "우4";
+
+pattern_alias["nb_uo"][0] = "오";
+pattern_alias["nb_uo"][1] = "언";
+pattern_alias["pb_uo"][0] = "오";
+pattern_alias["pb_uo"][1] = "언";
+
 window.chartColors = {
     red: 'rgb(255, 62, 63)',
     orange: 'rgb(47, 118, 236)',
     yellow: 'rgb(38, 173, 96)'
+};
+
+window.chartColors1 = {
+    red: '#3498db',
+    orange: '#2980b9',
+    yellow: '#e74c3c',
+    pick :  '#c0392b'
 };
 /*  php array_coount_values 함수대신 사용  */
 function arrayCountValues (arr) {
@@ -92,7 +121,10 @@ function goErrorPopup(msg){
     $('.sm-message').modal('show')
 }
 
-function  douPie(data,to,label = ""){
+function  douPie(data,to,label = "",background = [
+    window.chartColors.red,
+    window.chartColors.orange,
+    window.chartColors.yellow]){
     var ctx = document.getElementById(to).getContext('2d');
     var data = {
         datasets: [{
@@ -110,11 +142,7 @@ function  douPie(data,to,label = ""){
                     animateRotate: true
                 }
             },
-            backgroundColor: [
-                window.chartColors.red,
-                window.chartColors.orange,
-                window.chartColors.yellow,
-            ],
+            backgroundColor: background,
 
         }],
 
@@ -122,7 +150,7 @@ function  douPie(data,to,label = ""){
         labels: label,
     };
     var myDoughnutChart = new Chart(ctx, {
-        type: 'doughnut',
+        type: 'pie',
         data: data
     });
 }
@@ -173,6 +201,37 @@ Handlebars.registerHelper('index_ofWithKeyPer', function(context,ndx,key) {
         return 0;
 });
 
+
+Handlebars.registerHelper('index_ofWithKeyPerSadari', function(context,ndx,key) {
+    if(context.hasOwnProperty(ndx) ==true)
+    {
+        let sum = 1;
+        if(key == "LEFT" || key == "RIGHT")
+            sum = context[ndx]["LEFT"] + context[ndx]["RIGHT"];
+        else if(key == "_3" || key == "_4")
+            sum = context[ndx]["_3"] + context[ndx]["_4"];
+        else if(key == "odd" || key== "even")
+            sum = context[ndx]["odd"] + context[ndx]["even"];
+        else
+        {
+            if(typeof context[ndx]["LEFT4ODD"] == "undefined")
+                context[ndx]["LEFT4ODD"] = 0;
+            if(typeof context[ndx]["LEFT3EVEN"] == "undefined")
+                context[ndx]["LEFT3EVEN"] = 0;
+            if(typeof context[ndx]["RIGHT4EVEN"] == "undefined")
+                context[ndx]["RIGHT4EVEN"] = 0;
+            if(typeof context[ndx]["RIGHT3ODD"] == "undefined")
+                context[ndx]["RIGHT3ODD"] = 0;
+            sum = context[ndx]["LEFT4ODD"] + context[ndx]["LEFT3EVEN"] + context[ndx]["RIGHT4EVEN"] + context[ndx]["RIGHT3ODD"];
+        }
+        if(typeof sum == "undefined" || sum == 0) sum = 1;
+        return (context[ndx][key] * 100 / (sum)).toFixed(2);
+    }
+    else
+        return 0;
+});
+
+
 Handlebars.registerHelper("inc", function(value, options)
 {
     return parseInt(value) + 1;
@@ -202,6 +261,24 @@ Handlebars.registerHelper('returnPer', function(context,index) {
     }
     for( var context_i = i; context_i< until ; context_i ++)
         sum += parseFloat(context[context_i]);
+    if(sum == 0 || context[index] == 0)
+        return 0;
+    return (100 * (parseFloat(context[index])/sum)).toFixed(2);
+});
+
+Handlebars.registerHelper('returnPerSadari', function(context,index) {
+
+    var sum = 0;
+    var i = 0,until=2;
+
+    if(index == "odd" || index == "even")
+        sum += parseFloat(context["odd"]) + parseFloat(context["even"])
+    else if(index == "LEFT" || index == "RIGHT")
+        sum += parseFloat(context["LEFT"]) + parseFloat(context["RIGHT"])
+    else if(index == "_3" || index == "_4")
+        sum += parseFloat(context["_3"]) + parseFloat(context["_4"])
+    else if(index == "RIGHT4EVEN" || index == "RIGHT3ODD" || index == "LEFT4ODD" || index == "LEFT3EVEN")
+        sum += parseFloat(context["RIGHT4EVEN"]) + parseFloat(context["RIGHT3ODD"]) + parseFloat(context["LEFT4ODD"]) + parseFloat(context["LEFT3EVEN"])
     if(sum == 0 || context[index] == 0)
         return 0;
     return (100 * (parseFloat(context[index])/sum)).toFixed(2);
@@ -243,6 +320,32 @@ Handlebars.registerHelper('bigSmall', function(arg1,arg2,arg3,options) {
     else{
         var max = Math.max(arg1[3],arg1[2],arg1[1]);
         var min = Math.min(arg1[3],arg1[2],arg1[1]);
+    }
+
+    if(arg1[arg2] == max && max != min){
+        return options.fn(this);
+    }
+    else{
+        return options.inverse(this);
+    }
+});
+
+Handlebars.registerHelper('bigSmallSadari', function(arg1,arg2,arg3,options) {
+    if(arg3 == "left_right"){
+        var max = Math.max(arg1["LEFT"],arg1["RIGHT"]);
+        var min = Math.min(arg1["LEFT"],arg1["RIGHT"]);
+    }
+    if(arg3 == "three_four"){
+        var max = Math.max(arg1["_3"],arg1["_4"]);
+        var min = Math.min(arg1["-3"],arg1["_4"]);
+    }
+    if(arg3 == "odd_even"){
+        var max = Math.max(arg1["odd"],arg1["even"]);
+        var min = Math.min(arg1["odd"],arg1["even"]);
+    }
+    if(arg3 == "total_lines"){
+        var max = Math.max(arg1["LEFT4ODD"],arg1["LEFT3EVEN"],arg1["RIGHT4EVEN"],arg1["RIGHT3ODD"]);
+        var min = Math.min(arg1["LEFT4ODD"],arg1["LEFT3EVEN"],arg1["RIGHT4EVEN"],arg1["RIGHT3ODD"]);
     }
 
     if(arg1[arg2] == max && max != min){
@@ -334,19 +437,106 @@ Handlebars.registerHelper('oddClass', function(arg1,arg2) {
         if(arg1[arg2] =="1") return "sp-odd";
         else return "sp-even";
     }
-    if(arg2 =="pb_uo" || arg2 =="nb_uo"){
-        if(arg1[arg2] =="1") return "sp-under";
-        else return "sp-over";
+    else if(arg2 =="pb_uo" || arg2 =="nb_uo"){
+        if(arg1[arg2] =="1") return "sp-odd";
+        else return "sp-even";
     }
-    if(arg2 == "nb_size"){
+    else if(arg2 == "nb_size"){
         if(arg1[arg2] == "1") return "sp-small";
         if(arg1[arg2] == "2") return "sp-middle";
         else return "sp-big";
     }
+    else{
+        if(!isNaN(arg1["nb1"]))
+            arg1["nb1"] = parseInt(arg1["nb1"]);
+        if(arg2 == "odd_even"){
+            if([15,17,19,21,23,25,27,2,4,6,8,10,12,14].includes(arg1["nb1"]))
+                return "sp-odd";
+            else return "sp-even";
+        }
+        if(arg2 == "left_right"){
+            if([1,3,5,7,9,11,13,15,17,19,21,23,25,27].includes(arg1["nb1"]))
+                return "sp-odd";
+            else return "sp-even";
+        }
+        if(arg2 == "three_four"){
+            if([1,2,3,4,5,6,7,8,9,10,11,12,13,14].includes(arg1["nb1"]))
+                return "sp-odd";
+            else return "sp-even";
+        }
+        if(arg2 == "total")
+        {
+            if([1,3,5,7,9,11,13].includes(arg1["nb1"]))
+                return "LEFT3EVEN";
+            else if([15,17,19,21,23,25,27].includes(arg1["nb1"]))
+                return "LEFT4ODD";
+            else if([2,4,6,8,10,12,14].includes(arg1["nb1"]))
+                return "RIGHT3ODD";
+            else return "RIGHT4EVEN";
+        }
+    }
 });
 
+function setAliasSadari(arg1,arg2){
+    if(arg2 == "odd_even"){
+        if([15,17,19,21,23,25,27,2,4,6,8,10,12,14].includes(arg1))
+            return "odd";
+        else return "even";
+    }
+    if(arg2 == "left_right"){
+        if([1,3,5,7,9,11,13,15,17,19,21,23,25,27].includes(arg1))
+            return "LEFT";
+        else return "RIGHT";
+    }
+    if(arg2 == "three_four"){
+        if([1,2,3,4,5,6,7,8,9,10,11,12,13,14].includes(arg1))
+            return "_3";
+        else return "_4";
+    }
+    if(arg2 == "total_lines")
+    {
+        if([1,3,5,7,9,11,13].includes(arg1))
+            return "LEFT3EVEN";
+        else if([15,17,19,21,23,25,27].includes(arg1))
+            return "LEFT4ODD";
+        else if([2,4,6,8,10,12,14].includes(arg1))
+            return "RIGHT3ODD";
+        else return "RIGHT4EVEN";
+    }
+}
+
 Handlebars.registerHelper('oddClassAlias', function(arg1,arg2) {
-    return pattern_alias[arg2]["p"+arg1[arg2]];
+    if(arg2 == "left_right" || arg2 == "odd_even" || arg2 == "three_four" || arg2 == "total"){
+        alias = "";
+        if(arg2 == "odd_even"){
+            if([15,17,19,21,23,25,27,2,4,6,8,10,12,14].includes(arg1["nb1"]))
+                alias = "1";
+            else alias = "0";
+        }
+        if(arg2 == "left_right"){
+            if([1,3,5,7,9,11,13,15,17,19,21,23,25,27].includes(arg1["nb1"]))
+                alias = "1";
+            else alias = "0";
+        }
+        if(arg2 == "three_four"){
+            if([1,2,3,4,5,6,7,8,9,10,11,12,13,14].includes(arg1["nb1"]))
+                alias = "1";
+            else alias = "0";
+        }
+        if(arg2 == "total")
+        {
+            if([1,3,5,7,9,11,13].includes(arg1["nb1"]))
+                alias = "1";
+            else if([15,17,19,21,23,25,27].includes(arg1["nb1"]))
+                alias = "2";
+            else if([2,4,6,8,10,12,14].includes(arg1["nb1"]))
+                alias = "3";
+            else alias = "4";
+        }
+        return pattern_alias[arg2]["p"+alias];
+    }
+    else
+        return pattern_alias[arg2]["p"+arg1[arg2]];
 });
 
 Handlebars.registerHelper('loadLevelImage', function(arg) {

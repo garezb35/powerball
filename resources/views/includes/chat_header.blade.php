@@ -33,6 +33,8 @@
         var msgStopTime = 10;
         var blackListArr = ''.split(',');
     </script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
     <script src="/assets/popper/popper.min.js"></script>
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -44,6 +46,7 @@
     <script>
         var browser_ws = browserWsChk();
     </script>
+
 </head>
 <body>
     <style>
@@ -53,6 +56,10 @@
             overflow: hidden;
         }
     </style>
+    <div id="userLayer" style="display: none">
+        <div class="lutop"><span id="unickname">관리왕1</span></div>
+        <div class="game"></div>
+    </div>
     @yield("content")
 </body>
 </html>

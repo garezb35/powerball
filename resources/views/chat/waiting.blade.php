@@ -25,24 +25,20 @@
 @section("header")
 <div id="header">
     <h2>채팅대기실</h2>
-    <ul class="newsticker" style="height: 16px; overflow: hidden;margin-bottom:0px">
-        <li style="margin-top: 0px;"><a href="/bbs/board.php?bo_table=custom&amp;wr_id=599" target="mainFrame">서비스 변경 공지_건빵 아이템 선물 관련</a></li>
-        <li style="margin-top: 0px;"><a href="/bbs/board.php?bo_table=custom&amp;wr_id=598" target="mainFrame">서비스 변경 공지</a></li>
-        <li style="margin-top: 0px;"><a href="/bbs/board.php?bo_table=custom&amp;wr_id=602" target="mainFrame">2020년도 동행복권 전자복권 판매 마감 안내</a></li>
-        <li style="margin-top: 0px;"><a href="/bbs/board.php?bo_table=custom&amp;wr_id=601" target="mainFrame">동행복권 공식 홈페이지 점검 안내</a></li>
-        <li style="margin-top: 0px;"><a href="/bbs/board.php?bo_table=custom&amp;wr_id=600" target="mainFrame">[업데이트] 보안 강화 관련 안내</a></li>
+    <ul class="wrm">
+        <li class="tot"><a href="javascript:void(0)">전체(<span id="chatRoomCnt">{{$room_count}}</span>)</a><span class="bar"></span></li>
+        <li class="favs"><a class="@if(Request::get("rtype") =="favor"){{'on'}}@endif" href="{{route("room_wait")}}?rtype=favor">즐겨찾기(<span id="bookmark_room_count">{{$favor_count}}</span>)</a></li>
     </ul>
 </div>
 <div id="container">
     <div class="leftArea">
         <div class="category">
             <ul class="order">
-                <li><a href="javascript:void(0)">전체(<span id="chatRoomCnt">{{$room_count}}</span>)</a><span class="bar"></span></li>
-                <li><a class="@if(empty(Request::get("rtype")) || Request::get("rtype") =="winRate"){{'on'}}@endif" href="{{route("room_wait")}}?rtype=winRate">승률순</a><span class="bar"></span></li>
-                <li><a class="@if(Request::get("rtype") =="userCnt"){{'on'}}@endif" href="{{route("room_wait")}}?rtype=userCnt">참여자순</a><span class="bar"></span></li>
-                <li><a class="@if(Request::get("rtype") =="recommend"){{'on'}}@endif" href="{{route("room_wait")}}?rtype=recommend">추천순</a><span class="bar"></span></li>
-                <li><a class="@if(Request::get("rtype") =="latest"){{'on'}}@endif" href="{{route("room_wait")}}?rtype=latest">최신순</a><span class="bar"></span></li>
-                <li><a class="@if(Request::get("rtype") =="favor"){{'on'}}@endif" href="{{route("room_wait")}}?rtype=favor">즐겨찾기(<span id="bookmark_room_count">{{$favor_count}}</span>)</a></li>
+                <li><a class="@if(empty(Request::get("rtype")) || Request::get("rtype") =="winRate"){{'on'}}@endif" href="{{route("room_wait")}}?rtype=winRate">승률순</a></li>
+                <li><a class="@if(Request::get("rtype") =="userCnt"){{'on'}}@endif" href="{{route("room_wait")}}?rtype=userCnt">참여자순</a></li>
+                <li><a class="@if(Request::get("rtype") =="recommend"){{'on'}}@endif" href="{{route("room_wait")}}?rtype=recommend">추천순</a></li>
+                <li><a class="@if(Request::get("rtype") =="latest"){{'on'}}@endif" href="{{route("room_wait")}}?rtype=latest">최신순</a></li>
+
             </ul>
         </div>
         <div class="mainBanner">
@@ -111,7 +107,7 @@
     </div>
     <div class="rightArea">
         <div class="btns">
-            <a href="#"  id="btn_createChatRoomBox" class="create" data-toggle="modal" data-target="#creatingWindow">채팅방 개설하기</a><span class="bar"></span>
+            <a href="#"  id="btn_createChatRoomBox" class="create" data-toggle="modal" data-target="#creatingWindow">채팅방 개설하기</a></span>
             <a href="#" onclick="return false;" id="btn_joinMyChatRoom" class="myroom">나의 채팅방 입장하기</a>
         </div>
         <div class="myInfo">

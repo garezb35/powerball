@@ -27,14 +27,14 @@
 
 .memberBox .titBox .table td .number {
     margin-right: 2px;
-    color: #2962D9;
+    color: #00b4b4;
 }
 .memberBox .titBox .table .noneMsg {
     font-size: 12px;
     color: #b5b5b5;
 }
 .highlight {
-    color: #2962D9;
+    color: #00b4b4;
 }
 .itemList {
     padding: 0 0 0 3px;

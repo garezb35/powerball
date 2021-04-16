@@ -46,51 +46,31 @@
 }
 div.dateInfo {
     position: relative;
-    height: 65px;
+    height: 60px;
     border: 1px solid #bfbfbf;
     margin-top: 5px;
     margin-bottom: 5px;
+    padding-top: 18px;
 }
 div.date-box {
     width: 500px;
     position: relative;
     float: left;
-    height: 65px;
+    height: 56px;
     color: #404040;
     z-index: 1;
     margin: 0 auto;
 }
 div.date-box span.date {
     float: left;
-    line-height: 66px;
+    line-height: 37px;
     font-size: 23px;
 }
-/*div.date-box a.prev {*/
-/*    position: absolute;*/
-/*    left: 15px;*/
-/*    top: 21px;*/
-/*}*/
 
-/*div.date-box a.next {*/
-/*    position: absolute;*/
-/*    right: 123px;*/
-/*    top: 21px;*/
-/*}*/
-
-/*div.date-box a.today {*/
-/*    position: absolute;*/
-/*    right: 75px;*/
-/*    top: 16px;*/
-/*}*/
-/*.sp-date_today {*/
-/*    width: 33px;*/
-/*    height: 29px;*/
-/*    background: url(https://simg.powerballgame.co.kr/images/sp_log.png) -268px -10px;*/
-/*}*/
 
 div.date-box a.today{
     float: left;
-    margin: 19px 1px 0 0;
+    margin: 0px 1px 0 0;
     padding: 0 20px;
     height: 31px;
     line-height: 31px;
@@ -106,7 +86,7 @@ div.date-box .calendar {
     background: #fff url(/assets/images/powerball/sprites_common.png) no-repeat right -227px;
     padding: 0 31px 0 10px;
     border: 1px solid #d6d6d6;
-    margin-top: 19px;
+    margin-top: 0px;
 }
 .sp-date_cal {
     width: 33px;
@@ -116,11 +96,9 @@ div.date-box .calendar {
 div.timeBox {
     height: 30px;
     line-height: 30px;
-    border: 1px solid #D5D5D5;
     text-align: center;
-    background-color: #646464;
     font-size: 12px;
-    color: #fff;
+    color: #000;
 }
 
 div.timeBox .refresh {
@@ -218,11 +196,11 @@ div.timeBox .refresh a {
     font-size: 11px;
     font-weight: normal;
 }
-#patternBox th, #sixBox th{
+#patternBox-head th, #sixBox th{
     position: relative;
 }
 
-#patternBox th.btns {
+#patternBox-head th.btns {
     border-right: 1px solid #D5D5D5;
     background-color: #fff;
     color: #5F6164;
@@ -232,7 +210,12 @@ div.timeBox .refresh a {
     padding-top: 0;
 }
 
-#patternBox th a {
+#patternBox-head th{
+    text-align: center;
+    vertical-align: middle;
+}
+
+#patternBox-head th a {
     height: 30px;
     line-height: 30px;
     color: #5F6164;
@@ -241,22 +224,49 @@ div.timeBox .refresh a {
     font-size: 13px;
 }
 
-#patternBox th a.on {
+#patternBox-head th a.on {
     position: absolute;
     top: -1px;
     left: -1px;
     width: 100%;
-    color: #fff;
-    background-color: #127CCB;
-    border: 1px solid #0E609C;
+    color: #000;
+    background-color:#f2f5f7;
+    border: 1px solid #f2f5f7;
+    font-weight: bold;
+}
+
+
+#patternBox-head
+{
+    width: 97%;
+    margin: auto;
+    margin-bottom: 10px;
 }
 
 .patternTable .innerTable {
     background-color: #fff;
 }
-.patternTable .innerTable th.title_odd {
+.patternTable .innerTable th.title_odd,.patternTable .innerTable th.title_LEFT,.patternTable .innerTable th.title__3 {
     color: #1265cd;
+    background: #f7f7f7;
 }
+.patternTable .innerTable th.title_even,.patternTable .innerTable th.title_RIGHT,.patternTable .innerTable th.title__4 {
+    color: #cd1212;
+    background: #f7f7f7;
+}
+
+.patternTable .innerTable th.title_LEFT4ODD,.patternTable .innerTable th.title_RIGHT3ODD{
+    color: #2980b9;.
+background: #f7f7f7;
+}
+
+.patternTable .innerTable th.title_RIGHT4EVEN,.patternTable .innerTable th.title_LEFT3EVEN{
+    color: #c    0392b;
+    background: #f7f7f7;
+}
+
+
+
 .patternTable .innerTable th {
     height: 30px;
     font-size: 12px;
@@ -268,7 +278,7 @@ div.timeBox .refresh a {
     padding: 0;
 }
 
-.patternTable .innerTable td .odd {
+.patternTable .innerTable td .odd,.patternTable .innerTable td .LEFT,.patternTable .innerTable td ._3,.patternTable .innerTable td .RIGHT3ODD,.patternTable .innerTable td .LEFT4ODD {
     width: 24px;
     height: 24px;
     line-height: 24px;
@@ -279,10 +289,8 @@ div.timeBox .refresh a {
     font-size: 11px;
     margin: 0 5px;
 }
-.patternTable .innerTable th.title_even {
-    color: #cd1212;
-}
-.patternTable .innerTable td .even {
+
+.patternTable .innerTable td .even,.patternTable .innerTable td .RIGHT,.patternTable .innerTable td ._4 ,.patternTable .innerTable td .RIGHT4EVEN,.patternTable .innerTable td .LEFT3EVEN{
     width: 24px;
     height: 24px;
     line-height: 24px;
@@ -354,9 +362,7 @@ div.timeBox .refresh a {
     color: #000;
     font-size: 12px;
     padding: 0;
-    border-top: 1px solid #6178aa;
-    border-right: 1px solid #6178aa;
-    border-bottom: 1px solid #6178aa;
+    border:none;
     background-color: #b1cbfe;
 }
 #sixBox th a {
@@ -365,6 +371,8 @@ div.timeBox .refresh a {
     color: #5F6164;
     display: block;
     text-decoration: none;
+    border-left: #e9ecef 1px solid;
+    border-right: #e9ecef;
 }
 
 .patternTable .innerTable td .small {
@@ -550,13 +558,12 @@ resultBox .bar.odd {
     border: 1px solid #ADADAD;
 }
 .patternBox .innerTable td.patternRound {
-    background-color: #717171;
-    border: 1px solid #151515;
-    color: #fff;
+    color: #000;
     width: 40px;
-    height: 20px !important;
-    line-height: 20px;
+    height: 23px !important;
+    line-height: 23px;
     text-align: center;
+    border-top: 1px solid #e9ecef !important;
 }
 .patternBox .innerTable tr.line {
     border-bottom: 1px solid #ADADAD;
@@ -609,10 +616,11 @@ resultBox .bar.odd {
 #sixBox td a.on1 {
     top: -1px;
     left: -1px;
-    color: #fff;
-    background: linear-gradient(
-        180deg
-        , #90b2fa,#7896d4);
+    background: white;
+    border-left: 1px solid #00b4b4;
+    border-top: 1px solid #00b4b4;
+    border-right: 1px solid #00b4b4;
+    color: #000;
 }
 #sixBox .content {
     width:816px;
@@ -727,9 +735,10 @@ resultBox .bar.odd {
 }
 
 .bar_graph .left.on {
-    background-color: #4c89f1;
     color: #fff;
     max-width: 250px;
+    background: url(/assets/images/powerball/bar-blue.png) no-repeat;
+    background-size: 100% 21px;
 }
 
 .bar_graph .left .per {
@@ -812,11 +821,22 @@ resultBox .bar.odd {
     height: 15px;
     line-height: 15px;
     font-weight: 700;
+
 }
 
 
 .infos .big.on {
     color: #e74c3c;
+    font-weight: 700;
+}
+
+.infos .middle.on{
+    color: rgb(47, 118, 236);
+    font-weight: 700;
+}
+
+.infos .small.on{
+    color: rgb(38, 173, 96);
     font-weight: 700;
 }
 
@@ -832,12 +852,42 @@ resultBox .bar.odd {
     background-color: #27ae60;
 }
 
+.infos .left4 .ic {
+    background-color: #3498db;
+}
+
+.infos .right3 .ic {
+    background-color: #2980b9;
+}
+
+.infos .left3 .ic {
+    background-color: #e74c3c;
+}
+
+.infos .right4 .ic {
+    background-color: #c0392b;
+}
+
+.infos .left4.on{
+    color: #3498db;
+}
+.infos .right3.on{
+    color: #2980b9;
+}
+.infos .left3.on{
+    color: #e74c3c;
+}
+.infos .right4.on{
+    color: #c0392b;
+}
+
 .infos {
     margin-top: 130px;
     width: 207px;
     position: absolute;
     top: -1px;
-    right: 3px;
+    left: 209px;
+    text-align: left;
 }
 
 .infos .ic {
@@ -854,9 +904,10 @@ resultBox .bar.odd {
 }
 
 .bar_graph .right.on {
-    background-color: #e42f35;
     color: #fff;
     max-width: 250px;
+    background: url(/assets/images/powerball/bar-red.png) no-repeat;
+    background-size: 100% 21px;
 }
 
 .from-date,.to-date{
@@ -867,11 +918,11 @@ resultBox .bar.odd {
 
 .switch_tab {
     float: left;
-    margin: 11px 0 0 30px;
+    margin: 11px 0 0 5px;
 }
 .switch_tab li {
     float: left;
-    margin-right: 20px;
+    margin-right: 8px;
     height: 21px;
 }
 
@@ -891,8 +942,10 @@ resultBox .bar.odd {
 .btn_refresh {
     float: right;
     margin: 6px 14px 0 0;
-    text-indent: -9999px;
     overflow: hidden;
+    position: relative;
+    width: 104px;
+    background: #00b2b3;
 }
 
 .btn_refresh .ic {
@@ -902,6 +955,16 @@ resultBox .bar.odd {
     width: 23px;
     height: 17px;
     background-position: -80px 0;
+}
+
+#refresh-element{
+    position: absolute;
+    top: 0;
+    height: 33px;
+    line-height: 33px;
+    right: 13px;
+    color: #fff;
+    font-size: 13px;
 }
 
 .evenText0{
@@ -916,7 +979,7 @@ resultBox .bar.odd {
 .sp-date_next .ic {
     display: block;
     background: url(/assets/images/powerball/sp_stats.png) no-repeat -20px 0;
-    margin: 25px 30px;
+    margin:25px 30px;
     width: 8px;
     height: 15px;
 }
@@ -1055,7 +1118,7 @@ resultBox .bar.odd {
 }
 
 
-.sp-odd.strong,.sp-even.strong{
+.sp-odd.strong,.sp-even.strong,.sp-odd1.strong, .sp-odd2.strong,.sp-odd3.strong, .sp-odd4.strong{
     width: 51px;
     height: 51px;
     line-height: 51px;
@@ -1104,7 +1167,7 @@ resultBox .bar.odd {
 }
 
 .option_area.type2 {
-    height: 120px;
+    height: 70px;
     border: 1px solid #bfbfbf;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -1151,7 +1214,6 @@ resultBox .bar.odd {
 .option_area .btn_refresh {
     float: right;
     margin: 19px 16px 0 0;
-    text-indent: -9999px;
     overflow: hidden;
 }
 
@@ -1166,8 +1228,8 @@ resultBox .bar.odd {
     height: 51px;
     line-height: 51px;
     border-bottom: 1px solid #727272;
-    background: linear-gradient(#e7e7e7,#d6d6d6);
-    color: #000;
+    background: #666666;
+    color: #fff;
 }
 
 
@@ -1210,3 +1272,102 @@ resultBox .bar.odd {
 /*    line-height: 35px;*/
 /*    background-size: 35px;*/
 /*}*/
+
+.sp-LEFT,.sp_3{
+    display: inline-block;
+    width: 29px;
+    height: 29px;
+    line-height: 29px;
+    border-radius: 16px;
+    border: 1px solid #3498db;
+    color: #3498db;
+}
+
+.sp-RIGHT,.sp_4{
+    display: inline-block;
+    width: 29px;
+    height: 29px;
+    line-height: 29px;
+    border-radius: 16px;
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+}
+
+.subTitle th{
+    background: #aaacad;
+    color: #fff;
+}
+.see-t .subTitle{
+    border-top: #00b4b4 2px solid;
+}
+
+.see-t .subTitle,.see-t .thirdTitle,.minmax-t .thirdTitle, #ladderLogBox .thirdTitle{
+    background: #f0f5f5;
+}
+
+.periodBox .btn-group .btn+.btn{
+    margin-left: 0px;
+}
+
+.patternType td{
+    border-top: none;
+}
+
+
+#pattern-sec  .nav-item:first-child .nav-link , #boardmenu-sec .nav-item:first-child .nav-link {
+    border-left: #ddd 1px solid;
+    border-top-left-radius: 5px;
+}
+#pattern-sec .nav-item.show .nav-link, #pattern-sec .nav-link.active, #boardmenu-sec .nav-item.show .nav-link, #boardmenu-sec .nav-link.active {
+    border-bottom: none;
+    border-top: #00b4b4 1px solid;
+    border-right: #00b4b4 1px solid;
+    border-left: #00b4b4 1px solid !important;
+    font-weight: 700;
+    background: none;
+}
+#pattern-sec .nav-link, #boardmenu-sec .nav-link {
+    border-radius: 0px;
+    border-right: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #00b4b4;
+    background: #f4f5f7fa;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    font-size: 15px;
+}
+
+#pattern-sec .nav-link.on1, #boardmenu-sec .nav-link.on1{
+    border-bottom: none !important;
+    border-top: #00b4b4 1px solid;
+    border-right: #00b4b4 1px solid;
+    border-left: #00b4b4 1px solid !important;
+    font-weight: 700;
+    background: none;
+}
+
+#boardmenu-sec .nav-item{
+    width: 16.666%;
+}
+#pattern-sec .nav-item{
+    width: 20%
+}
+
+
+.sp-date_next .ic1{
+    display: block;
+    background: url(/assets/images/powerball/sp_stats.png) no-repeat -20px 0;
+    margin: 10px 30px;
+    width: 8px;
+    height: 15px;
+}
+
+.sp-date_prev .ic1 {
+    display: block;
+    background: url(/assets/images/powerball/sp_stats.png) no-repeat 0 0;
+    margin: 10px 30px;
+    width: 8px;
+    height: 15px;
+}
+
+

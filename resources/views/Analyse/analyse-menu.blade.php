@@ -1,6 +1,6 @@
 <ul class="nav nav-pills nav-fill poweeball-menu">
     <li class="nav-item">
-        <a class="nav-link @if ( Request::get('terms') =="lates" && Request::get('pageType') =="display") active @endif" href="/p_analyse?terms=lates&pageType=display">파워볼중계</a>
+        <a class="nav-link @if ( (Request::get('terms') =="lates" && Request::get('pageType') =="display") || (Request::get('terms') =="lates" && empty(Request::get('pageType')))) active @endif" href="/p_analyse?terms=lates&pageType=display">파워볼중계</a>
 
     </li>
     <li class="nav-item">

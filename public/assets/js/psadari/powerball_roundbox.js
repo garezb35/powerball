@@ -8,11 +8,19 @@ $(document).ready(function() {
         if(value !=""){
             $(".roundbox-body").find(".content").find(".sp-odd").removeClass("strong");
             $(".roundbox-body").find(".content").find(".sp-even").removeClass("strong");
+            $(".roundbox-body").find(".content").find(".sp-odd1").removeClass("strong");
+            $(".roundbox-body").find(".content").find(".sp-odd2").removeClass("strong");
+            $(".roundbox-body").find(".content").find(".sp-odd3").removeClass("strong");
+            $(".roundbox-body").find(".content").find(".sp-odd4").removeClass("strong");
             $(".roundbox-body").find(".content").find("."+value).addClass("strong");
         }
         else{
             $(".roundbox-body").find(".content").find(".sp-odd").removeClass("strong");
             $(".roundbox-body").find(".content").find(".sp-even").removeClass("strong");
+            $(".roundbox-body").find(".content").find(".sp-odd1").removeClass("strong");
+            $(".roundbox-body").find(".content").find(".sp-odd2").removeClass("strong");
+            $(".roundbox-body").find(".content").find(".sp-odd3").removeClass("strong");
+            $(".roundbox-body").find(".content").find(".sp-odd4").removeClass("strong");
         }
     })
     $.ajax({
@@ -28,9 +36,9 @@ $(document).ready(function() {
 
         $.ajax({
             type: "POST",
-            url: "/api/getRoundBox",
+            url: "/api/psadari/getRoundBox",
             data:{from_date: from,to_date : to,from_round:from_round,to_round:to_round,pb_type:pb_type},
-            dataType:"json"
+            dataType:"json",
         }).done(function(data) {
             if(data.status ==1){
                 compileJson("#roundbox-data",".roundbox-body",data.result)
@@ -66,4 +74,5 @@ $(document).ready(function() {
         defaultDate: dateDiff,
         maxDate: '+0d'
     });
+
 });

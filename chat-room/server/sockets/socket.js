@@ -6,7 +6,9 @@ const {
     getUserByRoomIdxAndClientId,
     deleteMsgByRoomIdx,
     getUserFromIdAndRoomIdx,
-    refreshChatByRoomIdx
+    refreshChatByRoomIdx,
+    setUserMuteById,
+    setUserManageById
 
 } = require('../utils/utils')
 
@@ -69,6 +71,22 @@ roomio.on("connection",(client) => {
                 refreshChatByRoomIdx(data.body.roomIdx)
                 roomio.to(data.body.roomIdx).emit("receive",{header:{type:"NOTICE"},body:{type:"CLOSEROOM"}});
             }
+            else if(data.body.cmd == "muteOn" || data.body.cmd == "muteOff"){
+                let result = setUserMuteById(data.body.cmd,data.body.tuseridKey,data.body.roomIdx)
+                if(result != "")
+                    roomio.to(data.body.roomIdx).emit("receive",{header:{type:"CMDMSG"},body:{cmd:data.body.cmd,tuseridKey:data.body.tuseridKey,tnickname:result}});
+            }
+            else if(data.body.cmd == "kickOn"){
+                let user = getUserFromIdAndRoomIdx(data.body.tuseridKey)
+                if(typeof  user !="undefined")
+                    roomio.to(data.body.roomIdx).emit("receive",{header:{type:"CMDMSG"},body:{cmd:"kickOn",tuseridKey:data.body.tuseridKey,tnickname:user.nickname}});
+            }
+
+            else if(data.body.cmd == "managerOn" || data.body.cmd == "managerOff"){
+                let result = setUserManageById(data.body.cmd,data.body.tuseridKey,data.body.roomIdx)
+                roomio.to(data.body.roomIdx).emit("receive",{header:{type:"CMDMSG"},body:{cmd:data.body.cmd,tuseridKey:data.body.tuseridKey,tnickname:result}});
+            }
+
             else{
                 data.body.cmd = "powerball-pick";
                 roomio.to(data.body.roomIdx).emit("receive",{header:{type:"CMDMSG"},body:data.body})

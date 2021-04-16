@@ -3,12 +3,18 @@ socketOption['reconnect'] = true;
 socketOption['force new connection'] = true;
 socketOption['sync disconnect on unload'] = true;
 var whisperNick = getCookie('whisperNick');
+var is_manager = false;
 if('WebSocket' in window)
 {
     socketOption['transports'] = ['websocket'];
 }
 
 var socket =  null;
+$(document).on('click','a.uname',userLayerHandler);
+
+$(document).click(function(){
+    $('#userLayer:visible').hide();
+});
 $(document).ready(function(){
 
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
@@ -818,11 +824,11 @@ function receiveProcess(data)
     }
     else if(hPacket.type == 'MSG')
     {
-        printChatMsg(bPacket.level,bPacket.sex,bPacket.mark,bPacket.useridKey,bPacket.nickname,bPacket.msg,bPacket.item,bPacket.winFixCnt);
+        printChatMsg(bPacket.level,bPacket.sex,bPacket.mark,bPacket.id,bPacket.nickname,bPacket.msg,bPacket.item,bPacket.winFixCnt);
     }
     else if(hPacket.type == 'WHISPER')
     {
-        printWhisperChatMsg(bPacket.level,bPacket.sex,bPacket.mark,bPacket.useridKey,bPacket.nickname,bPacket.msg,bPacket.tnickname,bPacket.item);
+        printWhisperChatMsg(bPacket.level,bPacket.sex,bPacket.mark,bPacket.iddl ,bPacket.nickname,bPacket.msg,bPacket.tnickname,bPacket.item);
     }
     else if(hPacket.type == 'MEMO')
     {
@@ -1354,5 +1360,119 @@ function windowResize()
     $('#roomList').height(msgBoxHeight-185);
     $('#ruleBox').height(msgBoxHeight-203);
     msgBoxHeight = null;
+}
+
+
+
+// user layer handler
+function userLayerHandler(e)
+{
+    var target = $(e.target);
+    if(target.is('a'))
+    {
+        if(target.attr('rel').substring(0,5) == 'guest')
+        {
+            $('#userLayer').hide();
+        }
+        else
+        {
+            eval(setUserLayer(target.attr('rel'),target.attr('title'),e));
+            $('#userLayer').show();
+        }
+        e.stopPropagation();
+    }
+    else if(target.parent().is('a'))
+    {
+        if(target.parent().attr('rel').substring(0,5) == 'guest')
+        {
+            $('#userLayer').hide();
+        }
+        else
+        {
+            eval(setUserLayer(target.parent().attr('rel'),target.parent().attr('title'),e));
+            $('#userLayer').show();
+        }
+        e.stopPropagation();
+    }
+}
+
+// user layer set
+function setUserLayer(useridKey,nickname,e)
+{
+    var str = '';
+
+    if(loginYN == 'Y' && this.userIdKey != useridKey)
+    {
+        str += '<ul>';
+        str += '<li><a href="#" onclick="giftPop(\''+useridKey+'\',\'bullet\');return false;"><em class="ico"></em><span class="txt">총알 선물하기</span></a></li>';
+        str += '<li><a href="#" onclick="chatManager(\'memo\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">쪽지 보내기</span></a></li>';
+
+        if(roomIdx != 'lobby' && is_admin)
+        {
+            str += '<li><a href="#" onclick="chatManager(\'muteOn\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">벙어리(5분)</span></a></li>';
+            str += '<li><a href="#" onclick="chatManager(\'muteOnTime1\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">벙어리(1시간)</span></a></li>';
+            str += '<li><a href="#" onclick="chatManager(\'muteOnTime\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">벙어리(영구)</span></a></li>';
+            str += '<li><a href="#" onclick="chatManager(\'muteOff\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">벙어리해제</span></a></li>';
+            str += '<li><a href="#" onclick="chatManager(\'banipOn\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">아이피차단</span></a></li>';
+            str += '<li><a href="#" onclick="chatManager(\'banipOff\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">아이피차단해제</span></a></li>';
+        }
+
+        str += '<li><a href="#" onclick="chatManager(\'friendList\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">친구추가</span></a></li>';
+        str += '<li><a href="#" onclick="chatManager(\'blackList\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">블랙리스트</span></a></li>';
+        str += '</ul>';
+    }
+
+    $('#unickname').html(nickname);
+    $('#userLayer .ubody').remove();
+
+    if(str)
+    {
+        $('#userLayer').append('<div class="ubody">'+str+'</div>');
+    }
+
+    var bettingStr = '';
+
+    $.ajax({
+        type:'POST',
+        dataType:'json',
+        url:'/api/bettingResultLayer',
+        data:{
+            useridKey:useridKey
+        },
+        timeout:1000,
+        success:function(r,textStatus){
+            if(r.status == 1){
+                let data = r.result;
+                bettingStr += '<ul>';
+                bettingStr += '<li>올킬 - <span class="'+data.totalWinClass+'">'+data.totalWinFix+'</span>연승</li>';
+                bettingStr += '<li>파워볼홀짝 - <span class="'+data.powerballOddEvenWinClass+'">'+data.powerballOddEvenWinFix+'</span>연승, <span class="win">'+data.powerballOddEvenWin+'</span>승<span class="lose">'+data.powerballOddEvenLose+'</span>패('+data.powerballOddEvenRate+')</li>';
+                bettingStr += '<li>파워볼언더오버 - <span class="'+data.powerballUnderOverWinClass+'">'+data.powerballUnderOverWinFix+'</span>연승, <span class="win">'+data.powerballUnderOverWin+'</span>승<span class="lose">'+data.powerballUnderOverLose+'</span>패('+data.powerballUnderOverRate+')</li>';
+                bettingStr += '<li>숫자합홀짝 - <span class="'+data.numberOddEvenWinClass+'">'+data.numberOddEvenWinFix+'</span>연승, <span class="win">'+data.numberOddEvenWin+'</span>승<span class="lose">'+data.numberOddEvenLose+'</span>패('+data.numberOddEvenRate+')</li>';
+                bettingStr += '<li>숫자합언더오버 - <span class="'+data.numberUnderOverWinClass+'">'+data.numberUnderOverWinFix+'</span>연승, <span class="win">'+data.numberUnderOverWin+'</span>승<span class="lose">'+data.numberUnderOverLose+'</span>패('+data.numberUnderOverRate+')</li>';
+                bettingStr += '<li>숫자합대중소 - <span class="'+data.numberPeriodWinClass+'">'+data.numberPeriodWinFix+'</span>연승, <span class="win">'+data.numberPeriodWin+'</span>승<span class="lose">'+data.numberPeriodLose+'</span>패('+data.numberPeriodRate+')</li>';
+
+                bettingStr += '</ul>';
+
+                $('#userLayer .game').html(bettingStr);
+
+                // layer position
+                var layerTop = 0;
+                var layerBottom = $('body').height() - e.pageY - $('#userLayer').height();
+
+                if(layerBottom < 0)
+                {
+                    layerTop = e.pageY - $('#userLayer').height();
+                }
+                else
+                {
+                    layerTop = e.pageY;
+                }
+
+                $('#userLayer').css({'left':e.pageX + 10,'top':layerTop});
+            }
+        },error:function(xhr){
+            console.log(xhr)
+        }
+    });
 }
 

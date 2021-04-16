@@ -843,7 +843,7 @@ class PowerballController extends Controller
                 if(!empty($powerball_list_to)){
                     foreach($powerball_list_to as $value){
                         $temp = array();
-                        $noe_max=$noe_max=$puo_max=$poe_max = $noe_count = $nuo_count = $poe_count = $puo_count  = array(0,0); // 최대값 담기 첨수 1:홀 0 :짝 , 1 소 2 중 3 대
+                        $nuo_max=$noe_max=$puo_max=$poe_max = $noe_count = $nuo_count = $poe_count = $puo_count  = array(0,0); // 최대값 담기 첨수 1:홀 0 :짝 , 1 소 2 중 3 대
                         $nsize_max = $nsize_count = array(1=>0,2=>0,3=>0);
                         $puo  = $poe = $noe = $nuo = $nsize = $dates =  "";
 
@@ -934,7 +934,7 @@ class PowerballController extends Controller
         $limit = empty($request->limit) ? 10 : $request->limit;
         $types = empty($request->types ) ? "pb_oe": $request->types;
 
-        if($limit <0 || $limit >26){
+        if($limit < 3 || $limit > 20){
             echo json_encode(array("status"=>0,"msg"=>"설정한 패턴개수가 정확치 않습니다."));
             return;
         }

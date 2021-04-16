@@ -15,20 +15,23 @@ $(document).ready(function() {
         }
         $.ajax({
             type: "POST",
-            url: "/api/get_more/analyseDate",
+            url: "/api/psadari/get_more/analyseDate",
             data:{"from" : from,to : to,round:round},
             dataType:"json"
         }).done(function(data) {
             if(data.status ==1){
-                pattern_header["pb_oe"] = data.result.poe;
-                pattern_header["pb_uo"] = data.result.puo;
-                pattern_header["nb_oe"] = data.result.noe;
-                pattern_header["nb_uo"] = data.result.nuo;
-                pattern_header["nb_size"] = data.result.nsize;
+                pattern_header["left_right"] = data.result.left_right;
+                pattern_header["three_four"] = data.result.three_four;
+                pattern_header["odd_even"] = data.result.odd_even;
+                pattern_header["total"] = data.result.total_lines;
             }
 
             compileJson("#chart-data",".chart-power",data.result)
-            douPie([pattern_header["nb_size"].count[3],pattern_header["nb_size"].count[2],pattern_header["nb_size"].count[1]],"chart-area","");
+            douPie([pattern_header["total"].count.LEFT4ODD,pattern_header["total"].count.RIGHT3ODD,pattern_header["total"].count.LEFT3EVEN,pattern_header["total"].count.RIGHT4EVEN],"chart-area","",[
+                window.chartColors1.red,
+                window.chartColors1.orange,
+                window.chartColors1.yellow,
+                window.chartColors1.pick]);
             moreClick();
         })
     });
@@ -75,7 +78,7 @@ function moreClick()
         $.ajax({
             type:'POST',
             dataType:'json',
-            url:'/api/get_more/powerball',
+            url:'/api/psadari/get_more/powerball',
             data:{from:from,to:to,skip:pagination,round:round},
             beforeSend: function() {
                 moreLoad(1)

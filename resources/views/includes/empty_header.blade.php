@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/assets/css/pball.css">
     <link rel="stylesheet" href="/assets/css/jquery-ui.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
     <script>
         var remainTime = 0;
         var speedRemain = 0;
@@ -55,5 +56,11 @@
 <script>
     $(document).ready(function(){
         heightResize();
+        $('.collapsing-element').on('hidden.bs.collapse', function () {
+           $(this).parent().find(".closing").text("열기");
+        })
+        $('.collapsing-element').on('show.bs.collapse', function () {
+            $(this).parent().find(".closing").text("닫기");
+        })
     })
 </script>

@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
+                <div class="card-header">{{ __('영문 대/소문자, 숫자, 특수문자 사용가능합니다. 최소 8자이상') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('password.update') }}">

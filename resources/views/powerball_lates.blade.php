@@ -52,10 +52,8 @@
         </ul>
     </div>
     @endif
-{{--    @include('Analyse/all_analyseTable')--}}
     @include('Analyse/patternAnalyseTable')
     @include('Analyse/patternTerms')
-{{--    @include('Analyse/roundAnalyseTable')--}}
     @include('Analyse/seeAnalyseTable')
     @include('Analyse/head-info')
     @include('Analyse/chart')

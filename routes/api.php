@@ -36,6 +36,12 @@ Route::middleware('auth:api')->group(function(){
     Route::post("/deleteChatRoom",[App\Http\Controllers\ChatController::class,'deleteChatRoom']);
     Route::post("/getBullet",[App\Http\Controllers\ChatController::class,'getBullet']);
     Route::post("/giveBullet",[App\Http\Controllers\ChatController::class,'giveBullet']);
+    Route::post("/setMute",[App\Http\Controllers\MemberController::class,'setMute']);
+    Route::post("/kickUser",[App\Http\Controllers\MemberController::class,'kickUser']);
+    Route::post("/updateManage",[App\Http\Controllers\MemberController::class,'updateManage']);
+    Route::post("/user-modify",[App\Http\Controllers\MemberController::class,'umodify']);
+    Route::post("/imgCheck",[App\Http\Controllers\MemberController::class,'imgCheck']);
+    
 });
 
 Route::post("/get_more/powerball",[App\Http\Controllers\PowerballController::class,'resultList']);
@@ -52,5 +58,16 @@ Route::get("/processSimulatorBet",[App\Http\Controllers\BetController::class,'pr
 Route::post("/getRoundBox",[App\Http\Controllers\PowerballController::class,'getRoundBox']);
 Route::get("/patternTotal",[App\Http\Controllers\PowerballController::class,'patternTotal']);
 Route::get("/calculateWinning",[App\Http\Controllers\PowerballController::class,'calculateWinning']);
+Route::post("/bettingResultLayer",[App\Http\Controllers\MemberController::class,'bettingResultLayer']);
 
-
+Route::prefix('psadari')->group(function () {
+    Route::post("/get_more/powerball",[App\Http\Controllers\PowerSadariController::class,'resultList']);
+    Route::post("/get_more/analysePattern",[App\Http\Controllers\PowerSadariController::class,'patternAnalyse']);
+    Route::post("/get_more/analyseDate",[App\Http\Controllers\PowerSadariController::class,'analyseDate']);
+    Route::post("/get_more/analyseMinMax",[App\Http\Controllers\PowerSadariController::class,'analyseMinMax']);
+    Route::post("/get_more/analyseMinMaxByDate",[App\Http\Controllers\PowerSadariController::class,'anaylseMinMaxByDate']);
+    Route::post("/get_more/analyseSix",[App\Http\Controllers\PowerSadariController::class,'getSixAnalyse']);
+    Route::post("/getRoundBox",[App\Http\Controllers\PowerSadariController::class,'getRoundBox']);
+    Route::post("/checkedPattern",[App\Http\Controllers\PowerSadariController::class,'checkedPattern']);
+    Route::post("/pattern-lists",[App\Http\Controllers\PowerSadariController::class,'patternLists']);
+});
