@@ -221,7 +221,7 @@
                         </td>
                         <td class="position-relative">
                             <span >
-                                <a href="/?view=market&amp;type=charge" class="btn_set btn btn_buyoutline btn-sm">충전하기</a>
+                                <a href="{{route('member')}}?type=charge" class="btn_set btn btn_buyoutline btn-sm">충전하기</a>
                             </span>
                         </td>
                     </tr>

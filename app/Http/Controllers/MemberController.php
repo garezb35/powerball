@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CodeDetail;
+use App\Models\PbDeposit;
 use App\Models\PbItemUse;
 use App\Models\PbPurItem;
 use App\Models\PbRoom;
@@ -12,7 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use DB;
-use Image; 
+use Image;
 
 class MemberController extends Controller
 {
@@ -102,6 +103,12 @@ class MemberController extends Controller
             case "loginLog";
                 return view('member/powerball-accesslog', [    "js" => "",
                                                                     "css" => "member.css"
+                    ]
+                );
+                break;
+            case "charge";
+                return view('member/powerball-charge', [    "js" => "coin.js",
+                        "css" => "market.css"
                     ]
                 );
                 break;
@@ -353,7 +360,7 @@ class MemberController extends Controller
                                                             "css" => "modify.css",
                                                             "user"=>$user]);
                 break;
-            
+
             default:
                 # code...
                 break;
@@ -377,13 +384,13 @@ class MemberController extends Controller
                     echo json_encode(array("status"=>0,"msg"=>"닉네임을 변경하려면 [닉네임 변경권] 아이템이 필요합니다."));
                 }
                 else if($nickname == $user["nickname"]){
-                    echo json_encode(array("status"=>0,"msg"=>"현재 사용중인 닉네임입니다."));    
+                    echo json_encode(array("status"=>0,"msg"=>"현재 사용중인 닉네임입니다."));
                 }
-                
+
                 else{
                     $exist = User::where("nickname",$nickname)->first();
                     if(!empty($exist)){
-                        echo json_encode(array("status"=>0,"msg"=>"현재 사용중인 닉네임입니다."));   
+                        echo json_encode(array("status"=>0,"msg"=>"현재 사용중인 닉네임입니다."));
                     }
                     else{
                         User::where("userId",$userId)->update(["nickname"=>$nickname]);
@@ -396,7 +403,7 @@ class MemberController extends Controller
                         ]);
                         echo json_encode(array("status"=>1));
                     }
-                }   
+                }
                 break;
 
                 case "family":
@@ -477,7 +484,7 @@ class MemberController extends Controller
                         echo json_encode(array("status"=>1));
                     }
                     break;
-            
+
             default:
                 echo json_encode(array("status"=>0,"msg"=>"잘못된 요청입니다"));
                 break;
@@ -525,7 +532,7 @@ class MemberController extends Controller
         $img->resize(150, 150, function ($const) {
             $const->aspectRatio();
         })->save($filePath.'/'.$input['imagename']);
-        
+
         User::where("userId",$user->userId)->update(["image"=>'/assets/images/mine/profile/'.$input['imagename']]);
         PbPurItem::where("userId",$user->userId)->where("market_id","PROFILE_IMAGE_RIGHT")->update(["count"=>$item_count["PROFILE_IMAGE_RIGHT"]-1]);
         PbLog::create([
@@ -536,5 +543,36 @@ class MemberController extends Controller
         ]);
         echo "<script>alert('성공적으로 변경하였습니다.');window.close()</script>";
 
+    }
+
+    public function setCharge(Request $request){
+
+        if(!Auth::check()){
+            echo "<script>alert('로그인후 이용가능한 서비스입니다.')</script>";
+            return;
+        }
+        $user = Auth::user();
+        if($request->chargeType == "deposit"){
+            $chargeCoin = $request->chargeCoin ?? 0;
+            $chargePrice = $request->chargePrice ?? 0;
+            $mobileNum = $request->mobileNum;
+            $accountName = $request->accountName;
+            $userId = $user->userId;
+            $smsYN = $request->smsYN;
+
+            PbDeposit::insert([ "type"=>1,
+                                "coin"=>$chargeCoin,
+                                "money"=>$chargePrice,
+                                "userId"=>$user->userId,
+                                "bank_number"=>$accountName,
+                                "mobile_number"=>$mobileNum,
+                                "accept"=>0,
+                                "rec"=>$smsYN
+
+                ]);
+
+            echo "<script>alert('입금요청이 완료되었습니다.');location.href='/member?type=charge'</script>";
+            return;
+        }
     }
 }

@@ -47,3 +47,5 @@ Route::get("/member",[App\Http\Controllers\MemberController::class,'index'])->na
 Route::get("/myinfo-modify",[App\Http\Controllers\MemberController::class,'modify'])->name("modify");
 
 Route::post("/uploadImage",[App\Http\Controllers\MemberController::class,'uploadImage']);
+
+Route::post("/setCharge",[App\Http\Controllers\MemberController::class,'setCharge'])->name("setCharge");

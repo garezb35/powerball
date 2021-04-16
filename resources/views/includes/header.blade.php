@@ -20,7 +20,7 @@
 </div>
     <div id="wrap">
         <div id="topArea">
-            <div class="logo"><a href="/" class="none"><img src="{{Request::root()}}/assets/images/logo.png" width="163" height="60"></a></div>
+            <div class="logo"><a href="/" class="none"><img src="{{Request::root()}}/assets/images/logo.svg" width="163" height="60"></a></div>
             <div style="position:absolute;top:0;right:72px;">
                 <a href="/bbs/board.php?bo_table=custom&amp;wr_id=147" target="mainFrame"><img src="https://simg.powerballgame.co.kr/images/banner/banner_bullet.png?1" width="300" height="60"></a>
             </div>

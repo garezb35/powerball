@@ -157,3 +157,141 @@
     font-weight: bold;
 }
 
+.marketBox .chargeBox {
+    margin: 15px;
+    background: url(https://simg.powerballgame.co.kr/images/bg_coin.png) right top no-repeat;
+}
+
+.marketBox .chargeBox .text {
+    color: #333;
+    margin: 20px 0;
+}
+.marketBox .subtitle {
+    display: inline-block;
+    background-color: #127CCB;
+    color: #fff;
+    font-size: 12px;
+    margin-top: 10px;
+    font-weight: normal;
+    border: 1px solid #0E609C;
+    height: 26px;
+    line-height: 26px;
+    padding: 0 8px;
+}
+
+.marketBox .coinList {
+    padding: 0 0 0 0;
+}
+
+.marketBox .coinList li {
+    position: relative;
+    display: inline-block;
+    width: 153px;
+    height: 160px;
+    border: 1px solid #D5D5D5;
+    background-color: #fff;
+    padding: 0 15px;
+    margin: 0 6px 10px 0;
+    cursor: pointer;
+}
+.marketBox .coinList li .price {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: tahoma,dotum;
+}
+.marketBox .coinList li img {
+    margin: 0 auto;
+    display: block;
+    width: 150px;
+    height: 128px;
+}
+.grayscale {
+    filter: url(data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='grayscale'><feColorMatrix type='saturate' values='0'/></filter></svg>#grayscale);
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1);
+    filter: gray;
+}
+.marketBox .coinInput {
+    padding: 20px;
+    border: 1px solid #D5D5D5;
+    background-color: #fff;
+    margin-bottom: 10px;
+}
+
+.marketBox .coinInput .input {
+    vertical-align: middle;
+    width: 128px;
+    height: 32px;
+    text-align: right;
+    font-weight: bold;
+    font-family: tahoma;
+    padding: 0 5px 0 0;
+    border: 1px solid #D5D5D5;
+    margin-left: 5px;
+}
+.marketBox .chargeBox .depositBox {
+    position: relative;
+    border: 1px solid #d5d5d5;
+    background-color: #fefefe;
+    margin: 0 0 15px 0;
+    padding: 0 10px;
+}
+.marketBox .chargeBox .depositBox table {
+    width: 100%;
+}
+.marketBox .chargeBox .depositBox table th {
+    text-align: left;
+    padding-left: 10px;
+    width: 170px;
+    height: 40px;
+    border-bottom: 1px dotted #D2D2D2;
+}
+.marketBox .chargeBox .depositBox table td {
+     border-bottom: 1px dotted #D2D2D2;
+ }
+
+
+.marketBox .chargeBox .depositBox table td .price {
+    font-size: 18px;
+    font-weight: bold;
+    font-family: tahoma;
+    color: #CD1212;
+}
+
+.marketBox .chargeBox .chargeBtn .btn {
+    display: block;
+    width: 210px;
+    height: 40px;
+    margin: 0 auto;
+    text-shadow: 1px 1px 1px #2f447f;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 40px;
+    color: #fff;
+    font-size: 16px;
+    background-color: #CC3300;
+    border: 1px solid #9c1818;
+    border-radius: 3px;
+}
+
+.marketBox .coinInput .plusCoin {
+    display: inline-block;
+    width: 50px;
+    height: 32px;
+    line-height: 32px;
+    background-color: #efefef;
+    color: #000;
+    border: 1px solid #c6c6c6;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.grayscale.grayscale-fade:hover, .grayscale.grayscale-off {
+    -webkit-filter: grayscale(0);
+    filter: grayscale(0);
+}
+.marketBox .coinList li.on {
+    border: 1px solid #127CCB;
+}
