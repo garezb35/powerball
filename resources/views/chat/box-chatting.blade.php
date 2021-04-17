@@ -48,28 +48,10 @@
         <div class="tab-pane fade show active" id="chatTap" role="tabpanel" aria-labelledby="home-tab">
             <div id="chatListBox" style="position:relative;">
                 <ul class="list-chatting" id="msgBox">
-{{--                    <li class="superchat"><span style="position:relative;"><img src="https://simg.powerballgame.co.kr/images/class/M16.gif" width="23" height="23" orglevel="M16"><span style="position:absolute;left:-3px;z-index:-1;"><img src="https://simg.powerballgame.co.kr/images/levelupx2.gif" width="29" height="23"></span><span style="position:absolute;right:-3px;bottom:-9px;z-index:99;"><div class="sp-win2" title="2연승"></div></span></span> <strong><a href="#" onclick="return false;" title="사잇돌님" rel="be508d4e93329b1c2df2a95225987650" class="uname"><span class="familyNick"></span>사잇돌님</a></strong> 폐암걸리겠다</li>--}}
-{{--                    <li class="superchat"><span style="position:relative;"><img src="https://simg.powerballgame.co.kr/images/class/M16.gif" width="23" height="23" orglevel="M16"><span style="position:absolute;left:-3px;z-index:-1;"><img src="https://simg.powerballgame.co.kr/images/levelupx2.gif" width="29" height="23"></span><span style="position:absolute;right:-3px;bottom:-9px;z-index:99;"><div class="sp-win2" title="2연승"></div></span></span> <strong><a href="#" onclick="return false;" title="사잇돌님" rel="be508d4e93329b1c2df2a95225987650" class="uname"><span class="familyNick"></span>사잇돌님</a></strong> 담배만 줫나피네</li>--}}
-{{--                    <li>--}}
-{{--                        <p class="msg-guide"><span>연병장</span>에 입장 하셨습니다.</p>--}}
-{{--                    </li>--}}
-{{--                    <li>--}}
-{{--                        <p class="msg-system"><span>광고, 비방, 비매너, 개인정보 발언</span> 채팅시 차단됩니다.</p>--}}
-{{--                    </li>--}}
-{{--                    <li><span style="position:relative;"><img src="https://simg.powerballgame.co.kr/images/class/M8.gif" width="23" height="23" orglevel="M8"><span style="position:absolute;right:-3px;bottom:-9px;z-index:99;"><div class="sp-win1" title="1연승"></div></span></span> <strong><a href="#" onclick="return false;" title="구구쩜구" rel="08a12639f8ec1c4387a9101dcd481108" class="uname">구구쩜구</a></strong> 어마무시하네 ㅋ</li>--}}
-{{--                    <li>--}}
-{{--                        <p class="msg-auto"><span>A딩동댕중학교</span>님이 일반 채팅방 "<span>⭐️ 딩 중 구 간 파 악 끝 ⭐️</span>" 을 개설하였습니다. <a href="#" onclick="return false;" class="joinRoom" rel="404d96c362cee42ffbaac9757405902a">[입장하기]</a></p>--}}
-{{--                    </li>--}}
-{{--                    <li>--}}
-{{--                        <p class="msg-auto"><span>바다새우님</span>님이 일반 채팅방 "<span>바다새우 = 1차모집♥</span>" 을 개설하였습니다. <a href="#" onclick="return false;" class="joinRoom" rel="cfea90aaf3d330a7b1eaf30d699a48e1">[입장하기]</a></p>--}}
-{{--                    </li>--}}
-{{--                    <li>--}}
-{{--                        <p class="msg-auto"><span>체리블라썸님</span>님이 일반 채팅방 "<span>⭐ 1등 수익 ⭐</span>" 을 개설하였습니다. <a href="#" onclick="return false;" class="joinRoom" rel="262dd929aadab6fbd1c3f6e19abde24e">[입장하기]</a></p>--}}
-{{--                    </li>--}}
-{{--                    <li><span style="position:relative;"><img src="https://simg.powerballgame.co.kr/images/class/M15.gif" width="23" height="23" orglevel="M15"><span style="position:absolute;right:-3px;bottom:-9px;z-index:99;"><div class="sp-win2" title="2연승"></div></span></span> <strong><a href="#" onclick="return false;" title="대구은행님" rel="0d11b96c76f6eb192e3967c18fec2b34" class="uname">대구은행님</a></strong> 대구은행 4연승 ㅅㅅㅅㅅ5연타 딱대기 프젝모집중 방입장 ㄱㄱ</li>--}}
+
                 </ul>
                 <p class="input-chatting">
-                    <input type="text" name="msg" id="msg" class="input-1" autocomplete="off" placeholder="내용을 입력해주세요...">
+                    <input type="text" name="msg" id="msg" class="input-1" autocomplete="off" placeholder="메세지를 입력해주세요 (최대 40자)">
                     <input type="hidden" class="input-2 sp-btn_enter" id="sendBtn">
                     <a href="#" class="scrollBottom" id="scrollBottom" style="display: none;"></a>
                 </p>
@@ -78,31 +60,7 @@
         <div class="tab-pane fade" id="connectTap" role="tabpanel" aria-labelledby="profile-tab">
             <div id="connectListBox">
                 <ul class="list-connect" id="connectList">
-{{--                    <li>--}}
-{{--                        <img src="https://simg.powerballgame.co.kr/images/class/M30.gif" width="23" height="23">--}}
-{{--                        <a href="#" onclick="return false;" title="운영자" rel="dc5de9ce5f7cfb22942da69e58156b68" class="uname">운영자</a>--}}
-{{--                        <span style="position:absolute;right:10px;font-weight:normal;font-size:11px;color:#a29c9b;"></span>--}}
-{{--                    </li>--}}
-{{--                    <li>--}}
-{{--                        <img src="https://simg.powerballgame.co.kr/images/class/M23.gif" width="23" height="23">--}}
-{{--                        <a href="#" onclick="return false;" title="타짜선생" rel="4964ca8d4b8466216b0eff7285a49a4d" class="uname">타짜선생</a>--}}
-{{--                        <span style="position:absolute;right:10px;font-weight:normal;font-size:11px;color:#a29c9b;">10시간전</span>--}}
-{{--                    </li>--}}
-{{--                    <li>--}}
-{{--                        <img src="https://simg.powerballgame.co.kr/images/class/M23.gif" width="23" height="23">--}}
-{{--                        <a href="#" onclick="return false;" title="타짜선생" rel="4964ca8d4b8466216b0eff7285a49a4d" class="uname">타짜선생</a>--}}
-{{--                        <span style="position:absolute;right:10px;font-weight:normal;font-size:11px;color:#a29c9b;">10시간전</span>--}}
-{{--                    </li>--}}
-{{--                    <li>--}}
-{{--                        <img src="https://simg.powerballgame.co.kr/images/class/M23.gif" width="23" height="23">--}}
-{{--                        <a href="#" onclick="return false;" title="타짜선생" rel="4964ca8d4b8466216b0eff7285a49a4d" class="uname">타짜선생</a>--}}
-{{--                        <span style="position:absolute;right:10px;font-weight:normal;font-size:11px;color:#a29c9b;">10시간전</span>--}}
-{{--                    </li>--}}
-{{--                    <li>--}}
-{{--                        <img src="https://simg.powerballgame.co.kr/images/class/M23.gif" width="23" height="23">--}}
-{{--                        <a href="#" onclick="return false;" title="타짜선생" rel="4964ca8d4b8466216b0eff7285a49a4d" class="uname">타짜선생</a>--}}
-{{--                        <span style="position:absolute;right:10px;font-weight:normal;font-size:11px;color:#a29c9b;">10시간전</span>--}}
-{{--                    </li>--}}
+
                 </ul>
 
             </div>
@@ -156,11 +114,6 @@
                     </ul>
                 </div>
                 <div class="borderBox">
-                    <div class="tit">파워볼게임 간편주소</div>
-                    <ul>
-                        <li>- powerballgame.co.kr</li>
-                        <li>- 파워볼게임.com</li>
-                    </ul>
                 </div>
             </div>
         </div>

@@ -10,21 +10,18 @@
     var to_round = "{{$to_round}}";
     var pb_type = "{{$mode}}";
 </script>
-<div class="mt-2"></div>
 @include("Time.timebox")
-<div class="mb-2"></div>
 <div class="round_area">
     {!! Form::open(['action' =>'App\Http\Controllers\PowerballController@view', 'method' => 'get',"id"=>"round_form"]) !!}
     <input type="hidden" name="terms" value="roundbox">
     <div class="info">
         <div id="round_search_type" class="view_se1">
             <div id="single_search" class="se1 pl-3">
-                <select id="single_from_round" class="selectbox" title="회차" onchange="$('#round_form').submit();" name="fromRound">
+                <select id="single_from_round" class="selectbox" title="회차" onchange="$('#round_form').submit();" name="fromRound" style="margin-left: 0px">
                     @for($i=1;$i<=288;$i++)
                         <option @if($from_round == $i){{'selected'}} @endif value="{{$i}}">{{$i}}회차</option>
                     @endfor
                 </select>
-                <span class="dash">~</span>
                 <select id="single_to_round" class="selectbox" title="회차" onchange="$('#round_form').submit();" name="toRound">
                     @for($i=1;$i<=288;$i++)
                         <option @if($to_round == $i){{'selected'}} @endif value="{{$i}}">{{$i}}회차</option>
@@ -45,19 +42,17 @@
         </ul>
     </div>
     <div class="date_search_option">
-        <div class="dateBox">
+        <div class="dateBox" style="width: 100%">
             <input type="text" name="from" value="{{$from}}" class="dateInput sp-dayspace_bg" id="startDate">
             <div class="bar1">~</div>
             <input type="text" name="to" value="{{$to}}" class="dateInput sp-dayspace_bg" id="endDate">
-            <input type="submit" class="btn-jin-greenoutline btn btn-sm ml-2 pl-3 pr-3" value="검색">
-        </div>
-        <div class="btnBox">
-            <div class="btn-group" role="group" aria-label="Basic example">
-                <a href="/p_analyse?terms=roundbox&amp;dateType=2&toRound={{$to_round}}&fromRound={{$from_round}}&mode={{$mode}}" class="btn @if(Request::get("dateType") ==2){{'btn-jin-green'}}@else{{'btn-green'}}@endif btn-sm pl-3 pr-3">2일</a>
+            <button type="submit" class="btn-jin-greenoutline btn btn-sm ml-2 pl-3 pr-3"><i class="fa fa-search"></i>&nbsp;&nbsp;검색</button>
+            <div class="btn-group ml-2" role="group" aria-label="Basic example">
+                <a style="border-top-left-radius: 5px;border-bottom-left-radius:5px" href="/p_analyse?terms=roundbox&amp;dateType=2&toRound={{$to_round}}&fromRound={{$from_round}}&mode={{$mode}}" class="btn @if(Request::get("dateType") ==2){{'btn-jin-green'}}@else{{'btn-green'}}@endif btn-sm pl-3 pr-3">2일</a>
                 <a href="/p_analyse?terms=roundbox&amp;dateType=4&toRound={{$to_round}}&fromRound={{$from_round}}&mode={{$mode}}" class="btn @if(Request::get("dateType") ==4){{'btn-jin-green'}}@else{{'btn-green'}}@endif btn-sm pl-3 pr-3">4일</a>
                 <a href="/p_analyse?terms=roundbox&amp;dateType=7&toRound={{$to_round}}&fromRound={{$from_round}}&mode={{$mode}}" class="btn @if(Request::get("dateType") ==7){{'btn-jin-green'}}@else{{'btn-green'}}@endif btn-sm pl-3 pr-3">7일</a>
                 <a href="/p_analyse?terms=roundbox&amp;dateType=15&toRound={{$to_round}}&fromRound={{$from_round}}&mode={{$mode}}" class="btn @if(Request::get("dateType") ==15){{'btn-jin-green'}}@else{{'btn-green'}}@endif btn-sm pl-3 pr-3">15일</a>
-                <a href="/p_analyse?terms=roundbox&amp;dateType=30&toRound={{$to_round}}&fromRound={{$from_round}}&mode={{$mode}}" class="btn @if(Request::get("dateType") ==30){{'btn-jin-green'}}@else{{'btn-green'}}@endif btn-sm pl-3 pr-3">한달</a>
+                <a style="border-top-right-radius: 5px;border-bottom-right-radius:5px" href="/p_analyse?terms=roundbox&amp;dateType=30&toRound={{$to_round}}&fromRound={{$from_round}}&mode={{$mode}}" class="btn @if(Request::get("dateType") ==30){{'btn-jin-green'}}@else{{'btn-green'}}@endif btn-sm pl-3 pr-3">한달</a>
             </div>
         </div>
     </div>

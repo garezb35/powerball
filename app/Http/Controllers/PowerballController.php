@@ -78,7 +78,7 @@ class PowerballController extends Controller
                 }
                 else{
                     $to = !empty($request->to) ? $request->to : date("Y-m-d");
-                    $from = !empty($request->from) ? $request->from : date('Y-m-d', strtotime('-14 days', strtotime($to)));
+                    $from = !empty($request->from) ? $request->from : date('Y-m-d', strtotime('-29 days', strtotime($to)));
                 }
                 $date1 =  new \DateTime($from);
                 $date2 =  new \DateTime($to);
@@ -113,7 +113,7 @@ class PowerballController extends Controller
                 }
                 else{
                     $to = !empty($request->to) ? $request->to : date("Y-m-d");
-                    $from = !empty($request->from) ? $request->from : date('Y-m-d', strtotime('-15 days', strtotime($to)));
+                    $from = !empty($request->from) ? $request->from : date('Y-m-d', strtotime('-29 days', strtotime($to)));
                 }
                 $current = 0;
                 if($request->current == 1 || empty($request->toRound)){

@@ -7,27 +7,46 @@
 ul, ol {
   list-style: none;
 }
+.h-55{
+    height: 55px;
+}
+.table-bordered td, .table-bordered th{
+    border-color: #bec0c2;
+}
+.table thead th{
+    border-color: #bec0c2;
+}
+#topArea .gnb ul{
+    width: 1165px;
+    margin: auto;
+}
+#topArea .gnb ul:after{
+    display: block;
+    clear: both;
+    content: "";
+}
 #topArea .gnb ul li {
     position: relative;
     float: left;
+    overflow: hidden;
 }
 
 #topArea .gnb {
-    width: 1165px;
+    width: 100%;
     height: 50px;
     background: #00b4b4;
     border: 1px solid #0e609c;
-    /*margin-left: 58px;*/
+    margin: auto;
 }
 
 #topArea .gnb ul li a {
     display: block;
-    height: 49px;
+    height: 50px;
     line-height: 50px;
-    padding: 0 31px !important;
+    padding: 0 25px !important;
     color: #fff;
     letter-spacing: -1px;
-    font-size: 13px !important;
+    font-size: 16px !important;
 }
 
 #topArea .gnb ul li a.on {
@@ -41,6 +60,25 @@ ul, ol {
 #topArea .gnb ul li a.on .border-half{
     display: none;
 }
+.ll-he23{
+    line-height: 23px;
+    height: 23px;
+}
+
+.grades{
+    font-size: 15px;
+    color: #000;
+}
+
+.ja-color{
+    color: #666666;
+}
+
+.simu-head span{
+    font-family: nanumseb;
+    font-size: 16px;
+}
+
 
 body, input, textarea, select, table, button {
   line-height: 15px;
@@ -63,13 +101,13 @@ body, input, textarea, select, table, button {
 }
 
 .border-top-bora,td.border-top-bora,th.border-top-bora{
-    border-top: 1px solid #00b4b4 !important;
+    border-top: 2px solid #00b4b4 !important;
 }
 .border-bottom-bora,td.border-bottom-bora,th.border-bottom-bora{
-    border-bottom: 1px solid #00b4b4 !important;
+    border-bottom: 2px solid #00b4b4 !important;
 }
 .border-right-bora,td.border-right-bora,th.border-right-bora{
-    border-right: 1px solid #00b4b4 !important;
+    border-right: 2px solid #00b4b4 !important;
 }
 #box-ct .inner-left, #box-ct .inner-right {
     float: left;
@@ -80,23 +118,24 @@ body, input, textarea, select, table, button {
 }
 #container {
   position: relative;
-  width: 1233px;
+  width: 1164px;
   margin: auto;
 }
 #wrap {
   width: 100%;
 }
 #topArea {
-  width: 1236px;
+  width: 100%;
   margin: 0 auto;
   margin-top: 0px;
   position: relative;
 }
 
 #topArea .logo {
-  margin-left: 60px;
-    margin-bottom: 10px;
-    margin-top: 10px;
+    width: 1165px;
+    margin: auto;
+    padding-bottom: 10px;
+    position: relative;
 }
 
 a {
@@ -121,13 +160,10 @@ img, fieldset, iframe {
 }
 
 #box-ct .inner-left {
-    width: 336px;
-    margin-right: 10px;
+    width: 318px;
+    margin-right: 16px;
 
 }
-
-
-
 
 #topArea .text .notice a {
   font-size: 11px;
@@ -199,15 +235,15 @@ img, fieldset, iframe {
 
 .itemCntBox {
     position: absolute;
-    top: -22px;
-    left: 43px;
-    width: 25px;
-    height: 25px;
+    top: -14px;
+    left: 39px;
+    width: 19px;
+    height: 19px;
     background: red;
     background-size: 25px;
     color: #fff;
     z-index: 99;
-    line-height: 25px;
+    line-height: 19px;
     text-align: center;
     border-radius: 50%;
 }
@@ -309,7 +345,9 @@ img, fieldset, iframe {
   left: 0;
 }
 
-
+.boardBox{
+    border-top: none;
+}
 
 .boardBox .listBox {
   width: 622px;
@@ -342,8 +380,8 @@ img, fieldset, iframe {
   padding: 5px;
 }
 .boardBox .listBox ul.list li {
-  height: 27px;
-  line-height: 27px;
+  height: 25px;
+  line-height: 25px;
 }
 
 .boardBox .listBox ul.list li img {
@@ -351,7 +389,8 @@ img, fieldset, iframe {
 }
 
 .boardBox .listBox ul.list li .comment {
-  color: #C11A20;
+    color: #C11A20;
+    font-weight: bold;
 }
 
 #boardmenu{
@@ -359,7 +398,7 @@ img, fieldset, iframe {
 }
 
 #boardmenu .nav-item:first-child .nav-link{
-    border-left: #ddd 1px solid;
+    border-left: none;
     border-top-left-radius: 5px;
 }
 #boardmenu .nav-item:last-child .nav-link{
@@ -377,11 +416,12 @@ img, fieldset, iframe {
 
 #boardmenu .nav-item.show .nav-link, #boardmenu .nav-link.active {
     border-bottom: none;
-    border-top: #00b4b4 1px solid;
-    border-right: #00b4b4 1px solid;
+    border-top: #00b4b4 1px solid !important;
+    border-right: #00b4b4 1px solid !important;
     border-left: #00b4b4 1px solid !important;
     font-weight: 700;
     background: none;
+    color: #000;
 }
 
 .border-half {
@@ -396,29 +436,31 @@ img, fieldset, iframe {
 
 #boardmenu  .nav-link.none {
   /*width: 159px;*/
-  /*border-right: none ;*/
+  border-right: none ;
 }
 
 #boardmenu .nav-link{
     border-radius: 0px;
     border-right: 1px solid #ddd;
-    border-top: 1px solid #ddd;
     border-bottom: 1px solid #00b4b4;
     background: #f4f5f7fa;
-    padding-top: 14px;
-    padding-bottom: 14px;
+    padding-top: 12px;
+    padding-bottom: 12px;
     font-size: 15px;
+    border-top: 1px solid #ddd;
+    color: #919394;
 }
 
 
 .boardBox {
-  float: left;
-  width: 624px;
-  height: 222px;
-  margin-bottom: 5px;
-  float: left;
-  border: 1px solid #cfd2d4;
-    border-radius: 7px;;
+    float: left;
+    width: 624px;
+    height: 207px;
+    margin-bottom: 5px;
+    float: left;
+    border: 1px solid #cfd2d4;
+    border-radius: 7px;
+    border-top: none;
 }
 
 .boardBox .listBox ul.list li.photo {
@@ -454,6 +496,9 @@ img, fieldset, iframe {
     clear: both;
 }
 
+#box-ct{
+    clear: both;
+}
 #footer {
     width: 1236px;
     border-top: 1px solid #deded9;
@@ -508,7 +553,7 @@ thead.thead-gray{
 }
 .pow-element {
     font-size: 14px;
-    background: url(/assets/images/powerball/black.png) no-repeat;
+    background: url(/assets/images/powerball/black.svg) no-repeat;
     background-size: 26px;
     border-radius: 100px;
     padding: 6px 6px;
@@ -519,11 +564,11 @@ thead.thead-gray{
 
 .pow-element-red {
     background: #e74c3c;
-    background: url(/assets/images/powerball/odd.png) no-repeat;
+    background: url(/assets/images/powerball/odd.svg) no-repeat;
     background-size: 26px;
 }
 .pow-element-blue {
-    background: url(/assets/images/powerball/even.png) no-repeat;
+    background: url(/assets/images/powerball/even.svg) no-repeat;
     background-size: 26px;
 }
 
@@ -589,28 +634,30 @@ thead.thead-gray{
     background: white;
     border: #bfbfbf 1px solid;
     border-radius: 0px;
-    color: #000;
+    color: #5F6164;
 }
 
 .btn-jin-green{
     background: white;
     border: #00b4b4 1px solid !important;
     border-radius: 0px;
-    color: #000;
+    color: #00b4b4;
 }
 
-.btn-jin-green:hover{
-    color: #000;
+.btn-jin-green:hover,.btn-jin-green:hover:focus,.btn-jin-green:active{
+    color: #fff;
+    background: #00b4b4;
 }
 
 .btn-jin-greenoutline{
-    color: #fff;
+    color: #fff !important;
     background: #00b4b4;
     border-radius: 0px;
+    border-radius: 6px;
 }
 
 .btn-jin-greenoutline:hover{
-    color: #000;
+    color: #00b4b4 !important;
     background: white;
     border: #00b4b4 1px solid;
 }
@@ -632,7 +679,7 @@ thead.thead-gray{
 }
 
 .input-green{
-    border-color: #6d88bf;
+    border-color: #00b4b4;
     border-radius: 0px;
     line-height: 25px;
     height: 25px;
@@ -654,6 +701,10 @@ thead.thead-gray{
     font-size: 15px;
 }
 
+.ft-thsize{
+    font-size: 13px;
+}
+
 .gray-gradient{
 
 }
@@ -661,7 +712,7 @@ thead.thead-gray{
 .sp-black{
     width: 34px;
     height: 34px;
-    background: url(/assets/images/powerball/black.png);
+    background: url(/assets/images/powerball/black.svg);
     margin: auto;
     background-size: 34px;
     color: #fff;
@@ -674,7 +725,7 @@ thead.thead-gray{
 .sp-pung{
     width: 34px;
     height: 34px;
-    background: url(/assets/images/powerball/pung.png);
+    background: url(/assets/images/powerball/pung.svg);
     margin: auto;
     background-size: 34px;
     color: #fff;
@@ -728,35 +779,35 @@ thead.thead-gray{
 }
 
 .sp-odd,.sp-odd2,.sp-odd3,.LEFT4ODD,.RIGHT3ODD {
-    width: 34px;
-    height: 34px;
-    background: url(/assets/images/powerball/odd.png);
+    width: 30px;
+    height: 30px;
+    background: url(/assets/images/powerball/odd.svg);
     margin: auto;
-    background-size: 34px;
+    background-size: 30px;
     color: #fff;
-    font-size: 15px;
+    font-size: 14px;
     text-align: center;
     background-repeat: no-repeat;
-    line-height: 34px;
+    line-height: 30px;
     position: relative;
 }
 .sp-even,.sp-odd1,.sp-odd4,.LEFT3EVEN,.RIGHT4EVEN {
-    width: 34px;
-    height: 34px;
-    background: url(/assets/images/powerball/even.png);
+    width: 30px;
+    height: 30px;
+    background: url(/assets/images/powerball/even.svg);
     margin: auto;
-    background-size: 34px;
+    background-size: 30px;
     color: #fff;
-    font-size: 15px;
+    font-size: 14px;
     text-align: center;
     background-repeat: no-repeat;
-    line-height: 34px;
+    line-height: 30px;
     position: relative;
 }
 .sp-over {
     width: 34px;
     height: 29px;
-    background: url(/assets/images/powerball/over.png);
+    background: url(/assets/images/powerball/over.svg);
     margin: auto;
     background-size: 34px;
     text-align: center;
@@ -767,7 +818,7 @@ thead.thead-gray{
 .sp-under {
     width: 34px;
     height: 29px;
-    background: url(/assets/images/powerball/under.png);
+    background: url(/assets/images/powerball/under.svg);
     margin: auto;
     background-size: 34px;
     text-align: center;
@@ -776,14 +827,15 @@ thead.thead-gray{
 }
 
 .sp-ball_bg {
-    width: 34px;
-    height: 34px;
+    width: 30px;
+    height: 30px;
     background: url(/assets/images/powerball/pb.png);
-    background-size: 34px;
+    background-size: 30px;
     font-size: 14px;
     color: #000;
-    line-height: 36px;
+    line-height: 30px;
     margin: auto;
+    font-weight: bold;
 }
 
 .btn-green-gradient{
@@ -888,10 +940,10 @@ thead.thead-gray{
 
 .exp-back{
     background: url(/assets/images/powerball/exp_back.png);
-    width:120px;
-    height:18px;
+    width: 108px;
+    height: 18px;
     border-radius: 7px;
-    background-size: 120px 18px
+    background-size: 108px 18px;
 }
 .half-label{
     width: 199px;
@@ -943,7 +995,7 @@ button.closing:focus{
 .collapse-div{
     padding-bottom: 10px;
     padding-top: 20px;
-    border: 1px solid #e9ecef;
+    border: 1px solid #bec0c2;
     border-radius: 7px;
     margin-bottom: 10px;
     margin-top: 10px;
@@ -986,4 +1038,62 @@ button.closing:focus{
 .btn_buyoutline.active, .btn_buyoutline:active, .show>.btn_buyoutline.dropdown-toggle,.btn_buyoutline:hover{
     background: #00b4b4;
     color: #fff;
+}
+.top-header-right
+{
+    position:absolute;top:13px;right:0px;
+}
+
+.header-right-1,.header-right-2{
+    font-family: nanumseb;
+    font-weight: bold;
+    line-height: 28px;
+}
+
+.header-right-1{
+    font-size: 20px;
+    color: #999999;
+}
+.header-right-2{
+    font-size: 22px;
+    color: #000;
+}
+
+.bannerBox {
+    float: right;
+    width: 200px;
+    height: 205px;
+    border: 1px solid #D5D5D5;
+}
+
+.numberFont{
+    background:url('/assets/images/powerball/level.svg') no-repeat;
+    height:18px;
+    line-height:19px;
+    padding-left:6px;
+    color:#000;
+    background-size: inherit;
+}
+
+.border-right-ja{
+    border-right: 1px solid #e9ecef;
+}
+
+.mar-t-10{
+    margin-top: 10px;
+}
+
+.box-menus i.fa{
+    font-size: 25px;
+    color: #999999;
+}
+
+
+.table-bordered.jabik td, .table-bordered.jabik th{
+
+    border: 1px solid #848687;
+}
+
+table.patternTable td:first-child .innerTable td,table.patternTable td:first-child .innerTable th{
+    border-left: none !important;
 }

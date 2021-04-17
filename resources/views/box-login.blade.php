@@ -10,16 +10,16 @@
     <div style="height:230px;">
         <table class="mt-2" style="width: 100%">
             <colgroup>
-                <col width="170px">
+                <col width="160px">
             </colgroup>
             <tr>
-                <td class="text-left align-middle">
+                <td class="text-left align-top p-1">
                     <div class="mb-2 ml-2"><img src="{{$user_level[0]["value3"]}}">
-                        <span class="font-weight-bold ml-2 " style="line-height: 23px;height: 23px">{{Auth::user()->nickname}} (계급 : <a href="{{route("member")}}?type=level" target="mainFrame" class="text-gam font-weight-bold">{!! $user_level[0]["codename"] !!}</a>)</span>
+                        <span class="font-weight-bold ml-2 ll-he23 ja-color ft-thsize"><span class="grades">{{Auth::user()->nickname}}</span> (계급 : <a href="{{route("member")}}?type=level" target="mainFrame" class="text-gam font-weight-bold">{!! $user_level[0]["codename"] !!}</a>)</span>
                         <div style="margin-left: 33px;">
                             <span class="text-gam font-weight-bold">경험치</span>
                             <div class="mb-2 position-relative mt-1 exp-back">
-                                <div style="background:url('/assets/images/powerball/bar-red.png') no-repeat;width:{{((Auth::user()->exp-$normal_level) / ($next_level - $normal_level))*100}}%;height:18px;line-height:19px;padding-left:6px;color:#000;" class="numberFont">
+                                <div style="width:{{((Auth::user()->exp-$normal_level) / ($next_level - $normal_level))*100}}%;" class="numberFont">
                                     <div style="position:absolute;left: 35px;" class="text-white font-weight-bold"><span>{{Auth::user()->exp-$normal_level}}</span> / {{$nextClass}}</div>
                                 </div>
                             </div>
@@ -30,7 +30,7 @@
                    <div style="border: 1px solid #d5d9db;border-radius: 5px">
                        <table class="table mb-0  user-info">
                            <colgroup>
-                               <col width="75px">
+                               <col width="60px">
                                <col width="*">
                            </colgroup>
                            <tr>
@@ -52,7 +52,7 @@
                 </td>
             </tr>
         </table>
-        <table class="table box-menus table-bordered mt-3 mb-0">
+        <table class="table box-menus mar-t-10 mb-0">
             <colgroup>
                 <col width="25%">
                 <col width="25%">
@@ -60,39 +60,44 @@
                 <col width="25%">
             </colgroup>
             <tr>
-                <td class="text-center align-middle active pt-2 pb-1" onclick="goPa('myhome')">
+                <td class="text-center align-middle active pt-2 pb-1 border-right-ja">
                     <div class="position-relative">
                         <div class="mb-1">
-                            <img src="{{Request::root()}}/assets/images/mine/home.png" height="21">
+                            <i class="fa fa-home"></i>
                         </div>
                         <a href="{{route("member")}}" target="mainFrame">마이홈</a>
                     </div>
                 </td>
-                <td class="text-center align-middle pt-2 pb-1" onclick="goPa('mail')">
+                <td class="text-center align-middle pt-2 pb-1 border-right-ja">
                     <div class="position-relative">
                         <div class="mb-1">
-                            <img src="{{Request::root()}}/assets/images/mine/message.png" height="21">
+                            <i class="fa fa-envelope"></i>
                         </div>
                         <a href="#" onclick="windowOpen('/?view=memo','memo',600,600,'auto');return false;" >쪽지</a>
                     </div>
                 </td>
-                <td class="text-center align-middle pt-2 pb-1" onclick="goPa('item')">
+                <td class="text-center align-middle pt-2 pb-1 border-right-ja">
                     <div class="position-relative">
                         <div class="mb-1">
-                            <img src="{{Request::root()}}/assets/images/mine/item.png" height="21">
+                            <i class="fa fa-gift" aria-hidden="true"></i>
                         </div>
                         <a href="{{route("member")}}?type=item" target="mainFrame">아이템</a>
                         @if($item_count > 0)<div class="itemCntBox">{{$item_count}}</div>@endif
                     </div>
                 </td>
-                <td>
-
+                <td class="text-center align-middle pt-2 pb-1" >
+                    <div class="position-relative">
+                        <div class="mb-1">
+                            <i class="fa fa-power-off" aria-hidden="true"></i>
+                        </div>
+                        <a href="/logout">로그아웃</a>
+                    </div>
                 </td>
             </tr>
             <tr>
-                <td colspan="4" class="back-blue">
-                    <span class="text-gold font-weight-bold ft-fitsize">파워모의배팅</span> <span class="font-weight-bold text-white ft-fitsize">남은 기간</span>  <span class="text-gold font-weight-bold ft-fitsize">30일</span>
-                    <button class="ml-4 btn btn-sm btn-jin-blue">구매하러 가기</button>
+                <td colspan="4" class="back-blue simu-head p-2">
+                    <span class="text-gold font-weight-bold">파워모의배팅</span> <span class="font-weight-bold text-white">남은 기간</span>  <span class="text-gold font-weight-bold">30일</span>
+                    <button class="ml-2 btn btn-sm btn-jin-blue">구매하러 가기</button>
                 </td>
             </tr>
         </table>
@@ -112,8 +117,8 @@
                     {!! Form::text('loginId', '', ['class' => 'input-green mb-1 w-100','placeholder'=>"아이디 입력",'autocomplete'=>"off"]) !!}
                     {!! Form::password('password', ['class'=>'input-green w-100','placeholder'=>"비밀번호 입력"]) !!}
                 </td>
-                <td class="text-center">
-                    {!! Form::submit('로그인', ['class' => 'btn btn-jin-green pb-1 pt-1']) !!}
+                <td class="text-left p-1">
+                    {!! Form::submit('로그인', ['class' => 'btn btn-jin-green w-100 h-55']) !!}
                 </td>
             </tr>
         </table>

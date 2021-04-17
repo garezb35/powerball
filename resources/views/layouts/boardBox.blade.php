@@ -13,12 +13,6 @@
 			<a class="nav-link none" id="free-tab" data-toggle="tab" href="#free" role="tab" aria-controls="free" aria-selected="false">자유</a>
 		</li>
     </ul>
-	<!-- <ul class="menu">
-		<li class="on" rel="humor">유머</li>
-		<li rel="photo" class="">포토</li>
-		<li rel="pick" class="">분석픽공유</li>
-		<li class="none" rel="free">자유</li>
-	</ul> -->
 	<div class="tab-content" id="tabBoard">
 		<div class="tab-pane active" id="humor" role="tabpanel" aria-labelledby="humor-tab">
 			<div class="listBox" id="list_humor">
@@ -32,7 +26,6 @@
 						<li><img src="https://simg.powerballgame.co.kr/images/icon_picture.png" width="30" height="26"> <a href="/bbs/board.php?bo_table=humor&amp;wr_id=15503" target="mainFrame" title="#공감">#공감</a> <span class="comment">[12]</span> </li>
 					</ul>
 				</div>
-				<div class="bar"></div>
 				<div class="right">
 					<ul class="list">
 						<li><img src="https://simg.powerballgame.co.kr/images/icon_text.png" width="30" height="26"> <a href="/bbs/board.php?bo_table=humor&amp;wr_id=15481" target="mainFrame" title="최불암이 웃을때 ?">최불암이 웃을때 ?</a> <span class="comment">[12]</span> </li>
@@ -145,3 +138,6 @@
 		</div>
 	</div>
 </div>
+<ul class="bannerBox" id="banner_main_area">
+<img src="/assets/images/ads.png" width="200" height="205">
+</ul>

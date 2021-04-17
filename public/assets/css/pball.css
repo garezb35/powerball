@@ -23,6 +23,7 @@ body, input, textarea, select, table, button {
     line-height: 30px;
     text-align: center;
     margin: auto;
+    border-radius: 5px;
 }
 
 .moreBox a {
@@ -34,18 +35,21 @@ body, input, textarea, select, table, button {
 .poweeball-menu.nav-pills .nav-link{
     border-top: 1px solid #cfd2d4;
     border-right: 1px solid #cfd2d4;
+    border-left: 1px solid #cfd2d4;
     border-bottom: 1px solid #cfd2d4;
     background-color: #f2f5f7;
     border-radius: 0px;
-    padding-top: 16px;
-    padding-bottom: 16px;
+    padding-top: 12px;
+    padding-bottom: 12px;
     font-size: 16px;
+    color: #919394;
 }
 
 .poweeball-menu.nav-pills .nav-link.active, .show>.poweeball-menu .nav-link{
     color: #fff;
-    background: #00b2b3;
+    background: #00b4b4;
     font-weight: bold;
+    border-color: #00b4b4;
 }
 .poweeball-menu .nav-item:first-child a{
     border-top-left-radius: 5px;

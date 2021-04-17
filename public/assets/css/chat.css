@@ -106,12 +106,11 @@ img, fieldset, iframe {
     position: relative;
     z-index: 10;
     background: #fff;
-    border-right: 1px solid #cecece;
 }
 
 
 #msgBox {
-    font-size: 11px;
+    font-size: 13px;
     word-wrap: break-word;
     overflow-y: scroll;
 }
@@ -123,8 +122,6 @@ img, fieldset, iframe {
 .box-chatting .list-chatting {
     overflow-x: hidden;
     overflow-y: scroll;
-    border-left: 1px solid #cecece;
-    border-right: 1px solid #cecece;
     padding: 0 5px 0 5px;
 }
 
@@ -212,12 +209,13 @@ img, fieldset, iframe {
     width: 100%;
     height: 40px;
     line-height: 40px;
-    border: 1px solid #e9ecef;
+    border: none;
     color: #949494;
     padding: 0 5px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     outline: none !important;
+    border-top: 1px solid #e9ecef;
 }
 
 .box-chatting .input-chatting .input-2 {
@@ -238,6 +236,10 @@ img, fieldset, iframe {
     width: 25%;
     text-align: center;
     border-right: 1px solid #cecece;
+}
+
+#myTab .nav-item:last-child{
+    border-right: none;
 }
 
 #myTab{
@@ -262,11 +264,11 @@ img, fieldset, iframe {
     border-radius: 0px;
     border-top: 1px solid #ddd;
     border-bottom: 1px solid #00b4b4;
-    background: #f4f5f7fa;
-    padding-top: 14px;
-    padding-bottom: 14px;
+    background: #fff;
+    padding-top: 8px;
+    padding-bottom: 8px;
     font-size: 15px;
-    color: #000;
+    color: #919394;
 }
 
 .box-chatting .list-room li {
@@ -535,4 +537,7 @@ img, fieldset, iframe {
     background-color: #f0f0f0;
     color: #000;
     z-index: 10;
+}
+.uname{
+    color: #00b4b4;
 }

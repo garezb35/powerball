@@ -1,5 +1,5 @@
 <div class="collapse-div position-relative">
-    <h5 class="text-center">회차별 분석 데이터 <div class="half-label"></div></h5>
+    <h5 class="text-center" style="font-size: 18px;">회차별 분석 데이터 <div class="half-label" style="width: 141px;"></div></h5>
     <div style="width: 99%;margin: auto">
         <table  id="powerballLogBox" class="powerballBox table table-bordered mt-2">
             <colgroup>
@@ -17,25 +17,24 @@
                 <col width="8%" />
             </colgroup>
             <tbody class="see-t">
-            <tr class="subTitle">
-
-                <td height="30" colspan="6">파워볼</td>
-                <td colspan="6">숫자</td>
-            </tr>
-            <tr class="thirdTitle">
-                <td class="p-3">회차</td>
-                <td class="p-3">시간</td>
-                <td class="p-3" height="30">결과</td>
-                <td class="p-3">구간</td>
-                <td class="p-3">홀짝</td>
-                <td class="p-3">언더/오버</td>
-                <td class="p-3">결과</td>
-                <td class="p-3">합</td>
-                <td class="p-3">구간</td>
-                <td class="p-3">대/중/소</td>
-                <td class="p-3">홀짝</td>
-                <td class="p-3">언더/오버</td>
-            </tr>
+                <tr class="subTitle pheader">
+                    <td rowspan="2">회차</td>
+                    <td rowspan="2">시간</td>
+                    <td colspan="4">파워볼</td>
+                    <td colspan="6">숫자</td>
+                </tr>
+                <tr class="thirdTitle pheader">
+                    <td >결과</td>
+                    <td>구간</td>
+                    <td>홀짝</td>
+                    <td>언더/오버</td>
+                    <td>결과</td>
+                    <td>합</td>
+                    <td>구간</td>
+                    <td>대/중/소</td>
+                    <td>홀짝</td>
+                    <td>언더/오버</td>
+                </tr>
             </tbody>
         </table>
         <div class="displayNone text-center d-none" id="pageDiv" pageval="6" round="1065675">

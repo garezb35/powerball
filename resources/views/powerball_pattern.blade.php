@@ -22,7 +22,7 @@
         </div>
     </div>
     <div class="">
-        <ul class="nav nav-tabs" id="pattern-sec" role="tablist">
+        <ul class="nav nav-tabs border-bottom-0" id="pattern-sec" role="tablist">
             <li class="nav-item">
                 <a href="javascript:void(0)" class="btn btn-jin-green btn-sm pl-3 pr-3 nav-link on1" rel="pb_oe">파워볼 홀/짝</a>
             </li>

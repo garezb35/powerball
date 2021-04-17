@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'nexon_lv_thic';
-    src: URL('/assets/font/NEXON LV2 GOTHIC.TTF') format('truetype');
+    src: URL('/assets/font/nanum/NotoSansKR-Regular.otf') format('truetype');
 }
 
 @font-face {
-    font-family: 'nexon_lv_light';
-    src: URL('/assets/font/NEXON LV2 GOTHIC LIGHT.TTF') format('truetype');
+    font-family: 'nexon_lv_thin';
+    src: URL('/assets/font/NotoSansKR-Thin.TTF') format('truetype');
 }
 
 
@@ -20,6 +20,17 @@
 }
 
 @font-face {
-    font-family: 'nexon_lv_gothic_medium';
-    src: URL('/assets/font/NEXON LV2 GOTHIC MEDIUM.TTF') format('truetype');
+    font-family: 'notobold';
+    src: URL('/assets/font/NotoSansKR-Bold.otf') format('opentype');
 }
+
+@font-face {
+    font-family: 'nanumseb';
+    src: URL('/assets/font/nanum/NanumSquareRoundEB.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'robotobold';
+    src: URL('/assets/font/nanum/Roboto-Bold_0.ttf') format('truetype');
+}
+

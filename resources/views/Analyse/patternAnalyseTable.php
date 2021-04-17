@@ -1,17 +1,17 @@
 <?php $from = empty($from) ? "" : $from ?>
 <?php $to = empty($to) ? "" : $to ?>
 <?php $limit = empty($limit) ? "" : $limit ?>
-<div class ="collapse-div position-relative pb-0">
-    <h5 class="text-center">패턴별 분석 데이터 <div class="half-label"></div></h5>
+<div class ="collapse-div position-relative pb-0 border-bottom-0">
+    <h5 class="text-center" style="font-size: 18px">패턴별 분석 데이터 <div class="half-label" style="width: 140px"></div></h5>
     <button class="position-absolute closing" data-toggle="collapse" data-target="#peod" aria-expanded="true">닫기</button>
     <div class="collapse show collapsing-element" id="peod">
-        <table class="table table-bordered" id="patternBox-head">
+        <table class="table table-bordered jabik" id="patternBox-head">
             <colgroup>
-                <col width="20%">
-                <col width="20%">
-                <col width="20%">
-                <col width="20%">
-                <col width="20%">
+                <col width="25%">
+                <col width="25%">
+                <col width="16.66%">
+                <col width="16.66%">
+                <col width="16.66%">
             </colgroup>
             <tbody>
                 <tr class="subTitle">
@@ -30,14 +30,14 @@
         <table class="table table-bordered mb-0" id="patternBox">
             <tbody>
                 <tr>
-                    <td class="align-middle" style="border-bottom: none">
+                    <td class="align-middle border-none">
                         <ul class="info" id="head-info">
 
                         </ul>
                     </td>
                 </tr>
                 <tr>
-                    <td style="border-top: none;border-right: none" class="p-0">
+                    <td class="p-0 border-none">
                         <div class="content pattern-t">
 
                         </div>

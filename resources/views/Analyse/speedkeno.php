@@ -10,7 +10,7 @@
     <tbody>
     <tr>
         <th height="30" colspan="6" class="title" style="position: relative;">
-            회차별 분석 데이터<span style="position: absolute; top: 6px; right: 10px; color: #969696;" class="siteLink">copyright <a href="/?referer=speedkeno" target="_blank" class="titleCopy">powerballgame.co.kr</a></span>
+            <h5 class="text-center" style="font-size: 18px;">회차별 분석 데이터 <div class="half-label" style="width: 141px;"></div></h5>
         </th>
     </tr>
     <tr class="subTitle">
