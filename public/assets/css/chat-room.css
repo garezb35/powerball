@@ -2176,9 +2176,10 @@ fieldset {
     width: 44px !important;
 }
 .betBox ul.betting li.btnBox span{
-    width: 44px !important;
-    height: 44px !important;
-    line-height: 44px !important;
+    width: 57px !important;
+    height: 57px !important;
+    line-height: 57px !important;
+    margin-left: 0;
 }
 .betBox ul.betting{
     text-align: left !important;
