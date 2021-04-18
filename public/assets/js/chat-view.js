@@ -1632,6 +1632,7 @@ function windowResize()
         var msgBoxHeight = bodyHeight - adHeight;
 
     $('#msgBox').css('height',msgBoxHeight);
+    $('.resultBox').css('height',msgBoxHeight);
 }
 
 function headlessChk(){

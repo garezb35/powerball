@@ -65,7 +65,7 @@
             </ul>
         </div>
         <div class="mainBanner">
-            <a href="http://qootoon.com/3c31ef24" target="_blank"><img src="https://simg.powerballgame.co.kr/ad/toptoon_728_90_1.jpg" ></a>
+{{--            <a href="http://qootoon.com/3c31ef24" target="_blank"><img src="https://simg.powerballgame.co.kr/ad/toptoon_728_90_1.jpg" ></a>--}}
         </div>
         <div id="recomLogBox"></div>
         <div id="bulletLogBox"></div>
