@@ -55,7 +55,7 @@
             </li>
             <li>
                 <div class="backs-pick" style="margin-top: 5px;">
-                    <span  type="numberPeriod" val="3" class="pick-btn ">대</span>
+                    <span  type="numberPeriod" val="3" class="pick-btn f">대</span>
                     <span  type="numberPeriod" val="2" class="pick-btn f">중</span>
                     <span  type="numberPeriod" val="1" class="pick-btn f">소</span>
                 </div>
