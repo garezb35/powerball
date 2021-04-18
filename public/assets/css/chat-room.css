@@ -874,9 +874,10 @@ fieldset {
     top: 0px;
     right: 0px;
     width: 32px;
-    height: 32px;
+    height: 31px;
     background: url(/assets/images/enter.png) no-repeat;
     background-size: 32px;
+    border: 1px solid #00b4b4;
 }
 
 .leftArea .menuBox ul li.right {
