@@ -136,10 +136,12 @@
 .betBox ul li .pick-btn.on.f {
     color: #fff;
     background: url(/assets/images/powerball/pick-blue.png);
+    background-size: contain;
 }
 .betBox ul li .pick-btn.on.s {
     color: #fff;
     background: url(/assets/images/powerball/pick-red.png);
+    background-size: contain;
 }
 .betBox ul.betting li span.pick-btn {
     cursor: pointer;
