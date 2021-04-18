@@ -233,7 +233,7 @@ img, fieldset, iframe {
 
 .itemCntBox {
     position: absolute;
-    top: -14px;
+    top: -12px;
     left: 39px;
     width: 19px;
     height: 19px;
@@ -869,8 +869,8 @@ thead.thead-gray{
 }
 
 .user-info .list-item{
-    line-height: 18px;
-    height: 18px;
+    line-height: 15px;
+    height: 15px;
 }
 
 .coin_charge{
@@ -938,10 +938,10 @@ thead.thead-gray{
 
 .exp-back{
     background: url(/assets/images/powerball/exp_back.png);
-    width: 108px;
+    width: 120px;
     height: 18px;
     border-radius: 7px;
-    background-size: 108px 18px;
+    background-size: 120px 18px;
 }
 .half-label{
     width: 199px;
@@ -1065,12 +1065,12 @@ button.closing:focus{
 }
 
 .numberFont{
-    background:url('/assets/images/powerball/level.svg') no-repeat;
-    height:18px;
-    line-height:19px;
-    padding-left:6px;
-    color:#000;
-    background-size: inherit;
+    background: url(/assets/images/powerball/level.svg) no-repeat;
+    height: 18px;
+    line-height: 18px;
+    padding-left: 6px;
+    color: #000;
+    background-size: cover;
 }
 
 .border-right-ja{
@@ -1079,6 +1079,10 @@ button.closing:focus{
 
 .mar-t-10{
     margin-top: 10px;
+}
+
+.mar-t-5{
+    margin-top: 5px;
 }
 
 .box-menus i.fa{

@@ -10,14 +10,14 @@
     <div style="height:209px;">
         <table class="mt-2" style="width: 100%">
             <colgroup>
-                <col width="160px">
+                <col width="176px">
             </colgroup>
             <tr>
                 <td class="text-left align-top p-1">
                     <div class="mb-2 ml-2"><img src="{{$user_level[0]["value3"]}}">
                         <span class="font-weight-bold ml-2 ll-he23 ja-color ft-thsize"><span class="grades">{{Auth::user()->nickname}}</span> (계급 : <a href="{{route("member")}}?type=level" target="mainFrame" class="text-gam font-weight-bold">{!! $user_level[0]["codename"] !!}</a>)</span>
                         <div style="margin-left: 33px;">
-                            <span class="text-gam font-weight-bold">경험치</span>
+                            <span class="text-gam font-weight-bold" style="font-size: 13px">경험치</span>
                             <div class="mb-2 position-relative mt-1 exp-back">
                                 <div style="width:{{((Auth::user()->exp-$normal_level) / ($next_level - $normal_level))*100}}%;" class="numberFont">
                                     <div style="position:absolute;left: 35px;" class="text-white font-weight-bold"><span>{{Auth::user()->exp-$normal_level}}</span> / {{$nextClass}}</div>
@@ -26,7 +26,7 @@
                         </div>
                     </div>
                 </td>
-                <td class="p-1">
+                <td class="p-2">
                    <div style="border: 1px solid #d5d9db;border-radius: 5px">
                        <table class="table mb-0  user-info">
                            <colgroup>
@@ -34,25 +34,23 @@
                                <col width="*">
                            </colgroup>
                            <tr>
-                               <td class="pt-1 pb-1 align-middle"><span class="list-item"><img src="/assets/images/powerball/coin.png" /><span class="list-item coin-label"> 코인 </span></td>
-                               <td class="pb-1 align-middle text-right"><span class="text-blo font-weight-bold">{{number_format(Auth::user()->coin)}}</span>개</td>
+                               <td class="pt-1 pb-1 pl-1 pr-1 align-middle"><span class="list-item"><img src="/assets/images/powerball/coin.png" height="15"/><span class="list-item coin-label"> 코인 </span></td>
+                               <td class="pt-1 pb-1 pl-0   align-middle text-right" style="padding-right: 4px"><span class="text-blo font-weight-bold">{{number_format(Auth::user()->coin)}}</span></td>
                            </tr>
                            <tr >
-                               <td class="pb-1 align-middle"><img src="/assets/images/powerball/dangun.png" /><span class="list-item dangun-label"> 당근 </span></td>
-                               <td class="pb-1 align-middle text-right"><span class="text-blo font-weight-bold">{{number_format(Auth::user()->bullet)}}</span>개</td>
-                               <td class="pb-1 align-middle"></td>
+                               <td class="pt-0 pb-1 pl-1 pr-1 align-middle"><img src="/assets/images/powerball/dangun.png" height="15"/><span class="list-item dangun-label"> 당근 </span></td>
+                               <td class="pt-0 pb-1 pl-0  align-middle text-right" style="padding-right: 4px"><span class="text-blo font-weight-bold">{{number_format(Auth::user()->bullet)}}</span>개</td>
                            </tr>
                            <tr>
-                               <td class="pb-1 align-middle"><span class="list-item dotori-label"><img src="/assets/images/powerball/dotori.png" /> 도토리 </span></td>
-                               <td class="pb-1 align-middle text-right"><span class="text-blo font-weight-bold">{{number_format(Auth::user()->bread)}}</span>개</td>
-                               <td class="pb-1 align-middle"></td>
+                               <td class="pt-0 pb-1 pl-1 pr-1 align-middle"><span class="list-item dotori-label"><img src="/assets/images/powerball/dotori.png" height="15"/> 도토리 </span></td>
+                               <td class="pt-0 pb-1 pl-0  align-middle text-right" style="padding-right: 4px"><span class="text-blo font-weight-bold">{{number_format(Auth::user()->bread)}}</span>개</td>
                            </tr>
                        </table>
                    </div>
                 </td>
             </tr>
         </table>
-        <table class="table box-menus mar-t-10 mb-0">
+        <table class="table box-menus mar-t-5 mb-0">
             <colgroup>
                 <col width="25%">
                 <col width="25%">
