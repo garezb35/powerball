@@ -30,14 +30,14 @@
         </table>
         <table class="table table-bordered" id="patternBox">
             <tr>
-                <td colspan="4" class="align-middle" style="border-bottom: none">
+                <td colspan="4" class="align-middle border-none"">
                     <ul class="info" id="head-info">
 
                     </ul>
                 </td>
             </tr>
             <tr>
-                <td colspan="4" style="border-top: none;border-right: none" class="p-0">
+                <td colspan="4"  class="p-0 border-none">
                     <div class="content pattern-t">
 
                     </div>

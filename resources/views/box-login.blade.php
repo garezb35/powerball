@@ -7,7 +7,7 @@
             else
                 $nextClass = $next_level - $normal_level;
         @endphp
-    <div style="height:230px;">
+    <div style="height:209px;">
         <table class="mt-2" style="width: 100%">
             <colgroup>
                 <col width="160px">
@@ -95,9 +95,21 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="4" class="back-blue simu-head p-2">
-                    <span class="text-gold font-weight-bold">파워모의배팅</span> <span class="font-weight-bold text-white">남은 기간</span>  <span class="text-gold font-weight-bold">30일</span>
-                    <button class="ml-2 btn btn-sm btn-jin-blue">구매하러 가기</button>
+                <td colspan="4" class="back-blue simu-head">
+                    <span class="text-gold font-weight-bold align-middle ll-he23">파워모의배팅</span> <span class="font-weight-bold text-white align-middle ll-he23">남은 기간</span>  <span class="text-gold font-weight-bold align-middle ll-he23">30일</span>
+                    <button class="btn btn-sm btn-jin-blue gopur_btn">구매하러 가기</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" class="p-0 align-middle">
+                    <div class="notice">
+                        <span class="not-left">공지</span>
+                        <div style="position: absolute; top: 0px;" id="scrollNotice">
+                            <ul>
+                                <li><a href="/bbs/board.php?bo_table=custom&amp;wr_id=600" target="mainFrame">[업데이트] 보안 강화 관련 안내</a></li><li><a href="/bbs/board.php?bo_table=custom&amp;wr_id=599" target="mainFrame">서비스 변경 공지_건빵 아이템 선물 관련...</a></li><li><a href="/bbs/board.php?bo_table=custom&amp;wr_id=598" target="mainFrame">서비스 변경 공지</a></li><li><a href="/bbs/board.php?bo_table=custom&amp;wr_id=602" target="mainFrame">2020년도 동행복권 전자복권 판매 마감...</a></li><li><a href="/bbs/board.php?bo_table=custom&amp;wr_id=601" target="mainFrame">동행복권 공식 홈페이지 점검 안내</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </td>
             </tr>
         </table>
@@ -117,7 +129,7 @@
                     {!! Form::text('loginId', '', ['class' => 'input-green mb-1 w-100','placeholder'=>"아이디 입력",'autocomplete'=>"off"]) !!}
                     {!! Form::password('password', ['class'=>'input-green w-100','placeholder'=>"비밀번호 입력"]) !!}
                 </td>
-                <td class="text-left p-1">
+                <td class="text-left p-2">
                     {!! Form::submit('로그인', ['class' => 'btn btn-jin-green w-100 h-55']) !!}
                 </td>
             </tr>
@@ -128,10 +140,10 @@
                 <col width="50%">
             </colgroup>
             <tr>
-                <td class="pr-1 pt-1 pb-0 pl-0">
+                <td class="p-2">
                     <a class="btn btn-jin-green w-100 ft-btsize" href="{{ route('register') }}">회원가입</a>
                 </td>
-                <td class="pr-0 pt-1 pb-0 pl-1">
+                <td class="p-2">
                     <a class="btn btn-jin-green w-100 pl-1 pr-1 ft-btsize" href="{{ route('password.request') }}" target="mainFrame">아이디,비밀번호 찾기</a>
                 </td>
             </tr>

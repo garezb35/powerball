@@ -183,13 +183,14 @@ img, fieldset, iframe {
 
 
 #box-ct .inner-left .box-login {
-  border-left: solid 1px #d9d9d9;
+   border-left: solid 1px #d9d9d9;
     border-right: solid 1px #d9d9d9;
     border-top: solid 1px #d9d9d9;
     border-bottom: solid 1px #d9d9d9;
-  padding: 4px 0px 0px 0px;
-  position: relative;
-  margin-bottom: 0px;
+    padding: 4px 0px 0px 0px;
+    position: relative;
+    margin-bottom: 0px;
+    border-radius: 5px;
 }
 
 .box-login .loginUserInfo {
@@ -324,12 +325,11 @@ img, fieldset, iframe {
 #box-ct .inner-left .box-login .notice {
   position: relative;
   overflow: hidden;
-  height: 23px;
-  background: #ececec;
+  height: 25px;
+  background: #f0f5f5;
   z-index: 10;
   position: relative;
   padding-left: 50px;
-  margin: 0 -4px 0 -10px;
 }
 
 #box-ct .inner-left .box-login .notice a {
@@ -337,6 +337,7 @@ img, fieldset, iframe {
   display: block;
   height: 23px;
   line-height: 23px;
+    font-size: 14px;
 }
 
 #box-ct .inner-left .box-login .notice img {
@@ -1084,7 +1085,7 @@ button.closing:focus{
 }
 
 .box-menus i.fa{
-    font-size: 25px;
+    font-size: 19px;
     color: #999999;
 }
 
@@ -1096,4 +1097,30 @@ button.closing:focus{
 
 table.patternTable td:first-child .innerTable td,table.patternTable td:first-child .innerTable th{
     border-left: none !important;
+}
+
+.not-left{
+    position: absolute;
+    width: 35px;
+    height: 25px;
+    left: 0;
+    background: #bfbfbf;
+    color: #fff;
+    padding-left: 5px;
+    line-height: 25px;
+    font-size: 14px;
+}
+
+.gopur_btn{
+    font-size: 13px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    margin-left: 15px;
+}
+
+td.simu-head{
+    padding-left: 6px;
+    padding-right: 1px;
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
