@@ -1357,7 +1357,7 @@ function windowResize()
     var msgBoxHeight = $('body').height();
     $('#msgBox').height(msgBoxHeight-190);
     $('#connectList').height(msgBoxHeight-160);
-    $('#roomList').height(msgBoxHeight-200);
+    $('#roomList').height(msgBoxHeight-185);
     $('#ruleBox').height(msgBoxHeight-203);
     msgBoxHeight = null;
 }

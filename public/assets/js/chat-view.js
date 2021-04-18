@@ -1626,10 +1626,10 @@ function windowResize()
     var bodyHeight = $('body').height();
     var headerHeight = 72;
     var footerHeight = 25;
-    var adHeight = 90;
+    var adHeight = $(".mainBanner").height() + 50 + 26 + 39 + 31;
     var inputHeight = 38 + 72;
 
-        var msgBoxHeight = bodyHeight - headerHeight - inputHeight;
+        var msgBoxHeight = bodyHeight - adHeight;
 
     $('#msgBox').css('height',msgBoxHeight);
 }
