@@ -30,12 +30,11 @@
 }
 .betBox ul.betting li span {
     display: inline-block;
-    width: 50px;
+    width: 60px;
     height: 32px;
     line-height: 32px;
     text-align: center;
     font-weight: bold;
-    margin-left: -3px;
     color: #fff;
 }
 .betBox ul.betting li span.titleBox {
@@ -134,9 +133,13 @@
     margin-top: 5px;
 }
 
-.betBox ul li .pick-btn.on {
+.betBox ul li .pick-btn.on.f {
     color: #fff;
     background: url(/assets/images/powerball/pick-blue.png);
+}
+.betBox ul li .pick-btn.on.s {
+    color: #fff;
+    background: url(/assets/images/powerball/pick-red.png);
 }
 .betBox ul.betting li span.pick-btn {
     cursor: pointer;

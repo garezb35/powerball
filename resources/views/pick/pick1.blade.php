@@ -35,29 +35,29 @@
             </li>
             <li>
                 <div class="backs-pick">
-                    <span type="powerballOddEven" val="1" class="pick-btn">홀</span>
-                    <span type="powerballOddEven" val="0" class="pick-btn">짝</span>
+                    <span type="powerballOddEven" val="1" class="pick-btn f">홀</span>
+                    <span type="powerballOddEven" val="0" class="pick-btn s">짝</span>
                 </div>
                 <div class="backs-pick" style="margin-top: 5px;">
-                    <span type="numberOddEven" val="1" class="pick-btn">홀</span>
-                    <span type="numberOddEven" val="0" class="pick-btn">짝</span>
+                    <span type="numberOddEven" val="1" class="pick-btn f">홀</span>
+                    <span type="numberOddEven" val="0" class="pick-btn s">짝</span>
                 </div>
             </li>
             <li>
                 <div class="backs-pick">
-                    <span type="powerballUnderOver" val="1" class="pick-btn">언더</span>
-                    <span type="powerballUnderOver" val="0" class="pick-btn">오버</span>
+                    <span type="powerballUnderOver" val="1" class="pick-btn f">언더</span>
+                    <span type="powerballUnderOver" val="0" class="pick-btn s">오버</span>
                 </div>
                 <div class="backs-pick" style="margin-top: 5px;">
-                    <span type="numberUnderOver" val="1" class="pick-btn">언더</span>
-                    <span type="numberUnderOver" val="0" class="pick-btn">오버</span>
+                    <span type="numberUnderOver" val="1" class="pick-btn f">언더</span>
+                    <span type="numberUnderOver" val="0" class="pick-btn s">오버</span>
                 </div>
             </li>
             <li>
                 <div class="backs-pick" style="margin-top: 5px;">
-                    <span  type="numberPeriod" val="3" class="pick-btn">대</span>
-                    <span  type="numberPeriod" val="2" class="pick-btn">중</span>
-                    <span  type="numberPeriod" val="1" class="pick-btn">소</span>
+                    <span  type="numberPeriod" val="3" class="pick-btn ">대</span>
+                    <span  type="numberPeriod" val="2" class="pick-btn f">중</span>
+                    <span  type="numberPeriod" val="1" class="pick-btn f">소</span>
                 </div>
             </li>
             <li class="btnBox" style="position: relative;">
