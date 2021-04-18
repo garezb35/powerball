@@ -39,6 +39,8 @@ $(document).ready(function() {
         }
     });
 
+    windowResize();
+
     $('#btn_joinMyChatRoom').click(function(){
 
         if(userIdToken == "")
@@ -478,4 +480,16 @@ function setUserLayer(useridKey,nickname,e,left)
             }
         }
     });
+}
+
+function windowResize()
+{
+    var bodyHeight = $('body').height();
+    var footerHeight = 25;
+    var adHeight = 90;
+    var marginHeight = 21;
+
+    var roomListHeight = bodyHeight  - marginHeight - 73;
+
+    $('#roomList').css('height',roomListHeight);
 }

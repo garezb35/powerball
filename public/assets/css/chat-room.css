@@ -57,11 +57,11 @@
     margin-left: 8px;
     background-color: #fff;
     overflow-y: auto;
-    border: 1px solid #0D513A;
+    border: 1px solid #e4e4e4;
 }
 .leftArea .roomList.best {
     margin: 0 0 8px 8px;
-    border: 1px solid #0D513A;
+    border: 1px solid #e4e4e4;
 }
 .leftArea .roomList li {
     position: relative;
@@ -159,7 +159,7 @@
 
 .rightArea .myInfo {
     margin: 8px;
-    border: 1px solid #0e578d;
+    border: 1px solid #e4e4e4;
     background-color: #fff;
 }
 
@@ -170,7 +170,7 @@
     font-weight: bold;
     color: #fff;
     padding-left: 10px;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid #e4e4e4;
 }
 
 .rightArea .myInfo .inner {
@@ -195,12 +195,12 @@
     font-weight: bold;
     color: #fff;
     padding-left: 10px;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid #e4e4e4;
 }
 .rightArea .userList {
     margin: 0 8px;
     background-color: #fff;
-    border: 1px solid #0e578d;
+    border: 1px solid #e4e4e4;
     height: 380px;
 }
 .rightArea .userList ul {
@@ -257,10 +257,10 @@
     vertical-align: middle;
 }
 
-.leftArea .roomList.best {
-    margin: 0 0 8px 8px;
-    border: 1px solid #0D513A;
-}
+/*.leftArea .roomList.best {*/
+/*    margin: 0 0 8px 8px;*/
+/*    border: 1px solid #0D513A;*/
+/*}*/
 .leftArea .roomList.best li {
     border-bottom: none;
     background-color: #dff7f7;

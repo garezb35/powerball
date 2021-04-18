@@ -30,7 +30,7 @@
         <li class="favs"><a class="@if(Request::get("rtype") =="favor"){{'on'}}@endif" href="{{route("room_wait")}}?rtype=favor">즐겨찾기(<span id="bookmark_room_count">{{$favor_count}}</span>)</a></li>
     </ul>
 </div>
-<div id="container">
+<div id="container" style="width: 958px;">
     <div class="leftArea">
         <div class="category">
             <ul class="order">
@@ -74,7 +74,7 @@
                 </li>
             @endif
         </ul>
-        <ul id="roomList" class="roomList" style="height: 395px;">
+        <ul id="roomList" class="roomList">
             @if(!empty($list))
                 @foreach($list as $value)
                     <li id="room-{{$value["roomIdx"]}}">
