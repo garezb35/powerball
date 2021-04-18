@@ -8,7 +8,7 @@
                 $nextClass = $next_level - $normal_level;
         @endphp
     <div style="height:209px;">
-        <table class="mt-2" style="width: 100%">
+        <table class="mt-0" style="width: 100%">
             <colgroup>
                 <col width="176px">
             </colgroup>
