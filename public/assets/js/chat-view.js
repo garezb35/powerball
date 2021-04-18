@@ -25,7 +25,7 @@ $(document).click(function(){
 });
 $(document).ready(function() {
     // size init
-    top.resizeTo(991, 780);
+    top.resizeTo(980, 780);
     windowResize();
 
     if(browser_ws == true)
@@ -1632,7 +1632,7 @@ function windowResize()
         var msgBoxHeight = bodyHeight - adHeight;
 
     $('#msgBox').css('height',msgBoxHeight);
-    $('.resultBox').css('height',msgBoxHeight);
+    $('.resultBox').css('height',msgBoxHeight+52);
 }
 
 function headlessChk(){
