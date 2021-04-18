@@ -7,7 +7,7 @@
             else
                 $nextClass = $next_level - $normal_level;
         @endphp
-    <div style="height:193px;">
+    <div style="height:214px;">
         <table class="mt-0" style="width: 100%">
             <colgroup>
                 <col width="176px">
