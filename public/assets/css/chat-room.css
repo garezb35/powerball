@@ -2177,3 +2177,14 @@ fieldset {
     height: 23px;
     line-height: 23px;
 }
+.betBox ul.betting li.btnBox span{
+    width: 44px !important;
+    height: 44px !important;
+    line-height: 44px !important;
+}
+.betBox ul.betting{
+    text-align: left !important;
+}
+.betBox form{
+    margin-left: 0;
+}
