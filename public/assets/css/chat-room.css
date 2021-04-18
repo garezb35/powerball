@@ -2187,6 +2187,6 @@ fieldset {
     margin-left: 0;
 }
 
-.betBox ul li .pick-btn.on.f{
+.betBox ul li .pick-btn.on.f,.betBox ul li .pick-btn.on.s{
     background-size: 44px 33px !important;
 }
