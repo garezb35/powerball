@@ -160,7 +160,7 @@
             <a id="sendBtn" class="btns" href="#" onclick="return false;"></a>
         </div>
     </div>
-    <div class="rightArea">
+    <div class="rightArea" style="background: #f0f2f2">
         <div class="btns">
             <a href="#" onclick="return false;" id="btn_exit" class="exit">채팅방 나가기</a>
         </div>
