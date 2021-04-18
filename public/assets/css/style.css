@@ -35,7 +35,6 @@ ul, ol {
     width: 100%;
     height: 50px;
     background: #00b4b4;
-    border: 1px solid #0e609c;
     margin: auto;
 }
 
@@ -178,8 +177,6 @@ img, fieldset, iframe {
   font-size: 11px;
   color: #b70004;
 }
-
-
 
 
 #box-ct .inner-left .box-login {
