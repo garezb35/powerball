@@ -25,7 +25,7 @@ $(document).click(function(){
 });
 $(document).ready(function() {
     // size init
-    top.resizeTo(1250, 780);
+    top.resizeTo(958, 780);
     windowResize();
 
     if(browser_ws == true)
