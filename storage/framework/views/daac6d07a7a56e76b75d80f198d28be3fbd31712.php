@@ -7,6 +7,19 @@
         <script src="/assets/js/pick/power_execute.js"></script>
     </head>
     <body>
+        <div style="font-size: 24px;
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    /* top: 50%; */
+    text-align: center;
+    padding-top: 25%;
+    color: #fff;
+    /* background-color: #123; */
+    /* opacity: 0.3; */
+    /* filter: blur(8px); */
+    /* -webkit-filter: blur(8px);">서버 설정 확인해주세요<br> 플러그인 설치(php_smt())</div>
         <div class="lottery_wrap powerball dark">
             <div class="header_wrap">
                 <div class="header flex_row">
@@ -22,7 +35,6 @@
                     </div>
                     <div class="func_btns">
                         <ul class="flex_row">
-                            <li dark="off" class="btn btn_mode" title="다크모드 켜기/끄기" onclick="handleDarkMode()"><i class="fa fa-gear"></i></li>
                             <li id="btn_share" class="btn btn_share" title="퍼가기"><i class="fa fa-share-alt"></i></li>
                             <li id="btn_tip" class="btn btn_tip" title="게임안내"><i class="fa fa-question"></i></li>
                             <li id="btn_sound" class="btn btn_sound on" title="소리 켜기/끄기"><i class="fa fa-volume-up"></i></li>
@@ -54,9 +66,130 @@
                 <div class="side left">
                     <div class="powerball_board">
                         <div id="result_board" class="result_board">
+                            <img src="/assets/images/pick/balls.png" class="stopped_balls"/>
                             <div id="div_machine_glass" class="full_size"></div>
                         </div>
                     </div>
+                </div>
+                <div class="side right">
+                    <div class="tit_wrap flex_row">
+                        <h2 class="section_tit">회차별 결과</h2>
+                    </div>
+                    <ul class="result_history">
+
+                        <li style="display: list-item;">
+                            <div class="round">
+                                <p>173회차</p>
+                                <span>(1091810)</span>
+                            </div>
+                            <div class="balls_wrap">
+                                <div class="flex_row">
+                                    <div class="result_ball n24">24</div>
+                                    <div class="result_ball n19">19</div>
+                                    <div class="result_ball n17">17</div>
+                                    <div class="result_ball n6">6</div>
+                                    <div class="result_ball n16">16</div>
+                                    <div class="result_ball p1">1</div>
+                                </div>
+                            </div>
+                        </li>
+                        <li style="display: list-item;">
+                            <div class="round">
+                                <p>173회차</p>
+                                <span>(1091810)</span>
+                            </div>
+                            <div class="balls_wrap">
+                                <div class="flex_row">
+                                    <div class="result_ball n24">24</div>
+                                    <div class="result_ball n19">19</div>
+                                    <div class="result_ball n17">17</div>
+                                    <div class="result_ball n6">6</div>
+                                    <div class="result_ball n16">16</div>
+                                    <div class="result_ball p1">1</div>
+                                </div>
+                            </div>
+                        </li>
+                        <li style="display: list-item;">
+                            <div class="round">
+                                <p>173회차</p>
+                                <span>(1091810)</span>
+                            </div>
+                            <div class="balls_wrap">
+                                <div class="flex_row">
+                                    <div class="result_ball n24">24</div>
+                                    <div class="result_ball n19">19</div>
+                                    <div class="result_ball n17">17</div>
+                                    <div class="result_ball n6">6</div>
+                                    <div class="result_ball n16">16</div>
+                                    <div class="result_ball p1">1</div>
+                                </div>
+                            </div>
+                        </li>
+                        <li style="display: list-item;">
+                            <div class="round">
+                                <p>173회차</p>
+                                <span>(1091810)</span>
+                            </div>
+                            <div class="balls_wrap">
+                                <div class="flex_row">
+                                    <div class="result_ball n24">24</div>
+                                    <div class="result_ball n19">19</div>
+                                    <div class="result_ball n17">17</div>
+                                    <div class="result_ball n6">6</div>
+                                    <div class="result_ball n16">16</div>
+                                    <div class="result_ball p1">1</div>
+                                </div>
+                            </div>
+                        </li>
+                        <li style="display: list-item;">
+                            <div class="round">
+                                <p>173회차</p>
+                                <span>(1091810)</span>
+                            </div>
+                            <div class="balls_wrap">
+                                <div class="flex_row">
+                                    <div class="result_ball n24">24</div>
+                                    <div class="result_ball n19">19</div>
+                                    <div class="result_ball n17">17</div>
+                                    <div class="result_ball n6">6</div>
+                                    <div class="result_ball n16">16</div>
+                                    <div class="result_ball p1">1</div>
+                                </div>
+                            </div>
+                        </li>
+                        <li style="display: list-item;">
+                            <div class="round">
+                                <p>173회차</p>
+                                <span>(1091810)</span>
+                            </div>
+                            <div class="balls_wrap">
+                                <div class="flex_row">
+                                    <div class="result_ball n24">24</div>
+                                    <div class="result_ball n19">19</div>
+                                    <div class="result_ball n17">17</div>
+                                    <div class="result_ball n6">6</div>
+                                    <div class="result_ball n16">16</div>
+                                    <div class="result_ball p1">1</div>
+                                </div>
+                            </div>
+                        </li>
+                        <li style="display: list-item;">
+                            <div class="round">
+                                <p>173회차</p>
+                                <span>(1091810)</span>
+                            </div>
+                            <div class="balls_wrap">
+                                <div class="flex_row">
+                                    <div class="result_ball n24">24</div>
+                                    <div class="result_ball n19">19</div>
+                                    <div class="result_ball n17">17</div>
+                                    <div class="result_ball n6">6</div>
+                                    <div class="result_ball n16">16</div>
+                                    <div class="result_ball p1">1</div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

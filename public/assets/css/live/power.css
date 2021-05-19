@@ -5,6 +5,12 @@
     margin-left: 15px
 }
 
+.powerball.dark{
+    background: url(/assets/images/pick/power_back.png);
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+}
+
 .lottery_wrap .header .game_type .type_img {
     position: absolute;
     left: 30px;
@@ -169,12 +175,9 @@
     margin-left: 3px
 }
 
-.lottery_wrap .contents .side .result_history .balls_wrap {
-    padding: 5px 10px
-}
 
 .lottery_wrap .contents .side .result_history .balls_wrap>div .result_ball:not(:nth-last-of-type(1)) {
-    margin-right: 0
+    margin-right: 2px
 }
 
 .lottery_wrap .contents .side .result_history .balls_wrap>div:nth-last-of-type(1) {
@@ -182,11 +185,8 @@
 }
 
 .result_ball {
-    width: 28px;
-    height: 27px;
-    background: url(/public/img/score/ui_game/v2/sp_powerball_v2.png?v=200118) no-repeat 0 -9999px;
-    background-size: 250px 125px;
-    font-family: swagger, sans-serif;
+    width: 32px;
+    height: 32px;
     font-size: 14px;
     text-align: center;
     color: #fff!important;
@@ -194,217 +194,6 @@
     margin-right: 1px
 }
 
-.result_ball.n1 {
-    background-position: -87px 0
-}
-
-.result_ball.n2 {
-    background-position: -87px 0
-}
-
-.result_ball.n3 {
-    background-position: -87px 0
-}
-
-.result_ball.n4 {
-    background-position: -87px 0
-}
-
-.result_ball.n5 {
-    background-position: -87px 0
-}
-
-.result_ball.n6 {
-    background-position: -87px 0
-}
-
-.result_ball.n7 {
-    background-position: -87px 0
-}
-
-.result_ball.n7 {
-    background-position: -87px 0
-}
-
-.result_ball.n8 {
-    background-position: -29px 0
-}
-
-.result_ball.n9 {
-    background-position: -29px 0
-}
-
-.result_ball.n10 {
-    background-position: -29px 0
-}
-
-.result_ball.n11 {
-    background-position: -29px 0
-}
-
-.result_ball.n12 {
-    background-position: -29px 0
-}
-
-.result_ball.n13 {
-    background-position: -29px 0
-}
-
-.result_ball.n14 {
-    background-position: -29px 0
-}
-
-.result_ball.n15 {
-    background-position: 0 0
-}
-
-.result_ball.n16 {
-    background-position: 0 0
-}
-
-.result_ball.n17 {
-    background-position: 0 0
-}
-
-.result_ball.n18 {
-    background-position: 0 0
-}
-
-.result_ball.n19 {
-    background-position: 0 0
-}
-
-.result_ball.n20 {
-    background-position: 0 0
-}
-
-.result_ball.n21 {
-    background-position: 0 0
-}
-
-.result_ball.n22 {
-    background-position: -58px 0
-}
-
-.result_ball.n23 {
-    background-position: -58px 0
-}
-
-.result_ball.n24 {
-    background-position: -58px 0
-}
-
-.result_ball.n25 {
-    background-position: -58px 0
-}
-
-.result_ball.n26 {
-    background-position: -58px 0
-}
-
-.result_ball.n27 {
-    background-position: -58px 0
-}
-
-.result_ball.n28 {
-    background-position: -58px 0
-}
-
-.result_ball.p0 {
-    background-position: -116px 0
-}
-
-.result_ball.p1 {
-    background-position: -116px 0
-}
-
-.result_ball.p2 {
-    background-position: -116px 0
-}
-
-.result_ball.p3 {
-    background-position: -116px 0
-}
-
-.result_ball.p4 {
-    background-position: -116px 0
-}
-
-.result_ball.p5 {
-    background-position: -116px 0
-}
-
-.result_ball.p6 {
-    background-position: -116px 0
-}
-
-.result_ball.p7 {
-    background-position: -116px 0
-}
-
-.result_ball.p8 {
-    background-position: -116px 0
-}
-
-.result_ball.p9 {
-    background-position: -116px 0
-}
-
-.result_ball.big {
-    background-position: 0 -26px
-}
-
-.result_ball.middle {
-    background-position: -29px -26px
-}
-
-.result_ball.small {
-    background-position: -58px -26px
-}
-
-.result_ball.odd {
-    background-position: -29px -26px
-}
-
-.result_ball.even {
-    background-position: 0 -26px
-}
-
-.result_ball.under {
-    background-position: -29px -26px
-}
-
-.result_ball.over {
-    background-position: 0 -26px
-}
-
-.result_ball.ai_big {
-    background-position: 0 -26px
-}
-
-.result_ball.ai_middle {
-    background-position: -29px -26px
-}
-
-.result_ball.ai_small {
-    background-position: -58px -26px
-}
-
-.result_ball.ai_odd {
-    background-position: -29px -26px
-}
-
-.result_ball.ai_even {
-    background-position: 0 -26px
-}
-
-.result_ball.ai_under {
-    background-position: -29px -26px
-}
-
-.result_ball.ai_over {
-    background-position: 0 -26px
-}
 
 .lottery_wrap .contents .center {
     padding: 10px
@@ -452,7 +241,8 @@
 }
 
 .lottery_wrap.dark .contents .side .result_history .round {
-    background-color: #3e4c6f
+    background-color: #3e4c6f;
+    border-bottom: 1px solid #1d3c5e;
 }
 
 .lottery_wrap.dark .center .move_btn {
@@ -470,17 +260,18 @@
 
 #result_board {
     position: relative;
-    width: 266px;
-    height: 266px;
-    overflow: hidden
+    width: 450px;
+    height: 378px;
+    overflow: hidden;
 }
 
 .full_size {
+    background-size: 450px !important;
     position: absolute;
     top: 0;
     left: 0;
-    width: 266px;
-    height: 266px
+    width: 100%;
+    height: 100%;
 }
 
 #div_background_wall {
@@ -504,7 +295,7 @@
 }
 
 #div_machine_glass {
-    background: url(/assets/images/ezgif.com-gif-maker.gif) no-repeat;
+    background: url(/assets/images/pick/machine.png) no-repeat;
 }
 
 #div_machine_bottom {
@@ -807,3 +598,137 @@
 #result_board .result_txt.powerball {
     background-position: -180px 0
 }
+
+.lottery_wrap .contents .tit_wrap {
+    justify-content: space-between;
+}
+
+.lottery_wrap .contents .tit_wrap .section_tit {
+    margin-bottom: 0;
+    margin-top: 0px;
+}
+
+.lottery_wrap .contents .section_tit {
+    font-size: 16px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    letter-spacing: -.05em;
+    margin-bottom: 12px;
+}
+.lottery_wrap .contents .section_tit:before {
+    content: '';
+    width: 4px;
+    height: 20px;
+    background-color: #3f4e8e;
+    margin-right: 5px;
+    border-radius: 2px;
+}
+.lottery_wrap.dark .section_tit:before {
+    background-color:transparent;
+}
+
+.lottery_wrap.dark .contents .side .result_history {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+    scrollbar-base-color: #001326;
+    scrollbar-face-color: #0a2d50;
+    scrollbar-3dlight-color: #001326;
+    scrollbar-highlight-color: #001326;
+    scrollbar-track-color: #001326;
+    scrollbar-arrow-color: #0a2d50;
+    scrollbar-shadow-color: #001326;
+    scrollbar-dark-shadow-color: #001326;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background: #0f3359;
+    border-radius: 5px;
+}
+.lottery_wrap .contents .side .result_history>li:not(:last-child) {
+    margin-bottom: 3px;
+}
+.lottery_wrap.dark .contents .side .result_history>li, .lottery_wrap.dark .contents .center .ai_pick_item, .lottery_wrap.dark .contents .side .ai_pick_item {
+    background-color: #182037;
+    border: 1px solid #2b3653;
+}
+.lottery_wrap .contents .side .result_history>li {
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border: 1px solid #f3f3f3;
+}
+.lottery_wrap .contents .result_history>li {
+    border-radius: 5px;
+    overflow: hidden;
+}
+.lottery_wrap .contents .side .result_history .round {
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f8f8;
+}
+.lottery_wrap.dark .contents .side .result_history .round {
+    background-color: #002042;
+}
+
+.lottery_wrap .contents .side .result_history .balls_wrap {
+    padding: 5px 5px;
+}
+.lottery_wrap .contents .side .result_history .round>span {
+    color: #c4c4c4;
+    margin-left: 3px;
+}
+.lottery_wrap .contents .side .result_history .round>p {
+    font-size: 13px;
+}
+.result_ball {
+    font-family: swagger,sans-serif;
+    font-size: 14px;
+    text-align: center;
+    color: #fff!important;
+    line-height: 2.2em;
+    margin-right: 1px;
+}
+.result_ball.n6 {
+    background-position: -87px 0;
+}
+.result_ball.n24 {
+    width: 32px;
+    height: 32px;
+    background: url(/assets/images/pick/red.png) no-repeat ;
+}
+.result_ball.n19 {
+    width: 32px;
+    height: 32px;
+    background: url(/assets/images/pick/red.png) no-repeat ;
+}
+.result_ball.n17 {
+    width: 32px;
+    height: 32px;
+    background: url(/assets/images/pick/red.png) no-repeat ;
+}
+.result_ball.n6 {
+    width: 32px;
+    height: 32px;
+    background: url(/assets/images/pick/red.png) no-repeat ;
+}
+.result_ball.n16 {
+    width: 32px;
+    height: 32px;
+    background: url(/assets/images/pick/red.png) no-repeat ;
+}
+.result_ball.p1 {
+    width: 32px;
+    height: 32px;
+    background: url(/assets/images/pick/red.png) no-repeat ;
+}
+
+.stopped_balls{
+    width: 235px;
+    position: absolute;
+    bottom: 85px;
+    left: 100px;
+}
+
