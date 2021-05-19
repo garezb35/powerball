@@ -13,7 +13,7 @@
             <a href="/member?type=giftLog&giftType=give" class="b">■ 선물한 내역</a> &nbsp;
             <a href="/member?type=giftLog&giftType=take" class="">■ 선물 받은 내역</a>
         </div>
-        <table class="table logBox">
+        <table class="table logBox table-bordered">
             <thead>
             <tr class="title">
                 <th>번호</th>
@@ -26,7 +26,6 @@
             <tbody>
                 <?php if(!empty($item)): ?>
                 <?php $__currentLoopData = $item; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-
                     <?php
                         if(empty($value[$self]["nickname"])) continue;
                         $parsed_content = json_decode($value["content"]);

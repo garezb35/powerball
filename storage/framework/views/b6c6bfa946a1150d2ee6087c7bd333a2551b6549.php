@@ -9,7 +9,7 @@
 ?>
 <?php $__env->startSection("content"); ?>
     <div class="content">
-        <table class="table logBox">
+        <table class="table logBox table-bordered">
             <thead>
             <tr class="title">
                 <th>번호</th>

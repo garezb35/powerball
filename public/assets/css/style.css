@@ -876,6 +876,9 @@ thead.thead-gray{
 .text-blo{
     color: #666666;
 }
+.text-blue{
+    color: #00b4b4 !important;
+}
 
 .user-info .list-item{
     line-height: 15px;

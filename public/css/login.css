@@ -81,13 +81,9 @@ a, abbr, acronym, address, applet, article, aside, audio, b, bdi, bdo, big, bloc
 
 #header {
     position: relative;
-    height: 87px;
+    height: 146px;
     overflow: hidden;
     text-align: center;
-    background: #1b52ed;
-    background: linear-gradient(to right,#1385d9,#1173bb 45%,#000);
-    background: -webkit-linear-gradient(left,#1385d9,#1173bb 45%,#0d568c);
-    padding-top: 35px;
 }
 
 img {
@@ -98,6 +94,7 @@ img {
     height: 60px;
     line-height: 60px;
     text-align: center;
+    background-color: #f5f5f5;
 }
 
 #simpleJoinBox .footer a {
@@ -109,7 +106,6 @@ img {
 #simpleJoinBox .content {
     position: relative;
     min-height: 460px;
-    background-color: #f5f5f5;
     border-bottom: 1px solid #D6D6D6;
     padding: 30px;
 }

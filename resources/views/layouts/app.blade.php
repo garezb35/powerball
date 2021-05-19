@@ -14,10 +14,10 @@
 
     <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
 
-    
+
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/popper/popper.min.js"></script>
-    <script src="/assets/bootstrap/js/bootstrap.min.js"></script> 
+    <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -26,12 +26,13 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/login.css') }}" rel="stylesheet">
+    <link href="/assets/css/style.css" rel="stylesheet">
 </head>
 <body>
     <div id="app">
         <div id="header">
 			<h1>
-				<a href="/" class="logo"><img src="https://account.powerballgame.co.kr/images/logo.png" alt="POWERBALLGAME"></a>
+				<a href="/" class="logo"><img src="/assets/images/logo.svg" alt="POWERBALLGAME" width="247px"></a>
 			</h1>
 		</div>
 

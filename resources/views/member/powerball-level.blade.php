@@ -34,7 +34,7 @@
             </ul>
         </div>
         <div>
-            <table class="table logBox">
+            <table class="table logBox table-bordered">
                 <thead>
                     <tr class="title">
                         <th>번호</th>

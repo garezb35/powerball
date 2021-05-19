@@ -15,7 +15,7 @@
             <a href="/member?type=giftLog&giftType=give" class="b">■ 선물한 내역</a> &nbsp;
             <a href="/member?type=giftLog&giftType=take" class="">■ 선물 받은 내역</a>
         </div>
-        <table class="table logBox">
+        <table class="table logBox table-bordered">
             <thead>
             <tr class="title">
                 <th>번호</th>

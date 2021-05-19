@@ -207,3 +207,9 @@
     height: 14px;
     cursor: pointer;
 }
+
+table.logBox thead th {
+    background: #f0f5f5;
+    border-bottom: none;
+    border-top: 2px solid #00b4b4;
+}
