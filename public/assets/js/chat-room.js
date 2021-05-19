@@ -207,7 +207,7 @@ function connect()
     try{
         if(socket == null)
         {
-            socket = io.connect('http://cake6978.com:3000/room',socketOption);
+            socket = io.connect('http://210.112.174.189:3000/room',socketOption);
         }
         sendProcess('login');
     }
