@@ -1590,7 +1590,7 @@ function printItemMsg(type,cnt,nickname,tnickname)
             bulletImg = 'bullet9.png';
         }
 
-        var itemMsg = '<div class="bulletBox"><div class="cnt">'+cnt+'</div><img src="https://simg.powerballgame.co.kr/images/'+bulletImg+'"/></div>';
+        var itemMsg = '<div class="bulletBox"><div class="cnt">'+cnt+'</div></div>';
 
         $('#msgBox').append('<li>'+itemMsg+'</li>');
         $('#msgBox').append('<li><p class="msg-gift"><span>'+nickname+'</span> 님이 <span>'+tnickname+'</span> 님에게 <span>총알 '+cnt+'개</span>를 선물하셨습니다.</p></li>');
