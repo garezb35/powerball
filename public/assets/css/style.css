@@ -115,6 +115,7 @@ body, input, textarea, select, table, button {
 }
 #box-ct .inner-left, #box-ct .inner-right {
     float: left;
+    position: relative;
 }
 
 #box-ct .inner-right {
@@ -1148,4 +1149,27 @@ td.simu-head{
 #bo_v_con img {
     max-width: 100%;
     height: auto;
+}
+
+.top_banner {
+    position: absolute;
+    border: 1px solid #00b4b4;
+    border-radius: 5px;
+    width: 60px;
+}
+.top_banner .lb1 {
+    width: 100%;
+    padding-bottom: 7px;
+    padding-top: 10px;
+    text-align: center;
+    border-bottom: 1px solid #dedcdc;
+    font-weight: bold;
+}
+
+.top_banner .lb1:last-child{
+    border-bottom: none;
+}
+
+.top_banner img{
+    vertical-align: middle;
 }

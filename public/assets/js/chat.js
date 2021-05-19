@@ -229,7 +229,7 @@ function connect(type = "public")
         printSystemMsg('system','접속이 원활하지 않을경우 <a href="https://www.google.co.kr/chrome/browser/features.html" target="_blank">[크롬 브라우저]</a>를 이용해주시기 바랍니다.');
         if(socket == null)
         {
-            socket = io.connect('http://210.112.174.189:3000/'+type,socketOption);
+            socket = io.connect('http://cake6978.com:3000/'+type,socketOption);
         }
         sendProcess('login');
     }
