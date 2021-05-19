@@ -18,4 +18,8 @@ class PbItemUse extends Model
         "terms2",
         "terms_type"
     ];
+
+    public function item(){
+        return $this->hasOne(PbMarket::class,"code","market_id");
+    }
 }

@@ -31,7 +31,9 @@ class User extends Authenticatable
         'api_token',
         'old_nickname',
         'userIdKey',
-        'fixed'
+        'win_date',
+        'fixed',
+        'frd_list'
     ];
 
     /**
@@ -70,5 +72,12 @@ class User extends Authenticatable
 
     public function item(){
         return $this->hasMany(PbPurItem::class,"userId","userId");
+    }
+
+    public function item_use(){
+        return $this->hasMany(PbItemUse::class,"userId","userId")
+            ->where("terms1","<=",date("Y-m-d H:i:s"))
+            ->where("terms2",">",date("Y-m-d H:i:s"))
+            ->where("market_id","ORDER_HONOR_30");
     }
 }

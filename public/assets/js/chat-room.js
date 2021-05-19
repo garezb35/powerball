@@ -40,7 +40,7 @@ $(document).ready(function() {
     });
 
     windowResize();
-
+    $("#modal_createChatRoom").hide();
     $('#btn_joinMyChatRoom').click(function(){
 
         if(userIdToken == "")
@@ -87,6 +87,7 @@ $(document).ready(function() {
             return;
         }
         $r = $(this).attr("rel");
+        $("#unique").val($r);
         $.ajax({
             type:'POST',
             dataType:'json',
@@ -99,6 +100,10 @@ $(document).ready(function() {
                 }
                 else
                 {
+                    if(data.reason == "security"){
+                        $("#security_dialog").modal("show");
+                        return;
+                    }
                     alert(data.msg);
                 }
             }
@@ -125,7 +130,8 @@ $(document).ready(function() {
                     }
                     alert(data.msg);
                     sendProcess('CREATE',data.list);
-                    $('#creatingWindow').modal('hide')
+                    $('#creatingWindow').modal('hide');
+                    location.href = '/discussion?token='+data.list.roomIdx;
                 },error:function(xhr){
                     console.log(xhr)
                 }
@@ -134,6 +140,64 @@ $(document).ready(function() {
         return false;
     })
 
+    $('#create_roomPublic').change(function(){
+
+        var chkVal = $('#create_roomPublic option:selected').val();
+
+        if(chkVal == 'private' && level < "09")
+        {
+            alert('비공개 채팅방 개설은 소위 계급 부터 가능합니다.');
+            $(this).val('public');
+            return false;
+        }
+
+        if(chkVal == 'private')
+        {
+            $('#modal_createChatRoom').show();
+        }
+        else
+        {
+            $('#modal_createChatRoom').hide();
+        }
+    });
+
+    $('#btn_joinPasswd').click(function(e){
+
+        var inputPasswd = $('#roomPasswd').val();
+
+        if(inputPasswd.length != 4)
+        {
+            alert('4글자의 비밀번호를 입력하세요.');
+            $('#roomPasswd').focus();
+            return false;
+        }
+
+        var roomIdx = $("#unique").val();
+
+        $.ajax({
+            type:'POST',
+            dataType:'json',
+            url:'/api/verifyPass',
+            data:{
+                roomIdx:roomIdx,
+                roomPasswd:inputPasswd,
+                api_token:userIdToken
+            },
+            success:function(data){
+                if(data.status == 1)
+                {
+                    $('#security_dialog').modal("hide");
+                    location.href = '/discussion?token='+data.token;
+                }
+                else
+                {
+                    alert(data.msg);
+                }
+            }
+        }).done(function(){
+            $("#unique").val("");
+        });
+    });
 
 });
 
@@ -143,7 +207,7 @@ function connect()
     try{
         if(socket == null)
         {
-            socket = io.connect('http://210.112.174.178:3000/room',socketOption);
+            socket = io.connect('http://cake6978.com:3000/room',socketOption);
         }
         sendProcess('login');
     }
@@ -224,7 +288,6 @@ function receiveProcess(data)
     {
         switch(bPacket.cmd)
         {
-
             case 'ERROR':
                 switch(bPacket.type)
                 {
@@ -241,7 +304,6 @@ function receiveProcess(data)
                         break;
                 }
                 break;
-
             case 'LOGIN':
                 if(bPacket.useridKey == this.useridKey)
                 {
@@ -451,7 +513,7 @@ function setUserLayer(useridKey,nickname,e,left)
             if(r.status == 1){
                 let data = r.result;
                 bettingStr += '<ul>';
-                bettingStr += '<li>올킬 - <span class="'+data.totalWinClass+'">'+data.totalWinFix+'</span>연승</li>';
+                bettingStr += '<li>현재연승 - <span class="'+data.totalWinClass+'">'+data.totalWinFix+'</span>연승</li>';
                 bettingStr += '<li>파워볼홀짝 - <span class="'+data.powerballOddEvenWinClass+'">'+data.powerballOddEvenWinFix+'</span>연승, <span class="win">'+data.powerballOddEvenWin+'</span>승<span class="lose">'+data.powerballOddEvenLose+'</span>패('+data.powerballOddEvenRate+')</li>';
                 bettingStr += '<li>파워볼언더오버 - <span class="'+data.powerballUnderOverWinClass+'">'+data.powerballUnderOverWinFix+'</span>연승, <span class="win">'+data.powerballUnderOverWin+'</span>승<span class="lose">'+data.powerballUnderOverLose+'</span>패('+data.powerballUnderOverRate+')</li>';
                 bettingStr += '<li>숫자합홀짝 - <span class="'+data.numberOddEvenWinClass+'">'+data.numberOddEvenWinFix+'</span>연승, <span class="win">'+data.numberOddEvenWin+'</span>승<span class="lose">'+data.numberOddEvenLose+'</span>패('+data.numberOddEvenRate+')</li>';

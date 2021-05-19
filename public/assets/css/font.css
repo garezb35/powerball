@@ -5,7 +5,7 @@
 
 @font-face {
     font-family: 'nexon_lv_thin';
-    src: URL('/assets/font/NotoSansKR-Thin.TTF') format('truetype');
+    src: URL('/assets/font/nanum/NotoSansKR-Thin.otf') format('opentype');
 }
 
 
@@ -21,7 +21,7 @@
 
 @font-face {
     font-family: 'notobold';
-    src: URL('/assets/font/NotoSansKR-Bold.otf') format('opentype');
+    src: URL('/assets/font/nanum/NotoSansKR-Bold.otf') format('opentype');
 }
 
 @font-face {

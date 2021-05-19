@@ -23,11 +23,24 @@ class PbRoom extends Model
         'roomIdx',
         'public',
         "bullet",
-        "round"
+        "round",
+        "password",
+        "userId",
+        "win_date",
+        "cur_win",
+        "badge",
+        "badge_date"
     ];
 
     public function roomandpicture()
     {
         return $this->hasOne(User::class,"userIdKey","super" );
+    }
+
+    public function winitem(){
+        return $this->hasOne(PbItemUse::class,"userId","userId" )
+            ->where("terms2" ,">",date("Y-m-d H:i:s"))
+            ->where("terms1" ,"<=",date("Y-m-d H:i:s"))
+            ->where("market_id","ORDER_HONOR_30");
     }
 }

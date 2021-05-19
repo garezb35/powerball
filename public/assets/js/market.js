@@ -177,6 +177,15 @@ $(document).ready(function(){
         }
     });
 
+    $('.btn_gift').click(function(){
+        var itemCode = $(this).attr('itemCode');
+        var chargeType = $(this).attr('chargeType');
+        var itemName = $(this).attr('itemName');
+        var itemCnt = Number($(this).parent().prev('.amountSet').find('input').attr('rel'));
+        giftPop(itemCode,chargeType,itemCnt);
+        return false;
+    });
+
 })
 
 function countChk(obj)

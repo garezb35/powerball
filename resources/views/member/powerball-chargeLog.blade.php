@@ -3,17 +3,19 @@
 @section("header")
     @include('member/member-menu')
 @endsection
+@php
+
+    $page =  Request::get("page") ?? 1;
+    $first = $count - ($page-1) * 10;
+
+@endphp
 @section("content")
     <div class="content">
-        <div style="margin-bottom:5px;">
-            <a href="https://www.powerballgame.co.kr?view=mypage&amp;type=giftLog&amp;giftType=give" class="b">■ 선물한 내역</a> &nbsp;
-            <a href="https://www.powerballgame.co.kr?view=mypage&amp;type=giftLog&amp;giftType=take" class="">■ 선물 받은 내역</a>
-        </div>
         <table class="table logBox">
             <thead>
                 <tr class="title">
                     <th>번호</th>
-                    <th>상태	</th>
+                    <th>상태</th>
                     <th>결제수단</th>
                     <th>충전코인</th>
                     <th>결제금액</th>
@@ -21,15 +23,28 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td scope="row">2</td>
-                    <td><span class="text-danger">입금완료</span></td>
-                    <td>무통장입금</td>
-                    <td>30,000</td>
-                    <td>33,000</td>
-                    <td>2021-02-12 17:58:15</td>
-                </tr>
+            @if(!empty($item))
+                @foreach($item as $value)
+                    @php
+                    $alias= "입금신청";
+                    if($value["accept"] == 1)
+                        $alias = "입금완료";
+                    if($value["accept"] == 2)
+                        $alias = "입금거절";
+                    @endphp
+                    <tr>
+                        <td scope="row">{{$first}}</td>
+                        <td><span class="text-danger">{{$alias}}</span></td>
+                        <td>무통장입금</td>
+                        <td>{{number_format($value["coin"])}}</td>
+                        <td>{{number_format($value["money"])}}</td>
+                        <td>{{$value["created_at"]}}</td>
+                    </tr>
+                    @php $first--; @endphp
+                @endforeach
+            @endif
             </tbody>
         </table>
+        {{$item->links()}}
     </div>
 @endsection

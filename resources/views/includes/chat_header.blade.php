@@ -31,7 +31,12 @@
         var msgTermArr = new Array();
         var msgTermIdx = 0;
         var msgStopTime = 10;
-        var blackListArr = ''.split(',');
+        @if(Auth::check())
+        var blackListArr = "{{Auth::user()->block_list}}".split(',');
+        @else
+        var blackListArr = new Array();
+        @endif
+
     </script>
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://unpkg.com/tippy.js@6"></script>

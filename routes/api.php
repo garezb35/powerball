@@ -24,8 +24,10 @@ Route::middleware('auth:api')->group(function(){
     Route::post("/setAutoStart",[App\Http\Controllers\PowerballController::class,'setAutoStart']);
     Route::post("/buyItem",[App\Http\Controllers\MarketController::class,'buyItem']);
     Route::post("/useItem",[App\Http\Controllers\MarketController::class,'useItem']);
-
+    Route::post("/checkNickName",[App\Http\Controllers\MemberController::class,'checkNickName']);
+    Route::post("/sendMail",[App\Http\Controllers\MemberController::class,'sendMail']);
     Route::post("/checkActiveRoom",[App\Http\Controllers\ChatController::class,'checkActiveRoom']);
+    Route::post("/verifyPass",[App\Http\Controllers\ChatController::class,'verifyPass']);
     Route::post("/checkOtherRoom",[App\Http\Controllers\ChatController::class,'checkOtherRoom']);
     Route::post("/createRoom",[App\Http\Controllers\ChatController::class,'createRoom'])->name("createRoom");
     Route::post("/getChatPicks",[App\Http\Controllers\PowerballController::class,'getChatPicks'])->name("getChatPicks");
@@ -39,9 +41,15 @@ Route::middleware('auth:api')->group(function(){
     Route::post("/setMute",[App\Http\Controllers\MemberController::class,'setMute']);
     Route::post("/kickUser",[App\Http\Controllers\MemberController::class,'kickUser']);
     Route::post("/updateManage",[App\Http\Controllers\MemberController::class,'updateManage']);
+    Route::post("/updateFixManage",[App\Http\Controllers\MemberController::class,'updateFixManage']);
     Route::post("/user-modify",[App\Http\Controllers\MemberController::class,'umodify']);
     Route::post("/imgCheck",[App\Http\Controllers\MemberController::class,'imgCheck']);
-    
+    Route::post("/deleteComment",[App\Http\Controllers\BoardController::class,'deleteComment']);
+    Route::post("/setRecommend",[App\Http\Controllers\BoardController::class,'setRecommend']);
+    Route::post("/deletePost",[App\Http\Controllers\BoardController::class,'deletePost']);
+    Route::post("/addFriend",[App\Http\Controllers\MemberController::class,'addFriend']);
+    Route::post("/sendGift",[App\Http\Controllers\MemberController::class,'sendGift']);
+    Route::post("/sendItem",[App\Http\Controllers\MemberController::class,'sendItem']);
 });
 
 Route::post("/get_more/powerball",[App\Http\Controllers\PowerballController::class,'resultList']);
@@ -60,6 +68,7 @@ Route::get("/patternTotal",[App\Http\Controllers\PowerballController::class,'pat
 Route::get("/calculateWinning",[App\Http\Controllers\PowerballController::class,'calculateWinning']);
 Route::post("/bettingResultLayer",[App\Http\Controllers\MemberController::class,'bettingResultLayer']);
 
+
 Route::prefix('psadari')->group(function () {
     Route::post("/get_more/powerball",[App\Http\Controllers\PowerSadariController::class,'resultList']);
     Route::post("/get_more/analysePattern",[App\Http\Controllers\PowerSadariController::class,'patternAnalyse']);
@@ -71,3 +80,10 @@ Route::prefix('psadari')->group(function () {
     Route::post("/checkedPattern",[App\Http\Controllers\PowerSadariController::class,'checkedPattern']);
     Route::post("/pattern-lists",[App\Http\Controllers\PowerSadariController::class,'patternLists']);
 });
+
+
+Route::get("/virtualBet",[App\Http\Controllers\PowerballController::class,'virtualBet']);
+
+Route::post("/getChatRooms",[App\Http\Controllers\ChatController::class,'getChatRooms']);
+
+

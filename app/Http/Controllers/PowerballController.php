@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\PbAutoHistory;
 use App\Models\PbAutoMatch;
 use App\Models\PbBetting;
@@ -23,7 +22,6 @@ use Ramsey\Uuid\Type\Time;
 
 class PowerballController extends Controller
 {
-
     public function view(Request $request)
     {
         if (!$request->has("terms"))
@@ -1223,7 +1221,6 @@ class PowerballController extends Controller
         }
 
         $auto_info = PbAutoSetting::where("userId",$userId )->first();
-
         $auto_matches =PbAutoMatch::where("userId",$userId )->get()->toArray();
         foreach($auto_matches as $autoes){
             if(empty($match[$autoes["auto_type"]]))
@@ -1594,7 +1591,6 @@ class PowerballController extends Controller
 
                 if($nb_sizewin[0] > $nb_sizewin[1])
                     $nb_sizewin[1] = $nb_sizewin[0];
-
                 if(!empty($index["room"]) && !empty($index["user"]))
                 {
                     $insert = array();
@@ -1611,10 +1607,21 @@ class PowerballController extends Controller
                             $win_h->current_win = 0;
                         if($current_win > 0){
                             $win_h->current_win += $current_win;
+                            if(( $index["room"]["win_date"] >= $this->getDayBeforeWeek() && $win_h->current_win >= 5  && $win_h->current_win >=  $index["room"]["badge"]) ||
+                                $win_h->current_win >= 5 && $index["room"]["win_date"] < $this->getDayBeforeWeek())
+                            {
+                                $insert["win_date"] = date("Y-m-d");
+                                $insert["badge"] = $win_h->current_win;
+                            }
+                            if($win_h->current_win < 5 && $index["room"]["win_date"] < $this->getDayBeforeWeek()){
+                                $insert["badge"] = 0;
+                            }
                             if($win_h->current_win > $index["room"]["max_win"])
                                 $insert["max_win"] = $win_h->current_win;
                         }
+
                         $insert["winning_history"] = json_encode($win_h);
+                        $insert["cur_win"] = $win_h->current_win;
                     }
                     else{
                         $win_h->pb  =new \stdClass();
@@ -1629,6 +1636,7 @@ class PowerballController extends Controller
                         $win_h->nb->lose= $nb_oe[1]+$nb_uo[1]+$nb_size[1];
                         $insert["winning_history"] = json_encode($win_h);
                         $insert["max_win"] = $current_win;
+                        $insert["cur_win"] = $win_h->current_win;
                     }
                     PbRoom::where("id",$index["room"]["id"])->update($insert);
                 }
@@ -1642,7 +1650,13 @@ class PowerballController extends Controller
                         if($current_win ==0 || $lose)
                             $win_h->current_win->p = 0;
                         if($current_win > 0)
+                        {
                             $win_h->current_win->p += $current_win;
+                            if($win_h->current_win->p >= 5)
+                                $insert["win_date"] = date("Y-m-d");
+                            if($win_h->current_win->p > $index["user"]["max_win"])
+                                $insert["max_win"] = $win_h->current_win->p;
+                        }
 
                         if($pb_oewin[1] > 0 ){
                             $win_h->pb_oe->current_win += $pb_oewin[1];
@@ -1722,8 +1736,11 @@ class PowerballController extends Controller
 
                         $win_h->current_win->nb_size = $win_h->nb_size->current_win = $win_h->nb_size->win =$nb_size[0];
                         $win_h->nb_size->lose = $nb_size[1];
+
+                        $insert["max_win"] = $current_win;
                     }
                     $insert["winning_history"] = json_encode($win_h);
+
                     User::where("userId",$index["user"]["userId"])->update($insert);
                 }
 
@@ -1864,5 +1881,16 @@ class PowerballController extends Controller
             $start = $pos+1; // start searching from next position.
         }
         return $result;
+    }
+
+    public function powLive(Request $request){
+        return view('pick.powerball_live', [    "js" =>
+                "",
+                "css" => ""
+            ]
+        );
+    }
+    private function getDayBeforeWeek(){
+        return date('Y-m-d', strtotime('-7 days', strtotime("now")));
     }
 }

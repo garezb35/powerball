@@ -69,22 +69,7 @@
             <div id="roomListBox" style="display: block;">
                 <div style="background-color:#F5F5F5;height:25px;line-height:25px;border:1px solid #CECECE;border-top:none;text-align:right;padding-right:5px;font-weight:bold;font-size:12px;"><a href="#" onclick="openChatRoom();return false;">채팅대기실</a></div>
                 <ul class="list-room" id="roomList" style="height: 420px;">
-                    <li class="bgYellow">
-                        <div class="thumb red" rel="912b4c40acaf4f8a63a91e8eb813926d">
-                            <img src="https://sfile.powerballgame.co.kr/profileImg/66f4f115a64a31e4f71c7955b768c6a0.gif?1611893330" class="roomImg">
-                            <div class="winFixCnt" style="z-index:100;">6</div>
-                        </div>
-                        <div class="title">
-                            <span class="win"><span>6</span>승</span> <span class="lose"><span>0</span>패</span> <span class="bar">|</span>
-                            <a href="#" class="tit" rel="912b4c40acaf4f8a63a91e8eb813926d" title="⭐기적의 연승섯다⭐" onclick="return false;">⭐기적의 연승섯다⭐</a>
-                            <span class="date">33분전</span>
-                        </div>
-                        <div class="sub">
-                            <span class="b">45</span> / <span>300</span> <span class="opener">
-                            <img src="https://simg.powerballgame.co.kr/images/class/M18.gif" width="23" height="23">
-                            <a href="#" onclick="return false;" title="연승섯다" rel="66f4f115a64a31e4f71c7955b768c6a0" class="uname">연승섯다</a></span>
-                        </div>
-                    </li>
+
                 </ul>
              </div>
         </div>
@@ -120,3 +105,4 @@
     </div>
 </div>
 @include('chat.chat-list')
+@include('Analyse/chat-list')

@@ -67,6 +67,11 @@ ul, ol {
 .grades{
     font-size: 15px;
     color: #000;
+    max-width: 49px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-flex;
 }
 
 .ja-color{
@@ -75,7 +80,7 @@ ul, ol {
 
 .simu-head span{
     font-family: nanumseb;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 
@@ -159,7 +164,7 @@ img, fieldset, iframe {
 }
 
 #box-ct .inner-left {
-    width: 318px;
+    width: 309px;
     margin-right: 16px;
 
 }
@@ -235,8 +240,6 @@ img, fieldset, iframe {
     position: absolute;
     top: -12px;
     left: 39px;
-    width: 19px;
-    height: 19px;
     background: red;
     background-size: 25px;
     color: #fff;
@@ -244,6 +247,9 @@ img, fieldset, iframe {
     line-height: 19px;
     text-align: center;
     border-radius: 50%;
+    padding: 1px;
+    min-width: 22px;
+    min-height: 22px;
 }
 
 .box-login .loginUserInfo ul li .logout {
@@ -378,8 +384,11 @@ img, fieldset, iframe {
   padding: 5px;
 }
 .boardBox .listBox ul.list li {
-  height: 25px;
-  line-height: 25px;
+    height: 25px;
+    line-height: 25px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .boardBox .listBox ul.list li img {
@@ -910,7 +919,7 @@ thead.thead-gray{
 }
 
 .jin-gradient{
-    background: linear-gradient(180deg, #335292, #233b69);
+    background: #00b4b4;
 }
 
 .dangun-label{
@@ -1116,7 +1125,7 @@ table.patternTable td:first-child .innerTable td,table.patternTable td:first-chi
     font-size: 13px;
     padding-top: 1px;
     padding-bottom: 1px;
-    margin-left: 20px;
+    margin-left: 24px;
 }
 
 td.simu-head{
@@ -1124,4 +1133,16 @@ td.simu-head{
     padding-right: 1px;
     padding-top: 4px;
     padding-bottom: 4px;
+}
+
+.boardBox .listBox ul.list li.photo img {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+#bo_v_con img {
+    max-width: 100%;
+    height: auto;
 }

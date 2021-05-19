@@ -17,4 +17,11 @@ class PbLog extends Model
         "fromId",
         "toId"
     ];
+
+    public function send_usr(){
+        return  $this->hasOne(User::class,"userId","fromId");
+    }
+    public function received_usr(){
+        return  $this->hasOne(User::class,"userId","toId");
+    }
 }

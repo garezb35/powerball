@@ -1,0 +1,360 @@
+.memoBox {
+    color: #5A5552;
+    background-color: #fcfcfc;
+}
+.memoBox .title {
+    height: 40px;
+    line-height: 40px;
+    padding-left: 10px;
+    font-size: 13px;
+    font-weight: bold;
+    background-color: #00b4b4;
+    color: #fff;
+}
+.memoBox ul {
+    position: relative;
+    margin: 10px;
+    height: 38px;
+    line-height: 38px;
+    border: 1px solid #D5D5D5;
+    border-top: 2px solid #00b4b4;
+}
+
+.memoBox ul li {
+    float: left;
+    width: 17%;
+    text-align: center;
+}
+.memoBox ul li.list {
+    float: left;
+    width: 16%;
+    text-align: center;
+}
+
+.memoBox ul li a {
+    display: block;
+    text-align: center;
+    border-left: 1px solid #D5D5D5;
+    background: #F1F1F1;
+    color: #4A4D4A;
+}
+
+.memoBox ul li a.on {
+    background-color: #00b4b4;
+    color: #fff;
+    border: 1px solid #00b4b4;
+    margin-top: -1px;
+    margin-left: -1px;
+}
+
+.memoBox .top .cnt span {
+    color: #00b4b4;
+}
+
+.memoBox .table th {
+    height: 25px;
+    background-color: #EFEFEF;
+    color: #73696B;
+    border-right: 1px solid #D5D5D5;
+    font-weight: normal;
+}
+
+.memoBox .table-mail{
+    width: 100%;
+    border: 1px solid #D5D5D5;
+}
+.memoBox .table-mail th {
+    height: 25px;
+    background-color: #EFEFEF;
+    color: #73696B;
+    border-right: 1px solid #D5D5D5;
+    font-weight: normal;
+    text-align: center;
+}
+.memoBox .table-mail td {
+    height: 30px;
+    text-align: center;
+    background-color: #fff;
+    vertical-align: middle;
+}
+
+.memoBox .table-mail td.left {
+    height: 30px;
+    text-align: left;
+    padding-left: 10px;
+    vertical-align: middle;
+}
+
+.memoBox .table-mail td img {
+    vertical-align: middle;
+}
+.memoBox .table-mail .read {
+    color: #a8a8a8;
+}
+.memoBox .table-mail tr {
+    border-bottom: 1px solid #eaeaea;
+}
+
+.memoBox .guide {
+    font-size: 11px;
+    color: #00b4b4;
+}
+
+.memoBox .content {
+    margin: 10px;
+}
+
+.memoBox .top img{
+    vertical-align: middle;
+}
+.memoBox .top {
+    height: 30px;
+}
+
+.memoBox .top .bar {
+    margin: 0 10px;
+    color: #c9c9c9;
+    font-size: 11px;
+    font-family: dotum;
+}
+
+.memoBox .top .textBox {
+    font-size: 11px;
+    font-family: tahoma,dotum;
+}
+
+.memoBox .top .textBox .point {
+    color: #00b4b4;
+    font-weight: bold;
+    margin-right: 1px;
+}
+
+.memoBox .titleInputBox {
+    position: relative;
+    height: 35px;
+    padding: 5px 5px 2px 5px;
+    border: 1px solid #D5D5D5;
+    background-color: #EFEFEF;
+}
+
+.memoBox .titleInputBox .receiveNick {
+    float: left;
+    width: 180px;
+    height: 28px;
+    padding: 0 5px;
+    border: 1px solid #d5d5d5;
+}
+
+.memoBox .titleInputBox .nicknameBtn {
+    float: left;
+    width: 70px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    display: inline-block;
+    font-size: 11px;
+    background-color: #CE3400;
+    border: 1px solid #A22800;
+    border-left: none;
+    border-right: none;
+    color: #fff;
+}
+
+.memoBox .titleInputBox .friendBtn {
+    width: 70px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    display: inline-block;
+    font-size: 11px;
+    background-color: #CE3400;
+    border: 1px solid #A22800;
+    color: #fff;
+}
+
+.memoBox .contentInputBox {
+    background-color: #fff;
+    border: 1px solid #D5D5D5;
+    border-top: none;
+    padding: 10px;
+}
+
+.memoBox .contentInputBox .contentInput {
+    width: 100%;
+    height: 250px;
+    overflow-y: scroll;
+    background-color: #fff;
+    border: none;
+    overflow: auto;
+    resize: none;
+}
+
+.memoBox .btnBox {
+    width: 300px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.memoBox .btnSend {
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin: 10px auto;
+    background-color: #CE3400;
+    border: 1px solid #a22800;
+    color: #fff;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.memoBox .content .name-search .tooltipBox {
+    position: absolute;
+    top: 13px;
+    left: 60px;
+}
+
+.memoBox .content .name-search .tooltipBox .tooltip-btn {
+    position: absolute;
+    margin-left: 5px;
+    display: inline-block;
+    border: 1px solid #0E609C;
+    width: 14px;
+    height: 14px;
+    line-height: 15px;
+    text-align: center;
+    background-color: #00b4b4;
+    color: #fff;
+    cursor: pointer;
+}
+
+.memoBox .content .name-search span {
+    float: right;
+}
+
+.memoBox .content .name-search .input {
+    height: 22px;
+    border: 1px solid #D5D5D5;
+    padding: 0 5px;
+}
+
+.memoBox .listBox ul {
+    margin: 5px 0;
+    height: 25px;
+    background-color: #F1F1F1;
+}
+
+.memoBox ul li {
+    float: left;
+    width: 17%;
+    text-align: center;
+}
+
+.memoBox ul li.none {
+    border-right: none;
+}
+.memoBox .listBox ul li {
+    float: left;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+}
+
+.memoBox ul li a {
+    display: block;
+    text-align: center;
+    border-left: 1px solid #D5D5D5;
+    background: #F1F1F1;
+    color: #4A4D4A;
+}
+
+.memoBox .listBox ul li.black {
+    width: 82px;
+}
+
+.memoBox .listBox ul li.none {
+    width: 44px;
+}
+
+.memoBox .content .name-search {
+    position: relative;
+    padding-top: 8px;
+}
+
+.memoBox .content .tooltip-content2 {
+    position: absolute;
+    border: 1px solid #0E609C;
+    background-color: #fff;
+    width: 280px;
+    height: 70px;
+    z-index: 99;
+    padding: 15px;
+    font-size: 11px;
+    font-family: tahoma,dotum;
+    display: none;
+}
+.memoBox .content .tooltip-content2 .desc {
+    color: #888;
+    margin-top: 10px;
+}
+
+.memoBox .viewTitle {
+    position: relative;
+    height: 45px;
+    line-height: 45px;
+    background-color: #EFEFEF;
+    padding: 0 10px;
+    border: 1px solid #D5D5D5;
+    border-bottom: none;
+}
+.memoBox .viewTitle img {
+    vertical-align: middle;
+}
+.memoBox .viewContent {
+    height: 300px;
+    overflow-y: scroll;
+    padding: 5px 10px;
+    background-color: #fff;
+    border: 1px solid #D5D5D5;
+}
+.memoBox .viewContent .tooltip-ban {
+    position: relative;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    background-color: #ff5353;
+    border: 1px solid #ac0004;
+    color: #fff;
+    font-size: 11px;
+    font-family: tahoma,dotum;
+}
+.memoBox .viewContent .msg {
+    line-height: 18px;
+    padding: 5px 0;
+    font-family: tahoma,dotum;
+}
+.memoBox .viewContent .tooltip-ban .btn-close {
+    position: absolute;
+    top: 2px;
+    right: 5px;
+    width: 25px;
+    height: 25px;
+    background: url(https://simg.powerballgame.co.kr/images/memo/btn_close2.png) center center no-repeat;
+}
+
+.memoBox .btnCancel {
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin: 10px auto;
+    background-color: #84827B;
+    border: 1px solid #62615b;
+    color: #fff;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.memoBox .content .list-btn {
+    float: right;
+}

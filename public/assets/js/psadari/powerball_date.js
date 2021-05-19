@@ -138,7 +138,7 @@ function ajaxSixPattern(cnt,type,date)
             }
             if(data.status ==0)
             {
-                emptyReload();
+                // emptyReload();
                 six[type+cnt] = null;
             }
         })

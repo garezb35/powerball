@@ -2,7 +2,7 @@
 <script src="/assets/js/miniview.js"></script>
 <link rel="stylesheet" href="/assets/css/miniview.css">
 @php
-    $iroom = 1;
+    $iroom = 0;
     $roomIdx = "";
     if(!empty($room)){
         $roomIdx = $room["roomIdx"];

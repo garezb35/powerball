@@ -112,12 +112,10 @@ function ladderTimer(remain,divId)
                     $('#powerballPointBetGraph .oddChart .oddBar').animate({width:'0px'},1000,function(){
                         $(this).next().text('0%');
                     });
-                    $('#powerballPointBetGraph .oddChart .oddPer').animate({right:'-7px'},1000);
 
                     $('#powerballPointBetGraph .evenChart .evenBar').animate({width:'0px'},1000,function(){
                         $(this).next().text('0%');
                     });
-                    $('#powerballPointBetGraph .evenChart .evenPer').animate({left:'-7px'},1000);
                 },3000);
             }
         }
@@ -171,6 +169,7 @@ function getRemainTime(times,type=2){
 }
 function heightResize()
 {
+    $('#mainFrame', window.parent.document).height(500);
     if($('body').height() < 500)
     {
         var resizeHeight = 500;
@@ -202,16 +201,20 @@ $(document).ready(function(){
         else
             $(".boardBox").show();
     })
-    $("body").ajaxError(
-        function(e,request) {
-            if (request.status == 401) {
+    $.ajaxSetup({
+        statusCode: {
+            401: function(){
+
+                // Redirec the to the login page.
                 alert("로그아웃상태이므로 요청을 수락할수 없습니다.");
+
             }
         }
-    );
-    // user layer
-    
+    });
+
+
     $(".gnb").css({"display":"block"})
+    heightResize();
 })
 
 

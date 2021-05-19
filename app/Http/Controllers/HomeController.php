@@ -27,7 +27,7 @@ class HomeController extends BaseController
      */
     public function index()
     {
-        return view('home');
+        return view('first');
     }
 
     public function first(){

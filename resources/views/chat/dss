@@ -1,0 +1,30 @@
+<table class="table-mail">
+                <colgroup>
+                    <col width="6%">
+                    <col width="24%">
+                    <col>
+                    <col width="20%">
+                </colgroup>
+                <tbody>
+                <tr>
+                                                <th><input type="checkbox" onclick="checkAll(this.checked);"></th>
+                                                <th>보낸 사람</th>
+                                                <th>내용</th>
+                                                <th class="none">보낸시간</th>
+                                            </tr>
+                @if(!empty($result["list"]))
+                    @foreach($result["list"] as $mail)
+                        <tr>
+                            <th><input type="checkbox" onclick="checkAll(this.checked);"></th>
+                            <th>보낸 사람</th>
+                            <th>내용</th>
+                            <th class="none">보낸시간</th>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="4">자료가 비였습니다.</td>
+                    </tr>
+                @endif
+                </tbody>
+            </table>

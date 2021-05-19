@@ -3,20 +3,15 @@
 }
 
 .marketBox .content {
-    background-color: #FCFCFC;
     margin-top: 10px;
-    padding: 10px;
+    padding: 10px 0px 10px 0px;
     font-size: 12px;
     line-height: 20px;
-    border: 1px solid #D5D5D5;
 }
 .marketBox .title {
     height: 30px;
     line-height: 30px;
     font-size: 12px;
-    background-color: #F1F1F1;
-    border: 1px solid #00b4b4;
-    border-top: 2px solid #00b4b4;
 }
 .marketBox .title ul li a.on {
     display: block;
@@ -25,14 +20,24 @@
     font-weight: bold;
     border: 1px solid #00b4b4;
     height: 30px;
-    margin: -1px 0 0 -1px;
+    border-right: none;
 }
 .marketBox .title ul li a {
     float: left;
     padding: 0 30px;
-    border-right: 1px solid #D5D5D5;
+    border: 1px solid #cfd2d4;
+    border-right: none;
     color: #333;
     text-decoration: none;
+}
+.marketBox .title ul li:nth-child(3) a{
+    border-right: solid #cfd2d4 1px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.marketBox .title ul li:nth-child(1) a{
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 .marketBox .title ul li.free {
     float: right;
@@ -49,6 +54,7 @@
     color: #fff;
     border: 1px solid #00b4b4;
     margin: -1px -1px 0 -1px;
+    border-radius: 5px;
 }
 .marketBox .title ul li.free a {
     background-color: #fff;
@@ -60,14 +66,18 @@
     margin-top: 0;
 }
 .marketBox .content .tit {
-    font-size: 11px;
+    font-size: 14px;
     height: 25px;
     line-height: 25px;
-    background-color: #00b4b4;
-    color: #fff;
-    padding: 0 10px;
+    padding: 0 0px;
     margin: 10px 6px 0 6px;
-    border: 1px solid #00b4b4;
+}
+.marketBox .content .bonus .tit{
+    background: #0059b3;
+    color: #fff;
+    font-size: 11px;
+    margin: 10px 6px 0 6px;
+    padding: 2px;
 }
 .marketBox .itemList {
     padding: 0 0 0 3px;
@@ -75,18 +85,22 @@
 .marketBox .itemList li {
     position: relative;
     display: inline-block;
-    width: 163px;
+    width: 170px;
     height: 290px;
     border: 1px solid #C8C5C5;
     background-color: #fff;
     padding: 0 13px;
     margin: 5px 3px;
     vertical-align: top;
+    border-radius: 5px;
 }
 .marketBox .itemList li .edge {
     position: absolute;
     top: -10px;
     left: -5px;
+}
+.marketBox .itemList li .edge:nth-child(2){
+    left: 37px;
 }
 .marketBox .itemList li img {
     margin: 5px auto;

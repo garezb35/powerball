@@ -1,0 +1,879 @@
+@font-face {
+    font-family: swagger;
+    src: url(/public/webfont/SDSwaggerTTF.woff2) format('woff2'), url(/public/webfont/SDSwaggerTTF.woff) format('woff'), url(/public/webfont/SDSwaggerTTF.ttf) format('truetype')
+}
+
+.flex_row {
+    display: flex;
+    align-items: center
+}
+
+.section_divider {
+    margin: 15px 0
+}
+
+.lottery_wrap {
+    width: 830px;
+    height: 640px;
+    background-color: #f5f3f3;
+    position: relative;
+    z-index: 0;
+    display: flex;
+    flex-direction: column
+}
+
+.lottery_wrap:before {
+    content: '';
+    background: linear-gradient(180deg, #fcfcfc 50%, #ededed 100%);
+    width: 820px;
+    height: 630px;
+    left: 5px;
+    top: 5px;
+    position: absolute;
+    z-index: -1
+}
+
+.lottery_wrap .button_wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+}
+
+.lottery_wrap .button_wrap>a:not(:nth-last-of-type(1)),
+.lottery_wrap .button_wrap>button:not(:nth-last-of-type(1)) {
+    margin-right: 5px
+}
+
+.lottery_wrap .link_btn {
+    flex: 1;
+    height: 36px;
+    background-color: #3f4e8e;
+    border: 1px solid rgba(0, 0, 0, .2);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 36px;
+    text-align: center;
+    border-radius: 5px
+}
+
+.lottery_wrap.speedkeno .link_btn,
+.lottery_wrap.keno_ladder .link_btn {
+    background-color: #3e666f
+}
+
+.lottery_wrap.powerkeno_ladder .link_btn {
+    background-color: #0c9ebe
+}
+
+.lottery_wrap .link_btn.dark {
+    background-color: #444
+}
+
+.lottery_wrap .header_wrap {
+    height: 131px
+}
+
+.lottery_wrap .header {
+    align-items: flex-start;
+    padding: 20px 70px 10px;
+    position: relative
+}
+
+.lottery_wrap .header .game_type>div {
+    align-items: flex-start
+}
+
+.lottery_wrap .header .game_type .logo {
+    width: 84px;
+    height: 20px;
+    background: url(/public/img/score/ui_game/v2/sp_ntry_logo.png) no-repeat 0 0
+}
+
+.lottery_wrap .header>div {
+    flex: 1
+}
+
+.lottery_wrap .header .today_star {
+    position: relative;
+    text-align: center
+}
+
+.lottery_wrap .header .today_star>p {
+    color: #a9b0c8;
+    font-size: 13px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    font-family: swagger, sans-serif
+}
+
+.lottery_wrap .header .today_star>p>span {
+    color: #7d94e3
+}
+
+.lottery_wrap .header .today_star .star_amount {
+    justify-content: center
+}
+
+.lottery_wrap .header .today_star .star_amount>li {
+    width: 30px;
+    height: 41px;
+    background-color: #eaeaea;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: #3f4e8e;
+    font-weight: 700
+}
+
+.lottery_wrap .header .today_star .star_amount>li:not(:last-child) {
+    margin-right: 5px
+}
+
+.lottery_wrap .header .func_btns>p {
+    text-align: right;
+    color: #3f4e8e;
+    font-size: 11px
+}
+
+.lottery_wrap .header .func_btns>ul {
+    justify-content: flex-end;
+    margin-bottom: 25px
+}
+
+.lottery_wrap .header .func_btns>ul>li:not(:last-child) {
+    margin-right: 5px
+}
+
+.lottery_wrap .header .func_btns>ul>li {
+    list-style: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #00b4b4;
+    line-height: 30px;
+    text-align: center;
+    color: #fff;
+}
+
+.lottery_wrap .header .func_btns .btn_mode,
+.lottery_wrap.dark .header .func_btns .btn_mode {
+    background-position: 0 0
+}
+
+.lottery_wrap .header .func_btns .btn_share,
+.lottery_wrap.dark .header .func_btns .btn_share {
+    background-position: -35px 0
+}
+
+.lottery_wrap .header .func_btns .btn_tip,
+.lottery_wrap.dark .header .func_btns .btn_tip {
+    background-position: -70px 0
+}
+
+.lottery_wrap .header .func_btns .btn_sound.on,
+.lottery_wrap.dark .header .func_btns .btn_sound.on {
+    background-position: -105px 0
+}
+
+.lottery_wrap .header .func_btns .btn_sound,
+.lottery_wrap.dark .header .func_btns .btn_sound {
+    background-position: -105px -35px
+}
+
+.lottery_wrap .header .func_btns .btn_tip.on,
+.lottery_wrap .header .func_btns .btn_share.on {
+    background-position: 0 -35px;
+    z-index: 3
+}
+
+.lottery_wrap .inprogress_wrap {
+    width: 700px;
+    margin: 0 auto;
+    height: 18px;
+    background-color: #7b7b7b;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.lottery_wrap .inprogress_wrap .fill_bar {
+    left: 0;
+    top: 0;
+    position: absolute;
+    width: 100%;
+    height: 18px;
+    display: flex;
+    justify-content: center;
+    background: repeating-linear-gradient( 45deg, #9BDD46, #9BDD46 5px, #a4e74e 5px, #a4e74e 10px)
+}
+
+.lottery_wrap .inprogress_wrap .progress_text {
+    color: #fff;
+    width: 100%;
+    height: 18px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    line-height: 18px;
+    font-weight: 700;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.lottery_wrap .contents {
+    flex: 1;
+    padding: 10px 50px 60px 60px;
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden
+}
+
+.lottery_wrap .contents>div {
+    height: 100%;
+    padding: 15px;
+    box-sizing: border-box
+}
+
+.lottery_wrap .contents .center {
+    flex: 1;
+    margin: 0 10px;
+    text-align: center;
+    border-radius: 8px
+}
+
+.lottery_wrap .contents .tit_wrap {
+    justify-content: space-between;
+    margin-bottom: 10px
+}
+
+.lottery_wrap .contents .tit_wrap .section_tit {
+    margin-bottom: 0
+}
+
+.lottery_wrap .contents .toggle_btn {
+    background-color: #f8f8f8;
+    border: 1px solid #cdcdcd;
+    color: #767676;
+    font-family: swagger, sans-serif;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer
+}
+
+.lottery_wrap .contents .sound_off {
+    padding: 13.5px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    background: url(/public/img/score/ui_game/v2/sswitcher_off.svg) no-repeat;
+    background-size: 27px 27px
+}
+
+.lottery_wrap .contents .sound_on {
+    padding: 13.5px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    background: url(/public/img/score/ui_game/v2/sswitcher_on.svg) no-repeat;
+    background-size: 27px 27px
+}
+
+.lottery_wrap .contents .curr_pick .pick_graph>li {
+    display: flex;
+    align-items: center
+}
+
+.lottery_wrap .contents .curr_pick .pick_graph>li:not(:last-child) {
+    margin-bottom: 5px
+}
+
+.lottery_wrap .contents .curr_pick .pick_graph>li:not(.bms_wrap)>div:not(.graph_tit) {
+    flex: 1;
+    height: 15px;
+    background-color: #cacaca;
+    display: flex;
+    position: relative;
+    overflow: hidden
+}
+
+.lottery_wrap .contents .curr_pick .pick_graph>li>div>p,
+.lottery_wrap .contents .curr_pick .pick_graph .bms_wrap .fill_wrap>p {
+    position: absolute;
+    color: #fff;
+    line-height: 1.6em;
+    font-weight: 700;
+    font-size: 10px;
+    top: 0
+}
+
+.lottery_wrap .contents .curr_pick .pick_graph .left>p {
+    left: 5px
+}
+
+.lottery_wrap .contents .curr_pick .pick_graph .right>p {
+    right: 5px
+}
+
+.lottery_wrap .contents .curr_pick .pick_graph>li .left {
+    border-top-left-radius: 13px;
+    border-bottom-left-radius: 13px;
+    justify-content: flex-end;
+    margin-right: -8px
+}
+
+.lottery_wrap .contents .curr_pick .pick_graph>li .right {
+    border-top-right-radius: 13px;
+    border-bottom-right-radius: 13px;
+    margin-left: -8px
+}
+
+.lottery_wrap .contents .curr_pick .pick_graph .gauge {
+    border: 1px solid rgba(0, 0, 0, .3);
+    box-sizing: border-box;
+    width: 0
+}
+
+.lottery_wrap .contents .curr_pick .pick_graph .left .gauge {
+    border-top-left-radius: 13px;
+    border-bottom-left-radius: 13px
+}
+
+.lottery_wrap .contents .curr_pick .pick_graph .right .gauge,
+.lottery_wrap .contents .curr_pick .pick_graph .bms_wrap .gauge {
+    border-top-right-radius: 13px;
+    border-bottom-right-radius: 13px
+}
+
+.lottery_wrap .contents .curr_pick .pick_graph .left .gauge,
+.lottery_wrap .contents .curr_pick .pick_graph .right .gauge {
+    height: 100%
+}
+
+.lottery_wrap .contents .curr_pick .pick_graph .left .gauge,
+.lottery_wrap .contents .curr_pick .pick_graph .bms_wrap .fill_wrap .gauge.blue {
+    background: repeating-linear-gradient( 45deg, #2C7BDD, #2C7BDD 5px, #3684d7 5px, #3684d7 10px)
+}
+
+.lottery_wrap .contents .curr_pick .pick_graph .right .gauge,
+.lottery_wrap .contents .curr_pick .pick_graph .bms_wrap .fill_wrap .gauge.red {
+    background: repeating-linear-gradient( 45deg, #E93B3B, #E93B3B 5px, #e24e4e 5px, #e24e4e 10px)
+}
+
+.lottery_wrap .contents .curr_pick .pick_graph .bms_wrap .fill_wrap .gauge.green {
+    background: repeating-linear-gradient( 45deg, #45AF49, #45AF49 5px, #64bb68 5px, #64bb68 10px)
+}
+
+.lottery_wrap .contents .center>p {
+    color: #888;
+    font-size: 11px
+}
+
+.lottery_wrap .contents .side {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    overflow: hidden
+}
+.lottery_wrap .contents .side.left{
+    widows: 300px;
+}
+
+.lottery_wrap .contents .side:before {
+    content: '';
+    width: calc(100% + 2px);
+    height: 5px;
+    position: absolute;
+    left: -1px;
+    top: -1px
+}
+
+
+
+.lottery_wrap.speedkeno .contents .side:before,
+.lottery_wrap.keno_ladder .contents .side:before {
+    background: linear-gradient(90deg, #3E666F 0%, #7DDBF0 47.63%, #3E666F 98.62%)
+}
+
+.lottery_wrap.powerkeno_ladder .contents .side:before {
+    background: linear-gradient(90deg, #0C9EBE 0%, #9FD8FB 47.63%, #0C9EBE 98.62%)
+}
+
+.lottery_wrap .contents .section_tit {
+    font-size: 16px;
+    color: #3f4e8e;
+    display: flex;
+    align-items: center;
+    letter-spacing: -.05em;
+    margin-bottom: 12px
+}
+
+.lottery_wrap .contents .section_tit:before {
+    content: '';
+    width: 4px;
+    height: 20px;
+    background-color: #3f4e8e;
+    margin-right: 5px;
+    border-radius: 2px
+}
+
+.lottery_wrap .contents .history_wrap {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column
+}
+
+.lottery_wrap .contents .chatrooms_wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column
+}
+
+.lottery_wrap .contents .premium {
+    background-color: #f8f8f8;
+    border: 1px solid #f3f3f3;
+    padding: 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    border-radius: 5px
+}
+
+.lottery_wrap .contents .premium>p {
+    margin: 5px 0
+}
+
+.lottery_wrap .contents .premium>img {
+    max-width: 100%;
+    height: 90px;
+    background-color: #fff;
+    border: 1px solid #f3f3f3;
+    margin: 0 auto
+}
+
+.lottery_wrap .contents .chat_rank>a.disabled_link {
+    cursor: default
+}
+
+.lottery_wrap .contents .chat_rank>a.disabled_link:hover {
+    text-decoration: none
+}
+
+.lottery_wrap .contents .chat_rank>a {
+    display: flex;
+    align-items: center;
+    height: 25px;
+    background-color: #f8f8f8;
+    border: 1px solid #f3f3f3;
+    padding: 0 10px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px
+}
+
+.lottery_wrap .contents .chat_rank>a:not(:last-child) {
+    margin-bottom: 5px
+}
+
+.lottery_wrap .contents .chat_rank>a:before {
+    content: '';
+    width: 3px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #3f4e8e
+}
+
+.lottery_wrap .contents .chat_rank>a>span {
+    color: #287094;
+    font-weight: 700;
+    width: 20px;
+    text-align: center;
+    margin-right: 10px
+}
+
+.lottery_wrap .contents .chat_rank>a>p {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-height: 17px
+}
+
+.lottery_wrap .contents .side .button_wrap {
+    margin-top: 10px
+}
+
+.lottery_wrap .contents .side.right {
+    padding-right: 10px
+}
+
+.lottery_wrap .contents .side .result_history {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+    scrollbar-base-color: #f8f8f8;
+    scrollbar-face-color: #3e4c6f;
+    scrollbar-3dlight-color: #f8f8f8;
+    scrollbar-highlight-color: #f8f8f8;
+    scrollbar-track-color: #f8f8f8;
+    scrollbar-arrow-color: #3e4c6f;
+    scrollbar-shadow-color: #f8f8f8;
+    scrollbar-dark-shadow-color: #f8f8f8
+}
+
+.lottery_wrap .contents .result_history>li {
+    border-radius: 5px;
+    overflow: hidden
+}
+
+.lottery_wrap .contents .side .result_history::-webkit-scrollbar-track {
+    background-color: #f8f8f8;
+    border-radius: 5px
+}
+
+.lottery_wrap .contents .side .result_history::-webkit-scrollbar {
+    width: 17px;
+    background-color: #f8f8f8
+}
+
+.lottery_wrap .contents .side .result_history::-webkit-scrollbar-thumb {
+    height: 50px;
+    background-color: #3e4c6f;
+    border-radius: 5px
+}
+
+.pattern_table {
+    position: absolute;
+    top: 141px;
+    left: 5px;
+    width: 820px;
+    height: calc(100% - 146px);
+    background-color: #fff;
+    z-index: 11;
+    display: none
+}
+
+.pattern_table:before,
+.pattern_table:after {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #414E8E 0%, #A0D9FC 47.63%, #414E8E 98.62%)
+}
+
+.pattern_table:after {
+    bottom: 0
+}
+
+.pattern_table .table_tabs {
+    background-color: #f8f8f8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Swagger, sans-serif;
+    font-size: 20px;
+    height: 70px
+}
+
+.pattern_table .table_tabs>li>a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Swagger, sans-serif;
+    font-size: 20px;
+    height: 70px;
+    cursor: pointer;
+    padding: 0 30px;
+    color: #ccc
+}
+
+.pattern_table .table_tabs>li {
+    position: relative
+}
+
+.pattern_table .table_tabs>li:not(:last-child):after {
+    content: '';
+    position: absolute;
+    right: 0;
+    width: 1px;
+    height: 12px;
+    background-color: #d5d5d5;
+    top: 50%;
+    margin-top: -6px
+}
+
+.pattern_table .table_tabs>li.active>a {
+    color: #3f4f8e
+}
+
+.pattern_table .table_wrap {
+    height: calc(100% - 70px);
+    background-color: #fff
+}
+
+.pattern_table .table_wrap .view .info,
+.pattern_table .table_wrap .view .box_area {
+    border: 0
+}
+
+.pattern_table .toggle_close_btn {
+    padding: 8px;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    cursor: pointer;
+    width: 20px
+}
+
+.ly_game_tip,
+.ly_share {
+    position: absolute;
+    background-color: rgba(0, 0, 0, .8);
+    border: 4px solid #4e609c;
+    border-radius: 15px;
+    color: #fff;
+    padding: 20px 30px;
+    z-index: 2;
+    max-width: 400px
+}
+
+.ly_game_tip {
+    top: 19px;
+    right: 54px
+}
+
+.ly_share {
+    top: 19px;
+    right: 88px
+}
+
+.ly_game_tip .tit,
+.ly_share .tit {
+    margin-bottom: 15px;
+    font-weight: 700;
+    font-size: 20px;
+    color: #9cd4f8
+}
+
+.ly_game_tip .sub_tit,
+.ly_share .sub_tit {
+    margin: 10px 0 8px
+}
+
+.ly_game_tip>p:not(:nth-last-of-type(1)),
+.ly_share>p:not(:nth-last-of-type(1)) {
+    margin-bottom: 8px
+}
+
+.ly_share .source {
+    background-color: #fff;
+    margin-bottom: 10px
+}
+
+.ly_share .source>textarea {
+    box-sizing: border-box;
+    border: 0;
+    background-color: #fff;
+    width: 100%;
+    height: 60px;
+    padding: 7px
+}
+
+.lottery_wrap.dark .section_divider {
+    opacity: .3
+}
+
+.lottery_wrap.dark {
+    color: #fff
+}
+
+.lottery_wrap.dark:before {
+    background: #0d1122
+}
+
+.lottery_wrap.dark .game_type .logo {
+    background-position: -94px 0
+}
+
+.lottery_wrap.dark .func_btns>p {
+    color: #fff
+}
+
+.lottery_wrap.dark .header .func_btns>ul>li {
+    list-style: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #00b4b4;
+    line-height: 30px;
+    text-align: center;
+}
+
+.lottery_wrap.dark .today_star>p {
+    color: #fff
+}
+
+.lottery_wrap.dark .today_star>p>span {
+    color: #ffc700
+}
+
+.lottery_wrap.dark .today_star .star_amount>li {
+    background-color: #3e4c6f;
+    color: #ffc700
+}
+
+.lottery_wrap.dark .inprogress_wrap {
+    background-color: #000
+}
+
+.lottery_wrap.dark .inprogress_wrap .fill_bar {
+    background: #00b4b4
+}
+
+.lottery_wrap.dark .center {
+    background-color: #182037!important;
+    border: 1px solid #3e4c6f!important;
+    color: #fff
+}
+
+.lottery_wrap.dark .center>p {
+    color: #fff
+}
+
+.lottery_wrap.dark .center .curr_pick .pick_graph>li:not(.bms_wrap)>div:not(.graph_tit) {
+    background-color: #2f364b
+}
+
+.lottery_wrap.dark .contents .side {
+}
+
+.lottery_wrap.dark .contents .center .ai_pick>ul>li>p>span.win {
+    color: #b1e93b
+}
+
+.lottery_wrap.dark .section_tit {
+    color: #d17fc6
+}
+
+.lottery_wrap.dark .section_tit:before {
+    background-color: #d17fc6
+}
+
+.lottery_wrap.powerball.dark .button_wrap .link_btn,
+.lottery_wrap.power_ladder.dark .button_wrap .link_btn {
+    background-color: #cecece;
+    border: 1px solid #cecece;
+    color: #222
+}
+
+.lottery_wrap.dark .contents .premium {
+    background-color: #182037;
+    border: 1px solid #2b3653
+}
+
+.lottery_wrap.dark .chat_rank>a {
+    background-color: #182037;
+    color: #fff;
+    border: 1px solid #1e253a
+}
+
+.lottery_wrap.dark .chat_rank>a>span {
+    color: #fff386
+}
+
+.lottery_wrap.dark .chat_rank>a:before {
+    background-color: #3f4e8e
+}
+
+.lottery_wrap.dark .contents .side .result_history>li,
+.lottery_wrap.dark .contents .center .ai_pick_item,
+.lottery_wrap.dark .contents .side .ai_pick_item {
+    background-color: #182037;
+    border: 1px solid #2b3653
+}
+
+.lottery_wrap.powerball.dark .button_wrap .link_btn.dark,
+.lottery_wrap.power_ladder.dark .button_wrap .link_btn.dark {
+    background-color: #3e4c6f;
+    border: 1px solid #3e4c6f;
+    color: #fff
+}
+
+.lottery_wrap.dark .contents .center .game_board {
+    background-color: #0d1122;
+    border: 1px solid #252d47;
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, .5)
+}
+
+.lottery_wrap.dark .pattern_table .table_tabs,
+.lottery_wrap.dark .pattern_table .table_wrap {
+    background-color: #0d1122;
+    border: 1px solid #252d47;
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, .5);
+    color: #fff
+}
+
+.lottery_wrap.dark .pattern_table .table_wrap .view .inner {
+    background: 0 0
+}
+
+.lottery_wrap.dark .pattern_table .table_wrap .view .info {
+    background-color: #2f364b
+}
+
+.lottery_wrap.dark .pattern_table .table_tabs>li a {
+    color: #3e4c6f
+}
+
+.lottery_wrap.dark .pattern_table .table_tabs>li.active a {
+    color: #d17fc6
+}
+
+.lottery_wrap.dark .pattern_table .table_tabs>li:after {
+    background-color: #3e4c6f
+}
+
+.lottery_wrap.dark .contents .side .result_history {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+    scrollbar-base-color: #000;
+    scrollbar-face-color: #3e4c6f;
+    scrollbar-3dlight-color: #000;
+    scrollbar-highlight-color: #000;
+    scrollbar-track-color: #000;
+    scrollbar-arrow-color: #3e4c6f;
+    scrollbar-shadow-color: #000;
+    scrollbar-dark-shadow-color: #000
+}
+
+.lottery_wrap.dark .contents .side .result_history::-webkit-scrollbar-track {
+    background-color: #000;
+    border-radius: 5px
+}
+
+.lottery_wrap.dark .contents .side .result_history::-webkit-scrollbar {
+    width: 17px;
+    background-color: #000
+}
+
+.lottery_wrap.dark .contents .side .result_history::-webkit-scrollbar-thumb {
+    height: 50px;
+    background-color: #3e4c6f;
+    border-radius: 5px
+}

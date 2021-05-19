@@ -8,10 +8,9 @@
         <span class="icon_manager">매니저</span>
         {{/ifEquals}}
         {{#ifEquals this.userType 3}}
-        <span class="icon_fixMember">고정</span>
-        {{/ifEquals}}
+        <span class="icon_managerFixMember">매니저</span>{{/ifEquals}}
         {{#ifEquals this.userType 4}}
-        <span class="icon_managerFixMember">매니저</span>
+        <span class="icon_fixMember">고정</span>
         {{/ifEquals}}
         <img src="{{#loadLevelImage this.level}}{{/loadLevelImage}}" width="23" height="23" />
         <a href="#" onclick="return false;" title="{{this.name}}" rel="{{this.id}}" class="uname">{{this.name}}</a>

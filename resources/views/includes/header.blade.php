@@ -37,11 +37,11 @@
                     <li><a href="{{route('pick-powerball')}}" target="mainFrame" style="width:80px;text-align:center;" class="hiddenBorard">픽<div class="border-half"></div></a></li>
                     <li><a href="{{route('pick-simulator')}}" target="mainFrame" rel="hidden" class="hiddenBorard">파워모의배팅<div class="border-half"></div></a></li>
                     <li><a href="{{route('pick-win')}}" target="mainFrame" rel="hidden" class="hiddenBorard">연승제조기<div class="border-half"></div></a></li>
-                    <li><a href="{{route('board')}}" target="mainFrame" class="hiddenBorard">커뮤니티<div class="border-half"></div></a></li>
+                    <li><a href="{{"board"}}?board_type=community&board_category=offten" target="mainFrame" class="hiddenBorard">커뮤니티<div class="border-half"></div></a></li>
                     <li><a href="{{route('market')}}" target="mainFrame" class="hiddenBorard">마켓<div class="border-half"></div></a></li>
                     <li><a href="#" onclick="openChatRoom();return false;" class="hiddenBorard">방채팅<div class="border-half"></div></a></li>
-                    <li><a href="/bbs/board.php?bo_table=custom" target="mainFrame" class="hiddenBorard">고객센터<div class="border-half"></div></a></li>
-                    <li><a href="/bbs/board.php?bo_table=qna" target="mainFrame" class="hiddenBorard">공지사항<div class="border-half"></div></a></li>
+                    <li><a href="{{"board"}}?board_type=customer&board_category=notice" target="mainFrame" class="hiddenBorard">고객센터<div class="border-half"></div></a></li>
+                    <li><a href="/board?board_type=customer&board_category=notice" target="mainFrame" class="hiddenBorard">공지사항<div class="border-half"></div></a></li>
                     <li><a href="/?view=attendance" target="mainFrame" class="hiddenBorard">출석체크</a></li>
                 </ul>
             </div>

@@ -3,33 +3,45 @@ a {
     text-decoration: none;
     cursor: pointer;
 }
+h1, h2, h3, h4, h5, h6 {
+    font-size: 1em;
+    margin: 0;
+}
+input, textarea {
+    outline-style: none;
+}
 .categoryTit ul {
     width: 100%;
     height: 40px;
     padding: 0;
     margin: 0 0 5px 0;
-    border-top: 2px solid #0E609C;
-    border-bottom: 1px solid #dddddd;
-    background-color: #F1F1F1;
+}
+
+.categoryTit ul li:nth-child(1) a {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+.categoryTit ul li:last-child a {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-right: solid #cfd2d4 1px
 }
 .categoryTit ul li {
     list-style: none;
     float: left;
     width: 100px;
     text-align: center;
-    border-right: 1px solid #dddddd;
 }
 .categoryTit ul li a {
     display: block;
     height: 40px;
     line-height: 40px;
     text-decoration: none;
+    border: 1px solid #cfd2d4;
+    border-right: none;
 }
 .categoryTit ul li a.on {
-    background-color: #127CCB;
-    border-top: none;
-    margin-top: -1px;
-    border: 1px solid #0E609C;
+    background-color: #00b4b4;
     color: #fff;
 }
 
@@ -80,9 +92,7 @@ a.btn_b02 {
     text-decoration: none;
     vertical-align: middle;
 }
-.tbl_head01 td {
-    border-bottom: 1px solid #f4f4f4;
-}
+
 #bo_sch {
     margin-bottom: 10px;
     padding-top: 5px;
@@ -105,4 +115,497 @@ a.btn_b02 {
 }
 #bo_sch .btn_search{
     vertical-align: middle;
+}
+
+.td_subject img {
+    margin-left: 3px;
+}
+#bo_list .tbl_head01 td img {
+    vertical-align: middle;
+}
+
+.tbl_head01 td {
+    padding: 8px 5px;
+    line-height: 1.5em;
+    word-break: break-all;
+}
+.gray,.tbl_head01 a:visited {
+    color: #9d9d9d;
+}
+
+#bo_v {
+    margin: 10px 0 5px 0;
+    border: 1px solid #ddd;
+    border-top: none;
+    padding: 0;
+}
+#bo_v .viewinfo {
+    border-top: 2px solid #0E609C;
+    border-bottom: 1px solid #dddddd;
+    background-color: #F1F1F1;
+    height: 75px;
+}
+#bo_v .viewinfo .thumb {
+    position: absolute;
+    left: 0;
+    margin: 10px;
+}
+#bo_v .viewinfo .title {
+    margin: 15px 10px 10px 75px;
+    padding-bottom: 5px;
+    color: #0C4F81;
+    font-size: 14px;
+    border-bottom: 1px dotted #0C4F81;
+}
+#bo_v .viewinfo .thumb img {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #c2c2c2;
+}
+#bo_v_atc {
+    min-height: 200px;
+    height: auto !important;
+    height: 200px;
+    padding: 0 15px;
+}
+#bo_v_atc #bo_v_con {
+    padding: 15px 0;
+}
+
+#bo_v_con {
+    margin-bottom: 30px;
+    width: 100%;
+    line-height: 1.7em;
+    word-break: break-all;
+    overflow: hidden;
+}
+#bo_v_atc .banner {
+    text-align: center;
+    margin: 10px auto;
+}
+
+#bo_v .viewinfo .info {
+    margin: 10px 10px 10px 75px;
+    font-size: 11px;
+    color: #727272;
+}
+
+#bo_v .viewinfo .info img {
+    vertical-align: middle;
+}
+
+#bo_v .viewinfo .info a.uname {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#bo_v_top {
+    margin: 0 0 10px;
+    padding: 10px 0;
+    zoom: 1;
+}
+
+#bo_v .viewinfo .info .bar {
+    margin: 0 10px;
+    color: #cdcdcd;
+    font-size: 10px;
+    font-family: dotum;
+}
+#bo_v_top ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.bo_v_nb li {
+    float: left;
+    margin-right: 5px;
+}
+
+a.btn_b01 {
+    background-color: #F7F7F7;
+    border: 1px solid #E6E6E6;
+}
+
+a.btn_b01 {
+    display: inline-block;
+    padding: 7px;
+    border: 1px solid #d9ded9;
+    background: #f2f5f9;
+    color: #000;
+    text-decoration: none;
+    vertical-align: middle;
+}
+.bo_v_com {
+    float: right;
+}
+.bo_v_com li {
+    float: left;
+    margin-left: 5px;
+}
+
+#bo_v_top:after {
+    display: block;
+    visibility: hidden;
+    clear: both;
+    content: "";
+}
+
+#bo_v_act {
+    margin-bottom: 30px;
+    text-align: center;
+}
+#bo_v_act .bo_v_act_gng {
+    position: relative;
+}
+#bo_v_atc #bo_v_act #good_button {
+    position: relative;
+    display: block;
+    width: 60px;
+    height: 60px;
+    border-radius: 60px;
+    border: 1px solid #d9ded9;
+    margin: 0 auto;
+    text-decoration: none;
+}
+#bo_v_atc #bo_v_act #good_button strong {
+    font-size: 14px;
+    font-family: tahoma;
+    line-height: 40px;
+    color: red;
+}
+#bo_v_atc #bo_v_act #good_button span {
+    position: absolute;
+    left: 8px;
+    bottom: 10px;
+    width: 60px;
+    height: 20px;
+    line-height: 20px;
+    background: url(https://simg.powerballgame.co.kr/images/btn_recom.png) 5px 3px no-repeat;
+}
+
+#bo_v_act_good, #bo_v_act_nogood {
+    display: none;
+    position: absolute;
+    top: 30px;
+    left: 0;
+    padding: 10px 0;
+    width: 165px;
+    background: #ff3061;
+    color: #fff;
+    text-align: center;
+}
+
+#bo_v_atc #bo_v_act #good_button:hover {
+    background-color: red;
+    border: 1px solid #cc0000;
+    color: #fff;
+}
+#bo_v_atc #bo_v_act #good_button:hover strong {
+    color: #fff;
+}
+#bo_vc_w {
+    border: 1px solid #ddd;
+    padding: 20px;
+    background-color: #FCFCFC;
+    margin: 0;
+    position: relative;
+}
+#bo_vc_w .userinfo {
+    height: 40px;
+}
+#bo_vc_w .userinfo .thumb {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+}
+#bo_vc_w .userinfo .thumb img {
+    border: 1px solid #EDEDED;
+    width: 40px;
+    height: 40px;
+}
+
+#bo_vc_w .userinfo .info {
+    margin-left: 50px;
+}
+#bo_vc_w .userinfo .info img {
+    vertical-align: middle;
+}
+#bo_vc_w .userinfo .info a.uname {
+    font-family: dotum;
+    font-weight: bold;
+    text-decoration: none;
+}
+#bo_vc_w .comment {
+    position: relative;
+}
+#bo_vc_w .comment .textarea {
+    margin-right: 120px;
+}
+#bo_vc_w .comment .btn_submit {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 70px;
+    background-color: #ec0000;
+    border: 1px solid #cc0000;
+    font-size: 14px;
+    font-weight: bold;
+}
+#bo_vc_w .comment .textarea textarea {
+    padding: 10px;
+    width: 100%;
+    height: 50px;
+    border: 1px solid #e2e2e2;
+    resize: none;
+}
+.btn_submit {
+    border: 1px solid #151515;
+    background: #4C4C4C;
+    color: #fff;
+    letter-spacing: -0.1em;
+    cursor: pointer;
+}
+
+#bo_vc_w h2 {
+    position: absolute;
+    font-size: 0;
+    line-height: 0;
+    overflow: hidden;
+}
+
+#bo_vc {
+    position: relative;
+    background-color: #fff;
+    border: 1px solid #DDD;
+    border-top: none;
+    padding: 0;
+    margin: 0;
+}
+#bo_vc .cmtCnt {
+    position: absolute;
+    top: 14px;
+    left: 55px;
+}
+
+#bo_vc .cmtCnt strong {
+    color: #f03d00;
+    font-size: 12px;
+    font-family: tahoma;
+    margin-right: 2px;
+}
+#bo_vc article {
+    margin: 10px 20px;
+    border: none;
+    border-bottom: 1px solid #F4F4F4;
+}
+
+#bo_vc header {
+    position: relative;
+    padding: 15px 0 5px;
+}
+
+#bo_vc h2 {
+    height: 45px;
+    line-height: 45px;
+    border-bottom: 1px solid #F4F4F4;
+    padding-left: 20px;
+}
+#bo_vc .comment .textarea textarea {
+    padding: 10px;
+    width: 100%;
+    height: 50px;
+    border: 1px solid #e2e2e2;
+    resize: none;
+}
+
+#bo_vc .comment .btn_submit {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 72px;
+    background-color: #ec0000;
+    border: 1px solid #cc0000;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#bo_vc .comment {
+    position: relative;
+}
+
+#bo_vc .comment .textarea {
+    margin-right: 120px;
+}
+#bo_vc .bo_vc_act {
+    position: absolute;
+    top: 20px;
+    right: 0;
+    font-size: 11px;
+}
+
+#bo_vc article .thumb img {
+    border: 1px solid #EDEDED;
+    width: 40px;
+    height: 40px;
+}
+#bo_vc article .content img {
+    vertical-align: middle;
+}
+
+#bo_vc article .thumb {
+    position: absolute;
+    top: 10px;
+}
+
+#bo_vc article .content {
+    margin-left: 50px;
+}
+
+#bo_vc article p {
+    margin-left: 50px;
+}
+
+#bo_vc h1 {
+    position: absolute;
+    font-size: 0;
+    line-height: 0;
+    overflow: hidden;
+}
+
+#bo_vc header .icon_reply {
+    position: absolute;
+    top: 15px;
+    left: -20px;
+}
+
+.bo_vc_hdinfo {
+    display: inline-block;
+    margin: 0 15px 0 5px;
+}
+.bo_vc_act li {
+    float: left;
+    margin-left: 5px;
+}
+
+#bo_w #container_title {
+    background-color: #127CCB;
+    border-top: 1px solid #0E609C;
+    border-bottom: 1px solid #0E609C;
+    height: 30px;
+    line-height: 30px;
+    padding: 0;
+    padding-left: 20px;
+    font-size: 11px;
+    font-weight: normal;
+    color: #fff;
+}
+.tbl_frm01 {
+    margin: 0 0 20px;
+}
+.tbl_frm01 table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.tbl_frm01 td {
+    padding: 7px 10px;
+    border-top: 1px solid #e9e9e9;
+    border-bottom: 1px solid #e9e9e9;
+    background: transparent;
+}
+#bo_w #wr_subject {
+    width: 100%;
+}
+
+#bo_w #autosave_wrapper {
+    margin-right: 12px;
+}
+.btn_confirm {
+    text-align: center;
+}
+#bo_w #btn_submit {
+    width: 100px;
+    background-color: #ec0000;
+    border: 1px solid #cc0000;
+    padding: 7px;
+}
+a.btn_cancel {
+    display: inline-block;
+    padding: 7px;
+    border: 1px solid #ccc;
+    background: #fafafa;
+    color: #000;
+    text-decoration: none;
+    vertical-align: middle;
+
+}
+
+#bo_w .btn_cancel {
+    width: 100px;
+    background-color: #F7F7F7;
+    border: 1px solid #E6E6E6;
+}
+.bgSelect {
+    background-color: #F1FCFE;
+}
+.bo_current {
+    color: #e8180c;
+}
+
+.photoList li a .thumb img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+.photoList li {
+    position: relative;
+    float: left;
+    padding: 0;
+    margin: 3px;
+    border: 1px solid #d2d2d2;
+    background-color: #F1F1F1;
+}
+
+.photoList li a .thumb {
+    display: block;
+}
+
+.photoList {
+    *zoom: 1;
+    overflow: hidden;
+}
+
+.photoList ul li .title {
+    position: absolute;
+    bottom: 0;
+    background-color: rgba(13,86,140,0.75);
+    width: 100%;
+}
+.photoList ul li .title a {
+    height: 30px;
+    line-height: 30px;
+    padding: 0 5px;
+    color: #fff;
+}
+.photoList ul li .title .comment {
+    color: #C11A20;
+    padding-left: 3px;
+}
+
+
+.tbl_head01 thead th{
+    background: #f0f5f5;
+    border-bottom: none;
+    border-top: 2px solid #00b4b4;
+}
+
+.td_subject{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 500px;
 }

@@ -81,12 +81,41 @@ class User {
             this.users = this.users.filter((item) => {
                 if(item.roomIdx === roomIdx && item.id === id){
                     if(state == "managerOn"){
-                        if(item.userType !=1)
-                            item.userType = 2;
+                        let utype = 2; // 멤버만
+                        if(item.userType !=1 && item.userType ==4)
+                            utype = 3; // // 멤버,고정
+                        item.userType  = utype;
                     }
                     else{
-                        if(item.userType !=1)
-                            item.userType = 5;
+                        let utype = 5;
+                        if(item.userType !=1 && item.userType == 3)
+                            utype = 4;
+                        item.userType = utype;
+                    }
+                }
+                return item;
+            });
+            return user.nickname;
+        }
+        return "";
+    }
+
+    setFixManageById(state,id,roomIdx){
+        var user = this.users.filter(user => user.roomIdx === roomIdx && user.id === id)[0]
+        if(typeof user !="undefined"){
+            this.users = this.users.filter((item) => {
+                if(item.roomIdx === roomIdx && item.id === id){
+                    if(state == "fixMemberOn"){
+                        let utype = 4; // 멤버만
+                        if(item.userType !=1 && item.userType == 2)
+                            utype = 3; // // 멤버,고정
+                        item.userType  = utype;
+                    }
+                    else{
+                        let utype = 5;
+                        if(item.userType !=1 && item.userType == 3)
+                            utype = 2; // 멤버
+                        item.userType = utype;
                     }
                 }
                 return item;

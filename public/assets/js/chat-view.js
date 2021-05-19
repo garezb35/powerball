@@ -515,7 +515,7 @@ function connect()
 
         if(socket == null)
         {
-            socket = io.connect('http://210.112.174.178:3000/room',socketOption);
+            socket = io.connect('http://cake6978.com:3000/room',socketOption);
         }
         sendProcess('login');
     }
@@ -594,7 +594,7 @@ function receiveProcess(data)
             */
 
             case 'JOINUSER':
-                if(bPacket.useridKey == useridKey)
+                if(bPacket.useridKey == userIdKey)
                 {
                     userPickList();
                 }
@@ -621,9 +621,9 @@ function receiveProcess(data)
         if(typeof bPacket.users != "undefined"){
             if(fixed.includes(bPacket.users.id)){
                 if(bPacket.users.userType == 2)
-                    bPacket.users.userType = 4;
-                if(bPacket.users.userType == 5)
                     bPacket.users.userType = 3;
+                if(bPacket.users.userType == 5)
+                    bPacket.users.userType = 4;
             }
             if(bPacket.users.userType == 1)
                 compileJson("#view-list","#connectOpenerList",bPacket.users,2,false);
@@ -655,9 +655,9 @@ function receiveProcess(data)
             for(var i=0 ; i < bPacket.users.length ; i++ ){
                 if(fixed.includes(bPacket.users[i].id)){
                     if(bPacket.users[i].userType == 2)
-                        bPacket.users[i].userType = 4;
-                    if(bPacket.users[i].userType == 5)
                         bPacket.users[i].userType = 3;
+                    if(bPacket.users[i].userType == 5)
+                        bPacket.users[i].userType = 4;
                 }
                 if(bPacket.users[i].userType == 1)
                     compileJson("#view-list","#connectOpenerList",bPacket.users[i],2,false);
@@ -713,7 +713,7 @@ function receiveProcess(data)
             case 'fixMemberOn':
                 printSystemMsg('system','<span>'+bPacket.tnickname+'</span> 님이 고정멤버 임명 되었습니다.');
                 fixMemberOnOff('On',bPacket.tuseridKey);
-                if(this.useridKey == bPacket.tuseridKey && is_manager == false)
+                if(this.userIdKey == bPacket.tuseridKey && is_manager == false)
                 {
                     updateState(bPacket.cmd);
                 }
@@ -722,7 +722,7 @@ function receiveProcess(data)
             case 'fixMemberOff':
                 printSystemMsg('system','<span>'+bPacket.tnickname+'</span> 님이 고정멤버 해제 되었습니다.');
                 fixMemberOnOff('Off',bPacket.tuseridKey);
-                if(this.useridKey == bPacket.tuseridKey)
+                if(this.userIdKey == bPacket.tuseridKey)
                 {
                     if(is_manager == true)
                     {
@@ -738,7 +738,7 @@ function receiveProcess(data)
             case 'managerOn':
                 printSystemMsg('system','<span>'+bPacket.tnickname+'</span> 님이 매니저 임명 되었습니다.');
                 managerOnOff('On',bPacket.tuseridKey);
-                if(this.useridKey == bPacket.tuseridKey)
+                if(this.userIdKey == bPacket.tuseridKey)
                 {
                     is_manager = true;
                 }
@@ -779,7 +779,7 @@ function receiveProcess(data)
                 var muteTime = bPacketArr[1];
                 if(!muteTime) muteTime = 1;
                 printSystemMsg('system','<span>'+tnickname+'</span> 님이 <span>'+muteTime+'시간</span> 동안 벙어리 되었습니다.');
-                if(this.useridKey == bPacket.tuseridKey)
+                if(this.userIdKey == bPacket.tuseridKey)
                 {
                     updateState(bPacket.cmd);
                 }
@@ -787,7 +787,7 @@ function receiveProcess(data)
 
             case 'muteOff':
                 printSystemMsg('system','<span>'+bPacket.tnickname+'</span> 님이 벙어리 해제 되었습니다.');
-                // if(this.useridKey == bPacket.tuseridKey)
+                // if(this.userIdKey == bPacket.tuseridKey)
                 // {
                 //     updateState(bPacket.cmd);
                 // }
@@ -1081,7 +1081,7 @@ function updateState(type)
     var data = {
         cmd : 'updateState',
         type : type,
-        useridKey : this.useridKey
+        useridKey : this.userIdKey
     };
 
     sendProcess('UPDATESTATE',data);
@@ -1167,7 +1167,7 @@ function printItemMsg(type,cnt,nickname,tnickname)
             bulletImg = 'bullet9.png';
         }
 
-        var itemMsg = '<div class="bulletBox"><div class="cnt">'+cnt+'</div><img src="https://simg.powerballgame.co.kr/images/'+bulletImg+'"/></div>';
+        var itemMsg = '<div class="bulletBox"><div class="cnt">'+cnt+'</div></div>';
 
         $('#msgBox').append('<li>'+itemMsg+'</li>');
         $('#msgBox').append('<li><p class="msg-gift"><span>'+nickname+'</span> 님이 <span>'+tnickname+'</span> 님에게 <span>총알 '+cnt+'개</span>를 선물하셨습니다.</p></li>');
@@ -1250,15 +1250,19 @@ function printChatMsg(userType,level,sex,mark,useridKey,nickname,msg,item)
     if(userType == 1)
     {
         addClass = ' class="opener"';
-        addMark = '<img src="https://simg.powerballgame.co.kr/chat/images/mark_opener.gif" width="16" height="16"> ';
+        addMark = '<img src="/assets/images/powerball/mark_opener.gif" width="16" height="16"> ';
     }
-    else if(userType == 2 || userType == 4)
+    else if(userType == 2)
     {
         addClass = ' class="manager"';
-        addMark = '<img src="https://simg.powerballgame.co.kr/chat/images/mark_manager.gif" width="16" height="16"> ';
+        addMark = '<img src="/assets/images/powerball/mark_manager.gif" width="16" height="16"> ';
     }
     else if(userType == 3)
     {
+        addClass = 'class="icon_managerFixMember"';
+    }
+
+    else if(userType == 4){
         addClass = ' class="fixMember"';
     }
 
@@ -1476,12 +1480,15 @@ function adminCmd(cmd,tuseridKey,tnickname)
                 }
             });
         }
-        else if(cmd == 'muteOn' || cmd == 'muteOff' || cmd == "kickOn" || cmd == "managerOn" || cmd == "managerOff") {
+        else if(cmd == 'muteOn' || cmd == 'muteOff' || cmd == "kickOn" || cmd == "managerOn" || cmd == "managerOff"  || cmd == "fixMemberOn" || cmd == "fixMemberOff") {
             let url = "/api/setMute";
             if(cmd == "kickOn")
                 url = "/api/kickUser"
             if(cmd == "managerOn" || cmd == "managerOff"){
                 url = "/api/updateManage"
+            }
+            if(cmd == "fixMemberOn" || cmd == "fixMemberOff"){
+                url = "/api/updateFixManage";
             }
             $.ajax({
                 type: 'POST',
@@ -2044,7 +2051,7 @@ function gameResultRefresh(packet){
     var pbLose = parseInt($(".powerballLoseCnt").text());
     var nbWin = parseInt($(".numberWinCnt").text());
     var nbLose = parseInt($(".numberLoseCnt").text());
-    if(cur_bet.trim() !=""){
+    if(typeof cur_bet !="undefined" && cur_bet.trim() !=""){
         cur_bet = JSON.parse(cur_bet.replace(/&quot;/g,'"'));
         for(var index in cur_bet){
             if(index == "pb_oe")
@@ -2386,7 +2393,7 @@ function setUserLayer(useridKey,nickname,e,left)
             if(r.status == 1){
                 let data = r.result;
                 bettingStr += '<ul>';
-                bettingStr += '<li>올킬 - <span class="'+data.totalWinClass+'">'+data.totalWinFix+'</span>연승</li>';
+                bettingStr += '<li>현재연승 - <span class="'+data.totalWinClass+'">'+data.totalWinFix+'</span>연승</li>';
                 bettingStr += '<li>파워볼홀짝 - <span class="'+data.powerballOddEvenWinClass+'">'+data.powerballOddEvenWinFix+'</span>연승, <span class="win">'+data.powerballOddEvenWin+'</span>승<span class="lose">'+data.powerballOddEvenLose+'</span>패('+data.powerballOddEvenRate+')</li>';
                 bettingStr += '<li>파워볼언더오버 - <span class="'+data.powerballUnderOverWinClass+'">'+data.powerballUnderOverWinFix+'</span>연승, <span class="win">'+data.powerballUnderOverWin+'</span>승<span class="lose">'+data.powerballUnderOverLose+'</span>패('+data.powerballUnderOverRate+')</li>';
                 bettingStr += '<li>숫자합홀짝 - <span class="'+data.numberOddEvenWinClass+'">'+data.numberOddEvenWinFix+'</span>연승, <span class="win">'+data.numberOddEvenWin+'</span>승<span class="lose">'+data.numberOddEvenLose+'</span>패('+data.numberOddEvenRate+')</li>';

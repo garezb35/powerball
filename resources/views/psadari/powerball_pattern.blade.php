@@ -18,7 +18,9 @@
                     <span class="date tx">10</span>
                     <a class="btn_date btn_plus" href="javascript:;" rel="up"><span class="ic">패턴삭제</span></a>
                 </form>
-                <a class="btn_refresh" id="btn_refresh" href="javascript:location.reload();" title="새로고침"><span class="ic"></span><span id="refresh-element">새로고침</span></a>
+                <a class="btn_refresh" id="btn_refresh" href="javascript:location.reload();" title="새로고침">
+                    <span class="ic fa fa-refresh"></span><span id="refresh-element">새로고침</span>
+                </a>
             </div>
         </div>
     </div>

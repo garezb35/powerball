@@ -84,6 +84,17 @@ class LoginController extends Controller
         $user = User::where('loginId',$request->loginId)->first();
 
         if (auth()->attempt($credentials)) {
+            if($user["user_type"] == 0){
+                echo "<script>alert(\"차단된 회원입니다.\");</script>";
+                Auth::logout();
+                return redirect()->back();
+            }
+            if($user["isDeleted"] == 1){
+                echo "<script>alert(\"탈퇴된 회원입니다.\");</script>";
+                Auth::logout();
+                return redirect()->back();
+            }
+
             $loginLog = new LoginLog;
             $dayLoginLog = LoginLog::whereDate("created_at",date("Y-m-d"))->where("userId",$user->userId)->orderBy("created_date","DESC")->count();
             if($dayLoginLog == 0 ){
@@ -116,7 +127,9 @@ class LoginController extends Controller
 
         }else{
             session()->flash('message', 'Invalid credentials');
-            return redirect()->back();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return redirect()->route('default');
         }
     }
 

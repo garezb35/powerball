@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    
+
       $("#profileImg").change(function() {
         readURL(this);
       });
@@ -8,11 +8,11 @@ $(document).ready(function(){
 function readURL(input) {
     if (input.files && input.files[0]) {
       var reader = new FileReader();
-      
+
       reader.onload = function(e) {
         $('#profileImgArea').attr('src', e.target.result);
       }
-      
+
       reader.readAsDataURL(input.files[0]); // convert to base64 string
     }
   }
@@ -102,15 +102,27 @@ function imgCheck(){
         dataType:'json',
         success:function (data){
             if(data.status ==1){
-                    
+
             }
             if(data.status ==0){
                 alert(data.msg);
             }
-        },
-        error:function(xhr){
-            console.log(xhr)
         }
     });
 }
 
+
+function profileImgInit(){
+    $.ajax({
+        type:'POST',
+        url:'/api/imgCheck',
+        data:{api_token:$("#token").val(),type:"delete"},
+        dataType:'json',
+        success:function (data){
+            alert(data.msg);
+            if(data.status == 2){
+                window.close();
+            }
+        }
+    });
+}

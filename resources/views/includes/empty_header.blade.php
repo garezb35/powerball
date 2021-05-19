@@ -15,6 +15,7 @@
     <script>
         var remainTime = 0;
         var speedRemain = 0;
+        var is_admin = false;
     </script>
     @yield('script_header')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.2/socket.io.js" ></script>

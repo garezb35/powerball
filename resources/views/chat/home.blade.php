@@ -9,6 +9,8 @@
         @endif
         var userIdToken = "{{$api_token}}";
     </script>
+@include('pick.vs')
+    <div class="mb-2"></div>
 @include('chat.countdown')
 <div class="mb-2"></div>
 @include('chat.box-chatting')

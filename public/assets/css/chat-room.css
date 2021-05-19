@@ -113,6 +113,7 @@
 .rightArea .btns {
     height: 50px;
     background: #00b4b4;
+    position: relative;
 }
 
 .rightArea .btns .create {
@@ -563,13 +564,12 @@
 .bulletBox {
     position: relative;
     height: 100px;
-    background: url(https://simg.powerballgame.co.kr/images/target.png) center 10px no-repeat;
+    background: url(/assets/images/powerball/dangun-gift.png) center 10px no-repeat;
     text-align: center;
-    padding-top: 60px;
+    padding-top: 59px;
 }
-
 .bulletBox .cnt {
-    margin-top: -18px;
+    margin-top: -18px !important;
     color: #fff;
     font-size: 15px;
     font-weight: bold;
@@ -1743,7 +1743,7 @@ fieldset {
     left: 5px;
     width: 32px;
     height: 13px;
-    background: url(https://simg.powerballgame.co.kr/images/sp_chatRoomMark2.png) no-repeat 0 0;
+    background: url(/assets/images/powerball/sp_chatRoomMark2.png) no-repeat 0 0;
     text-indent: -9999px;
 }
 
@@ -1786,7 +1786,7 @@ fieldset {
     left: 5px;
     width: 32px;
     height: 13px;
-    background: url(https://simg.powerballgame.co.kr/images/sp_chatRoomMark2.png) no-repeat 0 -13px;
+    background: url(/assets/images/powerball/sp_chatRoomMark2.png) no-repeat 0 -13px;
     text-indent: -9999px;
 }
 
@@ -2000,20 +2000,22 @@ fieldset {
     border-radius: 50%;
 }
 
-.close-modal{
+.close-modal {
     background: url(/assets/images/powerball/close.png);
-    width: 29px;
-    height: 29px;
+    width: 22px;
+    height: 22px;
     border: none;
     outline: none;
+    background-size: 22px;
 }
 
-#modify-chatroom .modal-body,#creatingWindow .modal-body{
-    background: url(/assets/images/powerball/BG.png) 100% 100% no-repeat;
-}
+/*#modify-chatroom .modal-body,#creatingWindow .modal-body{*/
+/*    background: url(/assets/images/powerball/BG.png) 100% 100% no-repeat;*/
+/*}*/
 
 .border-input{
-    border: 1px solid #335292;
+    border: 1px solid #00b4b4;
+    border-radius: 5px;
 }
 #msgBox .msg-notice {
     background-color: #cb500e;
@@ -2040,7 +2042,7 @@ fieldset {
     line-height: 25px;
     font-weight: bold;
     color: #fff;
-    background: #127CCB;
+    background: #00b4b4;
 }
 
 #userLayer .game {
@@ -2106,7 +2108,7 @@ fieldset {
     left: 5px;
     width: 32px;
     height: 13px;
-    background: url(https://simg.powerballgame.co.kr/images/sp_chatRoomMark2.png) no-repeat 0 -26px;
+    background: url(/assets/images/powerball/sp_chatRoomMark2.png) no-repeat 0 -26px;
     text-indent: -9999px;
 }
 
@@ -2190,4 +2192,30 @@ fieldset {
 
 .betBox ul li .pick-btn.on.f,.betBox ul li .pick-btn.on.s{
     background-size: 44px 33px !important;
+}
+
+.rightArea .resultBox .content .userListBox ul.userList li .icon_managerFixMember {
+    position: absolute;
+    top: 19px;
+    left: 5px;
+    width: 32px;
+    height: 26px;
+    background: url(/assets/images/powerball/sp_chatRoomMark2.png) no-repeat 0 -13px;
+    text-indent: -9999px;
+}
+
+#security_dialog p {
+    text-align: center;
+    color: #666;
+    font-size: 11px;
+}
+
+.crttable.table.table-bordered td,.crttable.table.table-bordered th{
+    border-style: dashed;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+.crttable.table.table-bordered{
+    border: none;
 }

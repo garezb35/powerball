@@ -1,104 +1,328 @@
 @extends('includes.empty_header')
+<script>
+    var api_token = "{{$result["api_token"]}}";
+</script>
 @section("header")
+    @php
+    $page = Request::get("page") ?? 1;
+    $first_count = $result["board_count"] - 20 * ($page - 1);
+    @endphp
+  @if(!empty($result["article"]))
+      @php
+      $comment = array();
+      $temp = array();
+      $step  =1;
+      $roots = [];
+      $all = [];
+      $lookup_table = [];
+      if(!empty($result["comments"])){
+          foreach($result["comments"] as $comment_key=>$citem){
+                $lookup_table[$citem['parent']][$comment_key] = $citem['id'];
+          }
+      }
+      @endphp
+      <article id="bo_v">
+          <div class="viewinfo">
+              <div class="thumb">
+                  @if($result["article"]["fromId"] == 0)
+                  <img src="/assets/images/mine/profile.png">
+                  @else
+                      <img src="{{$result["article"]["send_usr"]["image"]}}">
+                  @endif
+              </div>
+              <div class="title">
+                  <h1>
+                      @if($result["board"]["category_use"] == 1 && !empty($result["article"]["cateogry"]))
+                          [{{$result["article"]["cateogry"]}}]
+                      @endif
+                       {{$result["article"]["title"]}}
+              </div>
+              <div class="info">
+                  @if($result["article"]["fromId"] == 0)
+                      <img src="/assets/images/powerball/class/M30.gif">
+                      <a href="#" class="uname"><span class="sv_member">운영자</span></a><span class="bar">|</span>
+                  @else
+                      <img src="{{$result["article"]["send_usr"]["getLevel"]["value3"]}}">
+                      <a href="#" class="uname"><span class="sv_member">{{$result["article"]["send_usr"]["nickname"]}}</span></a><span class="bar">|</span>
+                  @endif
+
+                  {{date("Y-m-d H:i",strtotime($result["article"]["created_at"]))}}
+                      @if($result["board"]["view_use"] == "1")
+                          <span class="bar">|</span>조회 @if(empty($result["article"]["views"])){{0}}@else{{sizeof($result["article"]["views"])}}@endif
+                      @endif
+                  @if($result["board"]["comment_use"] == 1)
+                          <span class="bar">|</span> 댓글 @if(empty($result["article"]["comments"])){{0}}@else{{sizeof($result["article"]["comments"])}}@endif
+                      @endif
+              </div>
+          </div>
+          <section id="bo_v_atc">
+              <div id="bo_v_con">
+                  {!! $result["article"]["content"] !!}
+              </div>
+              @if($result["board"]["recommend_use"] ==1)
+                  <div id="bo_v_act">
+                    <span class="bo_v_act_gng">
+                        <a href="javascript:void(0)" id="good_button" ref="{{Request::get("bid")}}">
+                            <strong>
+                                @if(empty($result["article"]["recommend"]))
+                                0
+                                @else
+                                    {{sizeof($result["article"]["recommend"])}}
+                                @endif
+                            </strong><span>추천</span></a>
+                        <b id="bo_v_act_good"></b>
+                    </span>
+                  </div>
+              @endif
+          </section>
+      </article>
+      @if($result["board"]["comment_use"] == 1)
+      <aside id="bo_vc_w">
+          <h2>댓글쓰기</h2>
+          <form name="fviewcomment" action="/commentProcess" onsubmit="return fviewcomment_submit(this);" method="post" autocomplete="off">
+              @csrf
+              <input type="hidden" name="w" value="c">
+              <input type="hidden" name="bo_table" value="{{Request::get("board_category")}}">
+              <input type="hidden" name="wr_id" value="{{Request::get("bid")}}">
+              <input type="hidden" name="comment_id" value="0">
+              <input type="hidden" name="board_type" value="{{Request::get("board_type")}}">
+              <input type="hidden" name="page" value="{{$page}}">
+              <input type="hidden" name="api_token" value="{{$result["api_token"]}}">
+              <div class="userinfo">
+                 @if(!empty($result["self"]))
+                      <div class="thumb"><img src="{{$result["self"]["image"]}}"></div>
+                      <div class="info"><img src="{{$result["self"]["getLevel"]["value3"]}}">
+                          {{$result["self"]["nickname"]}}
+                      </div>
+                  @endif
+              </div>
+
+              <div class="comment">
+                  <div class="textarea">
+                      <textarea name="wr_content" placeholder="댓글 작성시 타인을 배려하는 마음을 담아 댓글을 남겨주세요."></textarea>
+                  </div>
+                  <button type="submit" class="btn_submit" title="등록" accesskey="s">등록</button>
+              </div>
+
+          </form>
+      </aside>
+      <section id="bo_vc">
+          <h2>댓글</h2>
+          <span class="cmtCnt"><strong>
+                  @if(empty($result["article"]["comments"])){{0}}@else{{sizeof($result["article"]["comments"])}}@endif
+              </strong>개</span>
+          @if(!empty($result["article"]["comments"]))
+          @php
+              recursive_child_display($result["comments"], $lookup_table, 0,0,$result["userId"]);
+          @endphp
+          @endif
+      </section>
+      @endif
+      <div id="bo_v_top">
+          <ul class="bo_v_nb">
+              @if(!empty($result["previous"]))
+                  <li><a href="/board?board_type={{Request::get("board_type")}}&board_category={{Request::get("board_category")}}&bid={{$result["previous"]}}&page={{Request::get("page")}}" class="btn_b01">이전글</a></li>
+              @endif
+              @if(!empty($result["next"]))
+                  <li><a href="/board?board_type={{Request::get("board_type")}}&board_category={{Request::get("board_category")}}&bid={{$result["next"]}}&page={{Request::get("page")}}" class="btn_b01">다음글</a></li>
+              @endif
+          </ul>
+          <ul class="bo_v_com">
+              @if( $result["userId"] != 0 && $result["userId"] == $result["article"]["fromId"])
+              <li><a href="/board_write?board_type={{Request::get("board_type")}}&board_category={{Request::get("board_category")}}&page={{$page}}&bid={{Request::get("bid")}}" class="btn_b01">수정</a></li>
+              <li><a href="#" class="btn_b01" onclick="del({{Request::get("bid")}}); return false;">삭제</a></li>
+              @endif
+              <li><a href="/board?board_type={{Request::get("board_type")}}&board_category={{Request::get("board_category")}}&page={{Request::get("page")}}" class="btn_b01">목록</a></li>
+                @if($result["article"]["reply"] != 1 && $result["board"]["reply_use"] == 1)
+                  <li><a href="/board_write?board_type={{Request::get("board_type")}}&board_category={{Request::get("board_category")}}&rid={{Request::get("bid")}}&reply=1" class="btn_b01">답변</a></li>
+                @endif
+          </ul>
+      </div>
+  @endif
 <div class="categoryTit">
-    <ul style="background-color:#F1F1F1;">
-        <li><a href="/bbs/board.php?bo_table=humor" class="on">유머</a></li>
-        <li><a href="/bbs/board.php?bo_table=photo">포토</a></li>
-        <li><a href="/bbs/board.php?bo_table=pick">분석픽공유</a></li>
-        <li><a href="/bbs/board.php?bo_table=free">자유</a></li>
+    <ul>
+        @if($result["type"] == "community")
+        <li><a href="{{"board"}}?board_type=community&board_category=offten" @if(Request::get("board_category") == "offten") class="on" @endif>자주 하시는 질문</a></li>
+        <li><a href="{{"board"}}?board_type=community&board_category=private" @if(Request::get("board_category") == "private") class="on" @endif>1:1문의</a></li>
+        <li><a href="{{"board"}}?board_type=community&board_category=advanced" @if(Request::get("board_category") == "advanced") class="on" @endif>기능개선요청</a></li>
+        @elseif($result["type"] == "customer")
+        <li><a href="{{"board"}}?board_type=customer&board_category=notice" @if(Request::get("board_category") == "notice") class="on" @endif>공지사항</a></li>
+        <li><a href="{{"board"}}?board_type=customer&board_category=event" @if(Request::get("board_category") == "event") class="on" @endif>이벤트</a></li>
+        <li><a href="#">영창</a></li>
+        @else
+        <li><a href="{{"board"}}?board_type=none&board_category=humor" @if(Request::get("board_category") == "humor") class="on" @endif>유버</a></li>
+        <li><a href="{{"board"}}?board_type=none&board_category=photo" @if(Request::get("board_category") == "photo") class="on" @endif>포토</a></li>
+        <li><a href="{{"board"}}?board_type=none&board_category=pick" @if(Request::get("board_category") == "pick") class="on" @endif>분석픽공유</a></li>
+        <li><a href="{{"board"}}?board_type=none&board_category=free" @if(Request::get("board_category") == "free") class="on" @endif>자유</a></li>
+        @endif
     </ul>
 </div>
 <div class="tbl_head01 tbl_wrap">
-    <table class="table">
-        <colgroup>
-			<col width="60px">
-			<col>
-			<col width="150px">
-			<col width="70px">
-			<col width="60px">
-            <col width="60px">		
-        </colgroup>
-        <thead>
+    @if($result["board"]["name"] != "photo")
+        <table class="table table-bordered">
+            <colgroup>
+                <col width="60px">
+                <col>
+                <col width="150px">
+                <col width="70px">
+                <col width="60px">
+                <col width="60px">
+            </colgroup>
+            <thead>
             <tr>
                 <th scope="col">번호</th>
                 <th scope="col">제목</th>
                 <th scope="col">글쓴이</th>
-                <th scope="col"><a href="/bbs/board.php?bo_table=humor&amp;sop=and&amp;sst=wr_datetime&amp;sod=desc&amp;sfl=&amp;stx=&amp;page=1">날짜</a></th>
-                <th scope="col"><a href="/bbs/board.php?bo_table=humor&amp;sop=and&amp;sst=wr_hit&amp;sod=desc&amp;sfl=&amp;stx=&amp;page=1">조회</a></th>
-                <th scope="col"><a href="/bbs/board.php?bo_table=humor&amp;sop=and&amp;sst=wr_good&amp;sod=desc&amp;sfl=&amp;stx=&amp;page=1">추천</a></th>                    
+                <th scope="col" class="text-center"><a href="#">날짜</a></th>
+                @if($result["board"]["view_use"] == "1")
+                    <th scope="col" class="text-center"><a href="#">조회</a></th>
+                @endif
+                @if($result["board"]["recommend_use"] == "1")
+                    <th scope="col" class="text-center">
+                        추천
+                    </th>
+                @endif
             </tr>
-        </thead>
-        <tbody>
-            <tr class="bo_notice bo_read">
-                <td class="td_num">
-                    <img src="https://simg.powerballgame.co.kr/images/ico_notice.png" style="vertical-align:top;">           
-                </td>
-                <td class="td_subject">
-                    <a href="/bbs/board.php?bo_table=humor&amp;wr_id=1">
-                        단순 유머만 등록하시기 바랍니다.                    
-                        <span class="sound_only">댓글</span><span class="cnt_cmt">[9]</span><span class="sound_only">개</span>                
-                    </a>
-                </td>
-                <td class="td_name sv_use"><img src="https://www.powerballgame.co.kr/images/class/M30.gif"> <span class="sv_member">운영자</span></td>
-                <td class="td_date">08-21</td>
-                <td class="td_num">16223</td>
-                <td class="td_num">22</td>                    
-            </tr>
-            <tr  class="td_blind">
-				<td class="td_num"><img src="https://simg.powerballgame.co.kr/images/ico_blind.png" style="vertical-align:top;"></td>
-				<td style="td_subject">
-					<div style="line-height:25px;color:#999;">본 게시글은 운영 정책 위반으로 블라인드 처리되었습니다.</div>
-				</td>
-				<td class="td_name sv_use"><img src="https://www.powerballgame.co.kr/images/class/M6.gif"> <span class="sv_member">일억만</span></td>
-				<td class="td_date">01-31</td>
-				<td class="td_num">10</td>
-                <td class="td_num">0</td>							
-            </tr>
-            <tr class="bo_read td_blind">
-				<td class="td_num"><img src="https://simg.powerballgame.co.kr/images/ico_blind.png" style="vertical-align:top;"></td>
-				<td style="td_subject">
-					<div style="line-height:25px;color:#999;">본 게시글은 운영 정책 위반으로 블라인드 처리되었습니다.</div>
-				</td>
-				<td class="td_name sv_use"><img src="https://www.powerballgame.co.kr/images/class/M6.gif"> <span class="sv_member">쉐보레</span></td>
-				<td class="td_date">01-18</td>
-				<td class="td_num">1557</td>
-                <td class="td_num">2</td>							
-            </tr>
-            <tr class="">
-                <td class="td_num">5374</td>
-                <td class="td_subject">
-                    <a href="/bbs/board.php?bo_table=humor&amp;wr_id=15503">
-                        #공감<span class="sound_only">댓글</span>
-                        <span class="cnt_cmt">[12]</span>
-                        <span class="sound_only">개</span>                
-                    </a>
-                </td>
-                <td class="td_name sv_use"><img src="https://www.powerballgame.co.kr/images/class/M18.gif"> <span class="sv_member">원태연</span></td>
-                <td class="td_date">11-09</td>
-                <td class="td_num">5812</td>
-                <td class="td_num">10</td>                    
-            </tr>
-        </tobdy>
-    </table>
+            </thead>
+            <tbody>
+            @if(sizeof($result["list"]) > 0)
+                @foreach($result["list"] as $mail)
+                    <tr class="@if($mail["notice"] == 1){{'bo_notice'}}@endif  @if(Request::get("bid") == $mail["id"]) bgSelect @endif" @if($mail["active"] == 0) style="background-color:#efefef;" @endif>
+                        <td class="td_num text-center">
+                            @if(Request::get("bid") == $mail["id"])
+                                <span class="bo_current">&gt;&gt;&gt;</span>
+                            @else
+                                @if($mail["active"] != "0")
+                                    @if($mail["notice"] == 1)<img src="/assets/images/powerball/ico_notice.png" style="vertical-align:top;">
+                                    @else
+                                        {{$first_count}}
+                                    @endif
+                                @else
+                                    <img src="/assets/images/powerball/ico_blind.png" style="vertical-align:top;">
+                                @endif
+                            @endif
+
+                        </td>
+                        <td class="td_subject">
+                            @if($mail["active"] != "0")
+                                @if($mail["reply"] == 1)
+                                    <img src="/assets/images/powerball/icon_reply.png" style="margin-left:10px;" alt="답변글">
+                                @endif
+                                @if($result["board"]["security"] == 1 && (($mail["fromId"] != 0 && $mail["fromId"] != $result["userId"]) || ($mail["toId"] != 0 && $mail["toId"] != $result["userId"])))
+                                    <a href="/bbs/board.php?bo_table=humor&amp;wr_id=1" onclick="alert('비밀글은 작성자와 운영진만 열람 가능합니다.');return false;">
+                                        <span class="gray">비밀글로 작성된 글입니다.</span>
+                                        <img src="/assets/images/powerball/icon_secret.png" alt="비밀글"><img src="/assets/images/powerball/icon_new.gif" alt="새글">
+                                    </a>
+                                @else
+                                    <a href="board?board_type={{$result["type"]}}&board_category={{Request::get("board_category")}}&bid={{$mail["id"]}}&page={{$page}}">
+                                        {{$mail["title"]}}
+                                    </a>
+                                @endif
+                                @if($result["board"]["comment_use"] == "1")
+                                    <span class="sound_only">댓글</span><span class="cnt_cmt">
+                                     @if(sizeof($mail["comments"]) > 0)
+                                            [{{sizeof($mail["comments"])}}]
+                                     @endif
+                                    </span><span class="sound_only">개</span>
+                                @endif
+                            @else
+                                <div style="line-height:25px;color:#999;">본 게시글은 운영 정책 위반으로 블라인드 처리되었습니다.</div>
+                            @endif
+                        </td>
+                        <td class="td_name sv_use">
+                            @if($mail["fromId"] == 0)
+                                <img src="/assets/images/powerball/class/M30.gif"> <span class="sv_member">운영자</span>
+                            @else
+                                <span class="sv_member">
+                                <img src="{{$mail["send_usr"]["getLevel"]["value3"]}}" /> {{$mail["send_usr"]["nickname"]}}
+                            </span>
+                            @endif
+                        </td>
+                        <td class="td_date text-center">{{date("m-d",strtotime($mail["created_at"]))}}</td>
+                        @if($result["board"]["view_use"] == "1")
+                            <td class="td_num text-center">{{sizeof($mail["views"])}}</td>
+                        @endif
+                        @if($result["board"]["recommend_use"] == "1")
+                            <td class="td_num text-center">{{sizeof($mail["recommend"])}}</td>
+                        @endif
+                    </tr>
+                    @php
+                        $first_count--;
+                    @endphp
+                    @endforeach
+                    @endif
+                    </tobdy>
+        </table>
+    @else
+        @if(sizeof($result["list"]) > 0)
+            <div class="photoList">
+                <ul>
+                    @foreach($result["list"] as $mail)
+                        @php  @endphp
+                        <li>
+                            <a href="/board?board_type={{Request::get("board_type")}}&board_category={{Request::get("board_category")}}&bid={{$mail["id"]}}&page={{$page}}">
+                            <span class="thumb">{!! extractImage($mail["content"]) !!}</span>
+                            </a><div class="title"><a href="/bbs/board.php?bo_table=photo&amp;wr_id=6756"></a>
+                            <a href="/board?board_type={{Request::get("board_type")}}&board_category={{Request::get("board_category")}}&bid={{$mail["id"]}}&page={{$page}}">{{$mail["title"]}}</a>
+                                <span class="comment" style="color:yellow;">
+                            @if(sizeof($mail["comments"]) > 0)
+                                [{{sizeof($mail["comments"])}}]
+                            @endif</span>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+
+        @endif
+    @endif
+    <div class="page">
+        {{$result["list"]->links()}}
+    </div>
 </div>
+@if($result["board"]["writter_use"] == "1")
 <div class="bo_fx">
     <ul class="btn_bo_user">
-        <li><a href="./write.php?bo_table=humor" class="btn btn-danger">글쓰기</a></li>        
+        <li><a href="/board_write?board_type={{Request::get("board_type")}}&board_category={{Request::get("board_category")}}" class="btn btn-danger">글쓰기</a></li>
     </ul>
 </div>
+@endif
 <div id="bo_sch">
     <form>
+        <input type="hidden" name="board_type" value="{{Request::get("board_type")}}">
+        <input type="hidden" name="board_category" value="{{Request::get("board_category")}}">
         <select name="sfl" id="sfl" >
-            <option value="wr_subject">제목</option>
-            <option value="wr_content">내용</option>
-            <option value="wr_subject||wr_content">제목+내용</option>
-            <option value="mb_id,1">회원아이디</option>
-            <option value="mb_id,0">회원아이디(코)</option>
-            <option value="wr_name,1">글쓴이</option>
-            <option value="wr_name,0">글쓴이(코)</option>
+            <option value="wr_subject" @if(Request::get("sfl") == "wr_subject") selected @endif>제목</option>
+            <option value="wr_content" @if(Request::get("sfl") == "wr_content") selected @endif>내용</option>
+            <option value="wr_subject||wr_content" @if(Request::get("sfl") == "wr_subject||wr_content") selected @endif>제목+내용</option>
+            <option value="mb_id" @if(Request::get("sfl") == "mb_id") selected @endif>회원아이디</option>
+            <option value="wr_name" @if(Request::get("sfl") == "wr_name") selected @endif>글쓴이</option>
         </select>
-        <input type="text" name="stx" value="" id="stx" class="frm_input" size="15">
+        <input type="text" name="stx" value="{{Request::get("stx")}}" id="stx" class="frm_input" size="15">
         <input type="image" src="https://www.powerballgame.co.kr/images/btn_search_off.png" value="검색" class="btn_search">
     </form>
 </div>
 @endsection
+<script id="reply-home" type="text/x-handlebars-template">
+    <form name="fviewcomment" action="/commentProcess" onsubmit="return fviewcomment_submit(this);" method="post" autocomplete="off">
+        @csrf
+        <input type="hidden" name="w" value="c" id="w" />
+        <input type="hidden" name="bo_table" value="humor" />
+        <input type="hidden" name="wr_id" value="{{Request::get("bid")}}" />
+        <input type="hidden" name="comment_id" value="0" id="comment_id" />
+        <input type="hidden" name="sca" value="" />
+        <input type="hidden" name="sfl" value="" />
+        <input type="hidden" name="stx" value="" />
+        <input type="hidden" name="spt" value="" />
+        <input type="hidden" name="page" value="" />
+        <input type="hidden" name="is_good" value="" />
+        <input type="hidden" name="wr_secret" id="wr_secret" />
+        <input type="hidden" name="api_token" id="{{$result["api_token"]}}" />
+        <div class="comment">
+            <div class="textarea">
+                <textarea id="wr_content2" name="wr_content" placeholder="댓글 작성시 타인을 배려하는 마음을 담아 댓글을 남겨주세요."></textarea>
+            </div>
+            <button type="submit" class="btn_submit" title="등록" accesskey="s">등록</button>
+        </div>
+    </form>
+</script>

@@ -543,8 +543,40 @@ Handlebars.registerHelper('loadLevelImage', function(arg) {
     return level_images[arg]
 });
 
-Handlebars.registerHelper("displayKTime",function(arg){
-    return diff_minutes(calcTime("+9"),arg);
+Handlebars.registerHelper("displayKTime",function(arg,arg1 = 1){
+   if(arg1 == 1)
+       return diff_minutes(calcTime("+9"),arg);
+   else
+       return diff_minutes(calcTime("+9"),new Date(arg));
+});
+Handlebars.registerHelper("checkCurWin",function(arg){
+    if(arg !=null && typeof arg !="undefined" && arg.trim() != ""){
+        let parsed_history = JSON.parse(arg)
+        if(parsed_history.current_win > 0){
+            return "<div class=\"winFixCnt\" style=\"z-index:100;\">"+parsed_history.current_win+"</div>";
+        }
+    }
+    return "";
+});
+
+Handlebars.registerHelper("wl",function(arg,arg1){
+   if(arg == null || arg.trim() == "")
+       return 0;
+   let parsed_wl = JSON.parse(arg);
+   if(arg1 == "w")
+       return parsed_wl.total.win;
+   else
+       return parsed_wl.total.lose;
+});
+
+Handlebars.registerHelper('displayImg', function(arg,arg1) {
+    if(typeof arg != "undefined" && arg !=null){
+        if(arg1 == 1)
+            return arg["image"];
+        else
+            return arg["get_level"]["value3"];
+    }
+    return "/assets/images/mine/profile.png";
 });
 
 Handlebars.registerHelper('processBettingData', function(arg1,arg2) {
@@ -602,7 +634,36 @@ Handlebars.registerHelper('processBettingData', function(arg1,arg2) {
     else
         first = first + "<div class=\"pickResultText\"><span class=\"win\">"+win+"</span>승<span class=\"bar\">/</span><span class=\"lose\">"+lose+"</span>패</div>";
     return first
+});
 
+Handlebars.registerHelper('checkSeqWin', function(arg) {
+    let show = false;
+    let badge_html  = "";
+    if(arg.roomandpicture.item_use.length > 0){
+        if(arg.badge >= 5){
+            badge_html +="<div class=\"badge1\" title=\"일주일 내에 5연승 기록이 있습니다\">\n" +
+                "                <div class=\"sp-badge5_s\"></div>\n" +
+                "            </div>";
+        }
+        if(arg.badge >= 10){
+            badge_html +="<div class=\"badge2\" title=\"일주일 내에 10연승 기록이 있습니다\">\n" +
+                "                <div class=\"sp-badge10_s\"></div>\n" +
+                "            </div>";
+        }
+        if(arg.badge >= 15){
+            badge_html +="<div class=\"badge3\" title=\"일주일 내에 15연승 기록이 있습니다\">\n" +
+                "                <div class=\"sp-badge15_s\"></div>\n" +
+                "            </div>";
+        }
+        if(arg.badge >= 20){
+            badge_html +="<div class=\"badge4\" title=\"일주일 내에 20연승 기록이 있습니다\">\n" +
+                "                <div class=\"sp-badge20_s\"></div>\n" +
+                "            </div>";
+        }
+
+    }
+
+    return badge_html;
 });
 
 
@@ -661,4 +722,43 @@ function diff_minutes(dt2, dt1)
     if(minute >=60)
         return_obj = Math.abs(Math.round(minute/60))+"시간";
     return return_obj;
+}
+
+function get_time_diff( datetime )
+{
+    var datetime = typeof datetime !== 'undefined' ? datetime : "2014-01-01 01:02:03.123456";
+
+    var datetime = new Date( datetime ).getTime();
+    var now = calcTime("+9").getTime();
+
+    if( isNaN(datetime) )
+    {
+        return "";
+    }
+
+    console.log( datetime + " " + now);
+
+    if (datetime < now) {
+        var milisec_diff = now - datetime;
+    }else{
+        var milisec_diff = datetime - now;
+    }
+
+    var days = Math.floor(milisec_diff / 1000 / 60 / (60 * 24));
+
+    var date_diff = new Date( milisec_diff );
+
+    return days + " Days "+ date_diff.getHours() + " Hours " + date_diff.getMinutes() + " Minutes " + date_diff.getSeconds() + " Seconds";
+}
+
+function giftPop(itemCode,chargeType,itemCnt)
+{
+    windowOpen('/giftPop?itemCode='+itemCode+'&chargeType='+chargeType+'&itemCnt='+itemCnt,'giftPop',420,530,'no');
+}
+function windowOpen(src,target,width,height,scroll)
+{
+    var wid = (screen.availWidth - width) / 2;
+    var hei = (screen.availHeight - height) / 2;
+    var opt = 'width='+width+',height='+height+',top='+hei+',left='+wid+',resizable=no,status=no,scrollbars='+scroll;
+    window.open(src,target,opt);
 }

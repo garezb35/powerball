@@ -1,15 +1,5 @@
 @extends('includes.empty_header')
 @section("header")
-{{--<table width="100%" border="0" class="defaultTable">--}}
-{{--    <colgroup>--}}
-{{--        <col width="100%">--}}
-{{--    </colgroup>--}}
-{{--	<tbody>--}}
-{{--        <tr>--}}
-{{--			<th class="menu on"><a href="{{ route('pick-powerball') }}" class="on">파워볼게임</a></th>--}}
-{{--		</tr>--}}
-{{--	</tbody>--}}
-{{--</table>--}}
 @include("pick/pick1")
 @endsection
 

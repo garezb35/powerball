@@ -3,6 +3,12 @@
 @section("header")
     @include('member/member-menu')
 @endsection
+@php
+
+    $page =  Request::get("page") ?? 1;
+    $first = $count - ($page-1) * 10;
+
+@endphp
 @section("content")
     <div class="content">
         <table class="table logBox">
@@ -14,17 +20,19 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td scope="row">2</td>
-                <td>슈퍼채팅 이용권</td>
-                <td>2021-02-12 17:58:15</td>
-            </tr>
-            <tr>
-                <td scope="row">1</td>
-                <td>프리미엄 분석기</td>
-                <td>2020-11-28 14:27:20</td>
-            </tr>
+            @foreach($item as $value)
+                @php
+                if(empty($value["item"]["name"])) continue;
+                @endphp
+                <tr>
+                    <td scope="row">{{$first}}</td>
+                    <td>{{$value["item"]["name"]}}</td>
+                    <td>{{$value["terms2"]}}</td>
+                </tr>
+                @php $first--; @endphp
+            @endforeach
             </tbody>
         </table>
+        {{$item->links()}}
     </div>
 @endsection

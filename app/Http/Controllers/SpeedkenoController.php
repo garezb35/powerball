@@ -16,7 +16,7 @@ class SpeedkenoController extends Controller
     public function  pick(Request $request){
         if(!Auth::check())
         {
-            echo "<script>alert('잘못된 접근입니다.')</script>";
+            echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다..')</script>";
             return;
         }
         $current_picks = array();

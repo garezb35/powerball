@@ -1,8 +1,13 @@
 @extends('includes.empty_header')
-
 @section("header")
     @include('member/member-menu')
 @endsection
+@php
+
+    $page =  Request::get("page") ?? 1;
+    $first = $count - ($page-1) * 10;
+
+@endphp
 @section("content")
     <div class="content">
         <table class="table logBox">
@@ -17,23 +22,24 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td scope="row">2</td>
-                    <td><span class="text-primary">사용</span></td>
-                    <td>랜덤 아이템 상자</td>
-                    <td>1</td>
-                    <td>10,000</td>
-                    <td>2021-02-17 14:22:53</td>
-                </tr>
-                <tr>
-                    <td scope="row">1</td>
-                    <td><span class="text-danger">구매</span></td>
-                    <td>총알 10개</td>
-                    <td>4</td>
-                    <td>40,000</td>
-                    <td>2021-02-04 16:02:40</td>
-                </tr>
+            @if(!empty($item))
+                @foreach($item as $value)
+                    @php
+                    $parsed_content = json_decode($value["content"]);
+                    @endphp
+                    <tr>
+                        <td scope="row">{{$first}}</td>
+                        <td><span class="text-@if($parsed_content->class == "use"){{"danger"}}@else{{"primary"}}@endif">{{$parsed_content->use}}</span></td>
+                        <td>{{$parsed_content->name}}</td>
+                        <td>{{$parsed_content->count}}</td>
+                        <td>{{$parsed_content->price}}</td>
+                        <td>{{$value["created_at"]}}</td>
+                    </tr>
+                    @php $first--; @endphp
+                @endforeach
+            @endif
             </tbody>
         </table>
+        {{$item->links()}}
     </div>
 @endsection

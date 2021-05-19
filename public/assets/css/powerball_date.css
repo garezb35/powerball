@@ -962,11 +962,9 @@ resultBox .bar.odd {
 
 .btn_refresh .ic {
     display: block;
-    background: url(/assets/images/powerball/sp_stats.png) no-repeat 0 -9999px;
     margin: 8px;
-    width: 23px;
-    height: 17px;
-    background-position: -80px 0;
+    font-size: 14px;
+    color: #fff;
 }
 
 #refresh-element{

@@ -23,7 +23,7 @@
         var is_scroll_lock_room = false;
         var is_super = false;
         var is_admin = @if($manager == 1) true @else false @endif;
-        var is_manager = false;
+        var is_manager = @if(in_array($userIdKey,explode(",",$room["manager"]))){{true}}@else{{0}}@endif;
         var fixed = "{{$room["roomandpicture"]["fixed"]}}";
         var room_name ="{{$room["room_connect"]}}";
         var is_forceFreeze = false;
@@ -163,6 +163,26 @@
     <div class="rightArea" style="background: #f0f2f2">
         <div class="btns">
             <a href="#" onclick="return false;" id="btn_exit" class="exit">채팅방 나가기</a>
+            @if($room["badge"] >=5)
+                <div style="position:absolute;top:0;right: 194px;z-index:96;" title="일주일 내에 5연승 기록이 있습니다">
+                    <img src="/assets/images/powerball/badge/badge5.png" width="37" height="53">
+                </div>
+            @endif
+            @if($room["badge"] >=10)
+                <div style="position:absolute;top:0;right: 167px;z-index:96;" title="일주일 내에 10연승 기록이 있습니다">
+                    <img src="/assets/images/powerball/badge/badge10.png" width="37" height="53">
+                </div>
+            @endif
+            @if($room["badge"] >=15)
+                <div style="position:absolute;top:0;right: 140px;z-index:96;" title="일주일 내에 15연승 기록이 있습니다">
+                    <img src="/assets/images/powerball/badge/badge15.png" width="37" height="53">
+                </div>
+            @endif
+            @if($room["badge"] >=20)
+                <div style="position:absolute;top:0;right: 114px;z-index:96;" title="일주일 내에 20연승 기록이 있습니다">
+                    <img src="/assets/images/powerball/badge/badge20.png" width="37" height="53">
+                </div>
+            @endif
         </div>
         <div style="margin: 8px">
             @include('chat.countdown')

@@ -17,9 +17,9 @@
     margin-bottom: 10px;">
         <div class="view_se1">
             <div id="single_search" class="se1">
-                <a class="sp-date_prev prev rollover" href="{{route("p_analyse")}}?terms=lates&pageType=late&limit={{$prev}}" rel="down"><span class="ic">이전</span></a>
+                <a style="height: 61px;line-height: 61px;" class="sp-date_prev prev rollover" href="{{route("p_analyse")}}?terms=lates&pageType=late&limit={{$prev}}" rel="down"><i class="fa fa-angle-left" style="/* font-size:24px */"></i></a>
                 <span id="single_round" class="date">{{$limit}}</span>
-                <a class="sp-date_next next rollover" href="{{route("p_analyse")}}?terms=lates&pageType=late&limit={{$next}}" rel="up"><span class="ic">다음</span></a>
+                <a style="height: 61px;line-height: 61px;" class="sp-date_next next rollover" href="{{route("p_analyse")}}?terms=lates&pageType=late&limit={{$next}}" rel="up"><i class="fa fa-angle-right" style="/* font-size:24px */"></i></a>
                 <select id="single_to_round" class="selectbox" title="회차" onchange="$('#round_form').submit();" name="toRound">
                     @for ($i = 50; $i <= 2000; $i+=50)
                         <option value="{{$i}}" @if ($i ==$limit) selected @endif>{{$i}}</option>
@@ -28,9 +28,9 @@
             </div>
         </div>
         <ul class="switch_tab round_tab">
-            <li><a  href="{{route("p_analyse")}}?terms=round" rel="se1">단일회차</a></li>
-            <li><a class="" href="{{route("p_analyse")}}?terms=roundbox" rel="se2">복수회차</a></li>
-            <li><a class="selected" href="{{route('p_analyse')}}?terms=lates&pageType=late">최근회차</a></li>
+            <li><a  href="{{route("psadari_analyse")}}?terms=round" rel="se1">단일회차</a></li>
+            <li><a class="" href="{{route("psadari_analyse")}}?terms=roundbox" rel="se2">복수회차</a></li>
+            <li><a class="selected" href="{{route('psadari_analyse')}}?terms=lates&pageType=late">최근회차</a></li>
         </ul>
     </div>
     @endif

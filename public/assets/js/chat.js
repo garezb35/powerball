@@ -167,6 +167,18 @@ $(document).ready(function(){
             }
         });
     });
+
+    $('#room-tab').on('shown.bs.tab', function (e) {
+        $.ajax({
+            dataType:"json",
+            type: "post",
+            url: "/api/getChatRooms"
+        }).done(function(data) {
+            if(data.status == 1){
+                compileJson("#chat-item","#roomList",data.list,1)
+            }
+        });
+    })
 })
 
 $(window).ready(windowResize);
@@ -217,7 +229,7 @@ function connect(type = "public")
         printSystemMsg('system','접속이 원활하지 않을경우 <a href="https://www.google.co.kr/chrome/browser/features.html" target="_blank">[크롬 브라우저]</a>를 이용해주시기 바랍니다.');
         if(socket == null)
         {
-            socket = io.connect('http://210.112.174.178:3000/'+type,socketOption);
+            socket = io.connect('http://cake6978.com:3000/'+type,socketOption);
         }
         sendProcess('login');
     }
@@ -552,6 +564,22 @@ function receiveProcess(data)
 {
     var hPacket = data.header;
     var bPacket = data.body;
+    if(hPacket.type == "notice_pick"){
+        let pick = bPacket.pick.split(",");
+        if(pick.length == 2){
+            pick[0] = pick[0] ?? 0;
+            pick[1] = pick[1] ?? 0;
+            let sum = parseInt(pick[0])+parseInt(pick[1]);
+            sum = sum ==0 ? 1 : sum
+            $('#powerballPointBetGraph .oddChart .oddBar').animate({width:(pick[0]*100/sum).toFixed(0)+'px'},1000,function(){
+                $(this).next().text((pick[0]*100/sum).toFixed(0)+'%');
+            });
+
+            $('#powerballPointBetGraph .evenChart .evenBar').animate({width:(pick[1]*100/sum).toFixed(0)+'px'},1000,function(){
+                $(this).next().text((pick[1]*100/sum).toFixed(0)+'%');
+            });
+        }
+    }
 
     if(hPacket.type == 'LOGIN')
     {
@@ -832,7 +860,7 @@ function receiveProcess(data)
     }
     else if(hPacket.type == 'MEMO')
     {
-        parent.memoNoti(bPacket.memoid);
+        parent.memoNoti();
     }
     else if(hPacket.type == 'NOTICE')
     {
@@ -918,7 +946,7 @@ function receiveProcess(data)
                 break;
 
             case 'BULLET_NEED':
-                printSystemMsg('guide','총알이 부족합니다.');
+                printSystemMsg('guide','당근이 부족합니다.');
                 break;
 
             case 'BISCUIT_NEED':
@@ -1118,7 +1146,7 @@ function chatManager(type,nick)
     }
     else if(type == 'memo')
     {
-        windowOpen('/?view=memo&type=write&receiveName='+nick,'memo',600,600,'auto');
+        windowOpen('/memo?type=write&nickname='+nick,600,600,550);
     }
     else if(type == 'muteOn' || type == 'muteOff' || type == 'banOn' || type == 'banipOn' || type == 'banipOff')
     {
@@ -1152,15 +1180,14 @@ function chatManager(type,nick)
             $.ajax({
                 type:'POST',
                 dataType:'json',
-                url:'/',
+                url:'/api/addFriend',
                 data:{
-                    view:'action',
-                    action:'member',
-                    actionType:'friendList',
-                    nickname:nick
+                    nickname:nick,
+                    api_token : userIdToken,
+                    type:"friend",
                 },
                 success:function(data,textStatus){
-                    if(data.state == 'success')
+                    if(data.status == 1)
                     {
                         alert('['+data.friendNickname+']님을 친구 추가했습니다.');
                     }
@@ -1168,9 +1195,6 @@ function chatManager(type,nick)
                     {
                         alert(data.msg);
                     }
-                },
-                error:function (xhr,textStatus,errorThrown){
-                    //alert('error'+(errorThrown?errorThrown:xhr.status));
                 }
             });
         }
@@ -1182,15 +1206,14 @@ function chatManager(type,nick)
             $.ajax({
                 type:'POST',
                 dataType:'json',
-                url:'/',
+                url:'/api/addFriend',
                 data:{
-                    view:'action',
-                    action:'member',
-                    actionType:'blackList',
-                    nickname:nick
+                    type:"block",
+                    nickname:nick,
+                    api_token : userIdToken
                 },
                 success:function(data,textStatus){
-                    if(data.state == 'success')
+                    if(data.status == 1)
                     {
                         blackListArr.push(data.blackUseridKey);
                         alert('['+data.blackNickname+']님을 블랙리스트에 추가했습니다.');
@@ -1199,9 +1222,6 @@ function chatManager(type,nick)
                     {
                         alert(data.msg);
                     }
-                },
-                error:function (xhr,textStatus,errorThrown){
-                    //alert('error'+(errorThrown?errorThrown:xhr.status));
                 }
             });
         }
@@ -1285,18 +1305,13 @@ function printChatMsg(level,sex,mark,useridKey,nickname,msg,item,winFixCnt)
 
         if(item.indexOf('levelupx4') != -1)
         {
-            itemView = '<span style="position:absolute;left:-3px;z-index:-1;"><img src="https://simg.powerballgame.co.kr/images/levelupx4.gif" width="29" height="23"></span>';
+            itemView = '<span style="position:absolute;left:-3px;z-index:-1;"><img src="/assets/images/powerball/levelupx4.gif" width="29" height="23"></span>';
         }
         else if(item.indexOf('levelupx2') != -1)
         {
-            itemView = '<span style="position:absolute;left:-3px;z-index:-1;"><img src="https://simg.powerballgame.co.kr/images/levelupx2.gif" width="29" height="23"></span>';
+            itemView = '<span style="position:absolute;left:-3px;z-index:-1;"><img src="/assets/images/powerball/levelupx2.gif" width="29" height="23"></span>';
         }
 
-        if(item.indexOf('gasmask') != -1)
-        {
-            gasmaskClass = ' class="gasmask"';
-            levelImg = 'gasmask';
-        }
     }
 
     var familyNick = '';
@@ -1404,7 +1419,7 @@ function setUserLayer(useridKey,nickname,e)
     if(loginYN == 'Y' && this.userIdKey != useridKey)
     {
         str += '<ul>';
-        str += '<li><a href="#" onclick="giftPop(\''+useridKey+'\',\'bullet\');return false;"><em class="ico"></em><span class="txt">총알 선물하기</span></a></li>';
+        str += '<li><a href="#" onclick="giftPops(\''+useridKey+'\',\'bullet\');return false;"><em class="ico"></em><span class="txt">당근 선물하기</span></a></li>';
         str += '<li><a href="#" onclick="chatManager(\'memo\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">쪽지 보내기</span></a></li>';
 
         if(roomIdx != 'lobby' && is_admin)
@@ -1444,7 +1459,7 @@ function setUserLayer(useridKey,nickname,e)
             if(r.status == 1){
                 let data = r.result;
                 bettingStr += '<ul>';
-                bettingStr += '<li>올킬 - <span class="'+data.totalWinClass+'">'+data.totalWinFix+'</span>연승</li>';
+                bettingStr += '<li>현재연승 - <span class="'+data.totalWinClass+'">'+data.totalWinFix+'</span>연승</li>';
                 bettingStr += '<li>파워볼홀짝 - <span class="'+data.powerballOddEvenWinClass+'">'+data.powerballOddEvenWinFix+'</span>연승, <span class="win">'+data.powerballOddEvenWin+'</span>승<span class="lose">'+data.powerballOddEvenLose+'</span>패('+data.powerballOddEvenRate+')</li>';
                 bettingStr += '<li>파워볼언더오버 - <span class="'+data.powerballUnderOverWinClass+'">'+data.powerballUnderOverWinFix+'</span>연승, <span class="win">'+data.powerballUnderOverWin+'</span>승<span class="lose">'+data.powerballUnderOverLose+'</span>패('+data.powerballUnderOverRate+')</li>';
                 bettingStr += '<li>숫자합홀짝 - <span class="'+data.numberOddEvenWinClass+'">'+data.numberOddEvenWinFix+'</span>연승, <span class="win">'+data.numberOddEvenWin+'</span>승<span class="lose">'+data.numberOddEvenLose+'</span>패('+data.numberOddEvenRate+')</li>';
@@ -1476,3 +1491,150 @@ function setUserLayer(useridKey,nickname,e)
     });
 }
 
+function memoSend(tuseridKey,memoid)
+{
+    var data = {
+        cmd : 'memo',
+        roomIdx : this.roomIdx,
+        tuseridKey : tuseridKey
+    };
+    sendProcess('MEMO',data);
+}
+
+
+function openChatRoom()
+{
+    chatRoomPop = window.open('/chatRoom','chatRoom','width=958px,height=565px,status=no,scrollbars=no,toolbar=no');
+}
+
+function windowOpen(src,target,width,height,scroll)
+{
+    var wid = (screen.availWidth - width) / 2;
+    var hei = (screen.availHeight - height) / 2;
+    var opt = 'width='+width+',height='+height+',top='+hei+',left='+wid+',resizable=no,status=no,scrollbars='+scroll;
+    window.open(src,target,opt);
+}
+
+
+function giftPops(useridKey,type)
+{
+    windowOpen('/giftBox?useridKey='+useridKey+'&type='+type,'gift',420,400,'no');
+}
+
+function giftManager(type,tuseridKey,cnt)
+{
+    var data = {
+        cmd : 'gift',
+        type : type,
+        roomIdx : this.roomIdx,
+        tuseridKey : tuseridKey,
+        cnt : cnt,
+        api_token:userIdToken
+    };
+
+    $.ajax({
+        dataType:"json",
+        type: "post",
+        url: "/api/sendGift",
+        data:data
+    }).done(function(data) {
+        if(data.status == 1){
+            alert(data.msg);
+            sendProcess('GIFT',data.list);
+        }
+        else{
+            alert(data.msg);
+        }
+    });
+}
+
+function printItemMsg(type,cnt,nickname,tnickname)
+{
+    if(type == 'bullet')
+    {
+        var bulletImg = '';
+        if(cnt < 30)
+        {
+            bulletImg = 'bullet1.png';
+        }
+        else if(cnt < 50)
+        {
+            bulletImg = 'bullet2.png';
+        }
+        else if(cnt < 100)
+        {
+            bulletImg = 'bullet3.png';
+        }
+        else if(cnt < 300)
+        {
+            bulletImg = 'bullet4.png';
+        }
+        else if(cnt < 500)
+        {
+            bulletImg = 'bullet5.png';
+        }
+        else if(cnt < 1000)
+        {
+            bulletImg = 'bullet6.png';
+        }
+        else if(cnt < 3000)
+        {
+            bulletImg = 'bullet7.png';
+        }
+        else if(cnt < 5000)
+        {
+            bulletImg = 'bullet8.png';
+        }
+        else
+        {
+            bulletImg = 'bullet9.png';
+        }
+
+        var itemMsg = '<div class="bulletBox"><div class="cnt">'+cnt+'</div><img src="https://simg.powerballgame.co.kr/images/'+bulletImg+'"/></div>';
+
+        $('#msgBox').append('<li>'+itemMsg+'</li>');
+        $('#msgBox').append('<li><p class="msg-gift"><span>'+nickname+'</span> 님이 <span>'+tnickname+'</span> 님에게 <span>총알 '+cnt+'개</span>를 선물하셨습니다.</p></li>');
+    }
+    else if(type == 'biscuit')
+    {
+        var biscuitImg = '';
+        if(cnt < 30)
+        {
+            biscuitImg = 'biscuit1.png';
+        }
+        else if(cnt < 50)
+        {
+            biscuitImg = 'biscuit2.png';
+        }
+        else if(cnt < 100)
+        {
+            biscuitImg = 'biscuit3.png';
+        }
+        else if(cnt < 300)
+        {
+            biscuitImg = 'biscuit4.png';
+        }
+        else if(cnt < 500)
+        {
+            biscuitImg = 'biscuit5.png';
+        }
+        else
+        {
+            biscuitImg = 'biscuit6.png';
+        }
+
+        var itemMsg = '<div class="bulletBox"><div class="cnt">'+cnt+'</div><img src="https://simg.powerballgame.co.kr/images/'+biscuitImg+'"/></div>';
+
+        $('#msgBox').append('<li>'+itemMsg+'</li>');
+        $('#msgBox').append('<li><p class="msg-gift"><span>'+nickname+'</span> 님이 <span>'+tnickname+'</span> 님에게 <span>건빵 '+cnt+'개</span>를 선물하셨습니다.</p></li>');
+    }
+    else if(type == 'autoGiftBiscuit')
+    {
+        var itemMsg = '<div class="autoGiftBox"><img src="https://simg.powerballgame.co.kr/images/biscuit1.png"/></div>';
+
+        $('#msgBox').append('<li>'+itemMsg+'</li>');
+        $('#msgBox').append('<li><p class="msg-autoGift">지속적인 <span>픽 참여</span>로 <span>'+tnickname+'</span> 님에게 <span>건빵 '+cnt+'개</span>가 지급되었습니다.</p></li>');
+    }
+
+    setScroll();
+}

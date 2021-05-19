@@ -2,12 +2,12 @@
     @auth
         @php
             if($next_level ==0){
-                $nextClass = Auth::user()->exp-$normal_level;
+                $nextClass = (Auth::user()->exp-$normal_level) <= 0 ? 1 : Auth::user()->exp-$normal_level;
             }
             else
-                $nextClass = $next_level - $normal_level;
+                $nextClass = ($next_level - $normal_level) <=0 ? 1 : $next_level - $normal_level;
         @endphp
-    <div style="height:214px;">
+    <div style="height:193px;">
         <table class="mt-0" style="width: 100%">
             <colgroup>
                 <col width="176px">
@@ -19,7 +19,7 @@
                         <div style="margin-left: 33px;">
                             <span class="text-gam font-weight-bold" style="font-size: 13px">경험치</span>
                             <div class="mb-2 position-relative mt-1 exp-back">
-                                <div style="width:{{((Auth::user()->exp-$normal_level) / ($next_level - $normal_level))*100}}%;" class="numberFont">
+                                <div style="width:{{((Auth::user()->exp-$normal_level) / $nextClass)*100}}%;" class="numberFont">
                                     <div style="position:absolute;left: 35px;" class="text-white font-weight-bold"><span>{{Auth::user()->exp-$normal_level}}</span> / {{$nextClass}}</div>
                                 </div>
                             </div>
@@ -39,7 +39,7 @@
                            </tr>
                            <tr >
                                <td class="pt-0 pb-1 pl-1 pr-1 align-middle"><img src="/assets/images/powerball/dangun.png" height="15"/><span class="list-item dangun-label"> 당근 </span></td>
-                               <td class="pt-0 pb-1 pl-0  align-middle text-right" style="padding-right: 4px"><span class="text-blo font-weight-bold">{{number_format(Auth::user()->bullet)}}</span>개</td>
+                               <td class="pt-0 pb-1 pl-0  align-middle text-right" style="padding-right: 4px"><span class="text-blo font-weight-bold" id="bullet_cnt">{{number_format(Auth::user()->bullet)}}</span>개</td>
                            </tr>
                            <tr>
                                <td class="pt-0 pb-1 pl-1 pr-1 align-middle"><span class="list-item dotori-label"><img src="/assets/images/powerball/dotori.png" height="15"/> 도토리 </span></td>
@@ -71,7 +71,8 @@
                         <div class="mb-1">
                             <i class="fa fa-envelope"></i>
                         </div>
-                        <a href="#" onclick="windowOpen('/?view=memo','memo',600,600,'auto');return false;" >쪽지</a>
+                        <a href="#" onclick="windowOpen('/memo','memo',600,600,'auto');return false;" >쪽지</a>
+                        <div class="itemCntBox" id="mail-count" style="display:@if($mail_count == 0){{"none"}}@else{{"block"}}@endif">{{$mail_count}}</div>
                     </div>
                 </td>
                 <td class="text-center align-middle pt-2 pb-1 border-right-ja">
@@ -104,7 +105,12 @@
                         <span class="not-left">공지</span>
                         <div style="position: absolute; top: 0px;" id="scrollNotice">
                             <ul>
-                                <li><a href="/bbs/board.php?bo_table=custom&amp;wr_id=600" target="mainFrame">[업데이트] 보안 강화 관련 안내</a></li><li><a href="/bbs/board.php?bo_table=custom&amp;wr_id=599" target="mainFrame">서비스 변경 공지_건빵 아이템 선물 관련...</a></li><li><a href="/bbs/board.php?bo_table=custom&amp;wr_id=598" target="mainFrame">서비스 변경 공지</a></li><li><a href="/bbs/board.php?bo_table=custom&amp;wr_id=602" target="mainFrame">2020년도 동행복권 전자복권 판매 마감...</a></li><li><a href="/bbs/board.php?bo_table=custom&amp;wr_id=601" target="mainFrame">동행복권 공식 홈페이지 점검 안내</a></li>
+                                @if(!empty($notice))
+                                @foreach($notice as $nitem)
+                                        <li><a href="/board?board_type=customer&board_category=notice&bid={{$nitem["id"]}}&page=1" target="mainFrame">{{$nitem["title"]}}</a></li>
+                                @endforeach
+                                @endif
+
                             </ul>
                         </div>
                     </div>
@@ -148,5 +154,6 @@
         </table>
     </div>
     @endguest
-
 </div>
+
+

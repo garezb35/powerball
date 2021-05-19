@@ -3,6 +3,12 @@
 @section("header")
     @include('member/member-menu')
 @endsection
+@php
+
+    $page =  Request::get("page") ?? 1;
+    $first = $count - ($page-1) * 10;
+
+@endphp
 @section("content")
     <div class="content">
         <div class="exp-box">
@@ -39,15 +45,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td scope="row">1</td>
-                        <td>10</td>
-                        <td>2021-02-22 첫 로그인 경험치 지급</td>
-                        <td>2021-02-22 02:46:47</td>
-                        <td>61.75.61.129</td>
-                    </tr>
+                @if(!empty($items))
+                @foreach($items as $value)
+                    @php
+                        $parsed_content = json_decode($value["content"]);
+                    @endphp
+                <tr>
+                    <td scope="row">{{$first}}</td>
+                    <td>{{$parsed_content->exp}}</td>
+                    <td>{{$parsed_content->msg}}</td>
+                    <td>{{$value["created_at"]}}</td>
+                    <td>{{$value["ip"]}}</td>
+                </tr>
+                    @php $first--; @endphp
+                @endforeach
+                @endif
                 </tbody>
             </table>
+            {{$items->links()}}
         </div>
     </div>
 @endsection

@@ -1,4 +1,3 @@
-
 @extends('includes.empty_header')
 @section("content")
 <div class="marketBox">
@@ -9,7 +8,7 @@
             <li><a href="{{route("market")}}?type=item" target="mainFrame" @if(Request::get("type") =="item") class="on" @endif>아이템</a></li>
             <li><a href="{{route("market")}}?type=use" target="mainFrame" @if(Request::get("type") =="use") class="on" @endif>이용권</a></li>
 
-            <li class="right"><a href="/?view=market&amp;type=charge" target="mainFrame">코인충전</a></li>
+            <li class="right"><a href="/member?type=charge" target="mainFrame">코인충전</a></li>
         </ul>
     </div>
     <div class="content">

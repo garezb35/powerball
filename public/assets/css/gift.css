@@ -1,0 +1,61 @@
+/* gift */
+.giftBox {background-color:#F8F8F8;color:#666666;}
+.giftBox .title {height:35px;line-height:35px;font-size:13px;border:1px solid #3c3c3c;background-color:#4C4C4C;color:#fff;font-weight:bold;padding-left:10px;}
+.giftBox .content {padding:10px;font-size:12px;line-height:20px;background-color:#FDFDFD;}
+.giftBox .content .userBullet {position:relative;height:40px;line-height:40px;text-indent:15px;color:#666666;background:#f7f7f7;border:1px solid #f0f0f0;}
+.giftBox .content .userBullet span {font-family:DINWeb-Bold;color:#e80000;}
+.giftBox .content .userBullet .buyBtn {position:absolute;top:6px;right:6px;width:90px;height:25px;line-height:27px;background-color:#00b4b4;color:#fff;border:1px solid #00b4b4;text-align:center;text-indent:0px;}
+.giftBox .content .priceBox {position:relative;border:2px solid #CCCCCC;margin-top:10px;padding:20px;font-size:18px;font-weight:bold;background-color:#fff;text-align:center;}
+.giftBox .content .priceBox .price {font-family:DINWeb-Bold;padding:0 3px 0 10px;color:#e80000;}
+.giftBox .content .priceBox .small {position:absolute;top:22px;right:30px;font-size:11px;font-weight:normal;}
+
+.giftBox .content .bulletDesc {margin:20px 0;font-size:0;}
+.giftBox .content .bulletDesc .tit {margin:5px 0 5px 10px;font-weight:bold;font-size:12px;}
+.giftBox .content .bulletDesc ul {width:390px;margin:0 auto;}
+.giftBox .content .bulletDesc ul li {font-size:12px;margin-left:10px;}
+.giftBox .content .bulletDesc ul li.small {font-size:11px;color:#A4A4A4;margin-left:20px;}
+
+.giftBox .content .bulletSelect {width:390px;border:1px solid #dbdbdb;background-color:#fafafa;margin:0 auto;padding:10px 0;}
+.giftBox .content .bulletSelect table th {text-align:left;padding-left:10px;width:130px;height:30px;}
+.giftBox .content .bulletSelect table td input {border:1px solid #D9D9D8;height:25px;padding:0 5px;vertical-align:middle;}
+.giftBox .content .bulletSelect table td input[type=radio] {border:none;padding:0;}
+.giftBox .content .bulletSelect table td label {cursor:pointer;margin-right:10px;}
+.giftBox .content .bulletSelect table td span.small {font-size:11px;color:#848484;}
+
+.giftBox .btn{height:40px;padding:15px;text-align:center;background-color:#EAEAEA;border-top:1px solid #CDCDCD;margin-top:13px;}
+.giftBox .btn .gift{display:inline-block;width:180px;height:40px;margin:0 auto;text-shadow:1px 1px 1px #2f447f;text-align:center;text-decoration:none;font-weight:bold;line-height:40px;color:#fff;font-size:16px;background-color:#00b4b4;border:1px solid #00b4b4;border-radius:3px;}
+.giftBox .btn .gift.stop {background-color:#b72e00 !important;}
+.giftBox .btn .cancel{display:inline-block;width:180px;height:40px;margin:0 auto;text-shadow:1px 1px 1px #2f447f;text-align:center;text-decoration:none;font-weight:bold;line-height:40px;color:#fff;font-size:16px;background-color:#8a8a8a;border:1px solid #696969;border-radius:3px;}
+.giftBox .btn .cancel:hover{background-color:#808080;}
+
+/* giftPopBox */
+.giftPopBox {background-color:#F8F8F8;color:#666666;}
+.giftPopBox .title {height:35px;line-height:35px;font-size:13px;border:1px solid #3c3c3c;background-color:#4C4C4C;color:#fff;font-weight:bold;padding-left:10px;}
+.giftPopBox .content {padding:10px;font-size:12px;line-height:20px;background-color:#FDFDFD;}
+.giftPopBox .content .tit {margin:5px 0 5px 10px;font-weight:bold;font-size:12px;}
+
+.giftPopBox .itemList {width:200px;padding:0 0 0 3px;margin:10px auto;}
+.giftPopBox .itemList li {position:relative;display:block;width:160px;height:250px;border:1px solid #C8C5C5;background-color:#fff;padding:0 15px;margin:5px 3px;}
+.giftPopBox .itemList li .edge {position:absolute;top:-10px;left:-5px;}
+.giftPopBox .itemList li img {margin:5px auto;display:block;}
+.giftPopBox .itemList li .name {font-size:13px;font-weight:bold;}
+.giftPopBox .itemList li .desc {margin:10px 0;font-size:11px;line-height:16px;height:40px;color:#8b8b8b;}
+.giftPopBox .itemList li .price {position:absolute;bottom:5px;font-family:DINWeb-Bold;margin:10px 0;color:#e80000;}
+
+.giftPopBox .content .inputBox {width:390px;border:1px solid #dbdbdb;background-color:#fafafa;margin:0 auto;padding:10px 0;}
+.giftPopBox .content .inputBox table th {text-align:left;padding-left:10px;width:130px;height:35px;}
+.giftPopBox .content .inputBox table td input {border:1px solid #D9D9D8;height:25px;padding:0 5px;vertical-align:middle;}
+.giftPopBox .content .inputBox table td label {cursor:pointer;margin-right:10px;}
+.giftPopBox .content .inputBox table td span.small {font-size:11px;color:#848484;}
+
+.giftPopBox .content .inputBox .amountSet {position:relative;float:left;width:62px;height:29px;background:url(https://simg.powerballgame.co.kr/images/bg_amount.png) no-repeat;}
+.giftPopBox .content .inputBox .amountSet input {border:none;width:45px;height:27px;line-height:27px;padding:0;margin:1px;text-align:center;}
+.giftPopBox .content .inputBox .amountSet .up {position:absolute;top:0;right:0;width:15px;height:14px;cursor:pointer;}
+.giftPopBox .content .inputBox .amountSet .down {position:absolute;bottom:0;right:0;width:15px;height:14px;cursor:pointer;}
+
+.giftPopBox > .btn{height:40px;padding:15px;text-align:center;background-color:#EAEAEA;border-top:1px solid #CDCDCD;margin-top:13px;}
+.giftPopBox > .btn .gift{display:inline-block;width:180px;height:40px;margin:0 auto;text-shadow:1px 1px 1px #2f447f;text-align:center;text-decoration:none;font-weight:bold;line-height:40px;color:#fff;font-size:16px;background-color:#00b4b4;border:1px solid #00b4b4;border-radius:3px;}
+.giftPopBox > .btn .cancel{display:inline-block;width:180px;height:40px;margin:0 auto;text-shadow:1px 1px 1px #2f447f;text-align:center;text-decoration:none;font-weight:bold;line-height:40px;color:#fff;font-size:16px;background-color:#8a8a8a;border:1px solid #696969;border-radius:3px;}
+.giftPopBox > .btn .cancel:hover{background-color:#808080;}
+
+/* event */

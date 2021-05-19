@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\PbInbox;
+use App\Models\PbMessage;
+use App\Models\PbView;
 use App\Models\User;
 use App\Models\CodeDetail;
 use App\Models\PbPurItem;
@@ -16,6 +19,7 @@ class BaseController  extends Controller
     protected $normal_exp = 0;
     protected  $item = 0;
     protected $next_code = "";
+    protected $mail_count = 0;
     public function  __construct(){
         $this->middleware(function ($request, $next) {
             if (Auth::check()) {
@@ -33,11 +37,24 @@ class BaseController  extends Controller
                     $this->next = 0;
                 }
                 $this->item = PbPurItem::where("userId",Auth::id())->where("active",1)->sum("count");
+                $this->mail_count = PbInbox::where('toId',Auth::user()->userId)->where("view_date",NULL)->get()->count();
             }
+
+            $humor = PbMessage::with("comments")->where("type","humor")->orderBy("created_at","DESC")->limit(12)->get()->toArray();
+            $photo = PbMessage::with("comments")->where("type","photo")->orderBy("created_at","DESC")->limit(14)->get()->toArray();
+            $pick = PbMessage::with("comments")->where("type","pick")->orderBy("created_at","DESC")->limit(12)->get()->toArray();
+            $free = PbMessage::with("comments")->where("type","free")->orderBy("created_at","DESC")->limit(12)->get()->toArray();
+            $notice = PbMessage::where("type","notice")->orderBy("created_at","DESC")->limit(5)->get()->toArray();
             View::share('user_level', $this->user_level);
             View::share('next_level', $this->next);
             View::share('normal_level', $this->normal_exp);
             View::share('item_count', $this->item);
+            View::share('mail_count', $this->mail_count);
+            View::share('humor', $humor);
+            View::share('photo', $photo);
+            View::share('pick', $pick);
+            View::share('free', $free);
+            View::share('notice', $notice);
             return $next($request);
         });
     }
