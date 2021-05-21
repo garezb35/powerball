@@ -154,7 +154,6 @@ function speedTimer(remain){
 
 function getRemainTime(times,type=2){
     var date = new Date(times * 1000);
-
     var g_nMinute = 4 - (date.getMinutes() + type) % 5;
     var g_nSecond = _M_SEC - date.getSeconds();
     --g_nSecond;

@@ -704,7 +704,7 @@ function calcTime(offset) {
     return nd;
 }
 
-function diff_minutes(dt2, dt1)
+function diff_minutes(dt2, dt1,type=true)
 {
     var diff =(dt2 - dt1) / 1000;
     var return_obj="";
@@ -717,11 +717,18 @@ function diff_minutes(dt2, dt1)
         else
             return_obj = sec+"초";
     }
-    if(minute >= 1 && minute < 60)
-        return_obj = minute+"분";
-    if(minute >=60)
-        return_obj = Math.abs(Math.round(minute/60))+"시간";
-    return return_obj;
+    if(type){
+        if(minute >= 1 && minute < 60)
+            return_obj = minute+"분";
+        if(minute >=60)
+            return_obj = Math.abs(Math.round(minute/60))+"시간";
+        return return_obj;
+    }
+    else{
+        if(minute < 5)
+            return true;
+        else return false;
+    }
 }
 
 function get_time_diff( datetime )

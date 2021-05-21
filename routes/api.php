@@ -87,3 +87,4 @@ Route::get("/virtualBet",[App\Http\Controllers\PowerballController::class,'virtu
 Route::post("/getChatRooms",[App\Http\Controllers\ChatController::class,'getChatRooms']);
 
 
+Route::post("/live/result",[App\Http\Controllers\PowerballController::class,'liveResult']);

@@ -71,6 +71,7 @@ class LoginController extends Controller
 
     public function process_login(Request $request)
     {
+        $this->validateLogin($request);
         $request->validate([
             'loginId' => 'required',
             'password' => 'required'
@@ -85,14 +86,10 @@ class LoginController extends Controller
 
         if (auth()->attempt($credentials)) {
             if($user["user_type"] == 0){
-                echo "<script>alert(\"차단된 회원입니다.\");</script>";
-                Auth::logout();
-                return redirect()->back();
+                return $this->sendFailedLoginResponse($request);
             }
             if($user["isDeleted"] == 1){
-                echo "<script>alert(\"탈퇴된 회원입니다.\");</script>";
-                Auth::logout();
-                return redirect()->back();
+                return $this->sendFailedLoginResponse($request);
             }
 
             $loginLog = new LoginLog;
@@ -126,10 +123,7 @@ class LoginController extends Controller
             return redirect()->route('default');
 
         }else{
-            session()->flash('message', 'Invalid credentials');
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-            return redirect()->route('default');
+            return $this->sendFailedLoginResponse($request);
         }
     }
 

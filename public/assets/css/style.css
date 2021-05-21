@@ -8,7 +8,7 @@ ul, ol {
   list-style: none;
 }
 .h-55{
-    height: 55px;
+    height: 66px;
 }
 .table-bordered td, .table-bordered th{
     border-color: #bec0c2;
@@ -688,15 +688,14 @@ thead.thead-gray{
 
 .input-green{
     border-color: #00b4b4;
-    border-radius: 0px;
-    line-height: 25px;
-    height: 25px;
+    border-radius: 5px;
+    line-height: 30px;
+    height: 31px;
     border-width: 1px;
 }
 .input-green:focus{
-    border-color: #3b78ef !important;
+    border-color: #00b4b4 !important;
     border-width: 1px !important;
-    border-radius: 0px !important;
     outline: none !important;
     box-shadow: none;
 }
@@ -1172,4 +1171,26 @@ td.simu-head{
 
 .top_banner img{
     vertical-align: middle;
+}
+
+.login_opt {
+    clear: both;
+    padding-top: 15px;
+    height: 21px;
+}
+.login_opt dd {
+    float: left;
+    width: 140px;
+    line-height: 21px;
+}
+.blind {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: -9999px;
+    width: 0;
+    height: 0;
+    font-size: 0;
+    line-height: 0;
+    z-index: -1;
 }

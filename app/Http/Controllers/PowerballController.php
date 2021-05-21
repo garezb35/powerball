@@ -1884,13 +1884,25 @@ class PowerballController extends Controller
     }
 
     public function powLive(Request $request){
-        return view('pick.powerball_live', [    "js" =>
-                "",
-                "css" => ""
+        $last_round = Pb_Result_Powerball::orderBy("day_round","DESC")->first();
+        $last_round = !empty($last_round) ? $last_round["round"] : 0;
+        $powerball_result = Pb_Result_Powerball::orderBy("day_round","DESC")->limit(288)->get()->toArray();
+        return view('pick.powerball_live', [
+                "js" =>"",
+                "css" => "",
+                "last"=>$last_round,
+                "powerball_result" =>$powerball_result
             ]
         );
     }
+
+
+
     private function getDayBeforeWeek(){
         return date('Y-m-d', strtotime('-7 days', strtotime("now")));
+    }
+
+    public  function liveResult(Request  $request){
+        echo json_encode(Pb_Result_Powerball::orderBy("day_round","DESC")->first());
     }
 }

@@ -67,7 +67,7 @@ unset($__errorArgs, $__bag); ?>
                         </div>
                         <div class="login_menu">
                             <ul>
-                                <li><a href="https://www.powerballgame.co.kr/#https%3A%2F%2Fwww.powerballgame.co.kr%2F%3Fview%3DfindIdPw">아이디 찾기</a></li>
+                                <li><a href="#">아이디 찾기</a></li>
                                 <?php if(Route::has('password.request')): ?>
                                 <li><a href="<?php echo e(route('password.request')); ?>">비밀번호 찾기</a></li>
                                 <?php endif; ?>

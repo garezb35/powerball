@@ -24,7 +24,7 @@ class ForgotPasswordController extends Controller
     use SendsPasswordResetEmails;
 
     public  function showLinkRequestForm(Request $request){
-    
+
         if(!Auth::check()){
             echo "<script>alert('로그인 후 이용가능합니다..');window.history.go(-1);</script>";
             return;
@@ -41,14 +41,14 @@ class ForgotPasswordController extends Controller
                 'password.confirmed'=> '비밀번호가 일치하지 않습니다.'
             ]);
 
-  
+
             if(!Hash::check($request->current,$user->password))
             {
                 echo "<script>alert('현재 비밀번호가 일치하지 않습니다.');window.history.back()</script>";
                 return;
-            }    
+            }
             $user->password = Hash::make($request->password);
-            $user->save();    
+            $user->save();
             echo "<script>alert('성공적으로 변경되었습니다. 변경된 암호는 ".$request->password."입니다');window.close()</script>";
             return;
         }

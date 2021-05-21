@@ -15,7 +15,7 @@
             <tr>
                 <td class="text-left align-top p-1">
                     <div class="mb-2 ml-2"><img src="{{$user_level[0]["value3"]}}">
-                        <span class="font-weight-bold ml-2 ll-he23 ja-color ft-thsize"><span class="grades">{{Auth::user()->nickname}}</span> (계급 : <a href="{{route("member")}}?type=level" target="mainFrame" class="text-gam font-weight-bold">{!! $user_level[0]["codename"] !!}</a>)</span>
+                        <span class="font-weight-bold  ll-he23 ja-color ft-thsize"><span class="grades">{{Auth::user()->nickname}}</span> (계급 : <a href="{{route("member")}}?type=level" target="mainFrame" class="text-gam font-weight-bold">{!! $user_level[0]["codename"] !!}</a>)</span>
                         <div style="margin-left: 33px;">
                             <span class="text-gam font-weight-bold" style="font-size: 13px">경험치</span>
                             <div class="mb-2 position-relative mt-1 exp-back">
@@ -130,28 +130,21 @@
             </colgroup>
             <tr>
                 <td class="p-1">
-                    {!! Form::text('loginId', '', ['class' => 'input-green mb-1 w-100','placeholder'=>"아이디 입력",'autocomplete'=>"off"]) !!}
-                    {!! Form::password('password', ['class'=>'input-green w-100','placeholder'=>"비밀번호 입력"]) !!}
+                    {!! Form::text('loginId', '', ['class' => 'input-green mb-1 w-100','autocomplete'=>"off"]) !!}
+                    {!! Form::password('password', ['class'=>'input-green w-100']) !!}
                 </td>
-                <td class="text-left p-2">
-                    {!! Form::submit('로그인', ['class' => 'btn btn-jin-green w-100 h-55']) !!}
+                <td class="text-left p-1 pr-3">
+                    {!! Form::submit('로그인', ['class' => 'btn btn-jin-greenoutline w-100 h-55']) !!}
+                </td>
+            </tr>
+            <tr>
+                <td class="pt-2 pb-2 pl-1" colspan="2">
+                    <a class="text-blue mr-2" href="{{ route('register') }}">회원가입</a>
+                    <a class="text-blue" href="{{ route('password.request') }}" target="mainFrame">아이디,비밀번호 찾기</a>
                 </td>
             </tr>
         </table>
         {!! Form::close() !!}
-        <table class="table mb-0">
-            <colgroup>
-                <col width="50%">
-            </colgroup>
-            <tr>
-                <td class="p-2">
-                    <a class="btn btn-jin-green w-100 ft-btsize" href="{{ route('register') }}">회원가입</a>
-                </td>
-                <td class="p-2">
-                    <a class="btn btn-jin-green w-100 pl-1 pr-1 ft-btsize" href="{{ route('password.request') }}" target="mainFrame">아이디,비밀번호 찾기</a>
-                </td>
-            </tr>
-        </table>
     </div>
     @endguest
 </div>

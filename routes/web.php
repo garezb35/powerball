@@ -20,9 +20,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::namespace('Auth')->group(function () {
     Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'process_login'])->name('login');
     Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
-    Route::any('password/reset', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'showLinkRequestForm']);
-
+//    Route::any('password/reset', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'showLinkRequestForm']);
 });
+
 
 Route::get('/p_analyse', [App\Http\Controllers\PowerballController::class, 'view'])->name('p_analyse');
 Route::get('/board', [App\Http\Controllers\BoardController::class, 'view'])->name('board');
@@ -45,6 +45,8 @@ Route::prefix('pick')->group(function () {
     Route::get("/simulator",[App\Http\Controllers\PowerballController::class, 'check'])->name("pick-simulator");
     Route::get("/winning-machine",[App\Http\Controllers\PowerballController::class, 'winning'])->name("pick-win");
     Route::get("/powerball/live",[App\Http\Controllers\PowerballController::class,'powLive']);
+    Route::get("/psadari/live",[App\Http\Controllers\PowerSadariController::class,'psadariLive']);
+
 });
 
 Route::get("/psadari_analyse",[App\Http\Controllers\PowerSadariController::class,'view'])->name("psadari_analyse");
@@ -69,3 +71,8 @@ Route::get("/giftPop",[App\Http\Controllers\MemberController::class,'giftPop']);
 
 
 
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+});

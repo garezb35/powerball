@@ -42,7 +42,7 @@
                     <li><a href="#" onclick="openChatRoom();return false;" class="hiddenBorard">방채팅<div class="border-half"></div></a></li>
                     <li><a href="<?php echo e("board"); ?>?board_type=customer&board_category=notice" target="mainFrame" class="hiddenBorard">고객센터<div class="border-half"></div></a></li>
                     <li><a href="/board?board_type=customer&board_category=notice" target="mainFrame" class="hiddenBorard">공지사항<div class="border-half"></div></a></li>
-                    <li><a href="/?view=attendance" target="mainFrame" class="hiddenBorard">출석체크</a></li>
+                    <li><a href="#" onclick="alert('페지 업데이트중');return false" target="mainFrame" class="hiddenBorard">출석체크</a></li>
                 </ul>
             </div>
         </div>
