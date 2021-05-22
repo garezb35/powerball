@@ -283,8 +283,9 @@
 }
 
 #div_sadari_machine_glass {
-    background: url(/assets/images/pick/sadari-machine.png) no-repeat;
-    background-position: center;
+    background-position: center !important;
+    background-color: #002042;
+    background-repeat: no-repeat !important;
 }
 
 #div_machine_bottom {
@@ -745,7 +746,7 @@
 }
 #ready-screen{
     position: absolute;
-    left: 147px;
+    left: 39px;
     top: 40%;
     text-align: center;
 }
@@ -835,3 +836,33 @@
 .lottery_wrap .contents .side .balls_wrap>div:not(:nth-last-of-type(1)) {
     margin-right: 8px;
 }
+
+.playBox .lineBox .line {
+    display: block;
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background-color: #00b4b4;
+    z-index: 904;
+}
+
+.playBox ul li {
+    height: 13px;
+    background-color: #073847;
+    margin-bottom: 13px;
+}
+
+.bbl{
+     border-bottom-left-radius: 10px;
+ }
+.bbr{
+    border-bottom-right-radius: 10px;
+}
+
+.btl{
+    border-top-left-radius: 10px;
+}
+.btr{
+    border-top-right-radius: 10px;
+}
+

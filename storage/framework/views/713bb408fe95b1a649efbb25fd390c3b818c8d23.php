@@ -7,7 +7,7 @@
             else
                 $nextClass = ($next_level - $normal_level) <=0 ? 1 : $next_level - $normal_level;
         ?>
-    <div style="height:193px;">
+    <div style="height:204px;">
         <table class="mt-0" style="width: 100%">
             <colgroup>
                 <col width="176px">
@@ -100,7 +100,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="4" class="p-0 align-middle">
+                <td colspan="4" class="p-0 align-middle border-0">
                     <div class="notice">
                         <span class="not-left">공지</span>
                         <div style="position: absolute; top: 0px;" id="scrollNotice">

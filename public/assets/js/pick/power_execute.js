@@ -65,7 +65,7 @@ var i=0;
                     powerball.init();
                     $(".stopped_balls").attr("src","/assets/images/pick/live.gif")
                 }
-                if (TYPE == 'POWERBALL')
+                if (TYPE == 'POWERLADDER'){}
                     powerladder.init();
                 // if (TYPE == 'POWERLADDER') powerladder.init();
                 // if (TYPE == 'BTCLADDER') btcladder.init();
@@ -142,7 +142,8 @@ var i=0;
                     timeout: 3000,
                     type: "POST",
                     url: dURL,
-                    dataType: "json"
+                    dataType: "json",
+                    data:{type:"ladder"}
                 }).done(function (response) {
                     if (!diff_minutes(calcTime("+9"),new Date(response.created_date),false)) {
                         if (gameAjax == 5) {
@@ -151,68 +152,72 @@ var i=0;
                         } else {
                             setTimeout(function () {
                                 gameAjax = gameAjax + 1;
-                                powerball.getData();
+                                powerladder.getData();
                             }, 1000);
                         }
                     } else {
-                        powerball.start(response);
+                        powerladder.start(response);
                     }
-                }).fail(function () {
+                }).fail(function (error) {
+                    console.log(error)
                     alert('게임데이터에 문제가 발생하였습니다.');
                     window.location.reload(true);
                 });
             },
             start: function (response) {
+                var content = $(".powerball_board");
                 var playResult = content.find('.playResult');
                 var lineBox = content.find('.lineBox');
                 var ladderLine = '<em class="line"></em>';
                 var lis = '<li></li><li></li><li></li><li></li>';
                 var ulClass = 's4';
-                var startIcon = content.find('.start_l');
-                var endIcon = content.find('.end_l');
-                if (response.fd4 == 1 || response.fd4 == 3) {
-                    lis = '<li></li><li></li><li></li>';
-                    ulClass = 's3';
-                }
-                if (response.fd4 == 3 || response.fd4 == 4) {
-                    startIcon = content.find('.start_r');
-                }
-                if (response.fd4 == 1 || response.fd4 == 4) {
-                    endIcon = content.find('.end_r');
-                }
-                core.soundPlay();
-                pickinfo.hide();
-                content.find('.pPick').find('ul').html('');
-                content.find('.playBox ul').removeClass().addClass(ulClass).html(lis);
-                content.find('.bepickLogo').hide();
+                var startIcon = content.find('.left-s');
+                var endIcon = content.find('.odd-s');
 
-                var sType = response.setting;
+                // content.find('.playBox ul').removeClass().addClass(ulClass).html(lis);
+
+                var sType = response.list
+                $("#div_sadari_machine_glass").css("background-color","transparent");
+                $("#ready-screen").css("display","none");
+                if(response.type.includes("_4"))
+                    $("#div_sadari_machine_glass").css("background","url(/assets/images/pick/sadari-machine.png)")
+                else
+                    $("#div_sadari_machine_glass").css("background","url(/assets/images/pick/sadari-machine-3.png)")
                 new Promise(function (resolve, reject) {
                     startIcon.addClass('on');
                     setTimeout(function () {
                         resolve();
                     }, 500);
                 }).then(function () {
+                    ladderLine = '<em class="line '+sType[0].class+' "></em>';
                     lineBox.append(ladderLine).find('em:eq(0)').css(sType[0].pos).animate(sType[0].size, sType[0].spd).promise().then(function () {
+                        ladderLine = '<em class="line '+sType[1].class+' "></em>';
                         return lineBox.append(ladderLine).find('em:eq(1)').css(sType[1].pos).animate(sType[1].size, sType[1].spd).promise();
                     }).then(function () {
+                        ladderLine = '<em class="line '+sType[2].class+' "></em>';
                         return lineBox.append(ladderLine).find('em:eq(2)').css(sType[2].pos).animate(sType[2].size, sType[2].spd).promise();
                     }).then(function () {
+                        ladderLine = '<em class="line '+sType[3].class+' "></em>';
                         return lineBox.append(ladderLine).find('em:eq(3)').css(sType[3].pos).animate(sType[3].size, sType[3].spd).promise();
                     }).then(function () {
+                        ladderLine = '<em class="line '+sType[4].class+' "></em>';
                         return lineBox.append(ladderLine).find('em:eq(4)').css(sType[4].pos).animate(sType[4].size, sType[4].spd).promise();
                     }).then(function () {
+                        ladderLine = '<em class="line '+sType[5].class+' "></em>';
                         return lineBox.append(ladderLine).find('em:eq(5)').css(sType[5].pos).animate(sType[5].size, sType[5].spd).promise();
                     }).then(function () {
+                        ladderLine = '<em class="line '+sType[6].class+' "></em>';
                         return lineBox.append(ladderLine).find('em:eq(6)').css(sType[6].pos).animate(sType[6].size, sType[6].spd).promise();
                     }).then(function () {
                         if (typeof sType[7] == 'object') {
+                            ladderLine = '<em class="line '+sType[7].class+' "></em>';
                             return lineBox.append(ladderLine).find('em:eq(7)').css(sType[7].pos).animate(sType[7].size, sType[7].spd).promise();
                         } else {
                             return console.log('null');
                         }
                     }).then(function () {
                         if (typeof sType[8] == 'object') {
+                            ladderLine = '<em class="line '+sType[8].class+' "></em>';
                             return lineBox.append(ladderLine).find('em:eq(8)').css(sType[8].pos).animate(sType[8].size, sType[8].spd).promise();
                         } else {
                             return console.log('null');
@@ -220,6 +225,7 @@ var i=0;
                     }).then(function () {
                         endIcon.addClass('on');
                         setTimeout(function () {
+                            location.reload()
                             content.find('.progressBar, .timeBox').hide();
                             playResult.css('display', 'flex');
                             var HTML = response.round + '회차 결과는 [좌3짝] 입니다.';

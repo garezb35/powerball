@@ -229,7 +229,7 @@ function connect(type = "public")
         printSystemMsg('system','접속이 원활하지 않을경우 <a href="https://www.google.co.kr/chrome/browser/features.html" target="_blank">[크롬 브라우저]</a>를 이용해주시기 바랍니다.');
         if(socket == null)
         {
-            socket = io.connect('http://210.112.174.189:3000/'+type,socketOption);
+            socket = io.connect('http://cake6978.com:3000/'+type,socketOption);
         }
         sendProcess('login');
     }
@@ -571,11 +571,11 @@ function receiveProcess(data)
             pick[1] = pick[1] ?? 0;
             let sum = parseInt(pick[0])+parseInt(pick[1]);
             sum = sum ==0 ? 1 : sum
-            $('#powerballPointBetGraph .oddChart .oddBar').animate({width:(pick[0]*100/sum).toFixed(0)+'px'},1000,function(){
+            $('#powerballPointBetGraph .oddChart .oddBar').animate({width:(pick[0]*137/sum).toFixed(0)+'px'},1000,function(){
                 $(this).next().text((pick[0]*100/sum).toFixed(0)+'%');
             });
 
-            $('#powerballPointBetGraph .evenChart .evenBar').animate({width:(pick[1]*100/sum).toFixed(0)+'px'},1000,function(){
+            $('#powerballPointBetGraph .evenChart .evenBar').animate({width:(pick[1]*137/sum).toFixed(0)+'px'},1000,function(){
                 $(this).next().text((pick[1]*100/sum).toFixed(0)+'%');
             });
         }

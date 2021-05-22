@@ -1903,6 +1903,15 @@ class PowerballController extends Controller
     }
 
     public  function liveResult(Request  $request){
-        echo json_encode(Pb_Result_Powerball::orderBy("day_round","DESC")->first());
+        $type = $request->post("type");
+        if($type != "ladder"){
+            echo json_encode(Pb_Result_Powerball::orderBy("day_round","DESC")->first());
+        }
+        else{
+            $item = Pb_Result_Powerball::orderBy("day_round","DESC")->first();
+            $nb1 = $item["nb1"];
+            $sadari_result = sadariCheck($nb1);
+            echo json_encode(array("created_date"=>$item["created_date"],"type"=>$sadari_result,"list"=>sadariPath($sadari_result)));
+        }
     }
 }

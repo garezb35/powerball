@@ -270,4 +270,72 @@ function sadariCheck($nb1){
     return $result;
 }
 
+function sadariPath($type){
+    $sType = array();
+    switch ($type){
+        case "left_3":
+            array_push($sType,sadariObject(47,13,"h","66px","100","btl btr bbl"));
+            array_push($sType,sadariObject(97,29,"w","204px","500","btr"));
+            array_push($sType,sadariObject(113,217,"h","32px","50","bbr"));
+            array_push($sType,sadariObject(128,13,"w","204px","500","btl"));
+            array_push($sType,sadariObject(144,13,"h","32px","50","bbl"));
+            array_push($sType,sadariObject(159,29,"w","204px","500","btr"));
+            array_push($sType,sadariObject(175,217,"h","50px","70","bbl bbr"));
+
+            break;
+        case "left_4":
+            array_push($sType,sadariObject(47,13,"h","49px","300","btl btr bbl"));
+            array_push($sType,sadariObject(79,29,"w","204px","100","btr"));
+            array_push($sType,sadariObject(95,217,"h","32px","250","bbr"));
+            array_push($sType,sadariObject(111,28,"w","204px","100","btl","r"));
+            array_push($sType,sadariObject(127,13,"h","32px","250","bbl"));
+            array_push($sType,sadariObject(142,29,"w","204px","100","btr"));
+            array_push($sType,sadariObject(158,217,"h","32px","250","bbr"));
+            array_push($sType,sadariObject(173,28,"w","204px","100","btl","r"));
+            array_push($sType,sadariObject(189,13,"h","36px","300","bbl bbr"));
+            break;
+        case "right_3":
+            array_push($sType,sadariObject(47,217,"h","66px","100","btl btr bbr"));
+            array_push($sType,sadariObject(97,28,"w","204px","100","btl","r"));
+            array_push($sType,sadariObject(113,13,"h","32px","100","bbl"));
+            array_push($sType,sadariObject(129,29,"w","204px","100","btr"));
+            array_push($sType,sadariObject(144,217,"h","32px","100","bbr"));
+            array_push($sType,sadariObject(160,28,"w","204px","100","btl","r"));
+            array_push($sType,sadariObject(175,13,"h","50px","100","bbl bbr"));
+            break;
+        case "right_4":
+            array_push($sType,sadariObject(47,217,"h","49px","100","btl btr bbr"));
+            array_push($sType,sadariObject(79,28,"w","204px","100","btl","r"));
+            array_push($sType,sadariObject(95,13,"h","32px","100","bbl"));
+            array_push($sType,sadariObject(111,29,"w","204px","100","btr"));
+            array_push($sType,sadariObject(127,217,"h","32px","100","bbr"));
+            array_push($sType,sadariObject(142,28,"w","204px","100","bt1","r"));
+            array_push($sType,sadariObject(158,13,"h","32px","100","bbl"));
+            array_push($sType,sadariObject(173,29,"w","204px","100","btr"));
+            array_push($sType,sadariObject(189,217,"h","36px","100","bbl bbr"));
+            break;
+    }
+
+    return $sType;
+}
+
+function sadariObject($top,$left,$wh="w",$size,$spd,$class,$rl="l"){
+    $temp = new \stdClass();
+    $temp->pos = new \stdClass();
+    $temp->size = new \stdClass();
+    $temp->pos->top=$top;
+    if($rl == "l")
+        $temp->pos->left=$left;
+    else
+        $temp->pos->right=$left;
+    if($wh == "w")
+        $temp->size->width=$size;
+    else
+        $temp->size->height=$size;
+    $temp->spd=$spd;
+    $temp->class = $class;
+    return $temp;
+}
+
+
 ?>
