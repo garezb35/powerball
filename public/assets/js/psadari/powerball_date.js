@@ -27,39 +27,30 @@ $(document).ready(function(){
     });
 
     $(document).ready(function(){
+        setInterval(function(){
+            ladderTimer(300,'dayLogTimer');
+        },1000);
         $.ajax({
-            type: "get",
-            url: "/api/synctime"
+            type: "POST",
+            url: "/api/psadari/get_more/analyseDate",
+            data:{"from" : date,to : date},
+            dataType:"json"
         }).done(function(data) {
-            if(data > 0){
-                remainTime = getRemainTime(data);
-                setInterval(function(){
-                    ladderTimer(300,'dayLogTimer');
-                },1000);
+            if(data.status ==1){
+                pattern_header["left_right"] = data.result.left_right;
+                pattern_header["three_four"] = data.result.three_four;
+                pattern_header["odd_even"] = data.result.odd_even;
+                pattern_header["total"] = data.result.total_lines;
+                ajaxPattern('left_right',date,'','')
             }
-
-            $.ajax({
-                type: "POST",
-                url: "/api/psadari/get_more/analyseDate",
-                data:{"from" : date,to : date},
-                dataType:"json"
-            }).done(function(data) {
-                if(data.status ==1){
-                    pattern_header["left_right"] = data.result.left_right;
-                    pattern_header["three_four"] = data.result.three_four;
-                    pattern_header["odd_even"] = data.result.odd_even;
-                    pattern_header["total"] = data.result.total_lines;
-                    ajaxPattern('left_right',date,'','')
-                }
-                moreClick();
-                compileJson("#chart-data",".chart-power",data.result)
-                douPie([pattern_header["total"].count.LEFT4ODD,pattern_header["total"].count.RIGHT3ODD,pattern_header["total"].count.LEFT3EVEN,pattern_header["total"].count.RIGHT4EVEN],"chart-area","",[
-                    window.chartColors1.red,
-                    window.chartColors1.orange,
-                    window.chartColors1.yellow,
-                    window.chartColors1.pick]);
-                ajaxSixPattern(6,"left_right",date);
-            })
+            moreClick();
+            compileJson("#chart-data",".chart-power",data.result)
+            douPie([pattern_header["total"].count.LEFT4ODD,pattern_header["total"].count.RIGHT3ODD,pattern_header["total"].count.LEFT3EVEN,pattern_header["total"].count.RIGHT4EVEN],"chart-area","",[
+                window.chartColors1.red,
+                window.chartColors1.orange,
+                window.chartColors1.yellow,
+                window.chartColors1.pick]);
+            ajaxSixPattern(6,"left_right",date);
         })
     })
 

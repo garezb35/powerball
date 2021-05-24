@@ -6,6 +6,7 @@ use App\Models\CodeDetail;
 use App\Models\PbDeposit;
 use App\Models\PbInbox;
 use App\Models\PbItemUse;
+use App\Models\PbPresent;
 use App\Models\PbPurItem;
 use App\Models\PbRoom;
 use App\Models\PbLog;
@@ -1280,38 +1281,79 @@ class MemberController extends Controller
         if(!Auth::check()){
             echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.history.back(1)</script>";
         }
+        $type = $request->get("type") ?? date("Y-m-d");
         $presents = array();
         $user = Auth::user();
         $size = rand(0,sizeof(randomItemMessage())-1);
         $win_number = CodeDetail::where("codestname","RandomNumber")->first();
+        $presents = PbPresent::where("created_at","LIKE",date("Y-m-d",strtotime($type))."%")->orderBy("created_at","DESC")->paginate(20);
+        $month_days = array();
+
+        $users_days = PbPresent::where("userId",$user->userId)->where("created_at","LIKE",date("Y-m",strtotime($type))."%")->get()->toArray();
+        if(!empty($users_days)){
+            foreach($users_days as $udays){
+                array_push($month_days,$udays["created_at"]);
+            }
+        }
+
         return view('member/present', [
             "js" => "present.js",
             "css" => "present.css",
             "presents"=>$presents,
             "size"=>$size,
             "api_token"=>$user["api_token"],
-            "win_number"=>$win_number["value1"]
+            "win_number"=>$win_number["value1"],
+            "presents"=>$presents,
+            "month_days"=>implode(",",$month_days)
         ]);
     }
 
     public function setPresent(Request $request){
         $user = Auth::user();
+
+        $current_present = PbPresent::where("userId",$user->userId)->whereDate("created_at","=",date("Y-m-d"))->first();
+        if(!empty($current_present)){
+            echo json_encode(array("status"=>0,"msg"=>"출석체크는 하루에 한번만 가능합니다."));
+            return;
+        }
         $randoms = array(1,2,3);
         $winNumber = $request->post("winNumber");
         $comment = $request->post("comment");
-        $ladderResult = false;
-        $userNumber = rand(0,9);
+        $selectNumber = $request->post("selectNumber");
+        $ladderResult = "lose";
+        $userNumber = rand(0,6);
         if($userNumber == $winNumber){
-            $ladderResult = true;
+            $ladderResult = "win";
             $number = $winNumber;
+            $pur_item = PbPurItem::where("userId",$user->userId)->where("market_id","RANDOM_ITEM")->first();
+            if(empty($pur_item))
+                PbPurItem::insert([
+                    "userId"=>$user->userId,
+                    "market_id"=>"RANDOM_ITEM",
+                    "count"=>1,
+                ]);
+            else
+                PbPurItem::where("userId",$user->userId)->where("market_id","RANDOM_ITEM")->update(["count"=>DB::raw("count+1")]);
         }
         else{
             unset($randoms[$winNumber-1]);
+            $randoms = array_values($randoms);
             $ran_index = rand(0,1);
             $number =  $randoms[$ran_index];
         }
-        $selectNumber = $request->post("selectNumber");
+        $seq_present = 0;
+        $previous_present = PbPresent::where("userId",$user->userId)->whereDate("created_at","=",date('Y-m-d',strtotime("-1 days")))->first();
+        if(!empty($previous_present)){
+            $seq_present = $previous_present["perfectatt"];
+        }
+        $seq_present +=1;
+        PbPresent::insert([
+            "userId"=>$user->userId,
+            "result"=>$ladderResult,
+            "perfectatt"=>$seq_present++,
+            "comment"=>$comment,
+        ]);
 
-        echo json_encode(array("status"=>1,"selectNumber"=>$selectNumber,"number"=>$number,"ladderResult"=>$ladderResult));
+        echo json_encode(array("ran"=>$randoms,"status"=>1,"selectNumber"=>$selectNumber,"number"=>$number,"ladderResult"=>$ladderResult));
     }
 }

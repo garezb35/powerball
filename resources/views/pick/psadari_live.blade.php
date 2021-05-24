@@ -64,10 +64,16 @@
                             <img class="bar1" src="/assets/images/pick/empty-sadari.png" />
                             <img class="bar2" src="/assets/images/pick/empty-sadari.png" />
                         </div>
-                        <img class="abs_img left-s" src="/assets/images/pick/left.png" />
-                        <img class="abs_img right-s" src="/assets/images/pick/right.png" />
-                        <img class="abs_img even-s" src="/assets/images/pick/even.png" />
-                        <img class="abs_img odd-s" src="/assets/images/pick/odd.png" />
+                        <div class="abs_img left-s">좌</div>
+                        <div class="abs_img right-s">우</div>
+                        <div class="abs_img even-s">홀</div>
+                        <div class="abs_img odd-s">짝</div>
+
+
+{{--                        <img class="abs_img left-s" src="/assets/images/pick/left.png" />--}}
+{{--                        <img class="abs_img right-s" src="/assets/images/pick/right.png" />--}}
+{{--                        <img class="abs_img even-s" src="/assets/images/pick/even.png" />--}}
+{{--                        <img class="abs_img odd-s" src="/assets/images/pick/odd.png" />--}}
                         <div id="ready-screen">
                             <div>
                                 <span id="ready-round">83</span>

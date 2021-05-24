@@ -26,39 +26,29 @@ $(document).ready(function(){
         document.location.href = '/p_analyse?terms=date&from='+this.value+'&to='+this.value;
     });
 
-    $(document).ready(function(){
-        $.ajax({
-            type: "get",
-            url: "/api/synctime"
-        }).done(function(data) {
-            if(data > 0){
-                remainTime = getRemainTime(data);
-                setInterval(function(){
-                    ladderTimer(300,'dayLogTimer');
-                },1000);
-            }
+    setInterval(function(){
+        ladderTimer(300,'dayLogTimer');
+    },1000);
 
-            $.ajax({
-                type: "POST",
-                url: "/api/get_more/analyseDate",
-                data:{"from" : date,to : date},
-                dataType:"json"
-            }).done(function(data) {
-                if(data.status ==1){
-                    pattern_header["pb_oe"] = data.result.poe;
-                    pattern_header["pb_uo"] = data.result.puo;
-                    pattern_header["nb_oe"] = data.result.noe;
-                    pattern_header["nb_uo"] = data.result.nuo;
-                    pattern_header["nb_size"] = data.result.nsize;
-                    ajaxPattern('pb_oe',date,'','')
-                }
-                moreClick();
-                ajaxPattern('pb_oe',date,date,"");
-                compileJson("#chart-data",".chart-power",data.result)
-                douPie([pattern_header["nb_size"].count[3],pattern_header["nb_size"].count[2],pattern_header["nb_size"].count[1]],"chart-area",["대","중","소"]);
-                ajaxSixPattern(6,"pb_oe",date);
-            })
-        })
+    $.ajax({
+        type: "POST",
+        url: "/api/get_more/analyseDate",
+        data:{"from" : date,to : date},
+        dataType:"json"
+    }).done(function(data) {
+        if(data.status ==1){
+            pattern_header["pb_oe"] = data.result.poe;
+            pattern_header["pb_uo"] = data.result.puo;
+            pattern_header["nb_oe"] = data.result.noe;
+            pattern_header["nb_uo"] = data.result.nuo;
+            pattern_header["nb_size"] = data.result.nsize;
+            ajaxPattern('pb_oe',date,'','')
+        }
+        moreClick();
+        ajaxPattern('pb_oe',date,date,"");
+        compileJson("#chart-data",".chart-power",data.result)
+        douPie([pattern_header["nb_size"].count[3],pattern_header["nb_size"].count[2],pattern_header["nb_size"].count[1]],"chart-area",["대","중","소"]);
+        ajaxSixPattern(6,"pb_oe",date);
     })
 
     $('#boardmenu-sec .nav-item a').click(function(){

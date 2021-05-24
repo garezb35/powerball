@@ -704,6 +704,23 @@ function calcTime(offset) {
     return nd;
 }
 
+function powerballDiff(){
+    var current = calcTime("+9");
+    var second = current.getSeconds();
+    var minute = current.getMinutes()
+    var g_nMinute = 4 - (minute + 2) % 5;
+    var g_nSecond = 55 - second;
+    --g_nSecond;
+    if (g_nSecond < 0)
+    {
+        --g_nMinute;
+        if (g_nMinute < 0)
+            g_nMinute = 4;
+        g_nSecond = 60 + g_nSecond;
+    }
+    return g_nMinute*60 + g_nSecond;
+}
+
 function diff_minutes(dt2, dt1,type=true)
 {
     var diff =(dt2 - dt1) / 1000;

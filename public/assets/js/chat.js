@@ -9,6 +9,7 @@ if('WebSocket' in window)
     socketOption['transports'] = ['websocket'];
 }
 
+
 var socket =  null;
 $(document).on('click','a.uname',userLayerHandler);
 

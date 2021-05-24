@@ -1,6 +1,7 @@
 @extends("includes.empty_header")
 @section("content")
     @php
+
     $date = empty(Request::get("type")) ? date("Y-m-d") : Request::get("type");
     $y = date("Y",strtotime($date));
     $m = date("m",strtotime($date));
@@ -10,6 +11,7 @@
         var y = {{$y}};
         var m = {{$m}};
         var d = {{$d}};
+        var month_days = "{{$month_days}}";
     </script>
     <link rel="stylesheet" href="/assets/calendar/simple-calendar.css">
     <script src="/assets/calendar/jquery.simple-calendar.js"></script>

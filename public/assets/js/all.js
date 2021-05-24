@@ -94,7 +94,8 @@ function setGameTimer(count, betLeft) {
 
 function ladderTimer(remain,divId)
 {
-	if(remainTime == 0)
+	remainTime = powerballDiff();
+    if(remainTime == 0)
 	{
 		remainTime = remain;
 
@@ -121,7 +122,7 @@ function ladderTimer(remain,divId)
         }
 	}
 
-	remainTime--;
+	// remainTime--;
     if(divId != ""){
         var remain_i = Math.floor(remainTime / 60);
         var remain_s = Math.floor(remainTime % 60);

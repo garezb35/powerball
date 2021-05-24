@@ -3,35 +3,27 @@ var pattern_header = pattern =  new Array();
 var pagination = 0;
 var loading =false;
 $(document).ready(function() {
+    setInterval(function () {
+        ladderTimer(300, 'dayLogTimer');
+    }, 1000);
     $.ajax({
-        type: "get",
-        url: "/api/synctime"
+        type: "POST",
+        url: "/api/get_more/analyseDate",
+        data:{"from" : from,to : to,round:round},
+        dataType:"json"
     }).done(function(data) {
-        if (data > 0) {
-            remainTime = getRemainTime(data);
-            setInterval(function () {
-                ladderTimer(300, 'dayLogTimer');
-            }, 1000);
+        if(data.status ==1){
+            pattern_header["pb_oe"] = data.result.poe;
+            pattern_header["pb_uo"] = data.result.puo;
+            pattern_header["nb_oe"] = data.result.noe;
+            pattern_header["nb_uo"] = data.result.nuo;
+            pattern_header["nb_size"] = data.result.nsize;
         }
-        $.ajax({
-            type: "POST",
-            url: "/api/get_more/analyseDate",
-            data:{"from" : from,to : to,round:round},
-            dataType:"json"
-        }).done(function(data) {
-            if(data.status ==1){
-                pattern_header["pb_oe"] = data.result.poe;
-                pattern_header["pb_uo"] = data.result.puo;
-                pattern_header["nb_oe"] = data.result.noe;
-                pattern_header["nb_uo"] = data.result.nuo;
-                pattern_header["nb_size"] = data.result.nsize;
-            }
 
-            compileJson("#chart-data",".chart-power",data.result)
-            douPie([pattern_header["nb_size"].count[3],pattern_header["nb_size"].count[2],pattern_header["nb_size"].count[1]],"chart-area","");
-            moreClick();
-        })
-    });
+        compileJson("#chart-data",".chart-power",data.result)
+        douPie([pattern_header["nb_size"].count[3],pattern_header["nb_size"].count[2],pattern_header["nb_size"].count[1]],"chart-area","");
+        moreClick();
+    })
     $('#startDate').datepicker({
         dateFormat: 'yy-mm-dd',
         prevText: '이전 달',

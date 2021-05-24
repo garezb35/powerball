@@ -51,7 +51,7 @@ $(document).ready(function(){
                     if(data.status == 1)
                     {
                         $('.contentArea').hide();
-                        $('#ladderResult').html('<img src="https://simg.powerballgame.co.kr/images/ladder'+data.selectNumber+'-'+data.number+'.gif">');
+                        $('#ladderResult').html('<img src="/assets/images/random/ladder'+data.selectNumber+'-'+data.number+'.gif">');
                         setTimeout(function(){
                             if(data.ladderResult == 'win')
                             {
@@ -70,32 +70,31 @@ $(document).ready(function(){
                     {
                         alert(data.msg);
                     }
+                },error:function(xhr){
+                    console.log(xhr)
                 }
             });
         }
     });
 
+    let events  = new Array();
+
+    month_days = month_days.split(",");
+    if(month_days.length > 0){
+        for(let i = 0 ; i < month_days.length ; i++){
+            events.push({
+                startDate : new Date(month_days[i]),
+                endDate : new Date(month_days[i]),
+                summary: '사이트 출근 날'
+            });
+        }
+    }
+
     let container = $(".calendarBox").simpleCalendar({
         cur_date:new Date(y, m-1, d),
         fixedStartDay: 0, // begin weeks by sunday
         disableEmptyDetails: true,
-        events: [
-            // {
-            //     startDate: new Date(new Date().setHours(new Date().getHours() + 24)).toDateString(),
-            //     endDate: new Date(new Date().setHours(new Date().getHours() + 25)).toISOString(),
-            //     summary: 'Visit of the Eiffel Tower'
-            // }
-            // {
-            //     startDate: new Date(new Date().setHours(new Date().getHours() - new Date().getHours() - 12, 0)).toISOString(),
-            //     endDate: new Date(new Date().setHours(new Date().getHours() - new Date().getHours() - 11)).getTime(),
-            //     summary: 'Restaurant'
-            // },
-            // {
-            //     startDate: new Date(new Date().setHours(new Date().getHours() - 48)).toISOString(),
-            //     endDate: new Date(new Date().setHours(new Date().getHours() - 24)).getTime(),
-            //     summary: 'Visit of the Louvre'
-            // }
-        ],
+        events: events,
         onMonthChange:function (month, year) {
             month++;
             location.href = "/present?type="+year+"-"+month

@@ -23,28 +23,21 @@ $(document).ready(function() {
             $(".roundbox-body").find(".content").find(".sp-odd4").removeClass("strong");
         }
     })
-    $.ajax({
-        type: "get",
-        url: "/api/synctime"
-    }).done(function(data) {
-        if (data > 0) {
-            remainTime = getRemainTime(data);
-            setInterval(function () {
-                ladderTimer(300, 'dayLogTimer');
-            }, 1000);
-        }
 
-        $.ajax({
-            type: "POST",
-            url: "/api/psadari/getRoundBox",
-            data:{from_date: from,to_date : to,from_round:from_round,to_round:to_round,pb_type:pb_type},
-            dataType:"json",
-        }).done(function(data) {
-            if(data.status ==1){
-                compileJson("#roundbox-data",".roundbox-body",data.result)
-            }
-        })
-    });
+    setInterval(function () {
+        ladderTimer(300, 'dayLogTimer');
+    }, 1000);
+
+    $.ajax({
+        type: "POST",
+        url: "/api/psadari/getRoundBox",
+        data:{from_date: from,to_date : to,from_round:from_round,to_round:to_round,pb_type:pb_type},
+        dataType:"json",
+    }).done(function(data) {
+        if(data.status ==1){
+            compileJson("#roundbox-data",".roundbox-body",data.result)
+        }
+    })
     $('#startDate').datepicker({
         dateFormat: 'yy-mm-dd',
         prevText: '이전 달',

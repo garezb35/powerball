@@ -6,10 +6,11 @@
         <link rel="stylesheet" href="/assets/css/font.css">
         <script src="/assets/js/jquery.min.js"></script>
         <script src="/assets/js/handlebars.js"></script>
+        <script src="/assets/js/common.js"></script>
         <script src="/assets/js/pick/power_execute.js"></script>
         <script src="/assets/js/all.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenMax.min.js"></script>
-        <script src="/assets/js/common.js"></script>
+
     </head>
     <body style="margin: 0;">
     <div class="gmContent" data-type="POWERBALL" data-round="{{$last + 1}}"  data-game="nlotto_power"></div>

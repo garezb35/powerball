@@ -289,15 +289,15 @@
 
 #div_sadari_machine_glass .bar1{
     position: absolute;
-    top: 37px;
-    height: 196px;
-    left: 4px;
+    top: 42px;
+    height: 190px;
+    left: 7px;
 }
 #div_sadari_machine_glass .bar2{
     position: absolute;
-    top: 37px;
-    height: 196px;
-    right: 4px;
+    top: 41px;
+    height: 189px;
+    right: 5px;
 }
 
 #div_machine_bottom {
@@ -682,23 +682,29 @@
 }
 
 .result_ball.left{
-    background: url(/assets/images/powerball/odd.svg);
+    background: url(/assets/images/pick/sadari-left.png);
+    background-size: 100%;
 }
 .result_ball.right{
-    background: url(/assets/images/powerball/even.svg);
+    background: url(/assets/images/pick/sadari-right.png);
+    background-size: 100%;
 }
 .result_ball.odd{
-    background: url(/assets/images/powerball/odd.svg);
+    background: url(/assets/images/pick/sadari-right.png);
+    background-size: 100%;
 }
 .result_ball.even{
-    background: url(/assets/images/powerball/even.svg);
+    background: url(/assets/images/pick/sadari-right.png);
+    background-size: 100%;
 }
 
 .result_ball.line3{
-    background: url(/assets/images/powerball/odd.svg);
+    background: url(/assets/images/pick/sadari-left.png);
+    background-size: 100%;
 }
 .result_ball.line4{
-    background: url(/assets/images/powerball/even.svg);
+    background: url(/assets/images/pick/sadari-right.png);
+    background-size: 100%;
 }
 
 
@@ -807,9 +813,19 @@
     position: absolute;
     width: 38px;
     z-index: 105;
+    background: url(/assets/images/pick/sadari-offline.png);
+    background-size: 100%;
+    height: 38px;
+    line-height: 38px;
+    text-align: center;
+    color: #fff;
 }
-.left-s{
+.left-s.on,.odd-s.on{
+    background: url(/assets/images/pick/sadari-left.png);
+}
 
+.right-s.on,.even-s.on{
+    background: url(/assets/images/pick/sadari-right.png);
 }
 
 .odd-s{

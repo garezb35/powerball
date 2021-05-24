@@ -1,5 +1,6 @@
 <?php $__env->startSection("content"); ?>
     <?php
+
     $date = empty(Request::get("type")) ? date("Y-m-d") : Request::get("type");
     $y = date("Y",strtotime($date));
     $m = date("m",strtotime($date));
@@ -9,6 +10,7 @@
         var y = <?php echo e($y); ?>;
         var m = <?php echo e($m); ?>;
         var d = <?php echo e($d); ?>;
+        var month_days = "<?php echo e($month_days); ?>";
     </script>
     <link rel="stylesheet" href="/assets/calendar/simple-calendar.css">
     <script src="/assets/calendar/jquery.simple-calendar.js"></script>

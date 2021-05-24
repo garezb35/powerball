@@ -1,7 +1,9 @@
 var diff, timer, request_time = 0;
 var cookie = false;
 var i=0;
-(function(){
+
+
+$(document).ready(function(){
     var dURL = '/api/live/result';
     var content = $('.gmContent');
     var TYPE = content.data('type');
@@ -17,16 +19,6 @@ var i=0;
     var sound_effect = null;
     var nextUserTime = 0;
 
-    $.ajax({
-        type: "get",
-        url: "/api/synctime"
-    }).done(function(data) {
-        if (data > 0) {
-            nextTime = getRemainTime(data);
-            $("#timer_gauge").css("width",(100*nextTime/300)+"%")
-            core.init()
-        }
-    });
     var core = (function () {
         return {
             init: function () {
@@ -44,7 +36,7 @@ var i=0;
                 ii = ii < 10 ? '0' + ii : ii;
                 ss = ss < 10 ? '0' + ss : ss;
                 var HTML = ii + ":" + ss + " 후 " + gameRound + "회차 추첨 시작";
-                nextTime--;
+                nextTime = powerballDiff();
                 $('#timer_gauge').css('width', (nextTime / gameTime) * 100 + '%');
                 $('#countdown_clock').html(HTML);
                 $("#ready-round").text(gameRound)
@@ -62,11 +54,18 @@ var i=0;
             startGame: function () {
                 var TYPE = $('.gmContent').data("type")
                 if (TYPE == 'POWERBALL') {
-                    powerball.init();
                     $(".stopped_balls").attr("src","/assets/images/pick/live.gif")
+                    setTimeout(function(){
+                        powerball.init();
+                    },3000)
                 }
-                if (TYPE == 'POWERLADDER'){}
-                    powerladder.init();
+                if (TYPE == 'POWERLADDER'){
+
+                    setTimeout(function(){
+                        powerladder.init();
+                    },3000)
+                }
+
                 // if (TYPE == 'POWERLADDER') powerladder.init();
                 // if (TYPE == 'BTCLADDER') btcladder.init();
                 // if (TYPE == 'LADDER') ladder.init();
@@ -180,6 +179,25 @@ var i=0;
                 $("#div_sadari_machine_glass").find(".bar1").css("display","none");
                 $("#div_sadari_machine_glass").find(".bar2").css("display","none");
                 $("#ready-screen").css("display","none");
+
+                if(response.type == "left_4"){
+                    $(".left-s").addClass("on");
+                    $(".odd-s").addClass("on");
+                }
+                if(response.type == "left_3"){
+                    $(".left-s").addClass("on");
+                    $(".even-s").addClass("on");
+                }
+
+                if(response.type == "right_4"){
+                    $(".right-s").addClass("on");
+                    $(".even-s").addClass("on");
+                }
+                if(response.type == "right_3"){
+                    $(".right-s").addClass("on");
+                    $(".odd-s").addClass("on");
+                }
+
                 if(response.type.includes("_4"))
                     $("#div_sadari_machine_glass").css("background","url(/assets/images/pick/sadari-machine.png)")
                 else
@@ -451,12 +469,9 @@ var i=0;
         }
     })();
 
-})(this);
-
-
-
-
-$(function () {
+    nextTime = powerballDiff();
+    $("#timer_gauge").css("width",(100*nextTime/300)+"%");
+    core.init();
 
     $('#btn_tip').click(function () {
         var $ly_game_tip = $('#ly_game_tip');
@@ -485,7 +500,7 @@ $(function () {
         $('#div_machine_result_board').fadeIn(1000);
     });
 
-});
+})
 
 
 function showNumber(num,ii)
