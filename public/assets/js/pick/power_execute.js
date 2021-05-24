@@ -177,7 +177,8 @@ var i=0;
                 // content.find('.playBox ul').removeClass().addClass(ulClass).html(lis);
 
                 var sType = response.list
-                $("#div_sadari_machine_glass").css("background-color","transparent");
+                $("#div_sadari_machine_glass").find(".bar1").css("display","none");
+                $("#div_sadari_machine_glass").find(".bar2").css("display","none");
                 $("#ready-screen").css("display","none");
                 if(response.type.includes("_4"))
                     $("#div_sadari_machine_glass").css("background","url(/assets/images/pick/sadari-machine.png)")

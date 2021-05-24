@@ -60,7 +60,10 @@
             <div class="powerball_board">
                 <div class="playBox">
                     <div id="result_board" class="result_board relativeBox">
-                        <div id="div_sadari_machine_glass" class="full_size"></div>
+                        <div id="div_sadari_machine_glass" class="full_size">
+                            <img class="bar1" src="/assets/images/pick/empty-sadari.png" />
+                            <img class="bar2" src="/assets/images/pick/empty-sadari.png" />
+                        </div>
                         <img class="abs_img left-s" src="/assets/images/pick/left.png" />
                         <img class="abs_img right-s" src="/assets/images/pick/right.png" />
                         <img class="abs_img even-s" src="/assets/images/pick/even.png" />

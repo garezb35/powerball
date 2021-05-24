@@ -284,8 +284,20 @@
 
 #div_sadari_machine_glass {
     background-position: center !important;
-    background-color: #002042;
     background-repeat: no-repeat !important;
+}
+
+#div_sadari_machine_glass .bar1{
+    position: absolute;
+    top: 37px;
+    height: 196px;
+    left: 4px;
+}
+#div_sadari_machine_glass .bar2{
+    position: absolute;
+    top: 37px;
+    height: 196px;
+    right: 4px;
 }
 
 #div_machine_bottom {
