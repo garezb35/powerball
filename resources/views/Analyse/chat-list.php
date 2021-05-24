@@ -13,7 +13,7 @@
         <div class="sub">
             <span class="b">{{this.members}}</span> / <span>{{this.max_connect}}</span>
             <span class="opener">
-                <img src="{{#displayImg this.roomandpicture 2}}{{/displayImg}}" width="23" height="23">
+                <img src="{{#displayImg this.roomandpicture 2}}{{/displayImg}}" width="30" height="30">
                 <a href="#" onclick="return false;" title="{{this.roomandpicture.nickname}}" rel="{{this.roomandpicture.userIdKey}}" class="uname">{{this.roomandpicture.nickname}}</a>
              </span>
         </div>
