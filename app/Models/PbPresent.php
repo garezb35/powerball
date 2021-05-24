@@ -15,4 +15,8 @@ class PbPresent extends Model
         "perfectatt",
         "comment"
     ];
+
+    public function user(){
+        return $this->hasOne(User::class,"userId","userId");
+    }
 }

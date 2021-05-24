@@ -1286,7 +1286,7 @@ class MemberController extends Controller
         $user = Auth::user();
         $size = rand(0,sizeof(randomItemMessage())-1);
         $win_number = CodeDetail::where("codestname","RandomNumber")->first();
-        $presents = PbPresent::where("created_at","LIKE",date("Y-m-d",strtotime($type))."%")->orderBy("created_at","DESC")->paginate(20);
+        $presents = PbPresent::with("user.getLevel")->where("created_at","LIKE",date("Y-m",strtotime($type))."%")->orderBy("created_at","DESC")->paginate(20);
         $month_days = array();
 
         $users_days = PbPresent::where("userId",$user->userId)->where("created_at","LIKE",date("Y-m",strtotime($type))."%")->get()->toArray();

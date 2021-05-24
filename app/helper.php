@@ -277,7 +277,7 @@ function sadariPath($type){
             array_push($sType,sadariObject(47,13,"h","66px","100","btl btr bbl"));
             array_push($sType,sadariObject(97,29,"w","204px","500","btr"));
             array_push($sType,sadariObject(113,217,"h","32px","50","bbr"));
-            array_push($sType,sadariObject(128,13,"w","204px","500","btl"));
+            array_push($sType,sadariObject(128,28,"w","204px","500","btl","r"));
             array_push($sType,sadariObject(144,13,"h","32px","50","bbl"));
             array_push($sType,sadariObject(159,29,"w","204px","500","btr"));
             array_push($sType,sadariObject(175,217,"h","50px","70","bbl bbr"));

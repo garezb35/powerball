@@ -1,6 +1,9 @@
 @extends("includes.empty_header")
 @section("content")
     @php
+    $first = sizeof($presents);
+    $page = Request::get("page") ?? 1 ;
+    $first = $first - ($page-1) * 20;
     $date = empty(Request::get("type")) ? date("Y-m-d") : Request::get("type");
     $y = date("Y",strtotime($date));
     $m = date("m",strtotime($date));
@@ -78,187 +81,22 @@
                     </tr>
                 </thead>
                 <tbody>
-{{--                <tr class="bgYellow">--}}
-{{--                    <td class="number">15231</td>--}}
-{{--                    <td class="result">당첨</td>--}}
-{{--                    <td class="number">3일</td>--}}
-{{--                    <td class="nick"><img src="/images/class/M12.gif" width="23" height="23"> 박스주워배팅한다</td>--}}
-{{--                    <td class="txt" data-hasqtip="191" oldtitle="꿈과 현실의 차이를 두려워하지 말아라. 꿈을 꿀 수 있다면 실현할 수 있다." title="" aria-describedby="qtip-191">꿈과 현실의 차이를 두려워하지 말아라. 꿈을 꿀 수 있다면 실현...</td>--}}
-{{--                    <td class="number">21-05-24 00:55</td>--}}
-{{--                </tr>--}}
-
-{{--                <tr class="">--}}
-{{--                    <td class="number">15230</td>--}}
-{{--                    <td class="result">꽝</td>--}}
-{{--                    <td class="number">2일</td>--}}
-{{--                    <td class="nick"><img src="/images/class/M19.gif" width="23" height="23"> 하나나님</td>--}}
-{{--                    <td class="txt" data-hasqtip="199" oldtitle="나는 소녀시절부터 키워온 꿈이 있다. 나는 세상을 지배하고 싶다." title="">나는 소녀시절부터 키워온 꿈이 있다. 나는 세상을 지배하고 싶다...</td>--}}
-{{--                    <td class="number">21-05-24 00:54</td>--}}
-{{--                </tr>--}}
-
-{{--                <tr class="">--}}
-{{--                    <td class="number">15229</td>--}}
-{{--                    <td class="result">꽝</td>--}}
-{{--                    <td class="number">1일</td>--}}
-{{--                    <td class="nick"><img src="/images/class/M5.gif" width="23" height="23"> 요요미</td>--}}
-{{--                    <td class="txt" data-hasqtip="207" oldtitle="균형을 잡는 행위는 균형 잡힌 삶을 사는 것과 다르다." title="" aria-describedby="qtip-207">균형을 잡는 행위는 균형 잡힌 삶을 사는 것과 다르다.</td>--}}
-{{--                    <td class="number">21-05-24 00:54</td>--}}
-{{--                </tr>--}}
-
-{{--                <tr class="">--}}
-{{--                    <td class="number">15228</td>--}}
-{{--                    <td class="result">꽝</td>--}}
-{{--                    <td class="number">50일</td>--}}
-{{--                    <td class="nick"><img src="/images/class/M15.gif" width="23" height="23"> 기독교</td>--}}
-{{--                    <td class="txt" data-hasqtip="215" oldtitle="나는 소녀시절부터 키워온 꿈이 있다. 나는 세상을 지배하고 싶다." title="">나는 소녀시절부터 키워온 꿈이 있다. 나는 세상을 지배하고 싶다...</td>--}}
-{{--                    <td class="number">21-05-24 00:51</td>--}}
-{{--                </tr>--}}
-
-{{--                <tr class="">--}}
-{{--                    <td class="number">15227</td>--}}
-{{--                    <td class="result">꽝</td>--}}
-{{--                    <td class="number">1일</td>--}}
-{{--                    <td class="nick"><img src="/images/class/M16.gif" width="23" height="23"> 김수미</td>--}}
-{{--                    <td class="txt" data-hasqtip="223" oldtitle="나는 소녀시절부터 키워온 꿈이 있다. 나는 세상을 지배하고 싶다." title="" aria-describedby="qtip-223">나는 소녀시절부터 키워온 꿈이 있다. 나는 세상을 지배하고 싶다...</td>--}}
-{{--                    <td class="number">21-05-24 00:50</td>--}}
-{{--                </tr>--}}
-
-{{--                <tr class="">--}}
-{{--                    <td class="number">15226</td>--}}
-{{--                    <td class="result">꽝</td>--}}
-{{--                    <td class="number">1일</td>--}}
-{{--                    <td class="nick"><img src="/images/class/M9.gif" width="23" height="23"> ekfak12</td>--}}
-{{--                    <td class="txt" data-hasqtip="231" oldtitle="지금 안 한다면 언제 하겠는가?" title="" aria-describedby="qtip-231">지금 안 한다면 언제 하겠는가?</td>--}}
-{{--                    <td class="number">21-05-24 00:49</td>--}}
-{{--                </tr>--}}
-
-{{--                <tr class="">--}}
-{{--                    <td class="number">15225</td>--}}
-{{--                    <td class="result">꽝</td>--}}
-{{--                    <td class="number">1일</td>--}}
-{{--                    <td class="nick"><img src="/images/class/M5.gif" width="23" height="23"> 겨울백곰</td>--}}
-{{--                    <td class="txt" data-hasqtip="239" oldtitle="두려움을 느껴라, 그리고 어떻게 해서든 하라." title="">두려움을 느껴라, 그리고 어떻게 해서든 하라.</td>--}}
-{{--                    <td class="number">21-05-24 00:48</td>--}}
-{{--                </tr>--}}
-
-{{--                <tr class="">--}}
-{{--                    <td class="number">15224</td>--}}
-{{--                    <td class="result">꽝</td>--}}
-{{--                    <td class="number">17일</td>--}}
-{{--                    <td class="nick"><img src="/images/class/F19.gif" width="23" height="23"> 대장강이님</td>--}}
-{{--                    <td class="txt" data-hasqtip="247" oldtitle="내면의 침묵 속으로 들어가 인생의 모든 것에 목적이 있다는 것을 배워라." title="" aria-describedby="qtip-247">내면의 침묵 속으로 들어가 인생의 모든 것에 목적이 있다는 것을...</td>--}}
-{{--                    <td class="number">21-05-24 00:48</td>--}}
-{{--                </tr>--}}
-
-{{--                <tr class="">--}}
-{{--                    <td class="number">15223</td>--}}
-{{--                    <td class="result">꽝</td>--}}
-{{--                    <td class="number">2일</td>--}}
-{{--                    <td class="nick"><img src="/images/class/M13.gif" width="23" height="23"> 링밖은목사</td>--}}
-{{--                    <td class="txt" data-hasqtip="255" oldtitle="사람들이 사랑에 빠지는 것은 중력 탓이 아니다." title="" aria-describedby="qtip-255">사람들이 사랑에 빠지는 것은 중력 탓이 아니다.</td>--}}
-{{--                    <td class="number">21-05-24 00:48</td>--}}
-{{--                </tr>--}}
-
-{{--                <tr class="">--}}
-{{--                    <td class="number">15222</td>--}}
-{{--                    <td class="result">꽝</td>--}}
-{{--                    <td class="number">1일</td>--}}
-{{--                    <td class="nick"><img src="/images/class/M2.gif" width="23" height="23"> 코로11</td>--}}
-{{--                    <td class="txt" data-hasqtip="263" oldtitle="실패는 불가능하다." title="">실패는 불가능하다.</td>--}}
-{{--                    <td class="number">21-05-24 00:46</td>--}}
-{{--                </tr>--}}
-
-{{--                <tr class="">--}}
-{{--                    <td class="number">15221</td>--}}
-{{--                    <td class="result">꽝</td>--}}
-{{--                    <td class="number">4일</td>--}}
-{{--                    <td class="nick"><img src="/images/class/M12.gif" width="23" height="23"> 사전</td>--}}
-{{--                    <td class="txt" data-hasqtip="271" oldtitle="균형은 선택이 아니라 공존이다." title="" aria-describedby="qtip-271">균형은 선택이 아니라 공존이다.</td>--}}
-{{--                    <td class="number">21-05-24 00:44</td>--}}
-{{--                </tr>--}}
-
-{{--                <tr class="">--}}
-{{--                    <td class="number">15220</td>--}}
-{{--                    <td class="result">꽝</td>--}}
-{{--                    <td class="number">7일</td>--}}
-{{--                    <td class="nick"><img src="/images/class/M6.gif" width="23" height="23"> 나나나야</td>--}}
-{{--                    <td class="txt" data-hasqtip="279" oldtitle="나는 소녀시절부터 키워온 꿈이 있다. 나는 세상을 지배하고 싶다." title="" aria-describedby="qtip-279">나는 소녀시절부터 키워온 꿈이 있다. 나는 세상을 지배하고 싶다...</td>--}}
-{{--                    <td class="number">21-05-24 00:43</td>--}}
-{{--                </tr>--}}
-
-{{--                <tr class="bgYellow">--}}
-{{--                    <td class="number">15219</td>--}}
-{{--                    <td class="result">당첨</td>--}}
-{{--                    <td class="number">19일</td>--}}
-{{--                    <td class="nick"><img src="/images/class/M13.gif" width="23" height="23"> 발키리사냥꾼</td>--}}
-{{--                    <td class="txt" data-hasqtip="287" oldtitle="사람들이 사랑에 빠지는 것은 중력 탓이 아니다." title="">사람들이 사랑에 빠지는 것은 중력 탓이 아니다.</td>--}}
-{{--                    <td class="number">21-05-24 00:42</td>--}}
-{{--                </tr>--}}
-
-{{--                <tr class="">--}}
-{{--                    <td class="number">15218</td>--}}
-{{--                    <td class="result">꽝</td>--}}
-{{--                    <td class="number">1일</td>--}}
-{{--                    <td class="nick"><img src="/images/class/M11.gif" width="23" height="23"> 장수여왕벌</td>--}}
-{{--                    <td class="txt" data-hasqtip="295" oldtitle="지금 안 한다면 언제 하겠는가?" title="">지금 안 한다면 언제 하겠는가?</td>--}}
-{{--                    <td class="number">21-05-24 00:41</td>--}}
-{{--                </tr>--}}
-
-{{--                <tr class="">--}}
-{{--                    <td class="number">15217</td>--}}
-{{--                    <td class="result">꽝</td>--}}
-{{--                    <td class="number">1일</td>--}}
-{{--                    <td class="nick"><img src="/images/class/M9.gif" width="23" height="23"> 남포동고래</td>--}}
-{{--                    <td class="txt" data-hasqtip="303" oldtitle="기회가 오지 않는다면 기회를 만들어라." title="">기회가 오지 않는다면 기회를 만들어라.</td>--}}
-{{--                    <td class="number">21-05-24 00:41</td>--}}
-{{--                </tr>--}}
-
-{{--                <tr class="">--}}
-{{--                    <td class="number">15216</td>--}}
-{{--                    <td class="result">꽝</td>--}}
-{{--                    <td class="number">6일</td>--}}
-{{--                    <td class="nick"><img src="/images/class/M12.gif" width="23" height="23"> 티파니사장</td>--}}
-{{--                    <td class="txt" data-hasqtip="311" oldtitle="기회가 오지 않는다면 기회를 만들어라." title="">기회가 오지 않는다면 기회를 만들어라.</td>--}}
-{{--                    <td class="number">21-05-24 00:41</td>--}}
-{{--                </tr>--}}
-
-{{--                <tr class="">--}}
-{{--                    <td class="number">15215</td>--}}
-{{--                    <td class="result">꽝</td>--}}
-{{--                    <td class="number">2일</td>--}}
-{{--                    <td class="nick"><img src="/images/class/M8.gif" width="23" height="23"> 유새봄</td>--}}
-{{--                    <td class="txt" data-hasqtip="319" oldtitle="당신이 어떤 일을 할 수 있다고 생각하든 할 수 없다고 생각하든, 당신이 옳다." title="">당신이 어떤 일을 할 수 있다고 생각하든 할 수 없다고 생각하든...</td>--}}
-{{--                    <td class="number">21-05-24 00:40</td>--}}
-{{--                </tr>--}}
-
-{{--                <tr class="">--}}
-{{--                    <td class="number">15214</td>--}}
-{{--                    <td class="result">꽝</td>--}}
-{{--                    <td class="number">3일</td>--}}
-{{--                    <td class="nick"><img src="/images/class/M20.gif" width="23" height="23"> 로야르</td>--}}
-{{--                    <td class="txt" data-hasqtip="327" oldtitle="지금 안 한다면 언제 하겠는가?" title="">지금 안 한다면 언제 하겠는가?</td>--}}
-{{--                    <td class="number">21-05-24 00:39</td>--}}
-{{--                </tr>--}}
-
-{{--                <tr class="">--}}
-{{--                    <td class="number">15213</td>--}}
-{{--                    <td class="result">꽝</td>--}}
-{{--                    <td class="number">1일</td>--}}
-{{--                    <td class="nick"><img src="/images/class/M15.gif" width="23" height="23"> 서산국민학교</td>--}}
-{{--                    <td class="txt" data-hasqtip="335" oldtitle="두려움을 느껴라, 그리고 어떻게 해서든 하라." title="">두려움을 느껴라, 그리고 어떻게 해서든 하라.</td>--}}
-{{--                    <td class="number">21-05-24 00:39</td>--}}
-{{--                </tr>--}}
-
-{{--                <tr class="">--}}
-{{--                    <td class="number">15212</td>--}}
-{{--                    <td class="result">꽝</td>--}}
-{{--                    <td class="number">10일</td>--}}
-{{--                    <td class="nick"><img src="/images/class/M2.gif" width="23" height="23"> 13579승</td>--}}
-{{--                    <td class="txt" data-hasqtip="343" oldtitle="꿈과 현실의 차이를 두려워하지 말아라. 꿈을 꿀 수 있다면 실현할 수 있다." title="">꿈과 현실의 차이를 두려워하지 말아라. 꿈을 꿀 수 있다면 실현...</td>--}}
-{{--                    <td class="number">21-05-24 00:35</td>--}}
-{{--                </tr>--}}
+                @if(!empty($presents))
+                    @foreach($presents as $present)
+                    <tr class="">
+                        <td class="number">{{$first}}</td>
+                        <td class="result">@if($present["result"] == "win"){{"당첨"}}@else{{"꽝"}}@endif</td>
+                        <td class="number">{{$present["perfectatt"]}}일</td>
+                        <td class="nick"><img src="{{$present["user"]["getLevel"]["value3"]}}" width="23" height="23">{{$present["user"]["nickname"]}}</td>
+                        <td class="txt" data-hasqtip="207" oldtitle="{{$present["comment"]}}" title="" aria-describedby="qtip-207">{{$present["comment"]}}</td>
+                        <td class="number">{{$present["created_at"]}}</td>
+                    </tr>
+                        @php $first--; @endphp
+                    @endforeach
+                @endif
                 </tbody>
             </table>
+            {{$presents->links()}}
         </div>
     </div>
 @endsection

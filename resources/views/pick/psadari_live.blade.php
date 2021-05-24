@@ -66,8 +66,8 @@
                         </div>
                         <div class="abs_img left-s">좌</div>
                         <div class="abs_img right-s">우</div>
-                        <div class="abs_img even-s">홀</div>
-                        <div class="abs_img odd-s">짝</div>
+                        <div class="abs_img even-s">짝</div>
+                        <div class="abs_img odd-s">홀</div>
 
 
 {{--                        <img class="abs_img left-s" src="/assets/images/pick/left.png" />--}}

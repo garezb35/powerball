@@ -1,6 +1,8 @@
 <?php $__env->startSection("content"); ?>
     <?php
-
+    $first = sizeof($presents);
+    $page = Request::get("page") ?? 1 ;
+    $first = $first - ($page-1) * 20;
     $date = empty(Request::get("type")) ? date("Y-m-d") : Request::get("type");
     $y = date("Y",strtotime($date));
     $m = date("m",strtotime($date));
@@ -78,187 +80,23 @@
                     </tr>
                 </thead>
                 <tbody>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                <?php if(!empty($presents)): ?>
+                    <?php $__currentLoopData = $presents; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $present): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <tr class="">
+                        <td class="number"><?php echo e($first); ?></td>
+                        <td class="result"><?php if($present["result"] == "win"): ?><?php echo e("당첨"); ?><?php else: ?><?php echo e("꽝"); ?><?php endif; ?></td>
+                        <td class="number"><?php echo e($present["perfectatt"]); ?>일</td>
+                        <td class="nick"><img src="<?php echo e($present["user"]["getLevel"]["value3"]); ?>" width="23" height="23"><?php echo e($present["user"]["nickname"]); ?></td>
+                        <td class="txt" data-hasqtip="207" oldtitle="<?php echo e($present["comment"]); ?>" title="" aria-describedby="qtip-207"><?php echo e($present["comment"]); ?></td>
+                        <td class="number"><?php echo e($present["created_at"]); ?></td>
+                    </tr>
+                        <?php $first--; ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endif; ?>
                 </tbody>
             </table>
+            <?php echo e($presents->links()); ?>
+
         </div>
     </div>
 <?php $__env->stopSection(); ?>
