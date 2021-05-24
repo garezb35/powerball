@@ -37,10 +37,10 @@
                     <li><a href="{{route('pick-powerball')}}" target="mainFrame" style="width:80px;text-align:center;" class="hiddenBorard">픽<div class="border-half"></div></a></li>
                     <li><a href="#" target="mainFrame" onclick='alert("적재중... 잠시 기다려 주세요");return false;' rel="hidden" class="hiddenBorard">파워모의배팅<div class="border-half"></div></a></li>
                     <li><a href="#" target="mainFrame" onclick='alert("적재중... 잠시 기다려 주세요");return false;' rel="hidden" class="hiddenBorard">연승제조기<div class="border-half"></div></a></li>
-                    <li><a href="{{"board"}}?board_type=community&board_category=offten" target="mainFrame" class="hiddenBorard">커뮤니티<div class="border-half"></div></a></li>
+                    <li><a href="{{"board"}}?board_type=none&board_category=humor" target="mainFrame" class="hiddenBorard">커뮤니티<div class="border-half"></div></a></li>
                     <li><a href="{{route('market')}}" target="mainFrame" class="hiddenBorard">마켓<div class="border-half"></div></a></li>
                     <li><a href="#" onclick="openChatRoom();return false;" class="hiddenBorard">방채팅<div class="border-half"></div></a></li>
-                    <li><a href="{{"board"}}?board_type=customer&board_category=notice" target="mainFrame" class="hiddenBorard">고객센터<div class="border-half"></div></a></li>
+                    <li><a href="{{"board"}}?board_type=community&board_category=offten" target="mainFrame" class="hiddenBorard">고객센터<div class="border-half"></div></a></li>
                     <li><a href="/board?board_type=customer&board_category=notice" target="mainFrame" class="hiddenBorard">공지사항<div class="border-half"></div></a></li>
                     <li><a href="{{route("present")}}"  target="mainFrame" class="hiddenBorard">출석체크</a></li>
                 </ul>
