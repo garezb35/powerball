@@ -1,5 +1,5 @@
 /* attendance */
-.attendanceBox .titleBox {height:30px;line-height:30px;padding-left:15px;font-size:15px;border:1px solid #0D568C;background-color:#127CCB;color:#fff;}
+.attendanceBox .titleBox {height:30px;line-height:30px;padding-left:15px;font-size:15px;border:1px solid #0D568C;background-color:#00b4b4;color:#fff;}
 .attendanceBox .titleBox span {font-size:11px;color:yellow;}
 .attendanceBox .topBox {margin-top:5px;height:335px;}
 .attendanceBox .calendarBox {float:left;margin-left:5px;width:360px;}
