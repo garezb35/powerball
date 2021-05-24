@@ -1,7 +1,6 @@
 @extends("includes.empty_header")
 @section("content")
     @php
-
     $date = empty(Request::get("type")) ? date("Y-m-d") : Request::get("type");
     $y = date("Y",strtotime($date));
     $m = date("m",strtotime($date));
