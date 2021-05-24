@@ -47,15 +47,18 @@ class ChatController extends Controller
 
     public function roomWait(Request $request){
         if(!Auth::check()){
-            echo "<script>alert('로그인 후 이용가능합니다..');window.history.go(-1);</script>";
-            return;
+            $user = User::with("getLevel")->where("userId",1000000)->first();
+        }
+        else
+        {
+            $user = User::with("getLevel")->where("userId",Auth::id())->first();
         }
         $count = $favor_count = 0;
         $rtype = empty($request->rtype) ? "winRate" : $request->rtype;
-        $user = Auth::user();
+
         $premium_count = PbPurItem::select(DB::raw("SUM(count) as counts"))
                                     ->where("market_id","LIKE","%PREMIUM_CHATROOM%")
-                                    ->where("userId",$user->userId)
+                                    ->where("userId",$user["userId"])
                                     ->get()->toArray();
         $normal_count = PbPurItem::select(DB::raw("SUM(count) as counts"))
                                     ->where(function($query)
@@ -63,7 +66,7 @@ class ChatController extends Controller
                                         $query->where("market_id","CHATROOM")
                                             ->orWhere("market_id","CHATROOM_20");
                                     })
-                                    ->where("userId",$user->userId)->get()->toArray();
+                                    ->where("userId",$user["userId"])->get()->toArray();
         $premium_count = empty($premium_count) ? 0 : $premium_count[0]["counts"];
         $normal_count = empty($normal_count) ? 0 : $normal_count[0]["counts"];
 
@@ -84,7 +87,7 @@ class ChatController extends Controller
         }
 
         if($rtype == "favor"){
-            $favor_list = PbFavorRoom::select(DB::raw("GROUP_CONCAT(pb_favor_room.roomIdx  SEPARATOR ',') as flist"))->where("userId",$user->userId)->first();
+            $favor_list = PbFavorRoom::select(DB::raw("GROUP_CONCAT(pb_favor_room.roomIdx  SEPARATOR ',') as flist"))->where("userId",$user["userId"])->first();
             if(empty($favor_list["flist"]))
                 $pb_rooms = array();
             else
@@ -131,11 +134,11 @@ class ChatController extends Controller
                                             "user"=>$user,
                                             "room_count"=>$count,
                                             "favor_count"=>$favor_count,
-                                            "api_token"=>$user->api_token,
-                                            "userIdKey"=>$user->userIdKey,
+                                            "api_token"=>$user["api_token"],
+                                            "userIdKey"=>$user["userIdKey"],
                                             "profile"=>json_encode($this->profile),
-                                            "level"=>$user->getLevel()->first(),
-                                            "u_level"=>$user->level
+                                            "level"=>$user["getLevel"],
+                                            "u_level"=>$user["level"]
                                             ]);
     }
 

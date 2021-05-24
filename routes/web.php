@@ -69,9 +69,9 @@ Route::get("/giftBox",[App\Http\Controllers\MemberController::class,'giftBox']);
 
 Route::get("/giftPop",[App\Http\Controllers\MemberController::class,'giftPop']);
 
+Route::get("/ranking",[App\Http\Controllers\MemberController::class,'ranking'])->name("ranking");
 
-
-
+Route::get("/present",[App\Http\Controllers\MemberController::class,'present'])->name("present");
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();

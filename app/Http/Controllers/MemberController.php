@@ -1246,4 +1246,72 @@ class MemberController extends Controller
         ]);
         echo json_encode(array("status"=>1,"msg"=>"아이템 선물이 완료되었습니다."));
     }
+
+    public function ranking(Request $request){
+        $type = $request->get("type") ?? "powerballOddEven";
+        $users = array();
+
+        switch ($type){
+            case "powerballOddEven":
+                $users  = User::with("getLevel")->where("bet_number",">=",5000)->where("bet_date",">=",date('Y-m-d', strtotime('-7 days', strtotime("now"))))->where("winning_history","!=",null)->orderBy("bet_number","DESC")->limit(30)->get()->toArray();
+                break;
+            case "powerballUnderOver":
+                $users  = User::with("getLevel")->where("bet_number1",">=",5000)->where("bet_date1",">=",date('Y-m-d', strtotime('-7 days', strtotime("now"))))->where("winning_history","!=",null)->orderBy("bet_number1","DESC")->limit(30)->get()->toArray();
+                break;
+            case "numberOddEven":
+                $users  = User::with("getLevel")->where("bet_number2",">=",5000)->where("bet_date2",">=",date('Y-m-d', strtotime('-7 days', strtotime("now"))))->where("winning_history","!=",null)->orderBy("bet_number2","DESC")->limit(30)->get()->toArray();
+                break;
+            case "numberUnderOver":
+                $users  = User::with("getLevel")->where("bet_number3",">=",5000)->where("bet_date3",">=",date('Y-m-d', strtotime('-7 days', strtotime("now"))))->where("winning_history","!=",null)->orderBy("bet_number3","DESC")->limit(30)->get()->toArray();
+                break;
+            case "numberSize":
+                $users  = User::with("getLevel")->where("bet_number4",">=",5000)->where("bet_date4",">=",date('Y-m-d', strtotime('-7 days', strtotime("now"))))->where("winning_history","!=",null)->orderBy("bet_number4","DESC")->limit(30)->get()->toArray();
+                break;
+        }
+        return view('member/ranking', [
+            "js" => "",
+            "css" => "ranking.css",
+            "users"=>$users
+
+        ]);
+    }
+
+    public  function present(Request $request){
+        if(!Auth::check()){
+            echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.history.back(1)</script>";
+        }
+        $presents = array();
+        $user = Auth::user();
+        $size = rand(0,sizeof(randomItemMessage())-1);
+        $win_number = CodeDetail::where("codestname","RandomNumber")->first();
+        return view('member/present', [
+            "js" => "present.js",
+            "css" => "present.css",
+            "presents"=>$presents,
+            "size"=>$size,
+            "api_token"=>$user["api_token"],
+            "win_number"=>$win_number["value1"]
+        ]);
+    }
+
+    public function setPresent(Request $request){
+        $user = Auth::user();
+        $randoms = array(1,2,3);
+        $winNumber = $request->post("winNumber");
+        $comment = $request->post("comment");
+        $ladderResult = false;
+        $userNumber = rand(0,9);
+        if($userNumber == $winNumber){
+            $ladderResult = true;
+            $number = $winNumber;
+        }
+        else{
+            unset($randoms[$winNumber-1]);
+            $ran_index = rand(0,1);
+            $number =  $randoms[$ran_index];
+        }
+        $selectNumber = $request->post("selectNumber");
+
+        echo json_encode(array("status"=>1,"selectNumber"=>$selectNumber,"number"=>$number,"ladderResult"=>$ladderResult));
+    }
 }

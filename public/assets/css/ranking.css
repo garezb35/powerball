@@ -1,0 +1,48 @@
+* bettingRank */
+.rankBox {width:440px;height:485px;border:3px solid #4C4C4C;background-color:#fff;}
+.rankBox .rankTitle {height:30px;line-height:27px;font-size:14px;padding-left:10px;font-weight:bold;background-color:#4C4C4C;color:#fff;}
+.rankBox .rankTitle .close {position:absolute;top:0;right:0;}
+.rankTabMenu li {width:82px;height:25px;line-height:25px;float:left;text-align:center;background-color:#EFEFEF;border:1px solid #CECFCE;color:#636563;border-bottom:none;}
+.rankBox .rankContent {padding:10px;}
+.rankTabMenu li.none {border-left:none;width:83px;}
+.rankTabMenu li.on {background-color:#fff;}
+.rankTabMenu li a {display:block;}
+.rankTable {clear:both;float:left;width:420px;border:1px solid #CECFCE;}
+.rankTable th {height:30px;background-color:#4A4D4A;color:#fff;border:1px solid #4C4C4C;}
+.rankTable td {height:30px;text-align:center;border-bottom:1px solid #EAEAEA;color:#636563}
+.rankTable td img {vertical-align:middle;}
+.rankTable td.nick {text-align:left;padding-left:10px;font-weight:bold;}
+.rankTable td.right {background-color:#EFEFEF;text-align:right;padding-right:10px;font-size:11px;}
+.rankTable td.number {font-family:DINWeb-Bold;}
+
+.rankTitleTable {clear:both;float:left;width:420px;border:1px solid #CECFCE;}
+.rankTitleTable th {height:30px;background-color:#4A4D4A;color:#fff;border:1px solid #EAEAEA;}
+.rankTitleTable td {height:30px;text-align:center;border:1px solid #EAEAEA;color:#636563;}
+.rankTitleTable td a {display:block;height:30px;line-height:30px;}
+.rankTitleTable td a.on {background-color:#4A4D4A;color:#fff;}
+
+/* ranking */
+.rankingBox .titleBox {height:30px;line-height:30px;padding-left:15px;font-size:15px;border:1px solid #00b4b4;background-color:#00b4b4;color:#fff;}
+.rankingBox .titleBox span {font-size:11px;color:yellow;}
+.rankingBox .menuBox {height:85px;margin-top:5px;border:1px solid #00b4b4;}
+.rankingBox .menuBox .title {height:30px;padding:10px 10px 7px 10px;}
+.rankingBox .menuBox .title .left {float:left;width:400px;height:30px;line-height:30px;text-align:center;border:1px solid #939393;background-color:#F1F1F1;}
+.rankingBox .menuBox .title .right {float:right;width:399px;height:30px;line-height:30px;text-align:center;border:1px solid #939393;background-color:#F1F1F1;}
+
+.rankingBox .menuBox .leftMenu {float:left;margin:0 0 0 10px;width:402px;height:30px;}
+.rankingBox .menuBox .leftMenu .left {float:left;display:inline-block;width:196px;height:30px;line-height:30px;text-align:center;border:1px solid #00b4b4;}
+.rankingBox .menuBox .leftMenu .right {float:right;display:inline-block;width:197px;height:30px;line-height:30px;text-align:center;border:1px solid #00b4b4;}
+.rankingBox .menuBox .rightMenu {float:right;margin:0 10px 0 0;width:401px;height:30px;}
+.rankingBox .menuBox .rightMenu .subMenu {float:left;display:inline-block;margin-right:5px;width:128px;height:30px;line-height:30px;text-align:center;border:1px solid #00b4b4;}
+.rankingBox .menuBox .rightMenu .subMenu.none{width:129px;margin-right:0;}
+.rankingBox .menuBox a {display:block;}
+.rankingBox .menuBox a.on {background-color:#00b4b4;color:#fff;}
+
+.rankingBox .table td.number {font-family:tahoma;text-align:center;}
+.rankingBox .table td.nick {padding-left:10px;font-weight:bold;}
+.rankingBox .table td img {vertical-align:middle;}
+.tbl_head01 thead th {
+    background: #f0f5f5;
+    border-bottom: none;
+    border-top: 2px solid #00b4b4;
+}

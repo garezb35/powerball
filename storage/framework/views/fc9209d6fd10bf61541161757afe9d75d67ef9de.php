@@ -178,6 +178,10 @@ $pick_types[8] = "일옵";
                 <col width="25%">
             </colgroup>
             <thead class="border-jinblue jin-gradient">
+                <tr class="powerball-kind-all">
+                    <th colspan="2" class="text-center font-weight-bold text-danger " onclick="hideType(1,this)">물레방아</th>
+                    <th colspan="2" class="text-center " onclick="hideType(2,this)">패턴배팅</th>
+                </tr>
                 <tr class="powerball-kind">
                     <th class="text-center font-weight-bold text-danger patt-cate" onclick="openCity(this,1)">파워볼홀짝</th>
                     <th class="text-center patt-cate" onclick="openCity(this,2)">파워볼언옵</th>
@@ -200,7 +204,7 @@ $pick_types[8] = "일옵";
                 $dis=  $dis2;
             ?>
         <div id="part<?php echo e($index); ?>" class="<?php if($index !=1): ?><?php echo e('d-none'); ?><?php endif; ?> part">
-            <table class="table table-bordered table-gray">
+            <table class="table table-bordered table-gray mulebanga">
                 <tbody class="back-gray">
                 <tr>
                     <td colspan="4" class="text-center gray_gradient">
@@ -309,7 +313,7 @@ $pick_types[8] = "일옵";
                 </tr>
                 </tbody>
             </table>
-            <form id="pattern-form<?php echo e($index); ?>">
+            <form id="pattern-form<?php echo e($index); ?>" class="autopattern" style="display: none">
                 <table class="table table-bordered table-gray table-pad">
                     <thead class="border-jinblue jin-gradient">
                     <tr>
@@ -374,63 +378,6 @@ $pick_types[8] = "일옵";
                     </tbody>
                 </table>
             </form>
-            <table class="table table-bordered table-gray table-pad">
-                <thead class="border-jinblue jin-gradient">
-                <tr>
-                    <th colspan="10" class="text-center"><span class="text-white">패턴배팅 2</span></th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php if(empty($matches[$index][3][0])): ?>
-                    <tr>
-                        <td colspan="4" class="p-0">
-                            <input type="text" class="form-control pattern-input3" placeholder="xxxxx/xxxxx/xxxxx/xxxxx/xxxxx" value="">
-                        </td>
-                    </tr>
-                    <tr class="green-back">
-                        <td class="text-center">최종단계</td>
-                        <td class="text-center">현재단계</td>
-                        <td class="text-center">배팅금액</td>
-                        <td class="text-center">줄/꺽</td>
-                    </tr>
-                    <tr>
-                        <td class="align-middle text-center">
-                            <input type="number" value="10" class="pattern-step3 form-control-custom" min="1" max="30"> 단
-                            <input type="hidden" id="oppo30" value="<?php echo e('0'); ?>">
-                        </td>
-                        <td class="align-middle text-center"></td>
-                        <td class="align-middle text-center"></td>
-                        <td class="align-middle text-center p-0">
-                            <a class="zulbtn" onclick="changeRow(this,30)"><?php echo e('줄'); ?></a>
-                        </td>
-                    </tr>
-                <?php endif; ?>
-                <?php if(!empty($matches[$index][3][0])): ?>
-                    <tr>
-                        <td colspan="4" class="p-0">
-                            <input type="text" class="form-control pattern-input3" placeholder="xxxxx/xxxxx/xxxxx/xxxxx/xxxxx" value="<?php echo e($matches[$index][3][0]["auto_pattern"]); ?>">
-                        </td>
-                    </tr>
-                    <tr class="green-back">
-                        <td class="text-center">최종단계</td>
-                        <td class="text-center">현재단계</td>
-                        <td class="text-center">배팅금액</td>
-                        <td class="text-center">줄/꺽</td>
-                    </tr>
-                    <tr>
-                        <td class="align-middle text-center">
-                            <input type="number" value="<?php echo e($matches[$index][3][0]["auto_last_step"]); ?>" class="pattern-step3 form-control-custom" min="1" max="30"> 단
-                            <input type="hidden" id="oppo30" value="<?php echo e($matches[$index][3][0]["auto_oppo"]); ?>">
-                        </td>
-                        <td class="align-middle text-center"><?php echo e($matches[$index][3][0]["auto_step"]+1); ?>단</td>
-                        <td class="align-middle text-center"><?php echo e(number_format($mny[$matches[$index][3][0]["auto_step"]])); ?>원</td>
-                        <td class="align-middle text-center p-0">
-                            <a class="zulbtn" onclick="changeRow(this,30)"><?php echo e($zu[$matches[$index][3][0]["auto_oppo"]]); ?></a>
-                        </td>
-                    </tr>
-                <?php endif; ?>
-                </tbody>
-            </table>
         </div>
         <?php endfor; ?>
     </div>

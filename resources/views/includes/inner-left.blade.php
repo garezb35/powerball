@@ -4,12 +4,12 @@
                 <img src="/assets/images/powerball/manual.png" width="20"><p class=" mt-1 mb-0">메뉴얼</p></a>
         </div>
         <div class="lb1">
-            <a href="#" target="mainFrame">
+            <a href="{{route("ranking")}}" target="mainFrame">
                 <img src="/assets/images/powerball/rank.png" width="20"><p class=" mt-1 mb-0">랭킹</p>
             </a>
         </div>
         <div class="lb1">
-            <a href="#" target="mainFrame">
+            <a href="{{route("present")}}" target="mainFrame">
                 <img src="/assets/images/powerball/checker.png" width="20"><p class=" mt-1 mb-0">출석체크</p>
             </a>
         </div>

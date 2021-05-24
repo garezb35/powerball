@@ -27,7 +27,7 @@ class MarketController extends Controller
             $type = 1;
         if($item_type == "use")
             $type = 2;
-        $record = PbMarket::where("state",1);
+        $record = PbMarket::where("state",1)->where("type","!=",3);
         if(!empty($type))
             $record = $record->where("type",$type);
         $record = $record->orderBy("order","ASC")->get()->toArray();
@@ -118,7 +118,7 @@ class MarketController extends Controller
                 "content"=>json_encode(array("class"=>"purchase","use"=>"구매","name"=>$item["name"],"count"=>$count,"price"=>$price)),
                 "userId"=>$user->userId,
                 "ip"=>$request->ip()
-            ]);        
+            ]);
 
         echo json_encode(array("status"=>1));
     }
@@ -175,14 +175,14 @@ class MarketController extends Controller
                 "terms1"=>$terms1,
                 "terms_type"=>$terms_type
             ]);
-                   
+
             PbPurItem::where("id",$pur_item["id"])->update(["count"=>$pur_item["count"]-1]);
             PbLog::create([
                 "type"=>2,
                 "content"=>json_encode(array("class"=>"use","use"=>"사용","name"=>$pur_item->items->name,"count"=>1,"price"=>$pur_item->items->price)),
                 "userId"=>$user->userId,
                 "ip"=>$request->ip()
-            ]); 
+            ]);
             echo json_encode(array("status"=>1,"code"=>-100));
             return;
         }
@@ -217,6 +217,6 @@ class MarketController extends Controller
             "content"=>json_encode(array("class"=>"use","use"=>"사용","name"=>$pur_item->items->name,"count"=>1,"price"=>$pur_item->items->price)),
             "userId"=>$user->userId,
             "ip"=>$request->ip()
-        ]); 
+        ]);
     }
 }

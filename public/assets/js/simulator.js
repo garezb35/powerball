@@ -33,6 +33,19 @@ function openCity(evt,patt_index) {
     type = patt_index;
 }
 
+function hideType(type,obj){
+    $(".powerball-kind-all th").removeClass("text-danger")
+    $(obj).addClass("text-danger")
+    if(type == 1){
+        $(".mulebanga").show();
+        $(".autopattern").hide();
+    }
+    else{
+        $(".mulebanga").hide();
+        $(".autopattern").show();
+    }
+}
+
 function saveAutoSetting(){
     if(started > 0)
     {

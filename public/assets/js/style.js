@@ -31,7 +31,7 @@ $(document).ready(function (){
 
 function openChatRoom()
 {
-    chatRoomPop = window.open('/chatRoom','chatRoom','width=958px,height=565px,status=no,scrollbars=no,toolbar=no');
+    chatRoomPop = window.open('/chatRoom','chatRoom','width=1054px,height=565px,status=no,scrollbars=no,toolbar=no');
 }
 
 function windowOpen(src,target,width,height,scroll)

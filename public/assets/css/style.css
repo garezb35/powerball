@@ -1,3 +1,4 @@
+
 @import url("/assets/css/font.css");
 * {
   margin: 0;
@@ -42,7 +43,7 @@ ul, ol {
     display: block;
     height: 50px;
     line-height: 50px;
-    padding: 0 25px !important;
+    padding: 0 23px !important;
     color: #fff;
     letter-spacing: -1px;
     font-size: 16px !important;
@@ -141,6 +142,17 @@ body, input, textarea, select, table, button {
     margin: auto;
     padding-bottom: 10px;
     position: relative;
+    height: 71px;
+}
+#topArea .logo a.none{
+    position: absolute;
+    top: -12px;
+    left: 19px;
+}
+
+#topArea .logo:before,#topArea .logo:before:after{
+    clear: both;
+    display: block;
 }
 
 a {
@@ -618,12 +630,12 @@ thead.thead-gray{
 /*}*/
 
 .table thead.border-jinblue th{
-    border: #6279ab 1px solid !important;
+    border: #e9ecef 1px solid !important;
     font-weight: normal;
     font-size: 16px;
 }
 .table thead.jin-gradient{
-    background-image: linear-gradient(180deg, #99bbfb, #7f9ddb);
+    background-image: linear-gradient(180deg, #00b4b4, #4d9696);
     color: #fff;
 }
 
@@ -632,7 +644,8 @@ thead.thead-gray{
 }
 
 .green-back{
-    background: #b6cdff;
+    background: #00b4b4;
+    color: #ffffff;
 }
 .gray_gradient{
     background: linear-gradient(180deg, #e7e7e7, #d4d4d4, #e7e7e7);
@@ -1051,7 +1064,9 @@ button.closing:focus{
 }
 .top-header-right
 {
-    position:absolute;top:13px;right:0px;
+    position: absolute;
+    top: 9px;
+    right: -44px;
 }
 
 .header-right-1,.header-right-2{

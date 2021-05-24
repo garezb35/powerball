@@ -158,7 +158,7 @@
     text-align: right;
 }
 
-.powerball-kind th{
+.powerball-kind th,.powerball-kind-all th{
     cursor: pointer;
 }
 

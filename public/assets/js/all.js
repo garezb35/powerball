@@ -196,9 +196,15 @@ function onlyNumber()
 $(document).ready(function(){
     $(".hiddenBorard").click(function(){
         if($(this).attr("rel") == "hidden")
+        {
             $(".boardBox").hide();
+            $("#banner_main_area").hide();
+        }
         else
+        {
             $(".boardBox").show();
+            $("#banner_main_area").show();
+        }
     })
     $.ajaxSetup({
         statusCode: {

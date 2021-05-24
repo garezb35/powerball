@@ -45,6 +45,12 @@ var i=0;
                 ss = ss < 10 ? '0' + ss : ss;
                 var HTML = ii + ":" + ss + " 후 " + gameRound + "회차 추첨 시작";
                 nextTime--;
+                $('#timer_gauge').css('width', (nextTime / gameTime) * 100 + '%');
+                $('#countdown_clock').html(HTML);
+                $("#ready-round").text(gameRound)
+                setTimeout(function () {
+                    core.timer();
+                }, 1000);
                 if (nextTime == 0) {
                     // nextUserTime = userTime + gameTime;
                     nextTime = 300;
@@ -52,12 +58,6 @@ var i=0;
                     gameRound = gameRound > gameLimit ? 1 : gameRound;
                     core.startGame();
                 }
-                $('#timer_gauge').css('width', (nextTime / gameTime) * 100 + '%');
-                $('#countdown_clock').html(HTML);
-                $("#ready-round").text(gameRound)
-                setTimeout(function () {
-                    core.timer();
-                }, 1000);
             },
             startGame: function () {
                 var TYPE = $('.gmContent').data("type")

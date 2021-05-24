@@ -22,6 +22,7 @@ class BetController extends Controller
         $socket_powerball = array();
         $user = Auth::user();
         $roomIdx = $request->roomIdx;
+        $bet_history = array();
         /* 로그인 유저가 아니면 되돌린다 */
         if (!Auth::check()) {
             echo json_encode(array("status"=>0,"message"=>"로그인후 이용하실수 있습니다."));
@@ -116,6 +117,27 @@ class BetController extends Controller
                         "updated_date"=>date("Y-m-d H:i:s")));
                     $socket_powerball[$index]["pick"] = $$pick_content;
                     $socket_powerball[$index]["is_win"] = -1;
+
+                    if($key == "pb_oe"){
+                        $bet_history["bet_number"] = $user->bet_number + 1;
+                        $bet_history["bet_date"] = date("Y-m-d");
+                    }
+                    if($key == "pb_uo"){
+                        $bet_history["bet_number1"] = $user->bet_number1 + 1;
+                        $bet_history["bet_date1"] = date("Y-m-d");
+                    }
+                    if($key == "nb_oe"){
+                        $bet_history["bet_number2"] = $user->bet_number2 + 1;
+                        $bet_history["bet_date2"] = date("Y-m-d");
+                    }
+                    if($key == "nb_uo"){
+                        $bet_history["bet_number3"] = $user->bet_number3 + 1;
+                        $bet_history["bet_date3"] = date("Y-m-d");
+                    }
+                    if($key == "nb_size"){
+                        $bet_history["bet_number4"] = $user->bet_number4 + 1;
+                        $bet_history["bet_date4"] = date("Y-m-d");
+                    }
                 }
             }
         }
@@ -160,11 +182,8 @@ class BetController extends Controller
                 $user->bread = $user->bread+1;
                 $user->save();
             }
-
-//            PbBettingCtl::where("userId",$user->userId)->update([
-//               "status"=>1
-//            ]);
-
+            if(!empty($bet_history))
+                User::where("userId",$user->userId)->update($bet_history);
             if($in_room == 1)
                 echo json_encode(array("status"=>1,"room"=>$in_room ,"message"=>"픽이 완료되였습니다."));
             else

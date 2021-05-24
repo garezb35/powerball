@@ -33,7 +33,17 @@ class User extends \TCG\Voyager\Models\User
         'userIdKey',
         'win_date',
         'fixed',
-        'frd_list'
+        'frd_list',
+        'bet_number',
+        'bet_date',
+        'bet_number1',
+        'bet_date1',
+        'bet_number2',
+        'bet_date2',
+        'bet_number3',
+        'bet_date3',
+        'bet_number4',
+        'bet_date4'
     ];
 
     /**

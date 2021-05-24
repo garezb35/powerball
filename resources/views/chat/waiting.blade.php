@@ -31,7 +31,7 @@
         <li class="favs"><a class="@if(Request::get("rtype") =="favor"){{'on'}}@endif" href="{{route("room_wait")}}?rtype=favor">즐겨찾기(<span id="bookmark_room_count">{{$favor_count}}</span>)</a></li>
     </ul>
 </div>
-<div id="container" style="width: 958px;">
+<div id="container" style="width: 100%">
     <div class="leftArea">
         <div class="category">
             <ul class="order">

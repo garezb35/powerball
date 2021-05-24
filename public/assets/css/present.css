@@ -1,0 +1,40 @@
+/* attendance */
+.attendanceBox .titleBox {height:30px;line-height:30px;padding-left:15px;font-size:15px;border:1px solid #0D568C;background-color:#127CCB;color:#fff;}
+.attendanceBox .titleBox span {font-size:11px;color:yellow;}
+.attendanceBox .topBox {margin-top:5px;height:335px;}
+.attendanceBox .calendarBox {float:left;margin-left:5px;width:360px;}
+.attendanceBox .calendarBox .control {margin-top:5px;text-align:center;height:30px;line-height:30px;font-family:DINWeb-Bold;font-size:20px;background-color:#fbfeff;}
+.attendanceBox .calendarBox .control img {vertical-align:middle;}
+.attendanceBox .calendar {width:350px;padding:0;margin:0;border-collapse:collapse;margin:5px;}
+.attendanceBox .calendar th {height:40px;line-height:40px;background-color:#127CCB;color:#fff;border:1px solid #0D568C;}
+.attendanceBox .calendar td {position:relative;height:40px;line-height:40px;border:1px solid #0D568C;}
+.attendanceBox .calendar td span{position:absolute;top:-11px;;left:2px;}
+.attendanceBox .calendar td img {margin-left:8px;}
+.attendanceBox .calendar td.today {background-color:#FFFFDB;}
+.attendanceBox .calendar td span.sat {color:blue;}
+.attendanceBox .calendar td span.sun {color:red;}
+
+.attendanceBox .ladderBox {position:relative;float:right;margin-right:10px;width:450px;height:300px;margin-top:20px;}
+.attendanceBox .ladderBox .choiceBox {position:relative;height:50px;}
+.attendanceBox .ladderBox .choiceNumber {position:absolute;width:30px;height:30px;line-height:30px;top:10px;border-radius:15px;border:1px solid #8e8e8e;text-align:center;background-color:#c6c6c6;color:#000;}
+.attendanceBox .ladderBox .ladderContent {width:350px;height:200px;margin:0 50px;background:url(https://simg.powerballgame.co.kr/images/ladder.png?1) no-repeat;}
+.attendanceBox .ladderBox .win {background-color:#fa233e;color:#fff;}
+.attendanceBox .ladderBox .contentArea {position:absolute;top:57px;left:95px;width:250px;height:180px;background-color:#FFFFDB;border:3px solid #127CCB;}
+.attendanceBox .ladderBox .contentArea ul {margin:5px;}
+.attendanceBox .ladderBox .contentArea ul li {margin:5px;width:65px;height:65px;line-height:65px;border:1px solid #BEE0FA;display:inline-block;background-color:#fff;text-align:center;font-size:15px;font-weight:bold;cursor:pointer;}
+.attendanceBox .ladderBox .contentArea .text {margin-top:0px;padding-left:10px;text-align:center;}
+.attendanceBox .ladderBox .contentArea .inputBox {margin:5px 10px 10px 10px;}
+.attendanceBox .ladderBox .contentArea .input {width:230px;height:20px;border:1px solid #BEE0FA;font-size:11px;}
+.attendanceBox .ladderBox .contentArea .submit {margin:10px;width:230px;height:30px;line-height:30px;border:1px solid #BEE0FA;text-align:center;background-color:#BEE0FA;font-size:15px;font-weight:bold;cursor:pointer;}
+
+.attendanceBox .listBox {margin-top:5px;height:100%;}
+.attendanceBox .table td.number {font-family:tahoma;text-align:center;}
+.attendanceBox .table td.result {text-align:center;}
+.attendanceBox .table td.txt {padding-left:10px;}
+.attendanceBox .table td.nick {padding-left:10px;font-weight:bold;}
+.attendanceBox .table td img {vertical-align:middle;}
+.tbl_head01 thead th {
+    background: #f0f5f5;
+    border-bottom: none;
+    border-top: 2px solid #00b4b4;
+}

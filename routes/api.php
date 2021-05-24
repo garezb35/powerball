@@ -50,6 +50,7 @@ Route::middleware('auth:api')->group(function(){
     Route::post("/addFriend",[App\Http\Controllers\MemberController::class,'addFriend']);
     Route::post("/sendGift",[App\Http\Controllers\MemberController::class,'sendGift']);
     Route::post("/sendItem",[App\Http\Controllers\MemberController::class,'sendItem']);
+    Route::post("/setPresent",[App\Http\Controllers\MemberController::class,'setPresent']);
 });
 
 Route::post("/get_more/powerball",[App\Http\Controllers\PowerballController::class,'resultList']);
