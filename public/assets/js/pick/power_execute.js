@@ -181,21 +181,22 @@ $(document).ready(function(){
                 $("#ready-screen").css("display","none");
 
                 if(response.type == "left_4"){
-                    $(".left-s").addClass("on");
-                    $(".odd-s").addClass("on");
+                    startIcon =$(".left-s");
+                    endIcon = $(".odd-s");
                 }
                 if(response.type == "left_3"){
-                    $(".left-s").addClass("on");
-                    $(".even-s").addClass("on");
+                    startIcon =$(".left-s");
+                    endIcon = $(".even-s");
                 }
 
                 if(response.type == "right_4"){
-                    $(".right-s").addClass("on");
-                    $(".even-s").addClass("on");
+                    startIcon =$(".right-s");
+                    endIcon = $(".even-s");
                 }
                 if(response.type == "right_3"){
-                    $(".right-s").addClass("on");
-                    $(".odd-s").addClass("on");
+
+                    startIcon =$(".right-s");
+                    endIcon = $(".odd-s");
                 }
 
                 if(response.type.includes("_4"))
