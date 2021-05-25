@@ -804,7 +804,7 @@ function receiveProcess(data)
                 break;
 
             case 'recomChatRoom':
-                printSystemMsg('recom','<img src="'+level_images[bPacket.level]+'" width="23" height="23"> <strong><a href="#" class="uname nick" title="'+bPacket.nickname+'" rel="'+bPacket.userIdKey+'">'+bPacket.nickname+'</a></strong> 님이 대화방을 <img src="/assets/images/powerball/like.png" width="18" height="18" class="icon"/> <span>추천</span> 하였습니다.');
+                printSystemMsg('recom','<img src="'+level_images[bPacket.level]+'" width="30" height="30"> <strong><a href="#" class="uname nick" title="'+bPacket.nickname+'" rel="'+bPacket.userIdKey+'">'+bPacket.nickname+'</a></strong> 님이 대화방을 <img src="/assets/images/powerball/like.png" width="18" height="18" class="icon"/> <span>추천</span> 하였습니다.');
                 chatRoom_recomCnt++;
                 $('#chatRoom_recomCnt').html(chatRoom_recomCnt);
                 break;
@@ -1269,7 +1269,7 @@ function printChatMsg(userType,level,sex,mark,useridKey,nickname,msg,item)
     // emoticon
     msg = msg.replace(/\(#&([0-9]_[0-9]*)\)/gi,'<span class="emoticon e$1"></span>');
 
-    $('#msgBox').append('<li'+addClass+'>'+addMark+'<img src="'+level_images[level]+'" width="23" height="23"> <strong><a href="#" class="uname nick" title="'+nickname+'" rel="'+useridKey+'">'+nickname+'</a></strong> '+msg+'</li>');
+    $('#msgBox').append('<li'+addClass+'>'+addMark+'<img src="'+level_images[level]+'" width="30" height="30"> <strong><a href="#" class="uname nick" title="'+nickname+'" rel="'+useridKey+'">'+nickname+'</a></strong> '+msg+'</li>');
 
     addClass = null;
 
@@ -1288,7 +1288,7 @@ function printWhisperChatMsg(userType,level,sex,mark,useridKey,nickname,msg,tnic
         addClass = ' class="devadmin"';
     }
 
-    $('#msgBox').append('<li'+addClass+'><img src="https://simg.powerballgame.co.kr/images/class/'+sex+level+'.gif" width="23" height="23"> <strong><a href="#" onclick="return false;" title="'+nickname+'" rel="'+useridKey+'" class="uname">'+nickname+'</a></strong> <span class="msg-whisper"><span class="whisperNick">귓['+tnickname+']</span></span> '+msg+'</li>');
+    $('#msgBox').append('<li'+addClass+'><img src="https://simg.powerballgame.co.kr/images/class/'+sex+level+'.gif" width="30" height="30"> <strong><a href="#" onclick="return false;" title="'+nickname+'" rel="'+useridKey+'" class="uname">'+nickname+'</a></strong> <span class="msg-whisper"><span class="whisperNick">귓['+tnickname+']</span></span> '+msg+'</li>');
 
     addClass = null;
 

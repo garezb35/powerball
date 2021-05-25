@@ -1306,11 +1306,11 @@ function printChatMsg(level,sex,mark,useridKey,nickname,msg,item,winFixCnt)
 
         if(item.indexOf('levelupx4') != -1)
         {
-            itemView = '<span style="position:absolute;left:-3px;z-index:-1;"><img src="/assets/images/powerball/levelupx4.gif" width="29" height="23"></span>';
+            itemView = '<span style="position:absolute;left:-3px;z-index:-1;"><img src="/assets/images/powerball/levelupx4.gif" width="29" height="30"></span>';
         }
         else if(item.indexOf('levelupx2') != -1)
         {
-            itemView = '<span style="position:absolute;left:-3px;z-index:-1;"><img src="/assets/images/powerball/levelupx2.gif" width="29" height="23"></span>';
+            itemView = '<span style="position:absolute;left:-3px;z-index:-1;"><img src="/assets/images/powerball/levelupx2.gif" width="29" height="30"></span>';
         }
 
     }
@@ -1360,7 +1360,7 @@ function printChatMsg(level,sex,mark,useridKey,nickname,msg,item,winFixCnt)
             winFixCntView = '<span style="position:absolute;right:-3px;bottom:-9px;z-index:99;"><div class="sp-win'+winFixCnt+'" title="'+winFixCnt+'연승"></div></span>';
         }
 
-        $('#msgBox').append('<li'+addClass+'>'+markView+'<span style="position:relative;"><img src="'+level_images[level]+'" width="23" height="23" orgLevel="'+sex+level+'"'+gasmaskClass+'/>'+itemView+winFixCntView+'</span> <strong><a href="#" onclick="return false;" title="'+nickname+'" rel="'+useridKey+'" class="uname">'+familyNickView+nickname+'</a></strong> '+msg+'</li>');
+        $('#msgBox').append('<li'+addClass+'>'+markView+'<span style="position:relative;"><img src="'+level_images[level]+'" width="30" height="30" orgLevel="'+sex+level+'"'+gasmaskClass+'/>'+itemView+winFixCntView+'</span> <strong><a href="#" onclick="return false;" title="'+nickname+'" rel="'+useridKey+'" class="uname">'+familyNickView+nickname+'</a></strong> '+msg+'</li>');
     }
 
     addClass = null;
