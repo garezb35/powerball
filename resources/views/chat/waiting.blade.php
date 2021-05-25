@@ -67,7 +67,7 @@
                     <div class="line">&nbsp;</div>
                     <div class="userInfo">
                         <div class="user">
-                            <img src="{{$best["roomandpicture"]["get_user_class"]["value3"]}}" width="23" height="23">
+                            <img src="{{$best["roomandpicture"]["get_user_class"]["value3"]}}" width="30" height="30">
                             <a href="#" onclick="return false;" title="{{$best["roomandpicture"]["nickname"]}}" rel="965ff7b3c3d2d1ac75dca49048998589" class="uname">{{$best["roomandpicture"]["nickname"]}}</a>
                         </div>
 
@@ -127,7 +127,7 @@
                         <div class="line">&nbsp;</div>
                         <div class="userInfo">
                             <div class="user">
-                                <img src="{{$value["roomandpicture"]["get_user_class"]["value3"]}}" width="23" height="23">
+                                <img src="{{$value["roomandpicture"]["get_user_class"]["value3"]}}" width="30" height="30">
                                 <a href="#" onclick="return false;" title="{{$value["roomandpicture"]["nickname"]}}" rel="965ff7b3c3d2d1ac75dca49048998589" class="uname">{{$value["roomandpicture"]["nickname"]}}</a>
                             </div>
                             <a href="#" onclick="return false;" rel="{{$value["roomIdx"]}}" class="enterBtn">채팅방 입장하기</a>
@@ -170,7 +170,7 @@
         <div class="myInfo">
 			<div class="tit">내정보</div>
 			<div class="inner">
-				<img src="{{$level["value3"]}}" width="23" height="23">
+				<img src="{{$level["value3"]}}" width="30" height="30">
 				<a href="#" onclick="return false;" title="{{$user["nickname"]}}" rel="{{$user["userIdKey"]}}" class="uname">{{$user["nickname"]}}</a>
 			</div>
         </div>

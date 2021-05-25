@@ -32,10 +32,10 @@
             </div>
             <div class="viewTitle">
                 <div style="position:absolute">
-                    <img src="{{$result["memo"][$other]["getLevel"]["value3"]}}" width="23" height="23">
+                    <img src="{{$result["memo"][$other]["getLevel"]["value3"]}}" width="30" height="30">
                     @if($result["memo"][$self]["isDeleted"] == 1 || $result["memo"][$self]["user_type"] == "00")
                     <span style="position:absolute;left:0;z-index:99;">
-                        <img src="/assets/images/powerball/prison.png" width="23" height="23">
+                        <img src="/assets/images/powerball/prison.png" width="30" height="30">
                     </span>
                     @endif
                 </div>

@@ -73,7 +73,7 @@
                                 @foreach($result["list"] as $frd_usr)
                                     <tr>
                                         <td style="text-align:center;"><input type="checkbox" name="check[]" class="check" value="{{$frd_usr["userIdKey"]}}"></td>
-                                        <td style="text-align:left;"><img src="{{$frd_usr["getLevel"]["value3"]}}" width="23" height="23"> <strong>{{$frd_usr["nickname"]}}</strong></td>
+                                        <td style="text-align:left;"><img src="{{$frd_usr["getLevel"]["value3"]}}" width="30" height="30"> <strong>{{$frd_usr["nickname"]}}</strong></td>
                                         <td class="time" style="font-size:11px;"><img src="/assets/images/powerball/offline.gif" width="20" height="20"> 미접속</td>
                                     </tr>
                                 @endforeach

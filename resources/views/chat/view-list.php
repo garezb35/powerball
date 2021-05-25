@@ -12,7 +12,7 @@
         {{#ifEquals this.userType 4}}
         <span class="icon_fixMember">고정</span>
         {{/ifEquals}}
-        <img src="{{#loadLevelImage this.level}}{{/loadLevelImage}}" width="23" height="23" />
+        <img src="{{#loadLevelImage this.level}}{{/loadLevelImage}}" width="30" height="30" />
         <a href="#" onclick="return false;" title="{{this.name}}" rel="{{this.id}}" class="uname">{{this.name}}</a>
         {{#ifEquals this.today_word ""}}
         {{else}}

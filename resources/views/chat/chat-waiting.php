@@ -2,7 +2,7 @@
     {{#each this}}
     <li id="u-{{this.id}}">
         <img src="{{this.image}}" class="profile" />
-        <img src="{{#loadLevelImage this.level}}{{/loadLevelImage}}" width="23" height="23" />
+        <img src="{{#loadLevelImage this.level}}{{/loadLevelImage}}" width="30" height="30" />
         <a href="#" onclick="return false;" title="{{this.nickname}}" rel="{{this.id}}" class="uname">{{this.nickname}}</a>
 
         {{#ifEquals this.today ""}}

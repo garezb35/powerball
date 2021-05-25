@@ -76,7 +76,7 @@
                         @endphp
                 <tr class="trEven">
                     <td class="number text-center">{{$first}}</td>
-                    <td class="nick text-center"><img src="{{$user["get_level"]["value3"]}}" width="23" height="23"> {{$user["nickname"]}}</td>
+                    <td class="nick text-center"><img src="{{$user["get_level"]["value3"]}}" width="30" height="30"> {{$user["nickname"]}}</td>
                     <td class="number text-center">{{number_format($user[$win_bet])}}</td>
                     <td class="number text-center"> {{number_format($win_history->$win_prefer->win*100 / ($win_history->$win_prefer->win + $win_history->$win_prefer->lose),2)}}%</td>
                     <td class="number text-center">{{number_format($win_history->$win_prefer->win)}}</td>

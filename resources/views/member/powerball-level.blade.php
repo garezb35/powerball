@@ -21,7 +21,7 @@
 
                 <li @if($value["code"] == $user_level)on @endif>
                     <div>
-                        <img src="{{$value["value3"]}}" width="23" height="23" alt="" class="@if($value["code"] != $user_level)grayscale @endif">
+                        <img src="{{$value["value3"]}}" width="30" height="30" alt="" class="@if($value["code"] != $user_level)grayscale @endif">
                         <p>{!! $value["description"] !!}</p>
                         <span class="text" style="display: @if($value["code"] == $user_level)block @else none @endif">
                             <b>{{$value["value1"]}}</b> EXP
