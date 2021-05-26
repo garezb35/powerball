@@ -49,14 +49,24 @@
         </div>
         <ul id="bestList" class="roomList best">
             @if(!empty($best) && !empty($best["roomandpicture"]))
+                @php
+                $win = 0;
+                $lose = 0;
+                $current_win = 0;
+                if(!empty($best["winning_history"])){
+                    $parsed = json_decode($best["winning_history"]);
+                    $win = $parsed->total->win ;
+                    $lose = $parsed->total->lose;
+                    $current_win = $parsed->current_win;
+                }
+                @endphp
                 <li id="room-{{$best["roomIdx"]}}">
                     <div class="thumb">
                         <img src="@if(!empty($best["roomandpicture"]["image"])){{$best["roomandpicture"]["image"]}}@else{{'https://simg.powerballgame.co.kr/images/profile.png'}}@endif" class="roomImg">
-{{--                        <div class="winFixCnt">5</div>--}}
                     </div>
                     <div class="inner">
-                        <span class="winLose @if(($best["win"]-$best["lose"]) ==0){{'draw'}}@endif @if(($best["win"]-$best["lose"]) > 0){{'win'}}@endif @if(($best["win"]-$best["lose"]) < 0){{'lose'}}@endif"><span>{{$best["win"]}}</span>승 <span>{{$best["lose"]}}</span>패</span>
-                        @if(!empty($best["current_win"]))<span class="winFix"><span>{{$best["current_win"]}}</span>연승</span>@endif
+                        <span class="winLose @if(($win-$lose) ==0){{'draw'}}@endif @if(($win-$lose) > 0){{'win'}}@endif @if(($win-$lose) < 0){{'lose'}}@endif"><span>{{$win}}</span>승 <span>{{$lose}}</span>패</span>
+                        @if(!empty($current_win))<span class="winFix"><span>{{$current_win}}</span>연승</span>@endif
                         <span class="tit">{{$best["room_connect"]}}</span>
                         <div class="desc">{{$best["description"]}}</div>
                     </div>
@@ -73,50 +83,62 @@
 
                         <a href="#" onclick="return false;" rel="{{$best["roomIdx"]}}" class="enterBtn">채팅방 입장하기</a>
                     </div>
-                    @if(!empty($best["win_date"]))
-                        @if($best["win_date"] >= date('Y-m-d', strtotime('-7 days', strtotime('now'))))
-                            @if(!empty($best["winning_history"]))
-                                @php $decoded_winhistory = json_decode($best["winning_history"]); @endphp
-                                @if(!empty($decoded_winhistory) && $decoded_winhistory !=null && $decoded_winhistory->current_win > 4)
-                                    {{winningItem($decoded_winhistory->current_win)}}
+
+                    @if(!empty($best["roomandpicture"]["win_date"]))
+                        @if($best["roomandpicture"]["win_date"] >= date('Y-m-d', strtotime('-7 days', strtotime('now'))))
+                            @if(!empty($best["roomandpicture"]["winning_history"]))
+                                @php $decoded_winhistory = $best["roomandpicture"]["badge"]; @endphp
+                                @if(!empty($decoded_winhistory) && $decoded_winhistory > 4)
+                                    {{winningItem($decoded_winhistory)}}
                                 @endif
                             @endif
 
                         @endif
                     @endif
-                    @if($best["badge"] >=5)
-                        <div style="position:absolute;top:0;right: 280px;z-index:96;" title="일주일 내에 5연승 기록이 있습니다">
-                            <img src="/assets/images/powerball/badge/badge5.png" width="37" height="53">
-                        </div>
-                    @endif
-                    @if($best["badge"] >=10)
-                        <div style="position:absolute;top:0;right: 253px;z-index:96;" title="일주일 내에 10연승 기록이 있습니다">
-                            <img src="/assets/images/powerball/badge/badge10.png" width="37" height="53">
-                        </div>
-                    @endif
-                    @if($best["badge"] >=15)
-                        <div style="position:absolute;top:0;right: 226px;z-index:96;" title="일주일 내에 15연승 기록이 있습니다">
-                            <img src="/assets/images/powerball/badge/badge15.png" width="37" height="53">
-                        </div>
-                    @endif
-                    @if($best["badge"] >=20)
-                        <div style="position:absolute;top:0;right: 199px;z-index:96;" title="일주일 내에 20연승 기록이 있습니다">
-                            <img src="/assets/images/powerball/badge/badge20.png" width="37" height="53">
-                        </div>
-                    @endif
+{{--                    @if($best["roomandpicture"]["badge"] >=5)--}}
+{{--                        <div style="position:absolute;top:0;right: 280px;z-index:96;" title="일주일 내에 5연승 기록이 있습니다">--}}
+{{--                            <img src="/assets/images/powerball/badge/badge5.png" width="37" height="53">--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
+{{--                    @if($best["roomandpicture"]["badge"] >=10)--}}
+{{--                        <div style="position:absolute;top:0;right: 253px;z-index:96;" title="일주일 내에 10연승 기록이 있습니다">--}}
+{{--                            <img src="/assets/images/powerball/badge/badge10.png" width="37" height="53">--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
+{{--                    @if($best["roomandpicture"]["badge"] >=15)--}}
+{{--                        <div style="position:absolute;top:0;right: 226px;z-index:96;" title="일주일 내에 15연승 기록이 있습니다">--}}
+{{--                            <img src="/assets/images/powerball/badge/badge15.png" width="37" height="53">--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
+{{--                    @if($best["roomandpicture"]["badge"] >=20)--}}
+{{--                        <div style="position:absolute;top:0;right: 199px;z-index:96;" title="일주일 내에 20연승 기록이 있습니다">--}}
+{{--                            <img src="/assets/images/powerball/badge/badge20.png" width="37" height="53">--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
                 </li>
             @endif
         </ul>
         <ul id="roomList" class="roomList">
             @if(!empty($list))
                 @foreach($list as $value)
+                    @php
+                        $win = 0;
+                        $lose = 0;
+                        $current_win = 0;
+                        if(!empty($value["winning_history"])){
+                            $parsed = json_decode($value["winning_history"]);
+                            $win = $parsed->total->win ;
+                            $lose = $parsed->total->lose ;
+                            $current_win = $parsed->current_win;
+                        }
+                    @endphp
                     <li id="room-{{$value["roomIdx"]}}">
                         <div class="thumb">
                             <img src="@if(!empty($value["roomandpicture"]["image"])){{$value["roomandpicture"]["image"]}}@else{{'https://simg.powerballgame.co.kr/images/profile.png'}}@endif" class="roomImg">
                         </div>
                         <div class="inner">
-                            <span class="winLose @if(($value["win"]-$value["lose"]) ==0){{'draw'}}@endif @if(($value["win"]-$value["lose"]) > 0){{'win'}}@endif @if(($value["win"]-$value["lose"]) < 0){{'lose'}}@endif"><span>{{$value["win"]}}</span>승 <span>{{$value["lose"]}}</span>패</span>
-                            @if(!empty($value["current_win"]))<span class="winFix"><span>{{$value["current_win"]}}</span>연승</span>@endif
+                            <span class="winLose @if(($win-$lose) ==0){{'draw'}}@endif @if(($win-$lose) > 0){{'win'}}@endif @if(($win-$lose) < 0){{'lose'}}@endif"><span>{{$win}}</span>승 <span>{{$lose}}</span>패</span>
+                            @if(!empty($current_win))<span class="winFix"><span>{{$current_win}}</span>연승</span>@endif
                             <span class="tit">{{$value["room_connect"]}}</span>
                             <div class="desc">{{$value["description"]}}</div>
                         </div>
@@ -132,27 +154,38 @@
                             </div>
                             <a href="#" onclick="return false;" rel="{{$value["roomIdx"]}}" class="enterBtn">채팅방 입장하기</a>
                         </div>
+                        @if(!empty($value["roomandpicture"]["win_date"]))
+                            @if($value["roomandpicture"]["win_date"] >= date('Y-m-d', strtotime('-7 days', strtotime('now'))))
+                                @if(!empty($value["roomandpicture"]["winning_history"]))
+                                    @php $decoded_winhistory = $value["roomandpicture"]["badge"]; @endphp
+                                    @if(!empty($decoded_winhistory) && $decoded_winhistory > 4)
 
-                        @if($value["badge"] >=5)
-                            <div style="position:absolute;top:0;right: 280px;z-index:96;" title="일주일 내에 5연승 기록이 있습니다">
-                                <img src="/assets/images/powerball/badge/badge5.png" width="37" height="53">
-                            </div>
+                                        {{winningItem($decoded_winhistory)}}
+                                    @endif
+                                @endif
+
+                            @endif
                         @endif
-                        @if($value["badge"] >=10)
-                            <div style="position:absolute;top:0;right: 253px;z-index:96;" title="일주일 내에 10연승 기록이 있습니다">
-                                <img src="/assets/images/powerball/badge/badge10.png" width="37" height="53">
-                            </div>
-                        @endif
-                        @if($value["badge"] >=15)
-                            <div style="position:absolute;top:0;right: 226px;z-index:96;" title="일주일 내에 15연승 기록이 있습니다">
-                                <img src="/assets/images/powerball/badge/badge15.png" width="37" height="53">
-                            </div>
-                        @endif
-                        @if($value["badge"] >=20)
-                            <div style="position:absolute;top:0;right: 199px;z-index:96;" title="일주일 내에 20연승 기록이 있습니다">
-                                <img src="/assets/images/powerball/badge/badge20.png" width="37" height="53">
-                            </div>
-                        @endif
+{{--                        @if($value["badge"] >=5)--}}
+{{--                            <div style="position:absolute;top:0;right: 280px;z-index:96;" title="일주일 내에 5연승 기록이 있습니다">--}}
+{{--                                <img src="/assets/images/powerball/badge/badge5.png" width="37" height="53">--}}
+{{--                            </div>--}}
+{{--                        @endif--}}
+{{--                        @if($value["badge"] >=10)--}}
+{{--                            <div style="position:absolute;top:0;right: 253px;z-index:96;" title="일주일 내에 10연승 기록이 있습니다">--}}
+{{--                                <img src="/assets/images/powerball/badge/badge10.png" width="37" height="53">--}}
+{{--                            </div>--}}
+{{--                        @endif--}}
+{{--                        @if($value["badge"] >=15)--}}
+{{--                            <div style="position:absolute;top:0;right: 226px;z-index:96;" title="일주일 내에 15연승 기록이 있습니다">--}}
+{{--                                <img src="/assets/images/powerball/badge/badge15.png" width="37" height="53">--}}
+{{--                            </div>--}}
+{{--                        @endif--}}
+{{--                        @if($value["badge"] >=20)--}}
+{{--                            <div style="position:absolute;top:0;right: 199px;z-index:96;" title="일주일 내에 20연승 기록이 있습니다">--}}
+{{--                                <img src="/assets/images/powerball/badge/badge20.png" width="37" height="53">--}}
+{{--                            </div>--}}
+{{--                        @endif--}}
 
 {{--                        <div style="position:absolute;top:0;right:257px;z-index:96;" title="일주일 내에 5연승 기록이 있습니다"><img src="https://simg.powerballgame.co.kr/images/badge5.png" width="46" height="68"></div>--}}
 {{--                        <div style="position:absolute;top:0;right:257px;z-index:96;" title="일주일 내에 5연승 기록이 있습니다"><img src="https://simg.powerballgame.co.kr/images/badge5.png" width="46" height="68"></div>--}}

@@ -4,6 +4,12 @@ $(document).ready(function (){
         $(this).addClass("on");
     })
 
+    $('#chatRoomList').on('mouseover','li',function(){
+        $(this).find('.info').show();
+    }).on('mouseleave','li', function(){
+        $('#chatRoomList').find('.info').hide();
+    });
+
     $("#boardmenu li").click(function(){
         let $iframe = $('#mainFrame');
         let url = "";

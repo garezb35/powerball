@@ -6,16 +6,20 @@ use App\Models\CodeDetail;
 use App\Models\PbDeposit;
 use App\Models\PbInbox;
 use App\Models\PbItemUse;
+use App\Models\PbMoneyReturn;
 use App\Models\PbPresent;
 use App\Models\PbPurItem;
 use App\Models\PbRoom;
 use App\Models\PbLog;
 use App\Models\PbMarket;
+use App\Models\PbWinGift;
+use App\Models\PbWinner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use DB;
 use Image;
+use Symfony\Component\HttpKernel\EventListener\ValidateRequestListener;
 
 class MemberController extends Controller
 {
@@ -1321,7 +1325,7 @@ class MemberController extends Controller
         $comment = $request->post("comment");
         $selectNumber = $request->post("selectNumber");
         $ladderResult = "lose";
-        $userNumber = rand(0,6);
+        $userNumber = rand(0,5);
         if($userNumber == $winNumber){
             $ladderResult = "win";
             $number = $winNumber;
@@ -1355,5 +1359,94 @@ class MemberController extends Controller
         ]);
 
         echo json_encode(array("ran"=>$randoms,"status"=>1,"selectNumber"=>$selectNumber,"number"=>$number,"ladderResult"=>$ladderResult));
+    }
+
+    public function rankingWinner(Request $request){
+        $rooms = array();
+        $win_users = array();
+        $winnered_users = array();
+        $winner = PbWinner::get()->toArray();
+        $days_ago = date('Y-m-d H:i:s', strtotime('-26  hours', strtotime("now")));
+        foreach($winner as $wins){
+            $winnered_users[$wins["userId"]] = $wins["order"];
+        }
+        $rooms = PbRoom::where("created_at",">",$days_ago)->get()->toArray();
+        foreach($rooms as $room){
+            if(!isset($win_users[$room["userId"]]))
+                $win_users[$room["userId"]] = 0;
+            $accerate = 0;
+            $total_pick = 0;
+            $win = 0;
+            $total_pick_div = 0;
+            if(!empty($room["winning_history"])){
+                $parsed = json_decode($room["winning_history"]);
+                $total_pick += $parsed->total->win + $parsed->total->lose;
+                $win = $parsed->total->win;
+            }
+            $total_pick_div = $total_pick ==0 ? 1 : $total_pick;
+            $win_users[$room["userId"]] +=$room["recommend"] + $total_pick + (int)(100*$win)/$total_pick_div;
+        }
+        $moneyReturn = PbMoneyReturn::whereDate("updated_at","=",date("Y-m-d"))->where("status",1)->get()->toArray();
+        if(!empty($moneyReturn)){
+            foreach ($moneyReturn as $m){
+                if(!isset($win_users[$m["userId"]])){
+                    $win_users[$m["userId"]] = 0;
+                }
+                $win_users[$m["userId"]] +=$m["bullet"];
+            }
+        }
+        arsort($win_users);
+        $index = 0;
+        foreach($win_users  as $key=>$u){
+            if($index == 10) break;
+            $index++;
+            if(isset($winnered_users[$key])){
+                $old_order = $index - $winnered_users[$key];
+            }
+            else{
+                $old_order = 0;
+            }
+            PbWinner::updateOrCreate([
+                                        "id"=>$index
+                                        ],
+                                        ["userId"=>$key,
+                                        "order"=>$index,
+                                        "old_order"=>$old_order]);
+        }
+        echo 1;
+    }
+
+    public function getWinners(Request $request){
+        echo json_encode(PbWinner::with("user.getLevel")->orderBy("order","ASC")->get()->toArray());
+    }
+
+    public function winnerGift(Request $request){
+        $gift = PbWinGift::get()->toArray();
+        $gift_item = array();
+        $winners = PbWinner::where(function($query){
+            $query->where("order",1);
+            $query->orwhere("order",2);
+            $query->orwhere("order",3);
+        })->get()->toArray();
+        if(!empty($gift)){
+            foreach($gift as $g){
+                if(empty($gift_item[$g["order"]]))
+                    $gift_item[$g["order"]] = array();
+                array_push($gift_item[$g["order"]],array("market_id"=>$g["market_id"],"count"=>$g["count"]));
+            }
+        }
+
+        foreach($winners as $w){
+            if(!empty($gift_item[$w["order"]])){
+                foreach($gift_item[$w["order"]] as $gifted){
+                    $pur_item = PbPurItem::where("userId",$w["userId"])->where("market_id",$gifted["market_id"])->first();
+                    if(empty($pur_item))
+                        PbPurItem::insert(["userId"=>$w['userId'],"count"=>$gifted["count"],"market_id"=>$gifted["market_id"]]);
+                    else
+                        PbPurItem::where("id",$pur_item["id"])->update(["count"=>$pur_item["count"]+$gifted["count"]]);
+                }
+            }
+        }
+        echo 1;
     }
 }

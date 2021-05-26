@@ -68,7 +68,7 @@ ul, ol {
 .grades{
     font-size: 15px;
     color: #000;
-    max-width: 49px;
+    max-width: 43px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1184,6 +1184,66 @@ td.simu-head{
     border-bottom: none;
 }
 
+.bottom_banner {
+    position: absolute;
+    top: 255px;
+    left: -70px;
+}
+
+.chatRoomList li {
+    position: relative;
+    margin-bottom: 2px;
+    width: 60px;
+}
+.chatRoomList li .thumb {
+    position: relative;
+    width: 60px;
+    border: 1px solid #2c6f42;
+    cursor: pointer;
+}
+.chatRoomList li .thumb.red {
+    border: 1px solid #A30D0D;
+}
+.chatRoomList li .info {
+    position: absolute;
+    top: 0px;
+    left: 62px;
+    width: 314px;
+    height: 60px;
+    background-color: #00b4b4;
+    border: 1px solid #00b4b4;
+    line-height: 60px;
+    padding: 0 10px;
+    color: #fff;
+     display: none;
+    z-index: 99;
+}
+.chatRoomList li .info a {
+    float: left;
+    color: #fff;
+}
+.chatRoomList li .info .cnt {
+    float: right;
+    font-family: tahoma,dotum;
+    font-size: 11px;
+}
+.chatRoomList li .thumb img {
+    width: 60px;
+    height: 60px;
+}
+.chatRoomList li .thumb.red .winFixCnt {
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    width: 15px;
+    height: 15px;
+    background-color: #A30D0D;
+    color: #fff;
+    text-align: center;
+    line-height: 15px;
+    font-size: 11px;
+}
+
 .top_banner img{
     vertical-align: middle;
 }
@@ -1277,4 +1337,92 @@ td.simu-head{
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+}
+
+#bestPicksterList {
+    position: absolute;
+    top: 45px;
+    left: 56px;
+    width: 265px;
+    background-color: #fff;
+    border: 2px solid #00b4b4;
+    box-shadow: 0 0 10px 1px #096060;
+    display: none;
+    z-index: 99;
+}
+#bestPicksterList .guide {
+    padding: 8px;
+    color: #999999;
+    font-size: 11px;
+}
+#bestPicksterList li {
+    position: relative;
+    list-style: none;
+    width: 260px;
+    height: 45px;
+    line-height: 45px;
+    border-bottom: 1px dotted #cecece;
+}
+#bestPicksterList li .rank {
+    width: 30px;
+    display: inline-block;
+    text-align: center;
+    font-family: DINWeb-Bold;
+    padding-left: 5px;
+}
+#bestPicksterList li img {
+    vertical-align: middle;
+}
+#bestPicksterList li .level {
+    margin: 0 5px;
+}
+#bestPicksterList li .rankTypeNum {
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    text-align: rignt;
+    font-size: 11px;
+    font-family: tahoma;
+}
+#bestPicksterList li.rank1 {
+    background-color: #FFFFD9;
+}
+#bestPicksterList li .profileImg {
+    width: 32px;
+    border-radius: 20px;
+}
+#bestPicksterList .title {
+    width: 265px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background-color: #00b4b4;
+    color: #fff;
+    font-size: 12px;
+    display: block;
+}
+
+#bestPicksterList .highlight {
+    color: #00b4b4;
+}
+
+#bestPicksterList li.rank2 {
+    background-color: #FFECEC;
+}
+#bestPicksterList li.rank3 {
+    background-color: #F0FDFF;
+}
+
+#bestPicksterList li .rankType {
+    position: absolute;
+    top: 0px;
+    right: 22px;
+}
+
+#bestPicksterList li .rankType .fa-caret-down,#bestPicksterList li .down
+{
+    color: #1871E7;
+}
+#bestPicksterList li .rankType .fa-caret-up,#bestPicksterList li .up{
+    color: #CE0400;
 }

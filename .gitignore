@@ -3,6 +3,7 @@
 /public/storage
 /storage/*.key
 /vendor
+/config/database.php
 .env
 .env.backup
 .phpunit.result.cache
@@ -12,3 +13,6 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 /chat-room/node_modules
+/public/assets/js/chat.js
+/public/assets/js/chat-view.js
+/public/assets/js/chat-room.js

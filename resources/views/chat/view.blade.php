@@ -53,7 +53,7 @@
     <p id="roomDesc" class="desc">{{$room["description"]}}</p>
     <div class="profile"><img src="@if(empty($room["roomandpicture"]["image"])){{'https://www.powerballgame.co.kr/images/profile.png'}}@else{{$room["roomandpicture"]["image"]}}@endif" /></div>
 </div>
-<div id="container" style="width: 958px">
+<div id="container" style="width:100%">
     <div class="leftArea">
         <div class="category">
             <ul class="cate">

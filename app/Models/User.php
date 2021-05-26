@@ -43,7 +43,8 @@ class User extends \TCG\Voyager\Models\User
         'bet_number3',
         'bet_date3',
         'bet_number4',
-        'bet_date4'
+        'bet_date4',
+        'badge'
     ];
 
     /**

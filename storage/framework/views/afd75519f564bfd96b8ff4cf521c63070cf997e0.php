@@ -12,6 +12,7 @@
     <script>
         var remainTime = 0;
         var speedRemain = 0;
+        var userIdToken = "<?php echo e($userIdToken); ?>";
     </script>
 </head>
 <body>

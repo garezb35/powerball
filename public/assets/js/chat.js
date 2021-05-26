@@ -120,54 +120,7 @@ $(document).ready(function(){
         setCookie('powerballResultSound','on');
     }
 
-    $(document).on('click','#roomList .tit,#roomList .thumb,.joinRoom',function(){
 
-        var roomIdx = $(this).attr('rel');
-        chatRoomPop = window.open('','chatRoom','width=5px,height=5px,status=no,scrollbars=no,toolbar=no');
-
-        $.ajax({
-            type:'POST',
-            dataType:'json',
-            url:'/api/checkActiveRoom',
-            data:{api_token:userIdToken,room:$(this).attr("rel")},
-            success:function(data,textStatus){
-                if(data.status == 1)
-                {
-                    chatRoomPop = window.open('/discussion?token='+data.token,'chatRoom','width=500px,height=500px,status=no,scrollbars=no,toolbar=no');
-                    chatRoomPop.focus();
-                }
-                else
-                {
-                    if(data.code == 'needPasswd')
-                    {
-                        if(chatRoomPop != null)
-                        {
-                            chatRoomPop.close();
-                        }
-
-                        var topPos = ($(window).height() - 180) / 2;
-                        var leftPos = ($(window).width() - 250) / 2;
-
-                        $('#modal_passwordInput').css({'top':topPos+'px','left':leftPos+'px'});
-                        $('.modalLayer').show();
-                        $('#modal_passwordInput').show(function(){
-                            $(this).find('.input').val('');
-                            $(this).find('.input').focus();
-                            $(this).find('.btn_join').attr('rel',roomIdx);
-                        });
-                    }
-                    else
-                    {
-                        if(chatRoomPop != null)
-                        {
-                            chatRoomPop.close();
-                        }
-                        alert(data.msg);
-                    }
-                }
-            }
-        });
-    });
 
     $('#room-tab').on('shown.bs.tab', function (e) {
         $.ajax({
@@ -230,7 +183,7 @@ function connect(type = "public")
         printSystemMsg('system','접속이 원활하지 않을경우 <a href="https://www.google.co.kr/chrome/browser/features.html" target="_blank">[크롬 브라우저]</a>를 이용해주시기 바랍니다.');
         if(socket == null)
         {
-            socket = io.connect('http://203.109.14.130:3000/'+type,socketOption);
+            socket = io.connect('http://127.0.0.1:3000/'+type,socketOption);
         }
         sendProcess('login');
     }

@@ -221,7 +221,77 @@ $(document).ready(function(){
 
     $(".gnb").css({"display":"block"})
     heightResize();
+
+    $(document).on('click','#roomList .tit,#roomList .thumb,.joinRoom,#chatRoomList li  ',function(){
+        var roomIdx = $(this).attr('rel');
+        chatRoomPop = window.open('','chatRoom','width=5px,height=5px,status=no,scrollbars=no,toolbar=no');
+
+        $.ajax({
+            type:'POST',
+            dataType:'json',
+            url:'/api/checkActiveRoom',
+            data:{api_token:userIdToken,room:roomIdx},
+            success:function(data,textStatus){
+                if(data.status == 1)
+                {
+                    chatRoomPop = window.open('/discussion?token='+data.token,'chatRoom','width=500px,height=500px,status=no,scrollbars=no,toolbar=no');
+                    chatRoomPop.focus();
+                }
+                else
+                {
+                    if(data.code == 'needPasswd')
+                    {
+                        if(chatRoomPop != null)
+                        {
+                            chatRoomPop.close();
+                        }
+
+                        var topPos = ($(window).height() - 180) / 2;
+                        var leftPos = ($(window).width() - 250) / 2;
+
+                        $('#modal_passwordInput').css({'top':topPos+'px','left':leftPos+'px'});
+                        $('.modalLayer').show();
+                        $('#modal_passwordInput').show(function(){
+                            $(this).find('.input').val('');
+                            $(this).find('.input').focus();
+                            $(this).find('.btn_join').attr('rel',roomIdx);
+                        });
+                    }
+                    else
+                    {
+                        if(chatRoomPop != null)
+                        {
+                            chatRoomPop.close();
+                        }
+                        alert(data.msg);
+                    }
+                }
+            }
+        });
+    });
 })
 
 
 
+function ajaxBestPickster()
+{
+    if($('#bestPicksterList').is(':hidden')){
+        if($('#bestPicksterList .content').text().trim() !=""){
+            $.ajax({
+                type:'POST',
+                dataType:'json',
+                url:'/api/getWinners',
+                success:function(result,textStatus){
+                    compileJson("#pickster-list","#bestPicksterList .content",result,1,false);
+                    $( "#bestPicksterList" ).slideDown(300);
+                }
+            });
+        }
+        else
+            $( "#bestPicksterList" ).slideDown(300);
+    }
+
+    else{
+        $( "#bestPicksterList" ).slideUp(300);
+    }
+}

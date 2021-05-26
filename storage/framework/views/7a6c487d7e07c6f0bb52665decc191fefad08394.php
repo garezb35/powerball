@@ -19,7 +19,7 @@
 
                 <li <?php if($value["code"] == $user_level): ?>on <?php endif; ?>>
                     <div>
-                        <img src="<?php echo e($value["value3"]); ?>" width="23" height="23" alt="" class="<?php if($value["code"] != $user_level): ?>grayscale <?php endif; ?>">
+                        <img src="<?php echo e($value["value3"]); ?>" width="30" height="30" alt="" class="<?php if($value["code"] != $user_level): ?>grayscale <?php endif; ?>">
                         <p><?php echo $value["description"]; ?></p>
                         <span class="text" style="display: <?php if($value["code"] == $user_level): ?>block <?php else: ?> none <?php endif; ?>">
                             <b><?php echo e($value["value1"]); ?></b> EXP

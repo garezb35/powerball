@@ -72,15 +72,19 @@
                         @php
                         $win_history = $user["winning_history"];
                         if(!empty($win_history))
-                            $win_history = json_decode($user["winning_history"]);
+                           {
+                           $win_history = json_decode($user["winning_history"]);
+                            $total_bet = ($win_history->$win_prefer->win + $win_history->$win_prefer->lose) == 0 ? 1 : win_history->$win_prefer->win + $win_history->$win_prefer->lose;
+                           }
                         @endphp
+
                 <tr class="trEven">
-                    <td class="number text-center">{{$first}}</td>
-                    <td class="nick text-center"><img src="{{$user["get_level"]["value3"]}}" width="30" height="30"> {{$user["nickname"]}}</td>
-                    <td class="number text-center">{{number_format($user[$win_bet])}}</td>
-                    <td class="number text-center"> {{number_format($win_history->$win_prefer->win*100 / ($win_history->$win_prefer->win + $win_history->$win_prefer->lose),2)}}%</td>
-                    <td class="number text-center">{{number_format($win_history->$win_prefer->win)}}</td>
-                    <td class="number text-center">{{number_format($win_history->$win_prefer->lose)}}</td>
+                    <td class="number text-center align-middle">{{$first}}</td>
+                    <td class="nick text-center align-middle"><img src="{{$user["get_level"]["value3"]}}" width="30" height="30"> {{$user["nickname"]}}</td>
+                    <td class="number text-center align-middle">{{number_format($user[$win_bet])}}</td>
+                    <td class="number text-center align-middle"> {{number_format($win_history->$win_prefer->win*100 /$total_bet,2)}}%</td>
+                    <td class="number text-center align-middle">{{number_format($win_history->$win_prefer->win)}}</td>
+                    <td class="number text-center align-middle">{{number_format($win_history->$win_prefer->lose)}}</td>
                 </tr>
                         @php
                         $first--;

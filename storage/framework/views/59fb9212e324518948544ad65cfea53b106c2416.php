@@ -88,7 +88,7 @@
                         <th rowspan="4" class="tit">커뮤니티 정보</th>
                         <td>닉네임</td>
                         <td class="position-relative" colspan="2">
-                            <img src="<?php echo e($avata); ?>" width="23" height="23" style="position:absolute;top:16px;">
+                            <img src="<?php echo e($avata); ?>" width="30" height="30" style="position:absolute;top:16px;">
                             <span style="margin-left:28px;"><?php echo e($user["nickname"]); ?></span>
                         </td>
                         <td>

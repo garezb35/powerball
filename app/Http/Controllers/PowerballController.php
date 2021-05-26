@@ -15,6 +15,7 @@ use App\Models\Pb_Result_Powerball;
 use App\Models\PbAutoSetting;
 use App\Models\PbBettingCtl;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use DB;
 use DateTime;
 use Prophecy\Doubler\Generator\Node\ReturnTypeNode;
@@ -1607,15 +1608,6 @@ class PowerballController extends Controller
                             $win_h->current_win = 0;
                         if($current_win > 0){
                             $win_h->current_win += $current_win;
-                            if(( $index["room"]["win_date"] >= $this->getDayBeforeWeek() && $win_h->current_win >= 5  && $win_h->current_win >=  $index["room"]["badge"]) ||
-                                $win_h->current_win >= 5 && $index["room"]["win_date"] < $this->getDayBeforeWeek())
-                            {
-                                $insert["win_date"] = date("Y-m-d");
-                                $insert["badge"] = $win_h->current_win;
-                            }
-                            if($win_h->current_win < 5 && $index["room"]["win_date"] < $this->getDayBeforeWeek()){
-                                $insert["badge"] = 0;
-                            }
                             if($win_h->current_win > $index["room"]["max_win"])
                                 $insert["max_win"] = $win_h->current_win;
                         }
@@ -1652,8 +1644,15 @@ class PowerballController extends Controller
                         if($current_win > 0)
                         {
                             $win_h->current_win->p += $current_win;
-                            if($win_h->current_win->p >= 5)
+                            if(( $index["user"]["win_date"] >= $this->getDayBeforeWeek() && $win_h->current_win->p >= 5  && $win_h->current_win->p >=  $index["user"]["badge"]) ||
+                                $win_h->current_win->p >= 5 && $index["user"]["win_date"] < $this->getDayBeforeWeek())
+                            {
                                 $insert["win_date"] = date("Y-m-d");
+                                $insert["badge"] = $win_h->current_win->p;
+                            }
+                            if($win_h->current_win->p < 5 && $index["user"]["win_date"] < $this->getDayBeforeWeek()){
+                                $insert["badge"] = 0;
+                            }
                             if($win_h->current_win->p > $index["user"]["max_win"])
                                 $insert["max_win"] = $win_h->current_win->p;
                         }
@@ -1913,5 +1912,9 @@ class PowerballController extends Controller
             $sadari_result = sadariCheck($nb1);
             echo json_encode(array("created_date"=>$item["created_date"],"type"=>$sadari_result,"list"=>sadariPath($sadari_result)));
         }
+    }
+
+    public function setRound(Request $request){
+        echo Route::input("name");
     }
 }

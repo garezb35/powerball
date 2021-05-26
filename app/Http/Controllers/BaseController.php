@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\PbInbox;
 use App\Models\PbMessage;
+use App\Models\PbRoom;
 use App\Models\PbView;
 use App\Models\User;
 use App\Models\CodeDetail;
@@ -20,6 +21,7 @@ class BaseController  extends Controller
     protected  $item = 0;
     protected $next_code = "";
     protected $mail_count = 0;
+    protected  $rooms = array();
     public function  __construct(){
         $this->middleware(function ($request, $next) {
             if (Auth::check()) {
@@ -45,6 +47,10 @@ class BaseController  extends Controller
             $pick = PbMessage::with("comments")->where("type","pick")->orderBy("created_at","DESC")->limit(12)->get()->toArray();
             $free = PbMessage::with("comments")->where("type","free")->orderBy("created_at","DESC")->limit(12)->get()->toArray();
             $notice = PbMessage::where("type","notice")->orderBy("created_at","DESC")->limit(5)->get()->toArray();
+            $days_ago = date('Y-m-d H:i:s', strtotime('-26  hours', strtotime("now")));
+            $rooms = PbRoom::with(["roomandpicture.getLevel","roomandpicture.item_use"])->where("created_at",">",$days_ago)->orderBy("cur_win","DESC")->orderBy("cur_win","DESC")->limit(6)->get()->toArray();
+            $this->rooms = $rooms;
+            $userIdToken = !Auth::check() ? "" : Auth::user()->api_token;
             View::share('user_level', $this->user_level);
             View::share('next_level', $this->next);
             View::share('normal_level', $this->normal_exp);
@@ -55,6 +61,8 @@ class BaseController  extends Controller
             View::share('pick', $pick);
             View::share('free', $free);
             View::share('notice', $notice);
+            View::share('rooms', $this->rooms);
+            View::share('userIdToken', $userIdToken);
             return $next($request);
         });
     }

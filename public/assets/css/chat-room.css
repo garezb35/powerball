@@ -2174,14 +2174,28 @@ fieldset {
     margin-left: 48px;
 }
 
-.betBox ul.betting li span{
-    width: 44px !important;
+/*.betBox ul.betting li span{*/
+/*    width: 44px !important;*/
+/*}*/
+.betBox ul.betting li{
+    margin: 0px !important;
+}
+.betBox ul.betting li.btnBox .left{
+    float: none;
+}
+.betBox ul.betting li .left span{
+    display: block !important;
+}
+.betBox ul.betting li.btnBox{
+    padding-top: 3px !important;
+    margin-left: 10px !important;
 }
 .betBox ul.betting li.btnBox span{
-    width: 57px !important;
-    height: 57px !important;
-    line-height: 57px !important;
+    width: 50px !important;
+    height: 37px !important;
+    line-height: 37px !important;
     margin-right: 0 !important;
+    margin-bottom: 3px;
 }
 .betBox ul.betting{
     text-align: left !important;
@@ -2190,9 +2204,9 @@ fieldset {
     margin-left: 0;
 }
 
-.betBox ul li .pick-btn.on.f,.betBox ul li .pick-btn.on.s{
-    background-size: 44px 33px !important;
-}
+/*.betBox ul li .pick-btn.on.f,.betBox ul li .pick-btn.on.s{*/
+/*    background-size: 44px 33px !important;*/
+/*}*/
 
 .rightArea .resultBox .content .userListBox ul.userList li .icon_managerFixMember {
     position: absolute;

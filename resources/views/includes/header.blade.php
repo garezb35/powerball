@@ -12,6 +12,7 @@
     <script>
         var remainTime = 0;
         var speedRemain = 0;
+        var userIdToken = "{{$userIdToken}}";
     </script>
 </head>
 <body>

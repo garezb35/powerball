@@ -52,10 +52,10 @@
                             <tr>
                                 <td><input type="checkbox" name="check[]" class="check" value="<?php echo e($mail["id"]); ?>"></td>
                                 <td class="left"><span style="position:relative;">
-                                <img src="<?php echo e($mail[$sed_rec_key]["getLevel"]["value3"]); ?>" width="23" height="23">
+                                <img src="<?php echo e($mail[$sed_rec_key]["getLevel"]["value3"]); ?>" width="30" height="30">
                                 <?php if($mail[$sed_rec_key]["isDeleted"] == 1 || $mail[$sed_rec_key]["user_type"] == "00"): ?>
                                 <span style="position:absolute;left:0;z-index:99;">
-                                    <img src="/assets/images/powerball/prison.png" width="23" height="23">
+                                    <img src="/assets/images/powerball/prison.png" width="30" height="30">
                                 </span>
                                 <?php endif; ?>
                             </span>

@@ -18,8 +18,10 @@
     </p>
 </div>
 <script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/handlebars.js"></script>
 <script src="/assets/popper/popper.min.js"></script>
 <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/js/common.js"></script>
 <script src="/assets/js/style.js"></script>
 <script src="/assets/js/all.js"></script>
 <script>

@@ -56,7 +56,6 @@ function checkInPacket(data,obj,io){
                if(data.body.roomIdx == "channel1"){
                    try{
                        (async function() {
-                           let date  = new Date();
                            obj.join(data.body.roomIdx)
                            let user = await knex("pb_users")
                                .select( 'pb_users.*',
@@ -76,6 +75,7 @@ function checkInPacket(data,obj,io){
                                if(winning_history !=null && winning_history.trim() != ""){
                                    current_win  = typeof(JSON.parse(winning_history)["current_win"]["p"]) != "undefined" ? JSON.parse(winning_history)["current_win"]["p"] : 0;
                                }
+                               var date = new Date();
                                if(typeof user[0]["markets"] !="undefined" && user[0]["markets"] !=null &&  user[0]["markets"].trim() != ""){
                                    let item_split = user[0]["markets"].split(",");
                                    if(item_split.length > 0){
@@ -87,15 +87,15 @@ function checkInPacket(data,obj,io){
                                                item.push("familyNick_"+user[0]["familynickname"].trim());
                                            if(item_split[index].split("%%%")[0] == "SUPER_CHAT_LICENSE")
                                                item.push("superChat");
-                                           if(item_split[index].split("%%%")[0] == "ORDER_HONOR_30")
+                                           if(item_split[index].split("%%%")[0] == "ORDER_HONOR_30" && date_diff(user[0]["win_date"]) <= 7)
                                            {
-                                               if(user[0]["max_win"] >= 20)
+                                               if(user[0]["badge"] >= 20)
                                                    item.push("badge20");
-                                               if(user[0]["max_win"] >= 15)
+                                               if(user[0]["badge"] >= 15)
                                                    item.push("badge15");
-                                               if(user[0]["max_win"] >= 10)
+                                               if(user[0]["badge"] >= 10)
                                                    item.push("badge10");
-                                               if(user[0]["max_win"] >= 5)
+                                               if(user[0]["badge"] >= 5)
                                                    item.push("badge5");
                                            }
                                            if(item_split[index].split("%%%")[0] == "SUPER_CHAT_LICENSE")
@@ -312,6 +312,20 @@ function setUserManageById(state,id,roomIdx){
 
 function setFixManageById(state,id,roomIdx){
     return listUsers.setFixManageById(state,id,roomIdx)
+}
+
+
+function date_diff(date){
+    if(date != null && typeof date !="undefined"){
+        var date1 = new Date(date);
+        var date2 = new Date();
+        var diffTime = Math.abs(date2 - date1);
+        var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    }
+    else{
+        var diffDays = 100;
+    }
+    return diffDays;
 }
 
 module.exports = {

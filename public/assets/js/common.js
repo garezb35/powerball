@@ -291,6 +291,10 @@ Handlebars.registerHelper('compareBig', function(arg1,arg2,options) {
         return options.inverse(this);
 });
 
+Handlebars.registerHelper('removeMinus', function(arg1) {
+    return -1*arg1
+});
+
 Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
     if(arg1 == null || typeof arg1 =='undefined') arg1 = "";
     if(arg2 == null || typeof arg2 =='undefined') arg2 = "";
@@ -639,23 +643,23 @@ Handlebars.registerHelper('processBettingData', function(arg1,arg2) {
 Handlebars.registerHelper('checkSeqWin', function(arg) {
     let show = false;
     let badge_html  = "";
-    if(arg.roomandpicture.item_use.length > 0){
-        if(arg.badge >= 5){
+    if(arg.roomandpicture.item_use.length > 0 && diffDays(arg.roomandpicture.win_date) <=7){
+        if(arg.roomandpicture.badge >= 5){
             badge_html +="<div class=\"badge1\" title=\"일주일 내에 5연승 기록이 있습니다\">\n" +
                 "                <div class=\"sp-badge5_s\"></div>\n" +
                 "            </div>";
         }
-        if(arg.badge >= 10){
+        if(arg.roomandpicture.badge >= 10){
             badge_html +="<div class=\"badge2\" title=\"일주일 내에 10연승 기록이 있습니다\">\n" +
                 "                <div class=\"sp-badge10_s\"></div>\n" +
                 "            </div>";
         }
-        if(arg.badge >= 15){
+        if(arg.roomandpicture.badge >= 15){
             badge_html +="<div class=\"badge3\" title=\"일주일 내에 15연승 기록이 있습니다\">\n" +
                 "                <div class=\"sp-badge15_s\"></div>\n" +
                 "            </div>";
         }
-        if(arg.badge >= 20){
+        if(arg.roomandpicture.badge >= 20){
             badge_html +="<div class=\"badge4\" title=\"일주일 내에 20연승 기록이 있습니다\">\n" +
                 "                <div class=\"sp-badge20_s\"></div>\n" +
                 "            </div>";
@@ -785,4 +789,18 @@ function windowOpen(src,target,width,height,scroll)
     var hei = (screen.availHeight - height) / 2;
     var opt = 'width='+width+',height='+height+',top='+hei+',left='+wid+',resizable=no,status=no,scrollbars='+scroll;
     window.open(src,target,opt);
+}
+
+
+function diffDays(date){
+    if(date != null && typeof date !="undefined"){
+        var date1 = new Date(date);
+        var date2 = new Date();
+        var diffTime = Math.abs(date2 - date1);
+        var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    }
+    else{
+        var diffDays = 100;
+    }
+    return diffDays;
 }

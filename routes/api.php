@@ -89,3 +89,9 @@ Route::post("/getChatRooms",[App\Http\Controllers\ChatController::class,'getChat
 
 
 Route::post("/live/result",[App\Http\Controllers\PowerballController::class,'liveResult']);
+
+Route::post("/getWinners",[App\Http\Controllers\MemberController::class,'getWinners']);
+Route::get("/rankingWinner",[App\Http\Controllers\MemberController::class,'rankingWinner']);
+Route::get("/winnerGift",[App\Http\Controllers\MemberController::class,'winnerGift']);
+Route::get("/set_round/{name}",[App\Http\Controllers\PowerballController::class,'setRound']);
+

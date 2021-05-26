@@ -102,7 +102,11 @@ $(document).ready(function(){
                 dataType:'json',
                 success:function (data){
                     if(data.status ==1){
-                        alert("아이템 사용이 정상적으로 처리되었습니다.");
+                        if(data.code == "msg"){
+                            alert(data.msg)
+                        }
+                        else
+                            alert("아이템 사용이 정상적으로 처리되었습니다.");
                         return;
                     }
                     if(data.status ==0){

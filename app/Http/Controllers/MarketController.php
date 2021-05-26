@@ -195,23 +195,66 @@ class MarketController extends Controller
         else if($code =="RANDOM_EXP_BOX_20"){
             PbPurItem::where("id",$pur_item["id"])->update(["count"=>$pur_item["count"]-1]);
             $exps = [10,10,40,30,20,10,10,30,60,30,10,10,10,10,60,200,10,10,80,10];
-            if(!empty($exps))
-            {
-                $index = rand(0,sizeof($exps));
-                $rand_exp = rand(10,$exps[$index]);
-            }
-            else
-                $rand_exp = 10;
+            $index = rand(0,sizeof($exps));
+            $rand_exp = $exps[$index];
             if($rand_exp > 0)
             {
                 $user->exp +=$rand_exp;
                 $user->save();
             }
-            echo json_encode(array("status"=>1,"code"=>-2));
+            PbLog::create([
+                "type"=>1,
+                "content"=>json_encode(array("exp"=>$rand_exp,"msg"=>date("Y-m-d"). " [랜덤 경험치 상자 사용]")),
+                "userId"=>$user->userId,
+                "ip"=>$request->ip()
+            ]);
+            echo json_encode(array("status"=>1,"code"=>"msg","msg"=>"{$rand_exp}의 경험치가 추가되였습니다."));
+
         }
         else if($code == "PICK_INIT"){
+            PbPurItem::where("id",$pur_item["id"])->update(["count"=>$pur_item["count"]-1]);
+            $win_h = new \stdClass();
+            $win_h->current_win = new \stdClass();
+            $win_h->pb_oe = new \stdClass();
+            $win_h->pb_uo = new \stdClass();
+            $win_h->nb_oe = new \stdClass();
+            $win_h->nb_uo = new \stdClass();
+            $win_h->nb_size = new \stdClass();
+
+            $win_h->current_win->p = 0;
+            $win_h->current_win->pb_oe = $win_h->pb_oe->win = $win_h->pb_oe->current_win = 0;
+            $win_h->pb_oe->lose =0;
+
+            $win_h->current_win->pb_uo = $win_h->pb_uo->win = $win_h->pb_uo->current_win = 0;
+            $win_h->pb_uo->lose = 0;
+
+            $win_h->current_win->nb_oe = $win_h->nb_oe->win = $win_h->nb_oe->current_win = 0;
+            $win_h->nb_oe->lose = 0;
+
+            $win_h->current_win->nb_uo = $win_h->nb_uo->current_win = $win_h->nb_uo->win = 0;
+            $win_h->nb_uo->lose = 0;
+
+            $win_h->current_win->nb_size = $win_h->nb_size->current_win = $win_h->nb_size->win =0;
+            $win_h->nb_size->lose = 0;
+            $user->winning_history = json_encode($win_h);
+            $user->save();
             echo json_encode(array("status"=>1,"code"=>-1));
         }
+
+        else if($code == "RANDOM_ITEM"){
+            PbPurItem::where("id",$pur_item["id"])->update(["count"=>$pur_item["count"]-1]);
+            $items = array("PICK_INIT","CHATROOM");
+            $items_indexes = array(0,0,0,0,1,1,0);
+            $rand_index = rand(0,6);
+            $puredd_item = PbPurItem::where("userId",$user->userId)->where("market_id",$items[$items_indexes[$rand_index]])->first();
+            $market_item = PbMarket::where("code",$items[$items_indexes[$rand_index]])->first();
+            if(empty($puredd_item))
+                PbPurItem::insert(["userId"=>$user->userId,"market_id"=>$items[$items_indexes[$rand_index]],"count"=>1]);
+            else
+               PbPurItem::where("id",$puredd_item["id"])->update(["count"=>$puredd_item["count"]+1]);
+            echo json_encode(array("status"=>1,"code"=>"msg","msg"=>"{$market_item["name"]}이 지급되였습니다."));
+        }
+
         PbLog::create([
             "type"=>2,
             "content"=>json_encode(array("class"=>"use","use"=>"사용","name"=>$pur_item->items->name,"count"=>1,"price"=>$pur_item->items->price)),
