@@ -252,7 +252,7 @@ class MarketController extends Controller
                 PbPurItem::insert(["userId"=>$user->userId,"market_id"=>$items[$items_indexes[$rand_index]],"count"=>1]);
             else
                PbPurItem::where("id",$puredd_item["id"])->update(["count"=>$puredd_item["count"]+1]);
-            echo json_encode(array("status"=>1,"code"=>"msg","msg"=>"{$market_item["name"]}이 지급되였습니다."));
+            echo json_encode(array("status"=>1,"code"=>"msg","msg"=>"[{$market_item["name"]}] 아이템이 지급되였습니다."));
         }
 
         PbLog::create([

@@ -26,6 +26,8 @@ $(document).ready(function(){
             },
             timerSet: function () {
                 gameRound = parseInt($('.gmContent').data('round'));
+                if(gameRound > 288)
+                    gameRound = 1;
                 gameTime = 300;
                 gameLimit = 288;
                 core.timer();
@@ -47,7 +49,7 @@ $(document).ready(function(){
                     // nextUserTime = userTime + gameTime;
                     nextTime = 300;
                     gameRound = gameRound + 1;
-                    gameRound = gameRound > gameLimit ? 1 : gameRound;
+                    gameRound = gameRound > 288 ? 1 : gameRound;
                     core.startGame();
                 }
             },

@@ -7,7 +7,24 @@ var six_alias = "pb_oe";
 var pagination = 0;
 var loading =false;
 
+var socketOption = {};
+socketOption['reconnect'] = true;
+socketOption['force new connection'] = true;
+socketOption['sync disconnect on unload'] = true;
+if('WebSocket' in window)
+{
+    socketOption['transports'] = ['websocket'];
+}
+
+
+var socket =  null;
+
 $(document).ready(function(){
+
+    connect();
+    socket.on('result',function(data){
+        console.log(data)
+    });
     $( "#roundCnt" ).selectmenu(
         {
             change: function( event, ui ) {
@@ -154,5 +171,21 @@ function moreClick()
             if(data.status == 0)
                 loading  = true;
         })
+    }
+}
+
+
+function connect()
+{
+    try{
+
+        if(socket == null)
+        {
+            socket = io.connect('http://127.0.0.1:3000/result',socketOption);
+            socket.emit('presult',"success");
+        }
+    }
+    catch(e){
+
     }
 }

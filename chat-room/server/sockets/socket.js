@@ -17,8 +17,20 @@ const {
 let public_msg = new Array();
 let private_msg = new Array();
 
-let public = io.of("/public");
 
+
+let presult = io.of('/result');
+presult.on("connection",(client) => {
+    client.on('disconnect', () => {
+
+    })
+    client.on("receive",(data,callback) => {
+        console.log(data)
+        client.emit("result",data);
+    })
+});
+
+let public = io.of("/public");
 public.on("connection",(client) => {
     client.on('disconnect', () => {
         let deleted_user = deleteUserByClientId(client.id);
@@ -29,7 +41,6 @@ public.on("connection",(client) => {
         }
     })
     client.on("send",(data,callback) => {
-        // console.log(data.header.type);
         if(data.header.type == "GIFT"){
             let t_user = getUserFromIdAndRoomIdx(data.body.tuseridKey,data.body.roomIdx)
             if(typeof  t_user !="undefined"){
@@ -39,16 +50,24 @@ public.on("connection",(client) => {
                 }
             }
         }
-       else
+        else
+        {
             checkInPacket(data,client,public);
+        }
     })
     client.on("receive",(data,callback) =>{
-        client.to(data.body.roomIdx).emit("receive",data);
-        setTimeout(function(){
-            roomio.emit("receive",data);
-        },1000)
+        if(data.body.cmd == "powerballResult"){
+            setTimeout(function(){
+                presult.emit("receive",data),1000
+            })
+        }
+        else{
+            client.to(data.body.roomIdx).emit("receive",data);
+            setTimeout(function(){
+                roomio.emit("receive",data);
+            },1000)
+        }
     })
-
 });
 
 let roomio = io.of('/room');
@@ -164,9 +183,8 @@ pick.on("connection",(client) => {
         public.emit("receive",obj);
         roomio.emit("receive",obj);
     })
-
-
 });
+
 module.exports = {
     public_msg,
     private_msg
