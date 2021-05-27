@@ -285,6 +285,8 @@ function ajaxBestPickster()
                     compileJson("#pickster-list","#bestPicksterList .content",result,1,false);
                     $( "#bestPicksterList" ).slideDown(300);
                 }
+            }).fail(function(xhr){
+                console.log(xhr)
             });
         }
         else
