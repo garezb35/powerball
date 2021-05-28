@@ -17,6 +17,6 @@ class PbPurItem extends Model
         "count"
     ];
     public function items(){
-        return $this->hasOne(PbMarket::class,"code","market_id" );
+        return $this->hasOne(PbMarket::class,"code","market_id" )->where("pb_market.id",">",0);
     }
 }
