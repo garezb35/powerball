@@ -9,6 +9,11 @@
         <ul class="itemList">
             @if(!empty($pur_item))
                 @foreach($pur_item as $item)
+                    @php
+                    if(empty($item->items->image))
+                        continue;
+                    @endphp
+
                 <li>
                     <img src="{{$item->items->image}}" width="115" height="115">
                     <div class="name">{{$item->items->name}}</div>

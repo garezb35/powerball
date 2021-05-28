@@ -512,6 +512,7 @@ function showNumber(num,ii)
 
         ballColor = ballColorSel(num,ii);
         $('#lotteryBall').show();
+        TweenMax.to
         $('#lotteryBall').html('<span class="result_ball '+ballColor+'">'+num+'</span>');
         TweenMax.to(document.getElementById('lotteryBall'),1,{bezier:{curviness:1.25,type:'cubic',values:[{x:207,y:10},{x:119,y:28},{x:72,y:77},{x:61,y:153},{x:92,y:221},{x:184,y:266},{x:366,y:279}],autoRotate:false},ease:Power1.easeInOut,
             onStart:function(){
