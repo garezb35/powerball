@@ -665,25 +665,25 @@
     width: 32px;
     height: 32px;
     background: url(/assets/images/pick/red.png) no-repeat ;
-    color: #000;
+    color: #fff;
 }
 .result_ball.blue {
     width: 32px;
     height: 32px;
     background: url(/assets/images/pick/blue.png) no-repeat ;
-    color: #000;
+    color: #fff;
 }
 .result_ball.green {
     width: 32px;
     height: 32px;
     background: url(/assets/images/pick/green.png) no-repeat ;
-    color: #000;
+    color: #fff;
 }
 .result_ball.yellow {
     width: 32px;
     height: 32px;
     background: url(/assets/images/pick/orange.png) no-repeat ;
-    color: #000;
+    color: #fff;
 }
 .result_ball.pb {
     width: 32px;
