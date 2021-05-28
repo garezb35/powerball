@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Str;
-
+use Redirect;
 class RegisterController extends Controller
 {
     /*
@@ -30,11 +30,10 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
-
-        event(new Registered($user = $this->create($request->all())));
-
-
-        return redirect(route('login'));
+        $request_array = $request->all();
+        unset($request_array["smsAuthNum"]);
+        event(new Registered($user = $this->create($request_array)));
+        return redirect(route('default'));
     }
 
     /**
@@ -42,7 +41,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = "/login";
 
     /**
      * Create a new controller instance.
@@ -65,8 +64,9 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
+            "nickname" =>['required', 'string', 'max:255','unique:pb_users'],
             'loginId' => ['required', 'string', 'max:255','unique:pb_users'],
-            'phoneNumber' => ['required', 'numeric', 'digits_between:1,15'],
+            'phoneNumber' => ['required', 'numeric', 'digits_between:1,15','unique:pb_users'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:pb_users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -81,7 +81,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        return User::insert([
             'loginId' => $data['loginId'],
             'nickname' => $data['nickname'],
             'phoneNumber' => $data['phoneNumber'],

@@ -21,8 +21,14 @@ use DateTime;
 use Prophecy\Doubler\Generator\Node\ReturnTypeNode;
 use Ramsey\Uuid\Type\Time;
 
-class PowerballController extends Controller
+class PowerballController extends SecondController
 {
+
+    public function  __construct()
+    {
+        parent::__construct();
+    }
+
     public function view(Request $request)
     {
         if (!$request->has("terms"))
@@ -195,12 +201,12 @@ class PowerballController extends Controller
     /* 파워볼 픽 페이지 */
     public function pick(Request $request)
     {
-        if(!Auth::check())
+
+        if(!$this->isLogged)
         {
-            echo "<script>alert('로그인 후 이용가능합니다..');window.history.go(-1);</script>";
+            echo "<script>alert('로그인 후 이용가능합니다.');window.history.go(-1);</script>";
             return;
         }
-        $user = Auth::user();
         $current_picks = array();
         $temp = array();
         $current_records = PbBetting::select(
@@ -217,21 +223,21 @@ class PowerballController extends Controller
             DB::raw("created_date as pick_date")
 
         )
-            ->where("userId",$user->userId)
+            ->where("userId",$this->user->userId)
             ->where("game_type",1)
             ->where("type",1)
             ->where("is_win",-1)
             ->orderBy("round","DESC")
             ->groupBy("round")
             ->groupBy("userId");
-        $history_picks = PbBettingCtl::where("game_type",1)->where("type",1)->where("userId",$user->userId)->orderBy("round","DESC");
+        $history_picks = PbBettingCtl::where("game_type",1)->where("type",1)->where("userId",$this->user->userId)->orderBy("round","DESC");
 
         return view('powerball_pick', [    "js" => "",
                                                 "css" => "pball-pick.css",
                                                 "pick_visible" => "block",
                                                 "p_remain"=>TimeController::getTimer(2),
                                                 "type"=>1,
-                                                "token"=>$user->api_token,
+                                                "token"=>$this->user->api_token,
                                                 "picks" => $current_records->union($history_picks)->orderBy("round","DESC")->paginate(20)
                                                ]);
 
@@ -1181,12 +1187,12 @@ class PowerballController extends Controller
 
     public function check(Request  $request){
         $match = $matches3 = $matches2 = $matches1=  array();
-        if(!Auth::check())
+        if(!$this->isLogged)
         {
             echo "<script>alert('로그인 후 이용가능합니다.');window.history.go(-1);</script>";
             return;
         }
-        $userId = Auth::id();
+        $userId = $this->user->userId;
         $ana_title = PbMarket::where("code","PREMIUM_ANALYZER")->first();
         if(empty($ana_title)){
             echo "<script>alert('파워볼 모의배팅 아이템이 존재하지 않습니다.'):window.parent.document.getElementById('mainFrame').height = '500px';</script>";
@@ -1288,14 +1294,14 @@ class PowerballController extends Controller
         }
 
         PbAutoSetting::updateorCreate(
-            ["userId"=>Auth::user()->userId],$insert
+            ["userId"=>$this->user->userId],$insert
         );
         echo json_encode(array("status"=>1,"msg"=>"successful"));
     }
 
     public function setAutoMatch(Request $request){
         $insert_data = array();
-        $userId = Auth::id();
+        $userId = $this->user->userId;
         $var_type = $request->var_type; ///////////파워볼 패턴 종류
         $type = $request->type;   //////////파워볼 종류
         switch ($var_type){
@@ -1374,7 +1380,7 @@ class PowerballController extends Controller
             $state = 1;
         else
             $state = 0;
-        PbAutoSetting::where("userid",Auth::user()->userId)->update([
+        PbAutoSetting::where("userid",$this->user->userId)->update([
             "state"=>$state,
             "betting_type"=>$type
         ]);
@@ -1382,9 +1388,9 @@ class PowerballController extends Controller
     }
 
     public function winning(){
-        if(!Auth::check())
+        if(!$this->isLogged)
         {
-            echo "<script>alert('로그인 후 이용가능합니다..');window.history.go(-1);;</script>";
+            echo "<script>alert('로그인 후 이용가능합니다.');window.history.go(-1);;</script>";
             return;
         }
         $ana_title = PbMarket::where("code","WINNING_MACHINE")->first();
@@ -1392,7 +1398,7 @@ class PowerballController extends Controller
             echo "<script>alert('연승제조기 아이템이 존재하지 않습니다.');window.parent.document.getElementById('mainFrame').height = '500px';</script>";
             return;
         }
-        $userId = Auth::id();
+        $userId = $this->user->userId;
         $item_use = PbItemUse::where("userId",$userId)
             ->where("terms1","<=",date("Y-m-d H:i:s"))
             ->where("terms2",">=",date("Y-m-d H:i:s"))

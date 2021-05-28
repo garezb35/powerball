@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Redirect;
 class HomeController extends BaseController
 {
     /**
@@ -12,12 +12,11 @@ class HomeController extends BaseController
      *
      * @return void
      */
-    protected $user;
-    protected $userLevel;
+    public $user;
+    public $userLevel;
     public function __construct()
     {
         parent::__construct();
-
     }
 
     /**
@@ -37,6 +36,10 @@ class HomeController extends BaseController
 
     public function syncTImeWith(){
         echo strtotime("now");
+    }
+
+    public function register(){
+        Redirect::to('login')->send();
     }
 
 }

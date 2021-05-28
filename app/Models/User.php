@@ -44,7 +44,12 @@ class User extends \TCG\Voyager\Models\User
         'bet_date3',
         'bet_number4',
         'bet_date4',
-        'badge'
+        'badge',
+        "ip",
+        "second_password",
+        "second_active",
+        "second_use",
+        "except_ip"
     ];
 
     /**
@@ -83,6 +88,14 @@ class User extends \TCG\Voyager\Models\User
 
     public function item(){
         return $this->hasMany(PbPurItem::class,"userId","userId");
+    }
+
+    public function blocked(){
+        return $this->hasOne(PbIpBlocked::class,"ip","ip");
+    }
+
+    public function errorUser(){
+        return $this->hasOne(PbPrison::class,"userId","userId");
     }
 
     public function item_use(){

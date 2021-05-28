@@ -3,7 +3,13 @@
 @section("header")
     @include('member/member-menu')
 @endsection
+
 @section("content")
+    <script>
+        var api_token = "{{$api_token}}";
+    </script>
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
     <div class="content">
         <div class="memberBox">
             <div class="titBox">
@@ -175,7 +181,7 @@
                         </td>
                         <td class="position-relative">
                         <span>
-                            <a href="#" onclick="windowOpen('/?view=memberSecurity&amp;type=securityPasswd','memberSecurity',600,600,'auto');return false;" class="btn_set  btn_buyoutline btn btn-sm">설정하기</a>
+                            <a href="#" onclick="windowOpen('/memberSecurity','memberSecurity',600,650,'auto');return false;" class="btn_set  btn_buyoutline btn btn-sm">설정하기</a>
                         </span>
                         </td>
                     </tr>
@@ -186,7 +192,7 @@
                         </td>
                         <td class="position-relative">
                         <span>
-                            <a href="#" onclick="windowOpen('/?view=memberSecurity&amp;type=authIp','memberSecurity',600,600,'auto');return false;" class="btn_set  btn_buyoutline btn btn-sm">설정하기</a>
+                            <a href="#" onclick="windowOpen('/authIp','memberSecurity',600,500,'auto');return false;" class="btn_set  btn_buyoutline btn btn-sm">설정하기</a>
                         </span>
                         </td>
                     </tr>
@@ -197,7 +203,7 @@
                         </td>
                         <td class="position-relative">
                     <span >
-                        <a href="#" onclick="windowOpen('/?view=memberSecurity&amp;type=foreignIpBan','memberSecurity',600,600,'auto');return false;" class="btn_set btn_buyoutline btn btn-sm">설정하기</a>
+                        <input type="checkbox" name="outIP" id="outIP"  data-toggle="toggle"  data-height="20" data-on="사용" data-off="해제" data-onstyle="success" data-offstyle="danger"  value="1">
                     </span>
                         </td>
                     </tr>
@@ -249,4 +255,13 @@
         </div>
     </div>
 @endsection
+
+<style>
+    .toggle-on.btn, .toggle-off.btn {
+        line-height: 18px !important;
+    }
+    .toggle.btn {
+        min-height: 10px !important;
+    }
+</style>
 

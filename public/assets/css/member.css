@@ -213,3 +213,18 @@ table.logBox thead th {
     border-bottom: none;
     border-top: 2px solid #00b4b4;
 }
+
+.memberInfoBox .btn {
+    display: block;
+    width: 200px;
+    height: 40px;
+    margin: 0 auto;
+    background-color: #4C4C4C;
+    color: #fff;
+    border: solid 1px #3C3C3C;
+    font-weight: bold;
+    font-size: 15px;
+    line-height: 40px;
+    text-align: center;
+    text-decoration: none;
+}

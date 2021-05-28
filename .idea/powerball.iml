@@ -135,6 +135,10 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/larapack/voyager-hooks" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/filesystem" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/tcg/voyager" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/maxmind-db/reader" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/maxmind/web-service-common" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/geoip2/geoip2" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/stevebauman/location" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

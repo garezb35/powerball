@@ -10,11 +10,12 @@ use App\Models\CodeDetail;
 use App\Models\PbPurItem;
 use Illuminate\Support\Facades\Auth;
 use View;
-
+use Redirect;
 
 class BaseController  extends Controller
 {
-    protected $user;
+    public $user;
+    public $isLogged;
     protected $user_level;
     protected $next = 0;
     protected $normal_exp = 0;
@@ -23,9 +24,15 @@ class BaseController  extends Controller
     protected $mail_count = 0;
     protected  $rooms = array();
     public function  __construct(){
+        $this->isLogged = false;
         $this->middleware(function ($request, $next) {
             if (Auth::check()) {
-                $this->user = new User;
+                $this->isLogged = true;
+                $this->user = Auth::user();
+                if(!empty($this->user->second_password) && $this->user->second_use == 1){
+                    Redirect::to('veriPass')->send();
+                    return;
+                }
                 $codedetail = new CodeDetail;
                 $this->user_level = $this->user->find(Auth::user()->userId)->getLevel()->get()->toArray();
                 if (!empty($this->user_level)) {
@@ -39,7 +46,7 @@ class BaseController  extends Controller
                     $this->next = 0;
                 }
                 $this->item = PbPurItem::where("userId",Auth::id())->where("active",1)->sum("count");
-                $this->mail_count = PbInbox::where('toId',Auth::user()->userId)->where("view_date",NULL)->get()->count();
+                $this->mail_count = PbInbox::where('toId',$this->user->userId)->where("view_date",NULL)->get()->count();
             }
 
             $humor = PbMessage::with("comments")->where("type","humor")->orderBy("created_at","DESC")->limit(12)->get()->toArray();
@@ -50,7 +57,7 @@ class BaseController  extends Controller
             $days_ago = date('Y-m-d H:i:s', strtotime('-26  hours', strtotime("now")));
             $rooms = PbRoom::with(["roomandpicture.getLevel","roomandpicture.item_use"])->where("created_at",">",$days_ago)->orderBy("cur_win","DESC")->orderBy("cur_win","DESC")->limit(6)->get()->toArray();
             $this->rooms = $rooms;
-            $userIdToken = !Auth::check() ? "" : Auth::user()->api_token;
+            $userIdToken = !Auth::check() ? "" : $this->user->api_token;
             View::share('user_level', $this->user_level);
             View::share('next_level', $this->next);
             View::share('normal_level', $this->normal_exp);

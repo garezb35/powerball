@@ -11,18 +11,21 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class BoardController extends Controller
+class BoardController extends SecondController
 {
-    //
+    public function __construct()
+    {
+        parent::__construct();
+    }
     public function view(Request $request){
 
         $result["api_token"] = "";
-        if(!Auth::check()){
+        if(!$this->isLogged){
             $userId = 0;
         }
         else {
-            $userId = Auth::user()->userId;
-            $result["api_token"] = Auth::user()->api_token;
+            $userId = $this->user->userId;
+            $result["api_token"] = $this->user->api_token;
         }
 
         $result["type"] = $request->get("board_type") ?? "community";
@@ -125,11 +128,11 @@ class BoardController extends Controller
     }
 
     public function commentProcess(Request $request){
-        if(!Auth::check()){
+        if(!$this->isLogged){
             echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.history.back(1)</script>";
             return;
         }
-        $user = Auth::user();
+        $user = $this->user;
         $w = $request->post("w");
         $bo_table = $request->post("bo_table");
         $page = $request->post("page") ?? 1;
@@ -157,7 +160,7 @@ class BoardController extends Controller
     }
 
     public function deleteComment(Request  $request){
-        $user  =Auth::user();
+        $user = $this->user;
         $id = $request->post("id");
 
         $checked_com = PbComment::where("userId",$user->userId)->where("id",$id)->first();
@@ -173,7 +176,7 @@ class BoardController extends Controller
     }
 
     public function setRecommend(Request $request){
-        $user = Auth::user();
+        $user = $this->user;
         $id = $request->post("id");
         $checked_recom = PbRecommend::where("userId",$user->userId)->where("postId",$id)->first();
         $mail = PbMessage::find($id);
@@ -192,7 +195,7 @@ class BoardController extends Controller
 
     public function boardWrite(Request $request){
         $board_category = $request->get("board_category");
-        if(!Auth::check() || empty($board_category)){
+        if(!$this->isLogged || empty($board_category)){
             echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.history.back(1)</script>";
             return;
         }
@@ -208,7 +211,7 @@ class BoardController extends Controller
             $result["title"] = $mail["title"];
             $result["content"] = $mail["content"];
         }
-        $user = Auth::user();
+        $user = $this->user;
         $result["api_token"] = $user->api_token;
         $result["board"] = PbBoard::where("name",$board_category)->where("isDeleted",0)->first();
         if(empty($result["board"])){
@@ -225,11 +228,11 @@ class BoardController extends Controller
         $wr_subject = $request->post("wr_subject");
         $wr_content = $request->post("wr_content");
         $reply = $request->post("reply") ?? 0;
-        if(!Auth::check() || empty($board_category)){
+        if(!$this->isLogged || empty($board_category)){
             echo "<script>alert('잘못된 접근입니다.');window.history.back(1)</script>";
             return;
         }
-        $user = Auth::user();
+        $user = $this->user;
         $board = PbBoard::where("name",$board_category)->where("isDeleted",0)->first();
         if(empty($board)){
             echo "<script>alert('게시판이 존재하지 않습니다.');window.history.back(1)</script>";
@@ -267,7 +270,7 @@ class BoardController extends Controller
     }
 
     public function deletePost(Request $request){
-        $user = Auth::user();
+        $user = $this->user;
         $id = $request->post("id");
         $mail = PbMessage::where("id",$id)->where("fromId",$user->userId)->first();
         if(empty($mail)){

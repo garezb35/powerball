@@ -1,0 +1,127 @@
+@charset "utf-8";
+
+* {margin:0; padding:0;}
+//html, body{width:100%; height:100%;}
+body,input,textarea,select,table,button{line-height:15px;font-family:"돋움",Dotum,"굴림",Gulim,AppleGothic,Sans-serif;font-size:12px;}
+body{position:relative;color:#000;}
+caption, legend, #accessibility, .hidden{font-size: 0;line-height: 0;text-indent: -5000px;}
+img, fieldset, iframe{border:0 none;vertical-align:top;}
+fieldset{font-size:0;}
+ul,ol{list-style:none;}
+a{color:#000;text-decoration:none;cursor:pointer;}
+em,address{font-style:normal;}
+table {border-collapse:collapse; table-layout:fixed;}
+hr{display:none;}
+.hidden {clear: both;font-size: 0;height: 0;line-height: 0;visibility: hidden;width: 0;}
+.cl{*zoom:1;}
+.cl:after{content:'';display:block;clear:both;}
+
+.red {color:red;}
+
+.error {color:#ff5858 !important;}
+.confirm {color:#0099ff !important;}
+
+/* padding */
+.pd5 {padding:5px;}
+.pdT5 {padding-top:5px;}
+.pdR5 {padding-right:5px;}
+.pdB5 {padding-bottom:5px;}
+.pdL5 {padding-left:5px;}
+
+.pd10 {padding:10px;}
+.pdT10 {padding-top:10px;}
+.pdR10 {padding-right:10px;}
+.pdB10 {padding-bottom:10px;}
+.pdL10 {padding-left:10px;}
+
+/* join */
+.joinBox {border:solid 1px #CECECE;padding:10px;background-color:#fff;width:808px;}
+.joinBox .content {padding:20px;}
+.joinBox .title {font-size:15px;font-family:Gulim;}
+.joinBox .agreeText {height:150px;color:#666666;line-height:160%;border:1px solid #E3E2E2;padding:20px;background-color:#fafafa;}
+.joinBox .bar {background-color:#E3E2E2;height:1px;margin:20px 0;}
+.joinBox .chk {margin-top:10px;font-size:12px;font-family:Gulim;}
+.joinBox .chk label {cursor:pointer;}
+.joinBox .btn {display:block;width:200px;height:40px;margin:0 auto;background-color:#4C4C4C;color:#fff;border:solid 1px #3C3C3C;font-weight:bold;font-size:15px;line-height:40px;text-align:center;text-decoration:none;}
+.joinBox .guideMsg {color:red;text-align:center;font-size:12px;font-weight:bold;height:20px;margin-top:10px;}
+
+.joinInputBox {border:solid 1px #CECECE;padding:10px;background-color:#fff;width:808px;}
+.joinInputBox .content {padding:20px;}
+.joinInputBox .table {border-top:1px dotted #c6c6c6;width:100%;}
+.joinInputBox .table td {height:50px;border-bottom:1px dotted #c6c6c6;}
+.joinInputBox .table td.none {border:none;}
+.joinInputBox .table .title {font-size:12px;font-weight:bold;font-family:Gulim;background-color:#f7f7f7;padding-left:10px;}
+.joinInputBox .table .val {font-size:12px;font-weight:bold;}
+.joinInputBox .table .guideMsg {padding-left:10px;font-size:11px;color:#555555;}
+.joinInputBox .input {margin-left:10px;padding:0 8px;width:150px;height:22px;line-height:22px;border:1px solid #c2c6cb;font-family:Gulim;font-size:12px;font-weight:bold;z-index:10;}
+.joinInputBox .input:focus {position:relative;border:1px solid #4C4C4C;}
+.joinInputBox .table .smallMsg {padding-left:10px;font-size:11px;color:#555555;}
+
+.joinInputBox .authBtn {display:inline-block;width:80px;height:22px;background-color:#4C4C4C;color:#fff;border:solid 1px #3C3C3C;font-weight:normal;font-size:12px;line-height:22px;text-align:center;text-decoration:none;}
+.joinInputBox .btn {display:block;width:200px;height:40px;margin:0 auto;background-color:#4C4C4C;color:#fff;border:solid 1px #3C3C3C;font-weight:bold;font-size:15px;line-height:40px;text-align:center;text-decoration:none;}
+.joinInputBox .resultBox {border:solid 1px #CECECE;height:50px;margin:0 10px;text-align:center;line-height:50px;background-color:#F7F7F7;display:none;}
+
+/* findIdPw */
+.findBox {border:solid 1px #CECECE;padding:10px;background-color:#fff;width:808px;height:330px;}
+.findBox .content {padding:20px;}
+.findBox .table {border-top:1px dotted #c6c6c6;width:100%;}
+.findBox .table td {height:50px;border-bottom:1px dotted #c6c6c6;}
+.findBox .table td.none {border:none;}
+.findBox .table .title {font-size:12px;font-weight:bold;font-family:Gulim;background-color:#f7f7f7;padding-left:10px;}
+.findBox .table .val {font-size:12px;font-weight:bold;}
+.findBox .table .guideMsg {padding-left:10px;font-size:11px;color:#555555;}
+.findBox .input {margin-left:10px;padding:0 8px;width:150px;height:22px;line-height:22px;border:1px solid #c2c6cb;font-family:Gulim;font-size:12px;font-weight:bold;z-index:10;}
+.findBox .input:focus {position:relative;border:1px solid #4C4C4C;}
+.findBox .table .smallMsg {padding-left:10px;font-size:11px;color:#555555;}
+.findBox .btn {display:block;width:200px;height:40px;margin:0 auto;background-color:#4C4C4C;color:#fff;border:solid 1px #3C3C3C;font-weight:bold;font-size:15px;line-height:40px;text-align:center;text-decoration:none;}
+.findBox .resultBox {border:solid 1px #CECECE;height:50px;margin:0 10px;text-align:center;line-height:50px;background-color:#F7F7F7;display:none;}
+
+.findBox .content ul {border:1px solid #cccccc;height:45px;line-height:45px;}
+.findBox .content ul li {margin-bottom:10px;width:50%;text-align:center;font-weight:bold;}
+.findBox .content ul li.id {border-right:1px solid #cccccc;margin-right:-1px;float:left;}
+.findBox .content ul li.pw {float:right;}
+.findBox .content ul li a {display:block;color:#9D9D9D;}
+.findBox .content ul li a.on {background-color:#4C4C4C;color:#fff;}
+
+/* simpleJoin */
+#simpleJoinBox {border:1px solid #D6D6D6;margin:15px auto;}
+#simpleJoinBox.pc {width:400px;}
+#simpleJoinBox.mobile {width:320px;}
+
+#simpleJoinBox .header {text-align:center;height:70px;margin-top:10px;border-bottom:1px solid #D6D6D6;}
+
+#simpleJoinBox .content {position:relative;min-height:460px;background-color:#f5f5f5;border-bottom:1px solid #D6D6D6;padding:30px;}
+#simpleJoinBox .content dl.join dt {position:relative;}
+#simpleJoinBox .content dl.join dt label{display:none;position:absolute;top:14px;left:16px;color:#A9A9A9;z-index:99;}
+#simpleJoinBox .content dl.join dd {position:relative;padding-right:32px;margin-bottom:5px;}
+#simpleJoinBox .content dl.join dd .input {display:block;padding:0 15px;width:100%;height:40px;line-height:40px;border:1px solid #ddd;outline-style:none;}
+#simpleJoinBox .content dl.join dd .input:focus {border:1px solid #127ccb;}
+#simpleJoinBox .content dl.join dd.mobile {padding-right:125px;}
+#simpleJoinBox .content dl.join dd.authNum input {width:130px;}
+#simpleJoinBox .content dl.join dd.errorMsg {margin:10px 0;color:#127ccb;padding:0 5px;}
+
+#simpleJoinBox .content dl.join dd .btn_auth {position:absolute;top:0;right:0;width:90px;height:42px;line-height:42px;background-color:#127ccb;border:1px solid #0e609c;color:#fff;cursor:pointer;}
+#simpleJoinBox .content dl.join dd .btn_auth:hover {background-color:#0d568c;border:1px solid #0c4d7c;}
+
+#simpleJoinBox .content .policy {margin:20px 0;padding-left:0;}
+#simpleJoinBox .content .policy a {text-decoration:underline;color:#127ccb;}
+#simpleJoinBox .content .policy input[type=checkbox] {position:absolute;left:-9999px;}
+#simpleJoinBox .content .policy label {position:relative;padding-left:30px;cursor:pointer;}
+#simpleJoinBox .content .policy .check {position:absolute;top:-5px;left:0;background:url(https://simg.powerballgame.co.kr/images/sp_check.png) 0 0 no-repeat;width:22px;height:22px;}
+#simpleJoinBox .content .policy .check:hover {background-position:-24px 0;}
+#simpleJoinBox .content .policy .check.checked {background-position:-48px 0;}
+#simpleJoinBox .content .welcome {margin-top:120px;height:50px;line-height:50px;font-size:40px;text-align:center;}
+#simpleJoinBox .content .text {margin-top:20px;text-align:center;font-size:12px;line-height:20px;}
+#simpleJoinBox .content .text .highlight {color:#127ccb;}
+#simpleJoinBox .content .btn_start {margin-top:150px;width:100%;height:40px;text-align:center;background-color:#127ccb;border:1px solid #0e609c;color:#fff;cursor:pointer;}
+
+#simpleJoinBox .content #policyContent dl {display:none;border:1px solid #D6D6D6;margin-bottom:10px;}
+#simpleJoinBox .content #policyContent dl dt {height:30px;line-height:30px;border-bottom:1px solid #D6D6D6;padding-left:15px;background-color:#f7f7f9;color:#4d4d4d;}
+#simpleJoinBox .content #policyContent dl dd {height:60px;padding:10px;overflow:auto;background-color:#fff;color:#7b7b7b;}
+
+#simpleJoinBox .btn_join {width:100%;height:40px;text-align:center;background-color:#127ccb;border:1px solid #0e609c;color:#fff;cursor:pointer;}
+#simpleJoinBox .btn_join:hover {background-color:#0d568c;border:1px solid #0c4d7c;}
+
+#simpleJoinBox .footer {height:60px;line-height:60px;text-align:center;}
+#simpleJoinBox .footer a {text-decoration:underline;color:#127ccb;margin-left:20px;}
+#simpleJoinBox .footer a:hover {color:#0e609c;}

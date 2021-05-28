@@ -176,7 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-
+        Stevebauman\Location\LocationServiceProvider::class,
     ],
 
     /*
@@ -232,7 +232,7 @@ return [
         'Form' => Collective\Html\FormFacde::class,
         'Html' => Collective\Html\HtmlFacde::class,
         'Image' => Intervention\Image\Facades\Image::class,
-
+        'Location' => Stevebauman\Location\Facades\Location::class,
     ],
 
 ];

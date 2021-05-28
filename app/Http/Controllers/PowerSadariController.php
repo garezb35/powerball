@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Pb_Result_Powerball;
 use DB;
 
-class PowerSadariController extends Controller
+class PowerSadariController extends SecondController
 {
     //
     public function view(Request $request)

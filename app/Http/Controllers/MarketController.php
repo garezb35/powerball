@@ -11,11 +11,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use const http\Client\Curl\AUTH_ANY;
 
-class MarketController extends Controller
+class MarketController extends SecondController
 {
-    //
+    public function __construct()
+    {
+        parent::__construct();
+    }
     public function view(Request $request){
-        if(!Auth::check())
+        if(!$this->isLogged)
         {
             echo "<script>alert('로그인 후 이용가능합니다.');window.history.go(-1);</script>";
             return;
@@ -47,7 +50,7 @@ class MarketController extends Controller
         $insert_id = 0;
         $insert_count = 0;
         $insert_price = array();
-        $user = Auth::user();
+        $user = $this->user;
         $item = PbMarket::where("code",$code)->where("state",1)->first();
 
         if(empty($item))
@@ -126,7 +129,7 @@ class MarketController extends Controller
     public function useItem(Request $request){
         $code = $request->code;
         $count = $request->count;
-        $user = Auth::user();
+        $user = $this->user;
         $terms_type = 1;
         $terms1 = $terms2 = "";
         if($count <=0 || $count > 1){

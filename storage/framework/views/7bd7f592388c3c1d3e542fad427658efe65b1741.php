@@ -1,7 +1,7 @@
 <li class="<?php if(intval($key) % 4 == 0): ?> ml-0 <?php endif; ?> <?php if(intval($key) % 4 == 3): ?> mr-0 <?php endif; ?>" style="<?php if(intval($key) % 4 == 3): ?> width:180px <?php endif; ?>">
     <?php if($list["hot_icon"]==1): ?><div class="edge hot"><img src="assets/images/powerball/hot.png" width="45" ></div><?php endif; ?>
     <?php if($list["hot_icon"]==2): ?><div class="edge new"><img src="assets/images/powerball/new.png" width="45"></div><?php endif; ?>
-    <img src="<?php echo e($list["image"]); ?>" width="115" height="100">
+    <img src="<?php echo e($list["image"]); ?>" width="115" height="115">
     <div class="name"><?php echo e($list["name"]); ?></div>
     <?php if(!empty($list["bonus"])): ?>
         <div class="bonus">

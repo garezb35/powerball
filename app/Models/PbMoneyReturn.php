@@ -9,9 +9,10 @@ class PbMoneyReturn extends Model
 {
     use HasFactory;
     protected  $table = "pb_money_return";
-    protected  $fillable = [
-        "userId",
-        "bullet"
+    protected  $guarded = [
+        "id",
+        "created_at",
+        "updated_at"
     ];
 
     public function user(){

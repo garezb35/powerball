@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\CodeDetail;
+use App\Models\LoginLog;
+use App\Models\PbAuth;
+use App\Models\PbBank;
+use App\Models\PbBettingCtl;
 use App\Models\PbDeposit;
 use App\Models\PbInbox;
 use App\Models\PbItemUse;
@@ -18,19 +22,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use DB;
+use Illuminate\Support\Facades\Hash;
 use Image;
 use Symfony\Component\HttpKernel\EventListener\ValidateRequestListener;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
-class MemberController extends Controller
+class MemberController extends SecondController
 {
     //
     public function index(Request $request){
 
-        if(!Auth::check()){
+        if(!$this->isLogged){
             echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.')</script>";
             return;
         }
-        $userId= Auth::id();
+        $userId= $this->user->userId;
         $user = User::with(["item"])->where("pb_users.userId",$userId)->first();
         $avata = CodeDetail::where("class","0020")->where("code",$user->level)->first();
         $avata = empty($avata["value3"]) ? "": $avata["value3"];
@@ -41,11 +48,12 @@ class MemberController extends Controller
         }
         switch ($type){
             case "mine";
-                return view('member/powerball-mypage', [   "js" => "",
+                return view('member/powerball-mypage', [   "js" => "mine.js",
                                                                 "css" => "member.css",
                                                                 "user" => $user,
                                                                 "avata"=>$avata,
-                                                                "item_count" => $item_count
+                                                                "item_count" => $item_count,
+                                                                "api_token"=>$user["api_token"]
                     ]
                 );
                 break;
@@ -141,8 +149,15 @@ class MemberController extends Controller
                 );
                 break;
             case "exchange";
-                echo "<script>alert('총알 환전은 실명인증이 완료된 계정에 한해서 신청 가능합니다.')</script>";
-                return;
+                $pb_bank = PbBank::where("status",1)->get()->toArray();
+                $exchs = PbMoneyReturn::with("user")->where("userId",$this->user->userId)->orderBy("created_at","DESC")->paginate(10)->appends(request()->query());
+                return view('member/powerball-exchange', [
+                        "js" => "member.js",
+                        "css" => "member.css",
+                        "bank"=>$pb_bank,
+                        "exchs"=>$exchs
+                    ]
+                );
                 break;
             case "level";
                 $user_exp = $user->exp;
@@ -161,10 +176,10 @@ class MemberController extends Controller
                 );
                 break;
             case "loginLog";
-//                $items = PbAccess::where("userId",$userId)->where("type",1)->orderBy("created_at","DESC")->paginate(10)->appends(request()->query());
-//                $count = PbLog::where("userId",$userId)->where("type",1)->get()->count();
+                $loginlog = LoginLog::where("userId",$this->user->userId)->orderBy("created_at","DESC")->paginate(10)->appends(request()->query());
                 return view('member/powerball-accesslog', [    "js" => "",
-                                                                    "css" => "member.css"
+                                                                    "css" => "member.css",
+                                                                    "loginlog"=>$loginlog
                     ]
                 );
                 break;
@@ -175,6 +190,13 @@ class MemberController extends Controller
                 );
                 break;
             case "withdraw";
+                return view('member/powerball-withdraw', [
+                        "js" => "",
+                        "css" => "member.css",
+                        "nickname"=>$this->user->nickname,
+                        "api_token"=>$this->user->api_token
+                    ]
+                );
                 break;
             default:
                 echo "<script>alert('잘못된 접속입니다.')</script>";
@@ -185,7 +207,7 @@ class MemberController extends Controller
     public function setMute(Request $request){
         $roomIdx = $request->roomIdx;
         $tuseridKey = $request->tuseridKey;
-        $user = Auth::user();
+        $user = $this->user;
         $cmd = $request->cmd;
         $pb_room = PbRoom::where("roomIdx",$roomIdx)->first();
         if(empty($pb_room)){
@@ -231,7 +253,7 @@ class MemberController extends Controller
     public function kickUser(Request $request){
         $roomIdx = $request->roomIdx;
         $tuseridKey = $request->tuseridKey;
-        $user = Auth::user();
+        $user = $this->user;
         $cmd = $request->cmd;
         $pb_room = PbRoom::where("roomIdx",$roomIdx)->first();
         if(empty($pb_room)){
@@ -261,7 +283,7 @@ class MemberController extends Controller
     public function updateManage(Request $request){
         $roomIdx = $request->roomIdx;
         $tuseridKey = $request->tuseridKey;
-        $user = Auth::user();
+        $user = $this->user;
         $cmd = $request->cmd;
         $pb_room = PbRoom::where("roomIdx",$roomIdx)->first();
         if(empty($pb_room)){
@@ -298,7 +320,7 @@ class MemberController extends Controller
     public function updateFixManage(Request $request){
         $roomIdx = $request->roomIdx;
         $tuseridKey = $request->tuseridKey;
-        $user = Auth::user();
+        $user = $this->user;
         $cmd = $request->cmd;
         $pb_room = PbRoom::with("roomandpicture")->where("roomIdx",$roomIdx)->first();
         if(empty($pb_room)){
@@ -446,11 +468,11 @@ class MemberController extends Controller
 
     public function modify(Request $request){
 
-        if(!Auth::check()){
+        if(!$this->isLogged){
             echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.')</script>";
             return;
         }
-        $user = Auth::user();
+        $user = $this->user;
         $type = $request->type ?? "nickname";
         switch ($type) {
             case 'nickname':
@@ -483,7 +505,7 @@ class MemberController extends Controller
     public function umodify(Request $request){
 
         $type = $request->type ?? "";
-        $userId= Auth::id();
+        $userId= $this->user->userId;
         $user = User::find($userId)->with(["item"])->first();
         $item_count = array();
         foreach($user->item->toArray() as $index){
@@ -611,7 +633,7 @@ class MemberController extends Controller
     }
 
     public function imgCheck(Request $request){
-        $userId= Auth::id();
+        $userId= $this->user->userId;
         $user = User::with(["item"])->where("pb_users.userId",$userId)->first();
         $item_count = array();
         foreach($user->item->toArray() as $index){
@@ -638,11 +660,11 @@ class MemberController extends Controller
     }
 
     public function uploadImage(Request $request){
-        if(!Auth::check()){
+        if(!$this->isLogged){
             echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.')</script>";
             return;
         }
-        $user = Auth::user();
+        $user = $this->user->userId;
         $item_count = array();
         foreach($user->item->toArray() as $index){
             if($index["count"] <=0) continue;
@@ -661,7 +683,7 @@ class MemberController extends Controller
         $input = array();
         $image = $request->file('profileImg');
         $input['imagename'] = $user->userIdKey.'.'.$image->extension();
-        $filePath = public_path('/assets/images/mine/profile');
+        $filePath  = public_path('/assets/images/mine/profile');
         $img = Image::make($image->path());
         $img->resize(150, 150, function ($const) {
             $const->aspectRatio();
@@ -681,11 +703,11 @@ class MemberController extends Controller
 
     public function setCharge(Request $request){
 
-        if(!Auth::check()){
+        if(!$this->isLogged){
             echo "<script>alert('로그인후 이용가능한 서비스입니다.')</script>";
             return;
         }
-        $user = Auth::user();
+        $user = $this->user;
         if($request->chargeType == "deposit"){
             $chargeCoin = $request->chargeCoin ?? 0;
             $chargePrice = $request->chargePrice ?? 0;
@@ -711,11 +733,11 @@ class MemberController extends Controller
     }
 
     public function goMemo(Request $request){
-        if(!Auth::check()){
+        if(!$this->isLogged){
             echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.close()</script>";
             return;
         }
-        $user = Auth::user();
+        $user = $this->user;
         $type = $request->get("type");
         $type = $type ?? "receive";
         $result  = array();
@@ -920,7 +942,7 @@ class MemberController extends Controller
     }
 
     public function checkNickName(Request  $request){
-        $user = Auth::user();
+        $user = $this->user;
         $nickname = $request->post("nickname");
         if($nickname == $user->nickname){
             echo "myself";
@@ -950,7 +972,7 @@ class MemberController extends Controller
 
     public function sendMail(Request  $request){
         $insert_id = array();
-        $user = Auth::user();
+        $user = $this->user;
         $content  = $request->post("content");
         $randomMemo = $request->post("randomMemo");
         $item = array();
@@ -1000,11 +1022,11 @@ class MemberController extends Controller
     }
 
     public function deleteMemo(Request $request){
-        if(!Auth::user()){
+        if(!$this->isLogged){
             echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.close()</script>";
         }
         $mtype = $request->post("mtype");
-        $userId = Auth::user()->userId;
+        $userId = $this->user->userId;
         $list_memo  = $request->post("check");
         PbInbox::whereIn("id",$list_memo)
             ->where(function($query) use ($userId){
@@ -1014,11 +1036,11 @@ class MemberController extends Controller
         echo "<script>location.href='/memo?type={$mtype}';</script>";
     }
     public function memoSave(Request $request){
-        if(!Auth::user()){
+        if(!$this->isLogged){
             echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.close()</script>";
         }
 
-        $userId = Auth::user()->userId;
+        $userId = $this->user->userId;
         $list_memo  = $request->post("check");
         PbInbox::whereIn("id",$list_memo)
             ->where(function($query) use ($userId){
@@ -1028,11 +1050,11 @@ class MemberController extends Controller
         echo "<script>location.href='/memo?type=save';</script>";
     }
     public function memoReport(Request $request){
-        if(!Auth::user()){
+        if(!$this->isLogged){
             echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.close()</script>";
         }
 
-        $userId = Auth::user()->userId;
+        $userId = $this->user->userId;
         $list_memo  = $request->post("check");
         PbInbox::whereIn("id",$list_memo)
             ->where(function($query) use ($userId){
@@ -1043,10 +1065,10 @@ class MemberController extends Controller
     }
 
     public function processFrd(Request  $request){
-        if(!Auth::check()){
+        if(!$this->isLogged){
             echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.close()</script>";
         }
-        $user = Auth::user();
+        $user = $this->user;
         $checked_usr = $request->post("check");
         if($request->post("friendType") == "friend"){
             $frd_list = explode(",",$user->frd_list);
@@ -1079,7 +1101,7 @@ class MemberController extends Controller
     }
 
     public function addFriend(Request $request){
-        $user = Auth::user();
+        $user = $this->user;
         $nickname = $request->post("nickname");
         $other = User::where("nickname",$nickname)->first();
         $type = $request->post("type");
@@ -1111,11 +1133,11 @@ class MemberController extends Controller
     }
 
     public function giftBox(Request $request){
-        if(!Auth::check()){
+        if(!$this->isLogged){
             echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.close()</script>";
             return;
         }
-        $user = Auth::user();
+        $user = $this->user;
         $other = User::where("userIdKey",$request->get("useridKey"))->where("isDeleted",0)->where("user_type","01")->first();
         if(empty($other)){
             echo "<script>alert('존재하지 않는 회원입니다.');window.close()</script>";
@@ -1133,7 +1155,7 @@ class MemberController extends Controller
     }
 
     public function sendGift(Request $request){
-        if(!Auth::check()){
+        if(!$this->isLogged){
             echo json_encode(array("status"=>0,"msg"=>"로그아웃상태이므로 요청을 수락할수 없습니다."));
             return;
         }
@@ -1143,7 +1165,7 @@ class MemberController extends Controller
         $roomIdx = $request->post("roomIdx");
         $cmd = $request->post("cmd");
 
-        $user = Auth::user();
+        $user = $this->user;
         $user->bullet = $user->bullet - $cnt;
         $user->save();
         $other = User::where("userIdKey",$tuseridKey)->first();
@@ -1166,11 +1188,11 @@ class MemberController extends Controller
     }
 
     public function giftPop(Request  $request){
-        if(!Auth::check()){
+        if(!$this->isLogged){
             echo json_encode(array("status"=>0,"msg"=>"로그아웃상태이므로 요청을 수락할수 없습니다."));
             return;
         }
-        $user = Auth::user();
+        $user = $this->user;
         $itemCode = $request->get("itemCode");
         $itemCnt = $request->get("itemCnt") ?? 1;
         $item = PbMarket::where("code",$itemCode)->where("state",1)->first();
@@ -1189,11 +1211,11 @@ class MemberController extends Controller
     }
 
     public function sendItem(Request  $request){
-        if(!Auth::check()){
+        if(!$this->isLogged){
             echo json_encode(array("status"=>0,"code"=>"NOTLOGIN","msg"=>"로그아웃상태이므로 요청을 수락할수 없습니다."));
             return;
         }
-        $user = Auth::user();
+        $user = $this->user;
         $itemCode =  $request->post("itemCode");
         $itemCnt =  $request->post("itemCnt");
         $targetNick =  $request->post("targetNick");
@@ -1282,12 +1304,12 @@ class MemberController extends Controller
     }
 
     public  function present(Request $request){
-        if(!Auth::check()){
+        if(!$this->isLogged){
             echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.history.back(1)</script>";
         }
         $type = $request->get("type") ?? date("Y-m-d");
         $presents = array();
-        $user = Auth::user();
+        $user = $this->user;
         $size = rand(0,sizeof(randomItemMessage())-1);
         $win_number = CodeDetail::where("codestname","RandomNumber")->first();
         $presents = PbPresent::with("user.getLevel")->where("created_at","LIKE",date("Y-m",strtotime($type))."%")->orderBy("created_at","DESC")->paginate(20);
@@ -1313,7 +1335,7 @@ class MemberController extends Controller
     }
 
     public function setPresent(Request $request){
-        $user = Auth::user();
+        $user = $this->user;
 
         $current_present = PbPresent::where("userId",$user->userId)->whereDate("created_at","=",date("Y-m-d"))->first();
         if(!empty($current_present)){
@@ -1448,5 +1470,214 @@ class MemberController extends Controller
             }
         }
         echo 1;
+    }
+
+    public function memberSecurity(Request $request0){
+        if(!$this->isLogged){
+            echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.history.back(1)</script>";
+        }
+        $user = $this->user;
+        return view('member/security', [
+            "js" => "security.js",
+            "css" => "modify.css",
+            "api_token"=>$user->api_token
+        ]);
+    }
+
+    public function setSecondPassword(Request $request){
+        $user = $this->user;
+        $securityPasswd = $request->post("securityPasswd");
+        $securityPasswdUseYN = $request->post("securityPasswdUseYN");
+
+        if($securityPasswdUseYN == "true"){
+            $user->second_active = 1;
+            $user->second_password = $securityPasswd;
+        }
+        else{
+            $user->second_active = 0;
+            $user->second_use = 0;
+        }
+        $user->save();
+
+        echo json_encode(array("status"=>1,"msg"=>"2차비밀번호가 설정되었습니다...[{$securityPasswd}]"));
+    }
+
+    public function setoutIP(Request $request){
+        $user = $this->user;
+        $outip = $request->post("outip");
+        if($outip == "true"){
+            $user->except_ip = 1;
+        }
+        else
+            $user->except_ip = 0;
+        $user->save();
+        echo 1;
+    }
+
+    public function sendSmsPhoneNum(Request $request){
+        $phone = $request->post("phone");
+        $checked_phone = User::where("phoneNumber",$phone)->first();
+        if(!empty($checked_phone)){
+            echo json_encode(array("status"=>0,"msg"=>"이미 사용중인 번호입니다."));
+            return;
+        }
+        $two_min = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s")." -2 minutes"));
+        $phoneNumber_time = PbAuth::where("phoneNumber",$phone)->where("updated_at",">=",$two_min)->first();
+        if(!empty($phoneNumber_time)){
+            echo json_encode(array("status"=>0,"msg"=>"이미 발송되었습니다.2분후 다시 시도해주세요."));
+            return;
+        }
+        $rand = rand(1000,9999);
+        $data = [
+                "body"=>"{$rand}",
+                "sendNo"=> "01027674657",
+                "recipientList"=> [
+                        ["recipientNo"=> "{$phone}"]
+                    ],
+                "userId"=> ""
+                ];
+        $response = Http::post("https://api-sms.cloud.toast.com/sms/v2.0/appKeys/etohAKxWO6sxr0aB/sender/sms",$data);
+        if($response->successful()){
+            $json_response = $response->json();
+            if(!empty($json_response["header"]["isSuccessful"])){
+                PbAuth::updateorCreate(
+                    ["phoneNumber"=>$phone],["auth_num"=>$rand]
+                );
+                echo json_encode(array("status"=>1,"msg"=>"성공적으로 발송되었습니다.인증번호를 입력해주세요."));
+            }
+        }
+        else{
+            echo json_encode(array("status"=>0,"msg"=>"인증발송에 실패되었습니다.2분후에 다시 시도해주세요"));
+        }
+    }
+
+    public function checkAuth(Request $request){
+        $two_min = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s")." -2 minutes"));
+        $auth = $request->post("auth");
+        $phone = $request->post("phone");
+        $auth_checked = PbAuth::where("auth_num",$auth)->where("phoneNumber",$phone)->where("updated_at",">",$two_min)->first();
+        if(!empty($auth_checked)){
+            echo json_encode(array("status"=>1,"msg"=>"인증 통과"));
+        }
+        else{
+            echo json_encode(array("status"=>0,"msg"=>"잘못된 인증번호이거나 시간이 초과되었습니다."));
+        }
+    }
+
+    public function findIdPw(Request $request){
+        return view('member/findIdPw', [
+            "js" => "join.js",
+            "css" => "join.css"
+        ]);
+    }
+
+    public function checkID(Request $request){
+        $actionType = $request->post("actionType");
+        if($actionType == "findId"){
+            $user = User::with("errorUser")->where("name",$request->post("name"))->where("phoneNumber",$request->post("mobile"))->where("isDeleted",0)->first();
+            if(!empty($user["errorUser"])){
+                echo json_encode(array("status"=>0,"msg"=>"운영정책 위반으로 인해 차단된 회원입니다."));
+                return;
+            }
+            else if(empty($user)){
+                echo json_encode(array("status"=>1,"msg"=>"아이디가 존재하지 않습니다."));
+                return;
+            }
+            else{
+                echo json_encode(array("status"=>1,"msg"=>"회원님의 아이디는 <span style='color:#4B8EFA;font-weight:bold;'>{$user["loginId"]}</span> 입니다."));
+                return;
+            }
+        }
+        else{
+            $user = User::with("errorUser")->where("loginId",$request->post("userid"))->where("phoneNumber",$request->post("mobile"))->where("isDeleted",0)->first();
+            if(!empty($user["errorUser"])){
+                echo json_encode(array("status"=>0,"msg"=>"운영정책 위반으로 인해 차단된 회원입니다."));
+                return;
+            }
+            else if(empty($user)){
+                echo json_encode(array("status"=>1,"msg"=>"아이디가 존재하지 않습니다."));
+                return;
+            }
+            else{
+                $password = Str::random(8);
+                $new_password = Hash::make($password);
+                User::where("userId",$user["userId"])->update(["password"=>$new_password]);
+                echo json_encode(array("status"=>1,"msg"=>"회원님의 비밀번호는 <span style='color:#4B8EFA;font-weight:bold;'>{$password}</span> 입니다."));
+                return;
+            }
+        }
+    }
+
+    public function requestExchange(Request $request){
+        if(!$this->isLogged){
+            echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.history.back(1)</script>";
+            return;
+        }
+
+        $idcard = $bankbook = "";
+        $this->validate($request, [
+            'idcard' => 'required|image|mimes:jpg,jpeg,png,svg,gif|max:2048',
+            'bankbook' => 'required|image|mimes:jpg,jpeg,png,svg,gif|max:2048'
+        ]);
+
+        if ($request->hasFile('idcard')) {
+            $filenameWithExt = $request->file('idcard')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('idcard')->getClientOriginalExtension();
+            $idcard = $filename .'_'.time(). '.' . $extension;
+            $request->file('idcard')->storeAs('public/assets/images/exch', $idcard);
+        }
+        else {
+
+        }
+        if ($request->hasFile('bankbook')) {
+            $filenameWithExt = $request->file('bankbook')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('bankbook')->getClientOriginalExtension();
+            $bankbook = $filename .'_'.time().'.' . $extension;
+            $request->file('bankbook')->storeAs('public/assets/images/exch', $bankbook);
+        }
+        else {
+
+        }
+
+
+        if(!Hash::check($request->post("passwd"),$this->user->password)){
+            echo "<script>alert('암호가 맞지 않습니다.');window.history.go(-1)</script>";
+            return;
+        }
+        $request_ex = $request->all();
+        $request_ex["userId"] = $this->user->userId;
+        $request_ex["idcard"] = $idcard;
+        $request_ex["bankbook"] = $bankbook;
+        unset($request_ex["_token"]);
+        unset($request_ex["rtnUrl"]);
+        unset($request_ex["oknameYN"]);
+        unset($request_ex["agree"]);
+        unset($request_ex["privacyAgree1"]);
+        unset($request_ex["privacyAgree2"]);
+
+
+        PbMoneyReturn::insert($request_ex);
+        echo "<script>alert('신청되었습니다.');location.href='/member?type=exchange';</script>";
+    }
+
+    public function exitMember(Request $request){
+        if(!$this->isLogged){
+            echo json_encode(array("status"=>0,"msg"=>"로그아웃상태이므로 요청을 수락할수 없습니다."));
+            return;
+        }
+        if(!Hash::check($request->post("passwd"),$this->user->password)){
+            echo json_encode(array("status"=>0,"msg"=>"암호가 옳바르지 않습니다."));
+            return;
+        }
+
+        $this->user->isDeleted = 1;
+        $this->user->save();
+        PbLog::where("userId",$this->user->userId)->delete();
+        LoginLog::where("userId",$this->user->userId)->delete();
+        PbRoom::where("userId",$this->user->userId)->delete();
+        PbBettingCtl::where("userId",$this->user->userId)->delete();
+        echo json_encode(array("status"=>1,"msg"=>"탈퇴되었습니다."));
     }
 }

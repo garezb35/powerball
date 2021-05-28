@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ExpController;
+use App\Models\PbIpBlocked;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ use App\Models\LoginLog;
 use App\Models\PbLog;
 use Illuminate\Support\Str;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
+use Stevebauman\Location\Facades\Location;
 
 class LoginController extends Controller
 {
@@ -76,20 +78,58 @@ class LoginController extends Controller
             'loginId' => 'required',
             'password' => 'required'
         ]);
+
         $this->apiToken = Str::random(60);
         $desktop = 1;
         $agent = new \Jenssegers\Agent\Agent;
         if($agent->isMobile())
             $desktop = 0;
         $credentials = $request->except(['_token']);
-        $user = User::where('loginId',$request->loginId)->first();
-
+        $user = User::with("blocked")->where('loginId',$request->loginId)->first();
         if (auth()->attempt($credentials)) {
-            if($user["user_type"] == 0){
-                return $this->sendFailedLoginResponse($request);
+
+            $ip_blocked_list = PbIpBlocked::where("ip",$request->ip())->first();
+            if(!empty($ip_blocked_list))
+            {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                return $this->sendFailedLoginResponse($request,"불법활동으로 인해 아이피가 차단되었습니다.",false);
             }
+
             if($user["isDeleted"] == 1){
-                return $this->sendFailedLoginResponse($request);
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                return $this->sendFailedLoginResponse($request,"삭제된 회원입니다.",false);
+            }
+
+            if($user["user_type"] == 0){
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                return $this->sendFailedLoginResponse($request,"접속차단된 회원입니다",false);
+            }
+
+            if(!empty($user["accept_ip"])){
+                if(!str_contains($user["accept_ip"],$request->ip())){
+                    Auth::logout();
+                    $request->session()->invalidate();
+                    $request->session()->regenerateToken();
+                    return $this->sendFailedLoginResponse($request,"인증아이피 목록에 존재하지 않는 아이피입니다.",false);
+                }
+            }
+            if($user["except_ip"] == 1){
+                if(empty(Location::get($request->ip())) || (!empty(Location::get($request->ip())) && Location::get($request->ip())->countryCode != "KR")){
+                    Auth::logout();
+                    $request->session()->invalidate();
+                    $request->session()->regenerateToken();
+                    return $this->sendFailedLoginResponse($request,"해외아이피접근차단.",false);
+                }
+            }
+
+            if(!empty($user["second_password"]) && $user["second_active"] == 1){
+                User::where("userId",$user["userId"])->update(["second_use"=>1]);
             }
 
             $loginLog = new LoginLog;
@@ -118,7 +158,8 @@ class LoginController extends Controller
             ]);
             User::where("userId",$user->userId)
                 ->update([
-                    "api_token"=>$this->apiToken
+                    "api_token"=>$this->apiToken,
+                    "ip"=>$request->ip()
                 ]);
             return redirect()->route('default');
 
@@ -133,5 +174,34 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect()->route('default');
+    }
+    protected function sendFailedLoginResponse(Request $request ,$msg = "아이디 또는 비밀번호가 일치하지 않습니다.",$auth = true)
+    {
+
+        if($auth){
+            if (!User::where('loginId', $request->email)->first()) {
+                return redirect()->back()
+                    ->withInput($request->only($this->username(), 'remember'))
+                    ->withErrors([
+                        "failed" => $msg,
+                    ]);
+            }
+
+            if (!User::where('loginId', $request->email)->where('password', bcrypt($request->password))->first()) {
+                return redirect()->back()
+                    ->withInput($request->only($this->username(), 'remember'))
+                    ->withErrors([
+                        'failed' => $msg,
+                    ]);
+            }
+        }
+
+        else{
+            return redirect()->back()
+                ->withInput($request->only($this->username(), 'remember'))
+                ->withErrors([
+                    'failed' => $msg,
+                ]);
+        }
     }
 }

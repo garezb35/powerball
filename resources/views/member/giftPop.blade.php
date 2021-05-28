@@ -12,7 +12,7 @@
             <ul class="itemList">
                 <li>
 
-                    <img src="{{$item["image"]}}" width="115" height="100">
+                    <img src="{{$item["image"]}}" width="115" height="115">
                     <div class="name">{{$item["name"]}}</div>
                     <div class="desc">{{$item["description"]}}</div>
                     <div class="price">{{number_format($item["price"])}} @if($item["price_type"] ==1 ){{"코인"}}@else{{"도토리"}}@endif</div>

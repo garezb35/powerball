@@ -1,3 +1,4 @@
+
 <div class="box-login">
     @auth
         @php
@@ -130,8 +131,8 @@
             </colgroup>
             <tr>
                 <td class="p-1">
-                    {!! Form::text('loginId', '', ['class' => 'input-green mb-1 w-100','autocomplete'=>"off"]) !!}
-                    {!! Form::password('password', ['class'=>'input-green w-100']) !!}
+                    {!! Form::text('loginId', '', ["required"=>true,'class' => 'input-green mb-1 w-100','autocomplete'=>"off"]) !!}
+                    {!! Form::password('password', ["required"=>true,'class'=>'input-green w-100']) !!}
                 </td>
                 <td class="text-left p-1 pr-3">
                     {!! Form::submit('로그인', ['class' => 'btn btn-jin-greenoutline w-100 h-55']) !!}
@@ -139,13 +140,18 @@
             </tr>
             <tr>
                 <td class="pt-2 pb-2 pl-1" colspan="2">
+                    @if(!empty($errors->first('failed')))
+                    <div class="alert alert-danger mr-3 fade show alert-dismissible" role="alert">
+                    {{$errors->first('failed')}}
+                    </div>
+                    @endif
                     <label class="container-radio">
                         <input type="checkbox" checked="checked">
                         <span class="checkmark"></span>
                     </label>
                     <a style="color: #000 !important;margin-left: -11px;" class="mr-2" href="{{ route('register') }}">로그인상태유지</a>
                     <a class="text-blue mr-2" href="{{ route('register') }}">회원가입</a>
-                    <a class="text-blue" href="{{ route('password.request') }}" target="mainFrame">아이디,비밀번호 찾기</a>
+                    <a class="text-blue" href="{{ route('findIdPw') }}" target="mainFrame">아이디,비밀번호 찾기</a>
                 </td>
             </tr>
         </table>

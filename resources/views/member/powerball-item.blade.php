@@ -10,7 +10,7 @@
             @if(!empty($pur_item))
                 @foreach($pur_item as $item)
                 <li>
-                    <img src="{{$item->items->image}}" width="115" height="100">
+                    <img src="{{$item->items->image}}" width="115" height="115">
                     <div class="name">{{$item->items->name}}</div>
                     <div class="amountSet">
                         <input type="text" name="{{$item->items->code}}" value="{{$item["count"]}}개" rel="{{$item["count"]}}" limit="{{$item["count"]}}" style="ime-mode:disabled;" onkeydown="return isNumber(event);" onblur="countChk(this);">

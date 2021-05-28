@@ -17,10 +17,11 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 Route::get('/', [App\Http\Controllers\HomeController::class, 'first'])->name('default');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Route::get('/register', [App\Http\Controllers\HomeController::class, 'register'])->name('register');
 Route::namespace('Auth')->group(function () {
     Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'process_login'])->name('login');
     Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
-//    Route::any('password/reset', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'showLinkRequestForm']);
+    Route::any('password/reset', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'showLinkRequestForm']);
 });
 
 
@@ -72,6 +73,22 @@ Route::get("/giftPop",[App\Http\Controllers\MemberController::class,'giftPop']);
 Route::get("/ranking",[App\Http\Controllers\MemberController::class,'ranking'])->name("ranking");
 
 Route::get("/present",[App\Http\Controllers\MemberController::class,'present'])->name("present");
+
+Route::get("/memberSecurity",[App\Http\Controllers\MemberController::class,'memberSecurity']);
+
+Route::get("/veriPass",[App\Http\Controllers\VerifyController::class,'veriPass'])->name("veriPass");
+
+Route::post("/verifySeconds",[App\Http\Controllers\VerifyController::class,'verifySeconds'])->name("verifySeconds");
+
+Route::get("/authIp",[App\Http\Controllers\VerifyController::class,'authIp'])->name("authIp");
+
+Route::post("/saveIP",[App\Http\Controllers\VerifyController::class,'saveIP'])->name("saveIP");
+
+Route::get("/findIdPw",[App\Http\Controllers\MemberController::class,'findIdPw'])->name("findIdPw");
+
+Route::post("/requestExchange",[App\Http\Controllers\MemberController::class,'requestExchange'])->name("request-exchange");
+
+
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();

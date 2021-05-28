@@ -16,11 +16,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use DB;
 
-class ChatController extends Controller
+class ChatController extends SecondController
 {
+
+
     private $profile = array();
 
     public function __construct(){
+        parent::__construct();
         $detail = CodeDetail::where("class","0020")->where("status","Y")->orderBy("code","ASC")->get()->toArray();
         foreach ($detail as $value)
             $this->profile[$value["code"]] = $value["value3"];
@@ -36,22 +39,22 @@ class ChatController extends Controller
         $item_count= 0;
         $api_token = "";
         $userIdKey = "";
-        if(Auth::check())
+        if($this->isLogged)
         {
-            $item_count = PbPurItem::where("userId",Auth::id())->where("active",1)->sum("count");
-            $api_token = AUth::user()->api_token;
-            $userIdKey = AUth::user()->userIdKey;
+            $item_count = PbPurItem::where("userId",$this->user->userId)->where("active",1)->sum("count");
+            $api_token = $this->user->api_token;
+            $userIdKey = $this->user->userIdKey;
         }
         return view('chat/home',["p_remain"=>TimeController::getTimer(2),"item_count"=>$item_count,"api_token"=>$api_token,"userIdKey"=>$userIdKey,"profile"=>json_encode($this->profile)]);
     }
 
     public function roomWait(Request $request){
-        if(!Auth::check()){
+        if(!$this->isLogged){
             $user = User::with("getLevel")->where("userId",1000000)->first();
         }
         else
         {
-            $user = User::with("getLevel")->where("userId",Auth::id())->first();
+            $user = User::with("getLevel")->where("userId",$this->user->userId)->first();
         }
         $count = $favor_count = 0;
         $rtype = empty($request->rtype) ? "winRate" : $request->rtype;
@@ -143,11 +146,11 @@ class ChatController extends Controller
     }
 
     public function viewChat(Request $request){
-        if(!Auth::check()){
+        if(!$this->isLogged){
             echo "<script>alert('로그인 후 이용가능합니다.');window.history.go(-1);</script>";
             return;
         }
-        $user = Auth::user();
+        $user = $this->user;
         $win_room = array();
         $pb_room = PbRoom::with("roomandpicture.getUserClass")->where("pb_room.roomIdx",$request->token)->first();
         if(empty($pb_room) || empty($pb_room["roomandpicture"])){
@@ -206,11 +209,11 @@ class ChatController extends Controller
 
     public function createRoom(Request $request){
 
-        if(!Auth::check()){
+        if(!$this->isLogged){
             echo json_decode(array("status"=>0,"msg"=>'로그인 후 이용가능합니다..'));
             return;
         }
-        $user = Auth::user();
+        $user = $this->user;
         $title = $request->roomTitle;
         $description = $request->roomDesc;
         $type = $request->roomType;
@@ -303,8 +306,7 @@ class ChatController extends Controller
     }
 
     public function checkActiveRoom(Request $request){
-        $user = Auth::user();
-
+        $user = $this->user;
         $days_ago = date('Y-m-d H:i:s', strtotime('-26  hours', strtotime("now")));
         $checkd = PbRoom::where("roomIdx",$request->room)->where("created_at","<=",$days_ago)->first();
         if(!empty($checkd)){
@@ -344,7 +346,7 @@ class ChatController extends Controller
     }
 
     public function verifyPass(Request $request){
-        $user = Auth::user();
+        $user = $this->user;
         $roomIdx = $request->post("roomIdx");
         $roomPasswd = $request->post("roomPasswd");
 
@@ -361,7 +363,7 @@ class ChatController extends Controller
     }
 
     public function reChatRoom(Request $request){
-        $user = Auth::user();
+        $user = $this->user;
         $roomIdx = $request->roomIdx;
         $room = PbRoom::where("roomIdx",$roomIdx)->where("active",1)->first();
         if(!empty($room)){
@@ -387,7 +389,7 @@ class ChatController extends Controller
     }
 
     public function setFavorite(Request  $request){
-        $user = Auth::user();
+        $user = $this->user;
         $roomIdx = $request->roomIdx;
         $room = PbRoom::where("roomIdx",$roomIdx)->where("active",1)->first();
         if(!empty($room)){
@@ -410,7 +412,7 @@ class ChatController extends Controller
     }
 
     public function setFroze(Request $request){
-        $user = Auth::user();
+        $user = $this->user;
         $cmd = $request->cmd;
         $roomIdx = $request->roomIdx;
         $room = PbRoom::where("roomIdx",$roomIdx)->where("super",$user->userIdKey)->first();
@@ -427,7 +429,7 @@ class ChatController extends Controller
     }
 
     public function modifyRoom(Request $request){
-        $user = Auth::user();
+        $user = $this->user;
         $roomIdx = $request->roomIdx;
         $room = PbRoom::where("roomIdx",$roomIdx)->where("super",$user->userIdKey)->first();
         if(!empty($room)){
@@ -443,7 +445,7 @@ class ChatController extends Controller
     }
 
     public function deleteChatRoom(Request $request){
-        $user = Auth::user();
+        $user = $this->user;
         $roomIdx = $request->roomIdx;
         $room = PbRoom::where("roomIdx",$roomIdx)->where("super",$user->userIdKey)->first();
         if(!empty($room)){
@@ -456,12 +458,12 @@ class ChatController extends Controller
     }
 
     public function getBullet(Request $request){
-        $user = Auth::user();
+        $user = $this->user;
         echo json_encode(array("status"=>1,"bullet"=>$user->bullet));
     }
 
     public function giveBullet(Request $request){
-        $user = Auth::user();
+        $user = $this->user;
         $roomIdx  = $request->roomIdx;
         $gift  = $request->gift;
         $tuseridKey = $request->tuseridKey;

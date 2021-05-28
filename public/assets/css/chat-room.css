@@ -953,9 +953,7 @@ fieldset {
 }
 
 .rightArea .resultBox .content ul.resultList li .rs.ready {
-    background: radial-gradient(#fcfcfc, #e3e3e3);
-    border-radius: 50%;
-    border: 1px solid #fff;
+    background: url(/assets/images/powerball/chat/ready.png) ;
     font-size: 14px;
     font-weight: bold;
 }
@@ -969,10 +967,9 @@ fieldset {
     position: relative;
     display: table-cell;
     margin-left: 143px;
-    width: 60px;
-    height: 60px;
-    background: url(/assets/images/powerball/pick_back.png) no-repeat;
-    background-position: 0 0;
+    width: 62px;
+    height: 62px;
+    background: url(/assets/images/powerball/pick_back.png?123) no-repeat !important;
 }
 
 .rightArea .resultBox .content ul.resultList li .pickResultText {
@@ -983,6 +980,23 @@ fieldset {
     height: 60px;
     width: 65px;
     text-align: right;
+}
+
+.pick.nnonn .chat-pbover ,.pick.nnonn  .chat-pbunder{
+    left: 0;
+    top: 32px;
+}
+.pick.nnonn .chat-nbover ,.pick.nnonn  .chat-nbunder{
+    left: 32px;
+    top: 32px;
+}
+
+.pick.nnonn .chat-pbodd ,.pick.nnonn  .chat-pbeven{
+    left: 0;
+}
+.pick.nnonn .chat-nbeven ,.pick.nnonn  .chat-nbodd{
+    left: 32px;
+    top: 1px;
 }
 
 .rightArea .resultBox .content ul.resultList li .rs.nnnnn {background-position:0 0;}
@@ -1003,7 +1017,6 @@ fieldset {
 .rightArea .resultBox .content ul.resultList li .rs.nnuns {background-position:-1020px 0;}
 .rightArea .resultBox .content ul.resultList li .rs.nnuun {background-position:-1088px 0;}
 .rightArea .resultBox .content ul.resultList li .rs.nnuub {background-position:-1156px 0;}
-.rightArea .resultBox .content ul.resultList li .rs.ready {background-position:-1224px 0;}
 
 .rightArea .resultBox .content ul.resultList li .rs.nnuum {background-position:0 -60px;}
 .rightArea .resultBox .content ul.resultList li .rs.nnuus {background-position:-68px -60px;}
@@ -1846,24 +1859,26 @@ fieldset {
 }
 
 .chat-pbodd{
-    background: url(/assets/images/powerball/chat/top-left-odd.png);
+    background: url(/assets/images/powerball/chat/top-left-odd.png?123);
     width: 30px;
     height: 30px;
     background-size: 30px 30px;
     background-repeat: no-repeat;
     position: absolute;
-}
+    left: -1px;
+    }
 .chat-pbeven{
-    background: url(/assets/images/powerball/chat/top-left-even.png);
+    background: url(/assets/images/powerball/chat/top-left-even.png?123);
     width: 30px;
     height: 30px;
     background-size: 30px 30px;
     background-repeat: no-repeat;
     position: absolute;
+    left: -1px;
 }
 
 .chat-nbodd{
-    background: url(/assets/images/powerball/chat/top-right-odd.png);
+    background: url(/assets/images/powerball/chat/top-right-odd.png?123);
     width: 30px;
     height: 30px;
     background-size: 30px 30px;
@@ -1873,7 +1888,7 @@ fieldset {
 }
 
 .chat-nbeven{
-    background: url(/assets/images/powerball/chat/top-right-even.png);
+    background: url(/assets/images/powerball/chat/top-right-even.png?123);
     width: 30px;
     height: 30px;
     background-size: 30px 30px;
@@ -1883,48 +1898,52 @@ fieldset {
 }
 
 .chat-pbunder{
-    background: url(/assets/images/powerball/chat/bottom-left-under.png);
+    background: url(/assets/images/powerball/chat/bottom-left-under.png?123);
     width: 30px;
     height: 30px;
     background-size: 30px 30px;
     background-repeat: no-repeat;
     position: absolute;
-    top: 30px;
+    top: 31px;
+    left: -1px;
 }
 .chat-pbover{
-    background: url(/assets/images/powerball/chat/bottom-left-over.png);
+    background: url(/assets/images/powerball/chat/bottom-left-over.png?12344);
     width: 30px;
     height: 30px;
     background-size: 30px 30px;
     background-repeat: no-repeat;
     position: absolute;
     top: 30px;
+    top: 31px;
+    left: -1px;
 }
 
+
 .chat-nbunder{
-    background: url(/assets/images/powerball/chat/bottom-right-under.png);
+    background: url(/assets/images/powerball/chat/bottom-right-under.png?123);
     width: 30px;
     height: 30px;
     background-size: 30px 30px;
     background-repeat: no-repeat;
     position: absolute;
-    top: 30px;
+    top: 31px;
     left: 30px;
 }
 
 .chat-nbover{
-    background: url(/assets/images/powerball/chat/bottom-right-over.png);
+    background: url(/assets/images/powerball/chat/bottom-right-over.png?12333);
     width: 30px;
     height: 30px;
     background-size: 30px 30px;
     background-repeat: no-repeat;
     position: absolute;
-    top: 30px;
+    top: 31px;
     left: 30px;
 }
 
 .chat-nbbig{
-    background: url(/assets/images/powerball/black.png);
+    background: url(/assets/images/powerball/black.png?123);
     background-size: 22px;
     width: 22px;
     height: 22px;
@@ -1937,7 +1956,7 @@ fieldset {
 }
 
 .chat-nbmiddle{
-    background: url(/assets/images/powerball/black.png);
+    background: url(/assets/images/powerball/black.png?123);
     background-size: 22px;
     width: 22px;
     height: 22px;
@@ -1950,7 +1969,7 @@ fieldset {
 }
 
 .chat-nbsmall{
-    background: url(/assets/images/powerball/black.png);
+    background: url(/assets/images/powerball/black.png?123);
     background-size: 22px;
     width: 22px;
     height: 22px;
@@ -1965,32 +1984,32 @@ fieldset {
 .pick-room-manager{
     width: 60px;
     height: 60px;
-    background: url(/assets/images/powerball/pick_back.png) no-repeat;
+    background: url(/assets/images/powerball/pick_back.png?123) no-repeat;
     background-position: 0 0;
     margin: auto;
     position: relative;
 }
 
 .chat-nbodd.not div,.chat-nbeven.not div{
-    background: url(/assets/images/powerball/top-right-error.png);
+    background: url(/assets/images/powerball/top-right-error.png?123);
     width: 30px;
     height: 30px;
 }
 
 .chat-pbodd.not div,.chat-pbeven.not div{
-    background: url(/assets/images/powerball/top-left-error.png);
+    background: url(/assets/images/powerball/top-left-error.png?123);
     width: 30px;
     height: 30px;
 }
 
 .chat-pbunder.not div,.chat-pbover.not div{
-    background: url(/assets/images/powerball/bottom-left-error.png);
+    background: url(/assets/images/powerball/bottom-left-error.png?123);
     width: 30px;
     height: 30px;
 }
 
 .chat-nbunder.not div,.chat-nbover.not div{
-    background: url(/assets/images/powerball/bottom-right-error.png);
+    background: url(/assets/images/powerball/bottom-right-error.png?123);
     width: 30px;
     height: 30px;
 }
@@ -2001,7 +2020,7 @@ fieldset {
 }
 
 .close-modal {
-    background: url(/assets/images/powerball/close.png);
+    background: url(/assets/images/powerball/close.png?123);
     width: 22px;
     height: 22px;
     border: none;

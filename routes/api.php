@@ -51,6 +51,9 @@ Route::middleware('auth:api')->group(function(){
     Route::post("/sendGift",[App\Http\Controllers\MemberController::class,'sendGift']);
     Route::post("/sendItem",[App\Http\Controllers\MemberController::class,'sendItem']);
     Route::post("/setPresent",[App\Http\Controllers\MemberController::class,'setPresent']);
+    Route::post("/setSecondPassword",[App\Http\Controllers\MemberController::class,'setSecondPassword']);
+    Route::post("/setoutIP",[App\Http\Controllers\MemberController::class,'setoutIP']);
+    Route::post("/exitMember",[App\Http\Controllers\MemberController::class,'exitMember'])->name("exitMember");
 });
 
 Route::post("/get_more/powerball",[App\Http\Controllers\PowerballController::class,'resultList']);
@@ -84,14 +87,13 @@ Route::prefix('psadari')->group(function () {
 
 
 Route::get("/virtualBet",[App\Http\Controllers\PowerballController::class,'virtualBet']);
-
 Route::post("/getChatRooms",[App\Http\Controllers\ChatController::class,'getChatRooms']);
-
-
 Route::post("/live/result",[App\Http\Controllers\PowerballController::class,'liveResult']);
-
 Route::post("/getWinners",[App\Http\Controllers\MemberController::class,'getWinners']);
 Route::get("/rankingWinner",[App\Http\Controllers\MemberController::class,'rankingWinner']);
 Route::get("/winnerGift",[App\Http\Controllers\MemberController::class,'winnerGift']);
 Route::get("/set_round/{name}",[App\Http\Controllers\PowerballController::class,'setRound']);
+Route::post("/sendSmsPhoneNum",[App\Http\Controllers\MemberController::class,'sendSmsPhoneNum']);
+Route::post("/checkAuth",[App\Http\Controllers\MemberController::class,'checkAuth']);
+Route::post("/checkID",[App\Http\Controllers\MemberController::class,'checkID']);
 

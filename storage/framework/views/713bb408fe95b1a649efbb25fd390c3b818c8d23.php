@@ -1,3 +1,4 @@
+
 <div class="box-login">
     <?php if(auth()->guard()->check()): ?>
         <?php
@@ -131,9 +132,9 @@
             </colgroup>
             <tr>
                 <td class="p-1">
-                    <?php echo Form::text('loginId', '', ['class' => 'input-green mb-1 w-100','autocomplete'=>"off"]); ?>
+                    <?php echo Form::text('loginId', '', ["required"=>true,'class' => 'input-green mb-1 w-100','autocomplete'=>"off"]); ?>
 
-                    <?php echo Form::password('password', ['class'=>'input-green w-100']); ?>
+                    <?php echo Form::password('password', ["required"=>true,'class'=>'input-green w-100']); ?>
 
                 </td>
                 <td class="text-left p-1 pr-3">
@@ -143,13 +144,19 @@
             </tr>
             <tr>
                 <td class="pt-2 pb-2 pl-1" colspan="2">
+                    <?php if(!empty($errors->first('failed'))): ?>
+                    <div class="alert alert-danger mr-3 fade show alert-dismissible" role="alert">
+                    <?php echo e($errors->first('failed')); ?>
+
+                    </div>
+                    <?php endif; ?>
                     <label class="container-radio">
                         <input type="checkbox" checked="checked">
                         <span class="checkmark"></span>
                     </label>
                     <a style="color: #000 !important;margin-left: -11px;" class="mr-2" href="<?php echo e(route('register')); ?>">로그인상태유지</a>
                     <a class="text-blue mr-2" href="<?php echo e(route('register')); ?>">회원가입</a>
-                    <a class="text-blue" href="<?php echo e(route('password.request')); ?>" target="mainFrame">아이디,비밀번호 찾기</a>
+                    <a class="text-blue" href="<?php echo e(route('findIdPw')); ?>" target="mainFrame">아이디,비밀번호 찾기</a>
                 </td>
             </tr>
         </table>

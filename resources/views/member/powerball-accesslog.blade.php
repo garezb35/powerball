@@ -12,18 +12,19 @@
                     <th>접속일시</th>
                     <th>접속IP</th>
                     <th>접속기기</th>
-                    <th>결과</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td scope="row">2</td>
-                    <td>2021-02-22 17:47:33</td>
-                    <td>169.56.74.227</td>
-                    <td>PC</td>
-                    <td>성공</td>
-                </tr>
+                @foreach($loginlog as $log)
+                    <tr>
+                        <td>{{$log["id"]}}</td>
+                        <td>{{$log["created_at"]}}</td>
+                        <td>{{$log["ip"]}}</td>
+                        <td>@if($log["machine"] == 1){{'PC'}}@else{{"mobile"}}@endif</td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
+        {{$loginlog->links()}}
     </div>
 @endsection
