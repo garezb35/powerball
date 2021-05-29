@@ -1,4 +1,3 @@
-
 <div class="box-login">
     @auth
         @php
@@ -184,4 +183,5 @@
         if(url == "")
             el.src = "/market"; // assign url to src property
     }
+
 </script>

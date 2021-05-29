@@ -953,7 +953,7 @@ fieldset {
 }
 
 .rightArea .resultBox .content ul.resultList li .rs.ready {
-    background: url(/assets/images/powerball/chat/ready.png) ;
+    background: url(/assets/images/powerball/chat/ready.png) no-repeat;
     font-size: 14px;
     font-weight: bold;
 }

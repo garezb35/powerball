@@ -420,9 +420,11 @@ img, fieldset, iframe {
 #boardmenu .nav-item:first-child .nav-link{
     border-left: none;
     border-top-left-radius: 5px;
+    margin-left: -1px;
 }
 #boardmenu .nav-item:last-child .nav-link{
     border-top-right-radius: 5px;
+    margin-right: -1px;
 }
 
 #boardmenu .nav-item{
@@ -433,6 +435,8 @@ img, fieldset, iframe {
 #boardmenu .nav-item:last-child{
     width: 157px;
 }
+
+#boardmenu .nav-link.active
 
 #boardmenu .nav-item.show .nav-link, #boardmenu .nav-link.active {
     border-bottom: none;

@@ -1,4 +1,3 @@
-
 <div class="box-login">
     <?php if(auth()->guard()->check()): ?>
         <?php
@@ -190,5 +189,6 @@
         if(url == "")
             el.src = "/market"; // assign url to src property
     }
+
 </script>
 <?php /**PATH D:\work\xampp8.0\htdocs\powerball\resources\views/box-login.blade.php ENDPATH**/ ?>

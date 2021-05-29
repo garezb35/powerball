@@ -58,6 +58,30 @@
         </div>
     </div>
 </body>
+
 <?php echo $__env->make('includes.footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 </html>
+<script>
+    $(document).ready(function(){
+        var noticeTimer = "";
+        $('#scrollNotice > ul li a').hover(function(){
+            clearInterval(noticeTimer);
+        },function(){
+            noticeTimer = setInterval("rollingNotice()",3000);
+        });
+
+        noticeTimer = setInterval("rollingNotice()",3000);
+    })
+    function rollingNotice()
+    {
+        $('#scrollNotice').animate({'top':'-=20'},{
+            duration:500,
+            easing: "linear",
+            complete:function(){
+                $('#scrollNotice > ul').children('li:last').after($('#scrollNotice > ul li:eq(0)'));
+                $('#scrollNotice').css({'top':0});
+            }
+        });
+    }
+</script>
 <?php /**PATH D:\work\xampp8.0\htdocs\powerball\resources\views/includes/header.blade.php ENDPATH**/ ?>
