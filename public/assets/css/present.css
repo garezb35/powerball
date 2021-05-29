@@ -39,7 +39,7 @@
     border-top: 2px solid #00b4b4;
 }
 
-.attendanceBox .table td{
+.attendanceBox .table td,.attendanceBox .table th{
     padding: 0px;
     vertical-align: middle;
     height: 30px;
