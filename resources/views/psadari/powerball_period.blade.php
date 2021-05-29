@@ -22,13 +22,13 @@
                 </ul>
             </span>
         </div>
-        <div class="btnBox" style="width: 20%">
+        <div class="btnBox" style="width: 18%">
             <a  class="btn_refresh" id="btn_refresh" href="javascript:location.reload();" title="새로고침">
                 <span class="ic fa fa-refresh"></span><span id="refresh-element">새로고침</span>
             </a>
         </div>
     </div>
-    <div class="periodBox" style="padding-bottom: 20px;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
+    <div class="periodBox" style="padding-bottom: 10px;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
         <div class="dateBox" style="width: 100%">
             {!! Form::open(['action' =>'App\Http\Controllers\PowerSadariController@view', 'method' => 'get']) !!}
             <input type="hidden" name="terms" value="period">
@@ -47,8 +47,7 @@
         </div>
     </div>
 
-    <div style="margin-top: 10px"></div>
-    <div class="mt-4"></div>
+    <div style="margin-top: 5px"></div>
     @include('Analyse/psadari/patternTerms')
     @include('Analyse/psadari/maxminAnalyse')
     <table  id="ladderLogBox" class="powerballBox table table-bordered mt-1">

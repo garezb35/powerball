@@ -6,6 +6,39 @@ var index = 0;
 var patt = "";
 var left_right = new Array(),odd_even = new Array(),three_four = new Array(),total_lines = new Array()
 let patternAll = {}
+
+var aliass = new Array();
+var classs  = new Array();
+aliass["odd_even"] = new Array();
+aliass["left_right"] = new Array();
+aliass["three_four"] = new Array();
+aliass["total"] = new Array();
+aliass["odd_even"][1] = "홀";
+aliass["odd_even"][0] = "짝";
+aliass["three_four"][1] = "3"
+aliass["three_four"][0] = "4";
+aliass["left_right"][1]  ="좌";
+aliass["left_right"][0]  ="우";
+aliass["total"][4] = "짝";
+aliass["total"][1] = "홀";
+aliass["total"][2] = "홀";
+aliass["total"][3] = "짝";
+
+classs["odd_even"] = new Array();
+classs["left_right"] = new Array();
+classs["three_four"] = new Array();
+classs["total"] = new Array();
+classs["odd_even"][1] = "sp-odd";
+classs["odd_even"][0] = "sp-even";
+classs["three_four"][1] = "sp-odd"
+classs["three_four"][0] = "sp-even";
+classs["left_right"][1]  ="sp-odd";
+classs["left_right"][0]  ="sp-even";
+classs["total"][4] = "RIGHT4EVEN";
+classs["total"][1] = "LEFT4ODD";
+classs["total"][2] = "RIGHT3ODD";
+classs["total"][3] = "LEFT3EVEN";
+
 jQuery.fn.extend({
     live: function (event, callback) {
         if (this.selector) {
@@ -30,22 +63,33 @@ $(document).ready(function (){
         if(limit > 19) return false;
         limit++;
         $(".tx").text(limit)
-        initPattern(limit,type,function(){
-            setTimeout(function(){
-                searchPattern(1,date,round);
-            },500);
-        });
     })
     $(".btn_minus").click(function(){
         if(limit < 4) return false;
         limit--;
         $(".tx").text(limit)
-        initPattern(limit,type,function(){
-            setTimeout(function(){
-                searchPattern(1,date,round);
-            },500);
-        });
     })
+
+
+    $(document).on("click","#patternSet li",function() {
+        var code  = parseInt($(this).data("code"));
+        if(code >=0){
+            if(type == "total"){
+                if(code == 3 )
+                    code = 4
+                else
+                    code = (code + 1) % 4;
+            }
+            else code = (code + 1) % 2;
+            $(this).data("code",code);
+            var cur =$(this).find(".img");
+            cur.attr('class',"");
+            cur.addClass("img").addClass(classs[type][code]);
+            cur.text(aliass[type][code]);
+        }
+        else return false;
+
+    });
 })
 
 function initPattern(limit=10,type="pb_oe",callback){
@@ -185,3 +229,7 @@ $('body').on('click','#pattern-sec a.nav-link',function(){
         },500);
     });
 });
+
+function patternSearch(){
+    searchPattern(1,date,round);
+}

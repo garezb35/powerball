@@ -86,7 +86,7 @@
     </div>
     <div style="width: 100%;overflow-x: scroll;padding-top:15px">
         <h5 class="text-center">{{$title}}<div class="half-label" style="width: 608px"></div></h5>
-        <table class="table powerballBox mt-2">
+        <table class="table powerballBox mt-2 table-bordered">
             <tbody class="roundbox-body"></tbody>
         </table>
     </div>

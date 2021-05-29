@@ -120,14 +120,16 @@ a.btn_b02 {
 .td_subject img {
     margin-left: 3px;
 }
-#bo_list .tbl_head01 td img {
+#bo_list .tbl_head01 td img,.tbl_head01 td img {
     vertical-align: middle;
 }
 
 .tbl_head01 td {
-    padding: 8px 5px;
-    line-height: 1.5em;
+    padding: 0px 5px;
     word-break: break-all;
+    vertical-align: middle;
+    height: 40px;
+    line-height: 40px;
 }
 .gray,.tbl_head01 a:visited {
     color: #9d9d9d;

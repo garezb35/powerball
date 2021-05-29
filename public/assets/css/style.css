@@ -974,8 +974,8 @@ thead.thead-gray{
     background: #b6b8ba;
     position: relative;
     margin: auto;
-    margin-top: 15px;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 13px;
 }
 .half-label:after{
     content: '';
@@ -1017,11 +1017,16 @@ button.closing:focus{
 
 .collapse-div{
     padding-bottom: 10px;
-    padding-top: 20px;
+    padding-top: 10px;
     border: 1px solid #bec0c2;
     border-radius: 7px;
-    margin-bottom: 10px;
-    margin-top: 10px;
+    margin-bottom: 5px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.collapse-div h5{
+    margin-bottom: 0px !important;
 }
 
 .backs-pick{
@@ -1089,6 +1094,7 @@ button.closing:focus{
     width: 200px;
     height: 205px;
     border: 1px solid #D5D5D5;
+    margin-bottom: 10px;
 }
 
 .numberFont{

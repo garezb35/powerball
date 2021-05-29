@@ -17,6 +17,7 @@
                     <a class="btn_date btn_minus" href="javascript:;" rel="down"><span class="ic">패턴추가</span></a>
                     <span class="date tx">10</span>
                     <a class="btn_date btn_plus" href="javascript:;" rel="up"><span class="ic">패턴삭제</span></a>
+                    <a href="#" onclick="patternSearch();return false;" style="float:left; margin-top: 15px" class="sp-search rollover">검색</a>
                 </form>
                 <a class="btn_refresh" id="btn_refresh" href="javascript:location.reload();" title="새로고침">
                     <span class="ic fa fa-refresh"></span><span id="refresh-element">새로고침</span>
@@ -27,13 +28,13 @@
     <div class="">
         <ul class="nav nav-tabs" id="pattern-sec" role="tablist">
             <li class="nav-item" style="width: 25%">
-                <a href="javascript:void(0)" class="btn btn-jin-green btn-sm pl-3 pr-3 nav-link on1" rel="left_right">시작방향</a>
+                <a href="javascript:void(0)" class="btn btn-jin-green btn-sm pl-3 pr-3 nav-link" rel="left_right">시작방향</a>
             </li>
             <li class="nav-item" style="width: 25%">
                 <a href="javascript:void(0)" class="btn btn-green btn-sm pl-3 pr-3 nav-link" rel="three_four">사다리수</a>
             </li>
             <li class="nav-item" style="width: 25%">
-                <a href="javascript:void(0)" class="btn btn-green btn-sm pl-3 pr-3 nav-link" rel="odd_even">홀/짝</a>
+                <a href="javascript:void(0)" class="btn btn-green btn-sm pl-3 pr-3 nav-link on1" rel="odd_even">홀/짝</a>
             </li>
             <li class="nav-item" style="width: 25%">
                 <a href="javascript:void(0)" class="btn btn-green btn-sm pl-3 pr-3 nav-link" rel="total">시작방향+사다리수</a>

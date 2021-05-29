@@ -1,6 +1,6 @@
 <script id="chart-data" type="text/x-handlebars-template">
     <tr>
-        <td class="p-0">
+        <td class="p-0 border-left-0 border-bottom-0">
             <div class="bar_graph">
                 <dl class="mb-0 border-bottom-0 border-top-0" style="margin-top: 30px">
                     <dd>
@@ -42,7 +42,7 @@
                 </dl>
             </div>
         </td>
-        <td class="position-relative">
+        <td class="position-relative border-bottom-0 border-right-0">
             <div id="canvas-holder" style="width: 350px;position: absolute;top: -1px;left: -70px;" class="position-absolute">
                 <canvas id="chart-area"></canvas>
             </div>

@@ -52,7 +52,7 @@ const _MSG_BET_FAIL_NOT_WORK = "배팅 불가";
 var _isBetEnd = false;
 var powerball_remain,speedkeno_remain = 0;
 const _M_SEC = 55;
-
+var stated = 0;
 function setGameTimer(count, betLeft) {
     var start = Date.now();
     var elapsed = 0;
@@ -169,7 +169,8 @@ function getRemainTime(times,type=2){
 }
 function heightResize()
 {
-    $('#mainFrame', window.parent.document).height(500);
+    if(stated ==0 )
+        $('#mainFrame', window.parent.document).height(500);
     if($('body').height() < 500)
     {
         var resizeHeight = 500;
@@ -181,6 +182,7 @@ function heightResize()
 
     try{
         $('#mainFrame', window.parent.document).height(resizeHeight);
+        stated++;
     }
     catch(e){}
 }

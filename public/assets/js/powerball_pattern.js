@@ -30,9 +30,6 @@ $(document).ready(function (){
         limit++;
         $(".tx").text(limit)
         initPattern(limit,type,function(){
-            setTimeout(function(){
-                searchPattern(1,date,round);
-            },500);
         });
     })
     $(".btn_minus").click(function(){
@@ -40,11 +37,61 @@ $(document).ready(function (){
         limit--;
         $(".tx").text(limit)
         initPattern(limit,type,function(){
-            setTimeout(function(){
-                searchPattern(1,date,round);
-            },500);
         });
     })
+
+
+    $(document).on("click","#patternSet li",function() {
+        var code  = parseInt($(this).data("code"));
+        if(code >=0){
+            if(type == "nb_size"){
+                code = (code + 1) % 3;
+            }
+            else code = (code + 1) % 2;
+            $(this).data("code",code);
+        }
+        else return false;
+        if($(this).find(".img").hasClass("sp-odd")){
+            $(this).find(".img").removeClass("sp-odd");
+            $(this).find(".img").addClass("sp-even");
+            $(this).find(".img").text("짝");
+            return;
+        }
+        if($(this).find(".img").hasClass("sp-even")){
+            $(this).find(".img").removeClass("sp-even");
+            $(this).find(".img").addClass("sp-odd");
+            $(this).find(".img").text("홀");
+            return;
+        }
+        if($(this).find(".img").hasClass("sp-under")){
+            $(this).find(".img").removeClass("sp-under");
+            $(this).find(".img").addClass("sp-over");
+            return;
+        }
+        if($(this).find(".img").hasClass("sp-over")){
+            $(this).find(".img").removeClass("sp-over");
+            $(this).find(".img").addClass("sp-under");
+            return;
+        }
+        if($(this).find(".img").hasClass("sp-big")){
+            $(this).find(".img").removeClass("sp-big");
+            $(this).find(".img").addClass("sp-small");
+            $(this).find(".img").text("소");
+            return;
+        }
+        if($(this).find(".img").hasClass("sp-middle")){
+            $(this).find(".img").removeClass("sp-middle");
+            $(this).find(".img").addClass("sp-big");
+            $(this).find(".img").text("대");
+            return;
+        }
+        if($(this).find(".img").hasClass("sp-small")){
+            $(this).find(".img").removeClass("sp-small");
+            $(this).find(".img").addClass("sp-middle");
+            $(this).find(".img").text("중");
+            return;
+        }
+    });
 })
 
 function initPattern(limit=10,type="pb_oe",callback){
@@ -187,3 +234,6 @@ $('body').on('click','#pattern-sec a.nav-link',function(){
     });
 });
 
+function patternSearch(){
+    searchPattern(1,date,round);
+}

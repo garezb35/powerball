@@ -54,21 +54,24 @@ div.dateInfo {
     height: 60px;
     border: 1px solid #bfbfbf;
     margin-bottom: 5px;
-    padding-top: 18px;
     border-top: none;
+}
+div.dateInfo:after,.periodBox:after{
+    display: block;
+    clear: both;
+    content: "";
 }
 div.date-box {
     width: 500px;
     position: relative;
     float: left;
-    height: 56px;
     color: #404040;
     z-index: 1;
     margin: 0 auto;
 }
 div.date-box span.date {
     float: left;
-    line-height: 35px;
+    line-height: 60px;
     font-size: 19px;
     font-weight: bold;
 }
@@ -78,21 +81,22 @@ div.date-box a.today{
     float: left;
     margin: 0px 1px 0 0;
     padding: 0 20px;
-    height: 29px;
-    line-height: 29px;
+    height: 33px;
+    line-height: 33px;
     border: 1px solid #d6d6d6;
     background-color: #fff;
+    margin-top: 14px;
 }
 div.date-box .calendar {
     width: 88px;
-    height: 29px;
-    line-height: 29px;
+    height: 33px;
+    line-height: 33px;
     font-size: 15px;
     text-align: center;
     background: #fff url(/assets/images/powerball/sprites_common.png) no-repeat right -227px;
     padding: 0 31px 0 10px;
     border: 1px solid #d6d6d6;
-    margin-top: 0px;
+    margin-top: 14px;
 }
 .sp-date_cal {
     width: 33px;
@@ -105,7 +109,6 @@ div.timeBox {
     text-align: center;
     font-size: 14px;
     color: #000;
-    border: 1px solid #bfbfbf;
     border-top: none;
     border-bottom: none;
 }
@@ -243,7 +246,6 @@ div.timeBox .refresh a {
 {
     width: 97%;
     margin: auto;
-    margin-bottom: 10px;
 }
 
 .patternTable .innerTable {
@@ -317,7 +319,7 @@ background: #f7f7f7;
     width: 30px;
     height: 30px;
     border-top: 1px solid #e4e4e4;
-    /*border-right: 1px solid #e4e4e4;*/
+    border-right: 1px solid #e4e4e4 !important;
     border-left: none;
     text-align: center;
     padding: 0;
@@ -333,6 +335,7 @@ background: #f7f7f7;
 .patternTable .innerTable td.order {
     border-right: 1px solid #e4e4e4;
     border-top: 1px solid #e4e4e4;
+    border-bottom: 1px solid #e4e4e4;
 }
 
 #sixBox th.title {
@@ -434,9 +437,8 @@ resultBox .bar.odd {
 .periodBox {
     position: relative;
     margin: 0;
-    height: 35px;
     border: 1px solid #bfbfbf;
-    padding-top: 18px;
+    padding-top: 10px;
     padding-left: 10px;
     border-top: none;
 }
@@ -482,8 +484,13 @@ resultBox .bar.odd {
 .sp-search {
     width: 46px;
     height: 44px;
-    background: url(https://simg.powerballgame.co.kr/images/sp_log.png) -10px -131px;
+    line-height: 44px;
+    color: #000;
+    border: 1px solid #ADADAD;
+    border-radius: 5px;
+    text-align: center;
 }
+
 .periodBox .dateBox a {
     float: left;
     margin-left: 5px;
@@ -499,11 +506,9 @@ resultBox .bar.odd {
 }
 .powerballBox .evenText {
     color: #cd1212;
-    font-family: DINWeb-Bold;
 }
 
 .powerballBox td {
-    /*border: 1px solid #D5D5D5;*/
     font-size: 12px;
     color: #5F6164;
 }
@@ -544,6 +549,7 @@ resultBox .bar.odd {
     height: 155px;
     border: 1px solid #727272;
     text-align: center;
+    cursor: pointer;
 }
 #patternSet .round {
     display: block;
@@ -689,8 +695,8 @@ resultBox .bar.odd {
  }
 
 #patternBox .info {
-    padding-top: 12px;
-    height: 29px;
+    padding-top: 5px;
+    height: 20px;
     padding-bottom: 0px;
 }
 
@@ -952,7 +958,6 @@ resultBox .bar.odd {
 }
 .btn_refresh {
     float: right;
-    margin: 6px 7px 0 0;
     overflow: hidden;
     position: relative;
     width: 88px;
@@ -1008,9 +1013,9 @@ resultBox .bar.odd {
     width: 30px;
     text-align: center;
     font-size: 24px;
-    height: 30px;
+    height: 60px;
     color: #5F6164;
-    line-height: 32px;
+    line-height: 60px;
 }
 
 .sp-date_next:hover .ic{
@@ -1089,8 +1094,8 @@ resultBox .bar.odd {
 
 
 .round_area .info {
-    height: 71px;
-    line-height: 71px;
+    height: 57px;
+    line-height: 57px;
 }
 
 .date_search_option{

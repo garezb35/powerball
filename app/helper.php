@@ -204,55 +204,15 @@ function ballColorSel($num,$i)
     $ballColor = "";
     if($i == 5)
         return "pb";
-    switch($num)
-    {
-        case '01':
-        case '1':
-        case '05':
-        case '5':
-        case '09':
-        case '9':
-        case '13':
-        case '17':
-        case '21':
-        case '25':
-           $ballColor = 'red';
-            break;
-        case '02':
-        case '2':
-        case '06':
-        case '6':
-        case '10':
-        case '14':
-        case '18':
-        case '22':
-        case '26':
-            $ballColor = 'yellow';
-            break;
-        case '03':
-        case '3':
-        case '07':
-        case '7':
-        case '11':
-        case '15':
-        case '19':
-        case '23':
-        case '27':
-            $ballColor = 'green';
-            break;
-        case '0':
-        case '04':
-        case '4':
-        case '08':
-        case '8':
-        case '12':
-        case '16':
-        case '20':
-        case '24':
-        case '28':
-            $ballColor = 'blue';
-            break;
-    }
+
+    if($num >=1 && $num <=7)
+        $ballColor = "yellow";
+    else if($num >=8 && $num <=14)
+        $ballColor = "blue";
+    else if($num >=5 && $num <=21)
+        $ballColor = "red";
+    else
+        $ballColor = "green";
     return $ballColor;
 }
 

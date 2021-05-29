@@ -26,8 +26,8 @@
                 </ul>
             </span>
         </div>
-        <div class="btnBox" style="width: 19%;float: left;">
-            <a class="btn_refresh" id="btn_refresh" href="javascript:location.reload();" title="새로고침" style="margin-top: -6px;">
+        <div class="btnBox" style="width: 18%;float: left;margin-top: 14px;">
+            <a class="btn_refresh" id="btn_refresh" href="javascript:location.reload();" title="새로고침" >
                 <span class="ic fa fa-refresh"></span><span id="refresh-element">새로고침</span>
             </a>
         </div>

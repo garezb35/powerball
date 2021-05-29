@@ -1,11 +1,10 @@
-@extends('includes.empty_header')
-@section("header")
-    @include('Analyse/analyse-menu')
-@endsection
-@section("content")
+<?php $__env->startSection("header"); ?>
+    <?php echo $__env->make('Analyse/analyse-menu', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection("content"); ?>
     <script>
-        var old_date=date = "{{date("Y-m-d")}}";
-        var old_round=round = {{$next_round}};
+        var old_date=date = "<?php echo e(date("Y-m-d")); ?>";
+        var old_round=round = <?php echo e($next_round); ?>;
     </script>
     <div class="option_area type2">
         <div class="pattern_area">
@@ -55,10 +54,10 @@
             </ul>
         </div>
     </div>
-    @php
+    <?php
     $title = "패턴별 통계데이터";
-    @endphp
-    @include("Analyse.patternTerms")
+    ?>
+    <?php echo $__env->make("Analyse.patternTerms", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <table id="patternLogBox" class="patternBox table table-bordered" style="margin-top: 5px;">
         <colgroup>
             <col width="89" />
@@ -85,7 +84,9 @@
         <img src="https://simg.powerballgame.co.kr/images/loading2.gif" width="50" height="50">
     </div>
     <div class="moreBox"><a href="#" onclick="searchPattern(2,date,round);return false;">더보기</a></div>
-    @include("Analyse/pattern")
-    @include("Analyse/pattern_next")
-    @include("Analyse.chart")
-@endsection
+    <?php echo $__env->make("Analyse/pattern", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <?php echo $__env->make("Analyse/pattern_next", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <?php echo $__env->make("Analyse.chart", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('includes.empty_header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\work\xampp8.0\htdocs\powerball\resources\views/powerball_pattern.blade.php ENDPATH**/ ?>

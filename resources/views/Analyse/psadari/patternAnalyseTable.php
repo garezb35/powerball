@@ -5,7 +5,7 @@
     <h5 class="text-center" style="font-size: 18px">패턴별 분석 데이터 <div class="half-label" style="width: 140px"></div></h5>
     <button class="position-absolute closing" data-toggle="collapse" data-target="#peod" aria-expanded="true">닫기</button>
     <div class="collapse show collapsing-element" id="peod">
-        <table class="table table-bordered jabik" id="patternBox-head">
+        <table class="table table-bordered jabik mb-0" id="patternBox-head">
             <colgroup>
                 <col width="25%">
                 <col width="25%">
@@ -28,7 +28,7 @@
                 </th>
             </tr>
         </table>
-        <table class="table table-bordered" id="patternBox">
+        <table class="table table-bordered mb-0" id="patternBox">
             <tr>
                 <td colspan="4" class="align-middle border-none"">
                     <ul class="info" id="head-info">
