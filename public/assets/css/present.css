@@ -39,8 +39,15 @@
     border-top: 2px solid #00b4b4;
 }
 
-.attendanceBox .table td,.attendanceBox .table th{
+.attendanceBox .table td{
     padding: 0px;
     vertical-align: middle;
     height: 30px;
+}
+
+.attendanceBox .table th{
+    padding: 0px;
+    vertical-align: middle;
+    height: 30px;
+    padding-left: 10px;
 }
