@@ -66,7 +66,7 @@ ul, ol {
 }
 
 .grades{
-    font-size: 15px;
+    font-size: 13px;
     color: #000;
     max-width: 43px;
     white-space: nowrap;
@@ -173,7 +173,7 @@ img, fieldset, iframe {
 }
 
 #box-ct {
-    padding: 10px 0 21px 0;
+    padding: 5px 0 21px 0;
 }
 
 #box-ct .inner-left {
@@ -1094,7 +1094,7 @@ button.closing:focus{
     width: 200px;
     height: 205px;
     border: 1px solid #D5D5D5;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .numberFont{
@@ -1149,7 +1149,8 @@ table.patternTable td:first-child .innerTable td,table.patternTable td:first-chi
     font-size: 13px;
     padding-top: 1px;
     padding-bottom: 1px;
-    margin-left: 24px;
+    position: absolute;
+    right: 6px;
 }
 
 td.simu-head{
@@ -1431,4 +1432,15 @@ td.simu-head{
 }
 #bestPicksterList li .rankType .fa-caret-up,#bestPicksterList li .up{
     color: #CE0400;
+}
+
+
+.box-login  a.charge {
+    width: 30px;
+    height: 10px;
+    border: 1px solid #CC0000;
+    background-color: #EC0000;
+    color: #fff;
+    text-align: center;
+    font-size: 9px;
 }

@@ -11,7 +11,7 @@
     <div style="height:204px;">
         <table class="mt-0" style="width: 100%">
             <colgroup>
-                <col width="176px">
+                <col width="155px">
             </colgroup>
             <tr>
                 <td class="text-left align-top p-1">
@@ -27,15 +27,18 @@
                         </div>
                     </div>
                 </td>
-                <td class="p-2">
+                <td class="p-1">
                    <div style="border: 1px solid #d5d9db;border-radius: 5px">
                        <table class="table mb-0  user-info">
                            <colgroup>
-                               <col width="60px">
+                               <col width="75px">
                                <col width="*">
                            </colgroup>
                            <tr>
-                               <td class="pt-1 pb-1 pl-1 pr-1 align-middle"><span class="list-item"><img src="/assets/images/powerball/coin.png" height="15"/><span class="list-item coin-label"> 코인 </span></td>
+                               <td class="pt-1 pb-1 pl-1 pr-1 align-middle">
+                                   <span class="list-item"><img src="/assets/images/powerball/coin.png" height="15"/><span class="list-item coin-label"> 코인 </span>
+                                    <a href="/member?type=charge" target="mainFrame" class="charge">충전</a>
+                               </td>
                                <td class="pt-1 pb-1 pl-0   align-middle text-right" style="padding-right: 4px"><span class="text-blo font-weight-bold"><?php echo e(number_format(Auth::user()->coin)); ?></span></td>
                            </tr>
                            <tr >
@@ -51,6 +54,7 @@
                 </td>
             </tr>
         </table>
+
         <table class="table box-menus mar-t-5 mb-0">
             <colgroup>
                 <col width="25%">
@@ -59,45 +63,59 @@
                 <col width="25%">
             </colgroup>
             <tr>
-                <td class="text-center align-middle active pt-2 pb-1 border-right-ja">
-                    <div class="position-relative">
-                        <div class="mb-1">
-                            <i class="fa fa-home"></i>
+                <td class="text-center align-middle active pt-2 pb-1 border-right-ja" >
+                    <a href="<?php echo e(route("member")); ?>" target="mainFrame">
+                        <div class="position-relative">
+                            <div class="mb-1">
+                                <i class="fa fa-home"></i>
+                            </div>
+                            마이홈
                         </div>
-                        <a href="<?php echo e(route("member")); ?>" target="mainFrame">마이홈</a>
-                    </div>
+                    </a>
                 </td>
                 <td class="text-center align-middle pt-2 pb-1 border-right-ja">
-                    <div class="position-relative">
-                        <div class="mb-1">
-                            <i class="fa fa-envelope"></i>
+                    <a href="#" onclick="windowOpen('/memo','memo',600,600,'auto');return false;" >
+                        <div class="position-relative">
+                            <div class="mb-1">
+                                <i class="fa fa-envelope"></i>
+                            </div>
+                            쪽지
+                            <div class="itemCntBox" id="mail-count" style="display:<?php if($mail_count == 0): ?><?php echo e("none"); ?><?php else: ?><?php echo e("block"); ?><?php endif; ?>"><?php echo e($mail_count); ?></div>
                         </div>
-                        <a href="#" onclick="windowOpen('/memo','memo',600,600,'auto');return false;" >쪽지</a>
-                        <div class="itemCntBox" id="mail-count" style="display:<?php if($mail_count == 0): ?><?php echo e("none"); ?><?php else: ?><?php echo e("block"); ?><?php endif; ?>"><?php echo e($mail_count); ?></div>
-                    </div>
+                    </a>
                 </td>
                 <td class="text-center align-middle pt-2 pb-1 border-right-ja">
+                    <a href="<?php echo e(route("member")); ?>?type=item" target="mainFrame">
                     <div class="position-relative">
                         <div class="mb-1">
                             <i class="fa fa-gift" aria-hidden="true"></i>
                         </div>
-                        <a href="<?php echo e(route("member")); ?>?type=item" target="mainFrame">아이템</a>
+                        아이템
                         <?php if($item_count > 0): ?><div class="itemCntBox"><?php echo e($item_count); ?></div><?php endif; ?>
+                    </a>
                     </div>
                 </td>
                 <td class="text-center align-middle pt-2 pb-1" >
-                    <div class="position-relative">
-                        <div class="mb-1">
-                            <i class="fa fa-power-off" aria-hidden="true"></i>
+                    <a href="/logout">
+                        <div class="position-relative">
+                            <div class="mb-1">
+                                <i class="fa fa-power-off" aria-hidden="true"></i>
+                            </div>
+                            로그아웃
                         </div>
-                        <a href="/logout">로그아웃</a>
-                    </div>
+                    </a>
                 </td>
             </tr>
             <tr>
                 <td colspan="4" class="back-blue simu-head">
-                    <span class="text-gold font-weight-bold align-middle ll-he23">파워모의배팅</span> <span class="font-weight-bold text-white align-middle ll-he23">남은 기간</span>  <span class="text-gold font-weight-bold align-middle ll-he23">30일</span>
-                    <button class="btn btn-sm btn-jin-blue gopur_btn">구매하러 가기</button>
+                    <span class="text-gold font-weight-bold align-middle ll-he23">파워모의배팅</span>
+                    <?php if(!empty($using_sim) && !empty($using_sim->format("%a"))): ?>
+                    <span class="font-weight-bold text-white align-middle ll-he23">남은 기간</span>  <span class="text-gold font-weight-bold align-middle ll-he23"><?php echo e($using_sim->format("%a")); ?>일</span>
+                    <button class="btn btn-sm btn-jin-blue gopur_btn">사용중</button>
+                    <?php else: ?>
+                        <span class="font-weight-bold text-white align-middle ll-he23">남은 기간</span></span>
+                        <button class="btn btn-sm btn-jin-blue gopur_btn" onclick="gomarket()">구매하러 가기</button>
+                    <?php endif; ?>
                 </td>
             </tr>
             <tr>
@@ -166,5 +184,11 @@
     <?php endif; ?>
 </div>
 
-
+<script>
+    function gomarket(url = ""){
+        var el = document.getElementById('mainFrame');
+        if(url == "")
+            el.src = "/market"; // assign url to src property
+    }
+</script>
 <?php /**PATH D:\work\xampp8.0\htdocs\powerball\resources\views/box-login.blade.php ENDPATH**/ ?>

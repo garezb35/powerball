@@ -7,7 +7,7 @@
         var limit = {{$limit}};
     </script>
     @if(Request::get("pageType") =="display")
-    <div id="powerballMiniViewDiv" class="mb-2">
+    <div id="powerballMiniViewDivpowerballMiniViewDiv" class="mb-1">
         @include('powerballminiView')
     </div>
     @endif

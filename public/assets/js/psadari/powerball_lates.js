@@ -41,6 +41,8 @@ function ajaxPattern(type,from='',to='',limit)
                 compileJson("#pattern-info","#head-info",pattern_header[type]);
                 compileJson("#pattern-date",".pattern-t",pattern[type]);
             }
+
+            $('#patternBox').find('.content').animate({scrollLeft:10000},1000);
         }
     });
 }

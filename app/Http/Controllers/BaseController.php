@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\PbInbox;
+use App\Models\PbItemUse;
 use App\Models\PbMessage;
 use App\Models\PbRoom;
 use App\Models\PbView;
@@ -23,6 +24,7 @@ class BaseController  extends Controller
     protected $next_code = "";
     protected $mail_count = 0;
     protected  $rooms = array();
+    protected $simulate = 0;
     public function  __construct(){
         $this->isLogged = false;
         $this->middleware(function ($request, $next) {
@@ -47,6 +49,10 @@ class BaseController  extends Controller
                 }
                 $this->item = PbPurItem::where("userId",Auth::id())->where("active",1)->sum("count");
                 $this->mail_count = PbInbox::where('toId',$this->user->userId)->where("view_date",NULL)->get()->count();
+                $item_sim = PbItemUse::where("userId",$this->user->userId)->where("market_id","PREMIUM_ANALYZER")->where("terms2",">",date("Y-m-d H:i:s"))->first();
+                if(!empty($item_sim)){
+                    $this->simulate = date_diff(date_create(date("Y-m-d")),date_create($item_sim["terms2"]));
+                }
             }
 
             $humor = PbMessage::with("comments")->where("type","humor")->orderBy("created_at","DESC")->limit(12)->get()->toArray();
@@ -58,6 +64,7 @@ class BaseController  extends Controller
             $rooms = PbRoom::with(["roomandpicture.getLevel","roomandpicture.item_use"])->where("created_at",">",$days_ago)->orderBy("cur_win","DESC")->orderBy("cur_win","DESC")->limit(6)->get()->toArray();
             $this->rooms = $rooms;
             $userIdToken = !Auth::check() ? "" : $this->user->api_token;
+
             View::share('user_level', $this->user_level);
             View::share('next_level', $this->next);
             View::share('normal_level', $this->normal_exp);
@@ -70,6 +77,7 @@ class BaseController  extends Controller
             View::share('notice', $notice);
             View::share('rooms', $this->rooms);
             View::share('userIdToken', $userIdToken);
+            View::share('using_sim', $this->simulate);
             return $next($request);
         });
     }

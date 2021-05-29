@@ -25,7 +25,7 @@
             <div class="logo">
                 <a href="/" class="none"><img src="<?php echo e(Request::root()); ?>/assets/images/logo.svg" width="144" ></a>
                 <div class="top-header-right">
-                    <a href="/bbs/board.php?bo_table=custom&amp;wr_id=147" target="mainFrame">
+                    <a href="/member?type=charge" target="mainFrame">
                         <div class="d-inline-flex align-middle" style="transform:rotate(-40deg)"><img src="/assets/images/powerball/dangun.svg" width="60" height="60"></div>
                         <div class="d-inline-flex align-middle"><span class="header-right-1">코인을 충전하시겠어요?<br><span class="header-right-2">당근을 선물해 보세요!</span></span></div>
                     </a>
