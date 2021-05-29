@@ -983,7 +983,7 @@ fieldset {
 }
 
 .pick.nnonn .chat-pbover ,.pick.nnonn  .chat-pbunder{
-    left: 0;
+    left: 1px;
     top: 32px;
 }
 .pick.nnonn .chat-nbover ,.pick.nnonn  .chat-nbunder{
@@ -1982,8 +1982,8 @@ fieldset {
 }
 
 .pick-room-manager{
-    width: 60px;
-    height: 60px;
+    width: 62px;
+    height: 62px;
     background: url(/assets/images/powerball/pick_back.png?123) no-repeat;
     background-position: 0 0;
     margin: auto;
