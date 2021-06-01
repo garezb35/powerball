@@ -79,7 +79,7 @@
                                 <span id="ready-round">83</span>
                                 <span>회차</span>
                             </div>
-                            <img src="/assets/images/pick/ready.png" />
+                            <p class="ready-txt">추첨준비중</p>
                         </div>
                         <ul class="s3"></ul>
                         <div class="lineBox"></div>
@@ -129,4 +129,3 @@
 </div>
 </body>
 </html>
-

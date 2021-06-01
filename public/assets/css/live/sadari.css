@@ -813,8 +813,8 @@
     position: absolute;
     width: 38px;
     z-index: 105;
-    background: url(/assets/images/pick/sadari-offline.png);
-    background-size: 100%;
+    background: url(/assets/images/powerball/black.svg);
+    background-size: 100% !important;
     height: 38px;
     line-height: 38px;
     text-align: center;
@@ -893,4 +893,9 @@
 .btr{
     border-top-right-radius: 10px;
 }
-
+.ready-txt{
+    margin: 7px;
+    color: #fff;
+    font-size: 20px;
+    text-shadow: 1px 1px 2px #181717, 0 0 1em white, 0 0 0.2em white;
+}

@@ -749,7 +749,7 @@
 #ready-screen{
     position: absolute;
     left: 147px;
-    top: 40%;
+    top: 125px;
     text-align: center;
 }
 #ready-screen div{
@@ -769,7 +769,7 @@
     background: #002042;
     position: absolute;
     left: 117px;
-    top: 141px;
+    top: 100px;
     width: 211px;
     text-align: center;
     padding: 10px;
