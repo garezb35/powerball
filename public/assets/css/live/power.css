@@ -665,31 +665,31 @@
     width: 32px;
     height: 32px;
     background: url(/assets/images/pick/red.png) no-repeat ;
-    color: #fff;
+    color: #000;
 }
 .result_ball.blue {
     width: 32px;
     height: 32px;
     background: url(/assets/images/pick/blue.png) no-repeat ;
-    color: #fff;
+    color: #000;
 }
 .result_ball.green {
     width: 32px;
     height: 32px;
     background: url(/assets/images/pick/green.png) no-repeat ;
-    color: #fff;
+    color: #000;
 }
 .result_ball.yellow {
     width: 32px;
     height: 32px;
-    background: url(/assets/images/pick/orange.png) no-repeat ;
+    background: url(/assets/images/powerball/black.svg) no-repeat ;
     color: #fff;
 }
 .result_ball.pb {
     width: 32px;
     height: 32px;
-    background: url(/assets/images/pick/pb.png) no-repeat ;
-    color: #fff;
+    background: url(/assets/images/powerball/pb.svg);
+    color: #000;
 }
 
 
@@ -790,4 +790,12 @@
     margin-bottom: 10px;
     border-bottom: 1px solid #1d3c5e;
     padding-bottom: 5px;
+}
+
+
+.ready-txt{
+    margin: 7px;
+    color: #000;
+    font-size: 20px;
+    text-shadow: 1px 1px 2px #181717, 0 0 1em white, 0 0 0.2em white;
 }

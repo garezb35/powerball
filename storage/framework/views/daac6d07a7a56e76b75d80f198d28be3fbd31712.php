@@ -59,7 +59,7 @@
                 <div class="side left">
                     <div class="powerball_board">
                         <div id="result_board" class="result_board">
-                            <img src="/assets/images/pick/bulb.png" class="bulb-img"/>
+                            <img src="/assets/images/pick/bulb.png" class=""/>
                             <img src="/assets/images/pick/balls.png" class="stopped_balls"/>
                             <div id="div_machine_glass" class="full_size"></div>
                             <div id="lotteryBall"></div>
@@ -68,7 +68,7 @@
                                     <span id="ready-round"></span>
                                     <span>회차</span>
                                 </div>
-                                <img src="/assets/images/pick/ready.png">
+                                <p class="ready-txt">추첨준비중</p>
                             </div>
                             <div id="current_result">
                                 <div class="round">
@@ -113,5 +113,4 @@
         </div>
     </body>
 </html>
-
 <?php /**PATH D:\work\xampp8.0\htdocs\powerball\resources\views/pick/powerball_live.blade.php ENDPATH**/ ?>
