@@ -42,8 +42,9 @@
 					<td class="tit">지속적인 비매너</td>
 					<td class="reason">특정회원 비방, 부모 및 가족 관련 욕설, 성적 모욕을 하는 행위</td>
 				</tr>
-			</tbody></table>
-			<br>
+			</tbody>
+    </table>
+
 			<table class="table table-bordered">
 				<colgroup>
 					<col width="100">
