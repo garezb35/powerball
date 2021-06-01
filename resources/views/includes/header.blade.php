@@ -61,27 +61,3 @@
 
 @include('includes.footer')
 </html>
-<script>
-    $(document).ready(function(){
-        // var noticeTimer = "";
-        // $('#scrollNotice > ul li a').hover(function(){
-        //     clearInterval(noticeTimer);
-        // },function(){
-        //     noticeTimer = setInterval("rollingNotice()",3000);
-        // });
-
-        // noticeTimer = setInterval("rollingNotice()",3000);
-        setInterval("rollingNotice()",5000);
-    })
-    function rollingNotice()
-    {
-        $('#scrollNotice').animate({'top':'-=20'},{
-            duration:500,
-            easing: "linear",
-            complete:function(){
-                $('#scrollNotice > ul').children('li:last').after($('#scrollNotice > ul li:eq(0)'));
-                $('#scrollNotice').css({'top':0});
-            }
-        });
-    }
-</script>
