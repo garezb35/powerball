@@ -3,6 +3,19 @@ var check_save = check_save_all = true;
 
 var api_token = "";
 var steps = new Array();
+var typess = new Array();
+typess[1]=  "pb_oe";
+typess[2] = "pb_uo";
+typess[3] = "nb_oe";
+typess[4] = "nb_uo";
+var result = new Array();
+result["pb_oe"] = new Array();
+result["pb_uo"] = new Array();
+result["nb_oe"] = new Array();
+result["nb_uo"] = new Array();
+var loading = false;
+var simulator_in = ["pb_oe","pb_uo","nb_oe","nb_uo"]
+var simulator_in_index= 0;
 $(".pow-element").click(function() {
     initOdd();
     if ($(this).hasClass("pow-element-blue")) {
@@ -31,6 +44,35 @@ function openCity(evt,patt_index) {
     $(evt).addClass("font-weight-bold");
     $("#part"+patt_index).removeClass("d-none");
     type = patt_index;
+    heightResize()
+}
+
+function getResultFromDatabase(){
+  if(simulator_in_index == 4) return false;
+  var typeo = simulator_in[simulator_in_index];
+  if(round > 0){
+    $.ajax({
+        type:'POST',
+        dataType:'json',
+        url:'/api/get_more/power_data-simulator',
+        data:{round:round,type:typeo},
+        success:function(data,textStatus){
+          result[typess[typeo]] = data.result.list
+          if(data.status ==1){
+              result[typess[typeo]] = data.result;
+              compileJson("#pattern-date",".pattern-tr",result[typess[typeo]],2);
+              $('.pattern-t').animate({scrollLeft:10000},1000);
+          }
+        }
+    }).done(function(){
+      loading  = false;
+      simulator_in_index++;
+      getResultFromDatabase();
+    })
+  }
+  else{
+    compileJson("#pattern-date",".pattern-tr",result[typess[type]]);
+  }
 }
 
 function hideType(type,obj){
@@ -44,6 +86,7 @@ function hideType(type,obj){
         $(".mulebanga").hide();
         $(".autopattern").show();
     }
+    heightResize();
 }
 
 function saveAutoSetting(){
@@ -60,7 +103,6 @@ function saveAutoSetting(){
         dataType:'json',
         url:'/api/setAutoConfig',
         data:{start_round:start,end_round:end,start_amount:amount,api_token:api_token},
-
         success:function(data,textStatus){
           if(data.status == "1")
           {
@@ -82,6 +124,10 @@ function saveAutoSetting(){
 }
 
 $(document).ready(function(){
+
+  $('.editor-text').on('DOMSubtreeModified', function(){
+      $(this).parent().find("textarea").val($(this).html());
+  });
     if(started > 0)
         checkTimer();
     api_token = $("#part2").find("#api_token").val();
@@ -106,6 +152,7 @@ $(document).ready(function(){
             url:'/api/setAutoConfig',
             data:{api_token:api_token,step:notivalue,martin:martin,mny:steps.join()},
             success:function(data,textStatus){
+
                 if(data.status == "1")
                 {
                     alert("성공적으로 저장되였습니다.");
@@ -142,14 +189,12 @@ $(document).ready(function(){
         var type = 2;
         processAutoStart(code,type);
     });
+    getResultFromDatabase();
 })
 
 
 function processAutoStart(code,type){
-    // if(started > 0){
-    //     alert("이미 오토배팅중입니다.중지후 이용해주십시오");
-    //     return;
-    // }
+
     $.ajax({
         type:'POST',
         dataType:'json',
@@ -167,6 +212,7 @@ function savePattern(tt,var_type,callback){
         alert("배팅중지후 설정해주세요");
         return false;
     }
+
     if(var_type == 1){
         var input_pattern = new Array();
         var pattern_step = $("#part"+tt).find(".pattern-step1").val();
@@ -303,3 +349,28 @@ function checkTimer(){
     },1000);
 }
 
+function save(){
+  var myform = document.getElementById("autoForm");
+  var fd = new FormData(myform);
+  $.ajax({
+      url:'/api/setAutoMatch',
+      data: fd,
+      cache: false,
+      processData: false,
+      contentType: false,
+      type: 'POST',
+      dataType:"json",
+      success: function(data){
+        console.log(data)
+        if(data.status == "1")
+        {
+            alert("성공적으로 저장되였습니다.");
+        }
+        else
+            alert(data.msg);
+      }
+  }).fail(function(xhr){
+    debugger;
+    console.log(xhr)
+  })
+}

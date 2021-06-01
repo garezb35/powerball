@@ -60,6 +60,7 @@ Route::post("/get_more/powerball",[App\Http\Controllers\PowerballController::cla
 Route::post("/get_more/speedkeno",[App\Http\Controllers\SpeedkenoController::class,'resultList']);
 Route::post("/get_more/analyseDate",[App\Http\Controllers\PowerballController::class,'analyseDate']);
 Route::post("/get_more/analysePattern",[App\Http\Controllers\PowerballController::class,'patternAnalyse']);
+Route::post("/get_more/power_data-simulator",[App\Http\Controllers\PowerballController::class,'dataSimulate']);
 Route::post("/get_more/analyseSix",[App\Http\Controllers\PowerballController::class,'getSixAnalyse']);
 Route::post("/get_more/analyseMinMax",[App\Http\Controllers\PowerballController::class,'analyseMinMax']);
 Route::post("/get_more/analyseMinMaxByDate",[App\Http\Controllers\PowerballController::class,'anaylseMinMaxByDate']);
@@ -96,4 +97,3 @@ Route::get("/set_round/{name}",[App\Http\Controllers\PowerballController::class,
 Route::post("/sendSmsPhoneNum",[App\Http\Controllers\MemberController::class,'sendSmsPhoneNum']);
 Route::post("/checkAuth",[App\Http\Controllers\MemberController::class,'checkAuth']);
 Route::post("/checkID",[App\Http\Controllers\MemberController::class,'checkID']);
-

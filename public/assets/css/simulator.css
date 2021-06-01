@@ -4,7 +4,7 @@
     clear: both;
 }
 .auto-left{
-    width: 600px;
+    width: 100%;
     float: left;
 }
 .auto-right{
@@ -12,8 +12,7 @@
     float: right;
 }
 .content-left{
-    width: 566px;
-    float: left;
+    width: 100%;
 }
 .content-right{
     float: right;
@@ -179,6 +178,166 @@
 }
 
 .content-left td{
-    padding-left: .25rem;
-    padding-right: .25rem;
+    padding-left: 0;
+    padding-right:0;
+}
+
+.patternTable th, .patternTable td {
+    padding: 1px 2px 1px 2px;
+}
+
+.pattern-t div.even,.pattern-t div.over{
+  font-size: 11px;
+  background: url(/assets/images/powerball/even.svg) no-repeat;
+  background-size: 26px;
+  border-radius: 100px;
+  color: white;
+  cursor: pointer;
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+  text-align: center;
+}
+.pattern-t div.odd,.pattern-t div.under{
+  font-size: 11px;
+  background: url(/assets/images/powerball/odd.svg) no-repeat;
+  background-size: 26px;
+  border-radius: 100px;
+  color: white;
+  cursor: pointer;
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+  text-align: center;
+}
+
+#patternBox td{
+  display: inline-block;
+}
+
+
+.pattern-tr .border-cell{
+  display: inline-block;
+  width: calc(25% - 3px);
+  vertical-align: top
+}
+
+
+
+
+.pattern-t{
+  overflow: scroll;
+  height: 200px;
+  -webkit-overflow-scrolling: touch;
+
+  /*
+  Progressive enhancement of scrollbar on webkit
+  Use media queries to only use on mobile */
+  &::-webkit-scrollbar {
+    height: 6px;
+    background-color: white;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #999;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-button {
+    display: none;
+  }
+}
+
+.pattern-t::-webkit-scrollbar-thumb:horizontal
+{
+	background-color: #cccccc;
+}
+
+.pattern-t::-webkit-scrollbar,.pattern-t::-webkit-scrollbar:horizontal {
+  width: 10px;
+}
+
+.pattern-t::-webkit-scrollbar,.pattern-t::-webkit-scrollbar:horizontal
+{
+	width: 6px;
+	background-color: #F5F5F5;
+}
+
+.pattern-t::-webkit-scrollbar-thumb
+{
+	background-color: #cccccc;
+}
+
+.editor-text {
+  width: 2000px;
+  height: 116px;
+  border-top: 1px solid #cccccc;
+  outline: none;
+  padding: 5px;
+  overflow: auto;
+  font-size: 13px;
+  line-height: 19px;
+}
+
+.scroll-td{
+  max-width:400px;
+  overflow: auto;
+  padding: 0px !important
+}
+
+.log-part{
+  max-height: 160px;
+  height: 160px;
+  overflow: auto;
+  background: #000;
+  padding: 5px;
+  border-radius: 5px
+}
+
+.log-part ul{
+  color: #fff
+}
+
+.form-check {
+    position: relative;
+    display: block;
+    padding-left: 1.25rem;
+}
+.form-check-inline {
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-left: 0;
+}
+.form-check-input {
+    position: absolute;
+    margin-top: .3rem;
+    margin-left: -1.25rem;
+}
+.form-check-inline .form-check-input {
+    position: static;
+    margin-top: 0;
+    margin-right: .3125rem;
+    margin-left: 0;
+}
+.form-check-label {
+    margin-bottom: 0;
+    padding-left: 0.25rem;
+}
+
+.pattern1 td{
+  width: 206px;
+  max-width: 206px;
+  overflow: auto;
+  padding: 0px
+}
+
+.mulebanga .editor-text{
+  width: 540px;
+  height: 133px;
 }

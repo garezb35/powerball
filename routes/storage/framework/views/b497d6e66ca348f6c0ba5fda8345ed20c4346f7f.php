@@ -4,7 +4,7 @@
         var limit = <?php echo e($limit); ?>;
     </script>
     <?php if(Request::get("pageType") =="display"): ?>
-    <div id="powerballMiniViewDiv" class="mb-2">
+    <div id="powerballMiniViewDiv" class="mb-1">
         <?php echo $__env->make('powerballSadariMiniview', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     </div>
     <?php endif; ?>

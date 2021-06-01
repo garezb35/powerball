@@ -515,7 +515,7 @@ function connect()
 
         if(socket == null)
         {
-            socket = io.connect('http://203.109.14.130:3000/room',socketOption);
+            socket = io.connect('http://127.0.0.1:3000/room',socketOption);
         }
         sendProcess('login');
     }

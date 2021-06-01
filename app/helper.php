@@ -235,24 +235,24 @@ function sadariPath($type){
     switch ($type){
         case "left_3":
             array_push($sType,sadariObject(47,13,"h","66px","100","btl btr bbl"));
-            array_push($sType,sadariObject(97,29,"w","204px","500","btr"));
-            array_push($sType,sadariObject(113,217,"h","32px","50","bbr"));
-            array_push($sType,sadariObject(128,28,"w","204px","500","btl","r"));
-            array_push($sType,sadariObject(144,13,"h","32px","50","bbl"));
-            array_push($sType,sadariObject(159,29,"w","204px","500","btr"));
-            array_push($sType,sadariObject(175,217,"h","50px","70","bbl bbr"));
+            array_push($sType,sadariObject(97,29,"w","204px","100","btr"));
+            array_push($sType,sadariObject(113,217,"h","32px","100","bbr"));
+            array_push($sType,sadariObject(128,28,"w","204px","100","btl","r"));
+            array_push($sType,sadariObject(144,13,"h","32px","100","bbl"));
+            array_push($sType,sadariObject(159,29,"w","204px","100","btr"));
+            array_push($sType,sadariObject(175,217,"h","50px","100","bbl bbr"));
 
             break;
         case "left_4":
-            array_push($sType,sadariObject(47,13,"h","49px","300","btl btr bbl"));
+            array_push($sType,sadariObject(47,13,"h","49px","100","btl btr bbl"));
             array_push($sType,sadariObject(79,29,"w","204px","100","btr"));
-            array_push($sType,sadariObject(95,217,"h","32px","250","bbr"));
+            array_push($sType,sadariObject(95,217,"h","32px","100","bbr"));
             array_push($sType,sadariObject(111,28,"w","204px","100","btl","r"));
-            array_push($sType,sadariObject(127,13,"h","32px","250","bbl"));
+            array_push($sType,sadariObject(127,13,"h","32px","100","bbl"));
             array_push($sType,sadariObject(142,29,"w","204px","100","btr"));
-            array_push($sType,sadariObject(158,217,"h","32px","250","bbr"));
+            array_push($sType,sadariObject(158,217,"h","32px","100","bbr"));
             array_push($sType,sadariObject(173,28,"w","204px","100","btl","r"));
-            array_push($sType,sadariObject(189,13,"h","36px","300","bbl bbr"));
+            array_push($sType,sadariObject(189,13,"h","36px","100","bbl bbr"));
             break;
         case "right_3":
             array_push($sType,sadariObject(47,217,"h","66px","100","btl btr bbr"));

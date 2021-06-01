@@ -9,6 +9,7 @@ use App\Models\PbMarket;
 use App\Models\PbRoom;
 use App\Models\TblWinning;
 use App\Models\User;
+use App\Models\PbRange;
 use Faker\Provider\Base;
 use Illuminate\Http\Request;
 use App\Models\Pb_Result_Powerball;
@@ -459,6 +460,43 @@ class PowerballController extends SecondController
         }
 
         echo json_encode(array("status"=>0,"result"=>array()));
+    }
+
+    public function dataSimulate(Request $request){
+      $list = array();
+      $round = $request->post("round");
+      $type = $request->post("type");
+      $range  = PbRange::where("range1","<=",$round)->orderBy("year","DESC")->first();
+      if(empty($range)){
+        echo json_encode(array("status"=>0,"msg"=>"정의되지 않은 라운드입니다."));
+        return;
+      }
+      $powerball_list_to1 = array();
+      $year = $range["year"];
+      if($year == date("Y"))
+        $powerball_list_to = new Pb_Result_Powerball;
+      else {
+        $powerball_list_to = DB::connection("comm" . $year)->table("pb_result_powerball");
+      }
+      $powerball_list_to = $powerball_list_to->where("day_round","<=",$round);
+      $powerball_list_to = $powerball_list_to->orderBy("day_round", "DESC");
+      $powerball_list_to = $powerball_list_to->offset(0)->limit(20)->get()->toArray();
+      if(sizeof($powerball_list_to) < 20){
+        $temp = 20 - sizeof($powerball_list_to);
+        if($year  > 2013){
+          $year = $year - 1;
+          $powerball_list_to1 = DB::connection("comm" .$year)->table("pb_result_powerball");
+          $powerball_list_to1 = $powerball_list_to1->orderBy("day_round", "DESC");
+          $powerball_list_to1 = $powerball_list_to1->offset(0)->limit($temp)->get()->toArray();
+        }
+      }
+      if(!empty($powerball_list_to1)){
+        $powerball_list_to = array_merge($powerball_list_to,$powerball_list_to1);
+      }
+      $powerball_list_to = array_reverse($powerball_list_to);
+      $powerball_list_to = json_decode(json_encode($powerball_list_to));
+      $list = array_merge($list,$powerball_list_to);
+      echo json_encode($this->getPatternDataFromArray($list,$type,date('Y')));
     }
 
 
@@ -1301,67 +1339,35 @@ class PowerballController extends SecondController
 
     public function setAutoMatch(Request $request){
         $insert_data = array();
+        $second_pat = ["p2_1_0","p2_1_1","p2_1_2","p2_1_3","p2_2_0","p2_2_1","p2_2_2","p2_2_3","p2_3_0","p2_3_1","p2_3_2","p2_3_3","p2_4_0","p2_4_1","p2_4_2","p2_4_3"];
         $userId = $this->user->userId;
         $var_type = $request->var_type; ///////////파워볼 패턴 종류
         $type = $request->type;   //////////파워볼 종류
-        switch ($var_type){
-            case 1:
-                $pattern_step = $request->pattern_step;   /// 최종단계
-                $pattern = $request->pattern;  /// 오토 패턴
-                if(!empty($pattern)){
-                    PbAutoMatch::updateorCreate([
-                        "auto_type"=>$type,
-                        "auto_kind"=>$var_type,
-                        "userid"=>$userId
-                    ],[
-                        "auto_last_step"=>$pattern_step,
-                        "auto_pattern"=>$pattern
-                    ]);
-                }
-                else
-                    PbAutoMatch::where("userid",$userId)->where("auto_type",$type)->where("auto_kind",$var_type)->delete();
-                break;
-            case 2:
-                $pattern = $request->pattern;
-                $step = $request->step;
-                $auto_oppo = $request->oppo;
-                foreach($pattern as $key=>$value){
-                    if(!empty($value)){
-                        PbAutoMatch::updateorCreate([
-                            "auto_type"=>$request->type,
-                            "auto_kind"=>$request->var_type,
-                            "userid"=>$userId,
-                            "auto_index"=>$key+1
+
+        $p1 = $request->p1;
+        $a1 = $request->amount1;
+
+        foreach($p1 as $key=>$val){
+            $round_t = "round1_".($key + 1);
+            PbAutoMatch::updateorCreate([
+                            "auto_type"=>1,
+                            "auto_kind"=>$key+1,
+                            "userId"=>$userId
                         ],[
-                            "auto_last_step"=>$step[$key],
-                            "auto_pattern"=>$pattern[$key],
-                            "auto_oppo"=>$auto_oppo[$key]
+                            "auto_pattern"=>$p1[$key],
+                            "money"=>$a1[$key],
+                            "auto_cate"=>$request->$round_t
                         ]);
-                    }
-                    else
-                        PbAutoMatch::where("auto_index",$key+1)->where("userid",$userId)->where("auto_kind",$request->var_type)->where("auto_type",$request->type)->delete();
-                }
-                break;
-            case 3:
-                $pattern_step = $request->pattern_step;   /// 최종단계
-                $pattern = $request->pattern;  /// 오토 패턴
-                $auto_oppo = $request->auto_oppo;
-                if(!empty($pattern)){
-                    PbAutoMatch::updateorCreate([
-                        "auto_type"=>$type,
-                        "auto_kind"=>$var_type,
-                        "userid"=>$userId
-                    ],[
-                        "auto_last_step"=>$pattern_step,
-                        "auto_pattern"=>$pattern,
-                        "auto_oppo"=>$auto_oppo,
-                    ]);
-                }
-                else
-                    PbAutoMatch::where("userid",$userId)->where("auto_type",$type)->where("auto_kind",$var_type)->delete();
-                break;
-            default:
-                break;
+        }
+
+        foreach($second_pat as $key=>$value){
+            PbAutoMatch::updateorCreate([
+                            "auto_type"=>2,
+                            "auto_kind"=>$key+1,
+                            "userId"=>$userId
+                        ],[
+                            "auto_pattern"=>$request->$value,
+                        ]);
         }
         echo json_encode(array("status"=>1));
     }
@@ -1411,16 +1417,29 @@ class PowerballController extends SecondController
         }
         $pb_oe = $pb_uo = $nb_oe = $nb_uo = array();
         $data = TblWinning::get()->toArray();
+        $pb_oe_arr = $pb_uo_arr = $nb_oe_arr = $nb_uo_arr = array(0,0);
         if(!empty($data))
             foreach($data as $value){
                 if($value["kind"] ==1)
+                {
                     array_push($pb_oe,$value);
+                    $pb_oe_arr[$value["pick"]]++;
+                }
                 if($value["kind"] ==2)
-                    array_push($pb_uo,$value);
+                {
+                  array_push($pb_uo,$value);
+                  $pb_uo_arr[$value["pick"]]++;
+                }
                 if($value["kind"] ==3)
-                    array_push($nb_oe,$value);
+                {
+                  array_push($nb_oe,$value);
+                  $nb_oe_arr[$value["pick"]]++;
+                }
                 if($value["kind"] ==4)
-                    array_push($nb_uo,$value);
+                {
+                  array_push($nb_uo,$value);
+                  $nb_uo_arr[$value["pick"]]++;
+                }
             }
         return view("pick.winning", [
             "css"=>"winning.css",
@@ -1428,7 +1447,11 @@ class PowerballController extends SecondController
             "pb_oe"=>$pb_oe,
             "pb_uo"=>$pb_uo,
             "nb_oe"=>$nb_oe,
-            "nb_uo"=>$nb_uo
+            "nb_uo"=>$nb_uo,
+            "pb_oe_arr"=>$pb_oe_arr,
+            "pb_uo_arr"=>$pb_uo_arr,
+            "nb_oe_arr"=>$nb_oe_arr,
+            "nb_uo_arr"=>$nb_uo_arr
         ]);
     }
 

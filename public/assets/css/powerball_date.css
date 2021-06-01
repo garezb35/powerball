@@ -14,9 +14,7 @@
     border: none;
 }
 
-.border-none{
-    border: none !important;
-}
+
 
 .defaultTable th.menu {
     border-top: 2px solid #0E609C;
@@ -325,9 +323,7 @@ background: #f7f7f7;
     padding: 0;
 }
 
-.p-none{
-    padding: 0 !important;
-}
+
 /*.patternTable .innerTable td.sum{*/
 /*    background-color: #f7f7f7;*/
 /*}*/
@@ -483,8 +479,8 @@ resultBox .bar.odd {
 }
 .sp-search {
     width: 46px;
-    height: 44px;
-    line-height: 44px;
+    height: 35px;
+    line-height: 35px;
     color: #000;
     border: 1px solid #ADADAD;
     border-radius: 5px;
@@ -546,16 +542,17 @@ resultBox .bar.odd {
     float: left;
     margin-left: -1px;
     width: 37px;
-    height: 155px;
+    height: 102px;
     border: 1px solid #727272;
     text-align: center;
     cursor: pointer;
 }
 #patternSet .round {
     display: block;
-    height: 51px;
-    line-height: 51px;
+    height: 30px;
+    line-height: 30px;
     background-color: #fff;
+    border-top: 1px solid;
 }
 
 .patternBox .innerTable td.date {
@@ -679,19 +676,14 @@ resultBox .bar.odd {
     margin: auto;
 }
 #patternSet .img {
-    margin-top: 10px;
-    border-bottom: 1px solid #d6d6d6;
-    padding-bottom: 11px;
-    padding-right: 1px;
-    padding-left: 0px;
-    background-color: #fff;
-    width: 30px;
-    height: 30px;
-    background-size: 30px;
-    background-repeat: no-repeat;
-    line-height: 30px;
-    color: #fff;
-    margin-left: 2px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 30px;
+  height: 30px;
+  background-size: 30px;
+  background-repeat: no-repeat;
+  line-height: 30px;
+  color: #fff;
  }
 
 #patternBox .info {
@@ -1189,10 +1181,7 @@ resultBox .bar.odd {
 }
 
 .option_area.type2 {
-    height: 70px;
     border: 1px solid #bfbfbf;
-    margin-top: 10px;
-    margin-bottom: 10px;
 }
 
 .option_area .info {
@@ -1203,14 +1192,15 @@ resultBox .bar.odd {
 .option_area .btn_date {
     float: left;
     width: 68px;
-    height: 71px;
+    height: 60px;
+    line-height: 60px;
     text-indent: -9999px;
     overflow: hidden;
 }
 
 .option_area .date {
     float: left;
-    line-height: 71px;
+    line-height: 60px;
     font-size: 23px;
     font-family: tahoma, 돋움, Dotum, sans-serif;
 }
@@ -1247,8 +1237,8 @@ resultBox .bar.odd {
 #patternSet .count {
     display: block;
     width: 37px;
-    height: 51px;
-    line-height: 51px;
+    height: 30px;
+    line-height: 30px;
     border-bottom: 1px solid #727272;
     background: #666666;
     color: #fff;
@@ -1260,9 +1250,12 @@ resultBox .bar.odd {
     position: relative;
     margin: 0 -1px;
     width: 761px;
-    height: 157px;
-    background: url(/assets/images/powerball/bg_pattern.png) repeat-x;
     overflow: hidden;
+}
+.pattern_select:after{
+  clear: both;
+  display: block;
+  content: ""
 }
 .pattern_select  .tit {
     float: left;
@@ -1273,14 +1266,19 @@ resultBox .bar.odd {
 
 .pattern_select .tit span {
     display: block;
-    height: 51px;
-    line-height: 51px;
+    height: 30px;
+    line-height: 30px;
     border-bottom: 1px solid #d6d6d6;
 }
+.pattern_select .tit span.t2 {
+  height: 40px;
+  line-height: 40px;
+}
+
 
 .pattern_select {
     margin-bottom: 5px;
-    height: 157px;
+    height: 102px;
     border-left: 1px solid #d6d6d6;
 }
 
@@ -1428,4 +1426,3 @@ resultBox .bar.odd {
     padding-top: 9px ;
     padding-bottom: 9px ;
 }
-

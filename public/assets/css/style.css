@@ -5,6 +5,12 @@
   padding: 0;
     font-family: "nexon_lv_thic";
 }
+.border-none{
+    border: none !important;
+}
+.p-none{
+    padding: 0 !important;
+}
 ul, ol {
   list-style: none;
 }
@@ -576,14 +582,17 @@ thead.thead-gray{
     border-bottom: none !important;
 }
 .pow-element {
-    font-size: 14px;
-    background: url(/assets/images/powerball/black.svg) no-repeat;
-    background-size: 26px;
-    border-radius: 100px;
-    padding: 6px 6px;
-    margin-right: 4px;
-    color: white;
-    cursor: pointer;
+  font-size: 14px;
+  background: url(/assets/images/powerball/black.svg) no-repeat;
+  background-size: 26px;
+  border-radius: 100px;
+  color: white;
+  cursor: pointer;
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  line-height: 24px;
+  text-align: center;
 }
 
 .pow-element-red {
@@ -726,7 +735,7 @@ thead.thead-gray{
 }
 
 .ft-thsize{
-    font-size: 13px;
+    font-size: 11px;
 }
 
 .gray-gradient{
@@ -971,6 +980,7 @@ thead.thead-gray{
     height: 18px;
     border-radius: 7px;
     background-size: 120px 18px;
+    margin-left: -32px;
 }
 .half-label{
     width: 199px;

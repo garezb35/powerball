@@ -1,4 +1,4 @@
-@php
+<?php
 $po = $pu = array();
 $po[0]="<div class=\"sp-odd\">홀</div>";
 $po[1]="<div class=\"sp-even\">짝</div>";
@@ -9,9 +9,9 @@ $sum1 = ($pb_oe_arr[0] + $pb_oe_arr[1] ) == 0 ? 1 : $pb_oe_arr[0] + $pb_oe_arr[1
 $sum2 = ($pb_uo_arr[0] + $pb_uo_arr[1] ) == 0 ? 1 : $pb_uo_arr[0] + $pb_uo_arr[1];
 $sum3 = ($nb_oe_arr[0] + $nb_oe_arr[1] ) == 0 ? 1 : $nb_oe_arr[0] + $nb_oe_arr[1];
 $sum4 = ($nb_uo_arr[0] + $nb_uo_arr[1] ) == 0 ? 1 : $nb_uo_arr[0] + $nb_uo_arr[1];
-@endphp
-@extends('includes.empty_header')
-@section("content")
+?>
+
+<?php $__env->startSection("content"); ?>
 
 <div class="bar-header">
   <div class="bar_graph">
@@ -19,22 +19,22 @@ $sum4 = ($nb_uo_arr[0] + $nb_uo_arr[1] ) == 0 ? 1 : $nb_uo_arr[0] + $nb_uo_arr[1
         <dt>파워볼</dt>
         <dd>
             <div class="bar">
-                <p class="left @if($pb_oe_arr[1] > $pb_oe_arr[0]){{"on"}}@endif" style="width:{{$pb_oe_arr[1]*100/$sum1}}%;">
-                    <span class="per"><strong>{{$pb_oe_arr[1]}}</strong> ({{$pb_oe_arr[1]*100/$sum1}}%)</span>
+                <p class="left <?php if($pb_oe_arr[1] > $pb_oe_arr[0]): ?><?php echo e("on"); ?><?php endif; ?>" style="width:<?php echo e($pb_oe_arr[1]*100/$sum1); ?>%;">
+                    <span class="per"><strong><?php echo e($pb_oe_arr[1]); ?></strong> (<?php echo e($pb_oe_arr[1]*100/$sum1); ?>%)</span>
                     <span class="tx">홀</span>
                 </p>
-                <p class="right @if($pb_oe_arr[0] > $pb_oe_arr[1]){{"on"}}@endif" style="width:{{$pb_oe_arr[0]*100/$sum1}}%;">
-                    <span class="per"><strong>{{$pb_oe_arr[0]}}</strong> ({{$pb_oe_arr[0]*100/$sum1}}%)</span>
+                <p class="right <?php if($pb_oe_arr[0] > $pb_oe_arr[1]): ?><?php echo e("on"); ?><?php endif; ?>" style="width:<?php echo e($pb_oe_arr[0]*100/$sum1); ?>%;">
+                    <span class="per"><strong><?php echo e($pb_oe_arr[0]); ?></strong> (<?php echo e($pb_oe_arr[0]*100/$sum1); ?>%)</span>
                     <span class="tx">짝</span>
                 </p>
             </div>
             <div class="bar">
-                <p class="left @if($pb_uo_arr[1] > $pb_uo_arr[0]){{"on"}}@endif" style="width:{{$pb_uo_arr[1]*100/$sum2}}%;">
-                    <span class="per"><strong>{{$pb_uo_arr[1]}}</strong> ({{$pb_uo_arr[1]*100/$sum2}}%)</span>
+                <p class="left <?php if($pb_uo_arr[1] > $pb_uo_arr[0]): ?><?php echo e("on"); ?><?php endif; ?>" style="width:<?php echo e($pb_uo_arr[1]*100/$sum2); ?>%;">
+                    <span class="per"><strong><?php echo e($pb_uo_arr[1]); ?></strong> (<?php echo e($pb_uo_arr[1]*100/$sum2); ?>%)</span>
                     <span class="tx">언더</span>
                 </p>
-                <p class="right  @if($pb_uo_arr[0] > $pb_uo_arr[1]){{"on"}}@endif" style="width:{{$pb_uo_arr[0]*100/$sum2}}%;">
-                    <span class="per"><strong>{{$pb_uo_arr[0]}}</strong> ({{$pb_uo_arr[0]*100/$sum2}}%)</span>
+                <p class="right  <?php if($pb_uo_arr[0] > $pb_uo_arr[1]): ?><?php echo e("on"); ?><?php endif; ?>" style="width:<?php echo e($pb_uo_arr[0]*100/$sum2); ?>%;">
+                    <span class="per"><strong><?php echo e($pb_uo_arr[0]); ?></strong> (<?php echo e($pb_uo_arr[0]*100/$sum2); ?>%)</span>
                     <span class="tx">오버</span>
                 </p>
             </div>
@@ -46,22 +46,22 @@ $sum4 = ($nb_uo_arr[0] + $nb_uo_arr[1] ) == 0 ? 1 : $nb_uo_arr[0] + $nb_uo_arr[1
         <dt>일반볼</dt>
         <dd>
             <div class="bar">
-                <p class="left @if($nb_oe_arr[1] > $nb_oe_arr[0]){{"on"}}@endif" style="width:{{$nb_oe_arr[1]*100/$sum3}}%;">
-                    <span class="per"><strong>{{$nb_oe_arr[1]}}</strong> ({{$nb_oe_arr[1]*100/$sum3}}%)</span>
+                <p class="left <?php if($nb_oe_arr[1] > $nb_oe_arr[0]): ?><?php echo e("on"); ?><?php endif; ?>" style="width:<?php echo e($nb_oe_arr[1]*100/$sum3); ?>%;">
+                    <span class="per"><strong><?php echo e($nb_oe_arr[1]); ?></strong> (<?php echo e($nb_oe_arr[1]*100/$sum3); ?>%)</span>
                     <span class="tx">홀</span>
                 </p>
-                <p class="right @if($nb_oe_arr[0] > $nb_oe_arr[1]){{"on"}}@endif" style="width:{{$nb_oe_arr[0]*100/$sum3}}%;">
-                    <span class="per"><strong>{{$nb_oe_arr[0]}}</strong> ({{$nb_oe_arr[0]*100/$sum3}}%)</span>
+                <p class="right <?php if($nb_oe_arr[0] > $nb_oe_arr[1]): ?><?php echo e("on"); ?><?php endif; ?>" style="width:<?php echo e($nb_oe_arr[0]*100/$sum3); ?>%;">
+                    <span class="per"><strong><?php echo e($nb_oe_arr[0]); ?></strong> (<?php echo e($nb_oe_arr[0]*100/$sum3); ?>%)</span>
                     <span class="tx">짝</span>
                 </p>
             </div>
             <div class="bar">
-                <p class="left @if($nb_uo_arr[1] > $nb_uo_arr[0]){{"on"}}@endif" style="width:{{$nb_uo_arr[1]*100/$sum4}}%;">
-                    <span class="per"><strong>{{$nb_uo_arr[1]}}</strong> ({{$nb_uo_arr[1]*100/$sum4}}%)</span>
+                <p class="left <?php if($nb_uo_arr[1] > $nb_uo_arr[0]): ?><?php echo e("on"); ?><?php endif; ?>" style="width:<?php echo e($nb_uo_arr[1]*100/$sum4); ?>%;">
+                    <span class="per"><strong><?php echo e($nb_uo_arr[1]); ?></strong> (<?php echo e($nb_uo_arr[1]*100/$sum4); ?>%)</span>
                     <span class="tx">언더</span>
                 </p>
-                <p class="right @if($nb_uo_arr[0] > $nb_uo_arr[1]){{"on"}}@endif" style="width:{{$nb_uo_arr[0]*100/$sum4}}%;">
-                    <span class="per"><strong>{{$nb_uo_arr[0]}}</strong> ({{$nb_uo_arr[0]*100/$sum4}}%)</span>
+                <p class="right <?php if($nb_uo_arr[0] > $nb_uo_arr[1]): ?><?php echo e("on"); ?><?php endif; ?>" style="width:<?php echo e($nb_uo_arr[0]*100/$sum4); ?>%;">
+                    <span class="per"><strong><?php echo e($nb_uo_arr[0]); ?></strong> (<?php echo e($nb_uo_arr[0]*100/$sum4); ?>%)</span>
                     <span class="tx">오버</span>
                 </p>
             </div>
@@ -111,24 +111,24 @@ $sum4 = ($nb_uo_arr[0] + $nb_uo_arr[1] ) == 0 ? 1 : $nb_uo_arr[0] + $nb_uo_arr[1
                     <span class="font-weight-bold text-secondary">다음회차픽</span>
                 </td>
             </tr>
-            @if(!empty($pb_oe))
-                @for($i = 0 ;$i <sizeof($pb_oe);$i++)
+            <?php if(!empty($pb_oe)): ?>
+                <?php for($i = 0 ;$i <sizeof($pb_oe);$i++): ?>
                     <tr>
-                        <td class="text-center">{{$i+1}}</td>
-                        <td class="text-center">{{$pb_oe[$i]["ai_id"]}}</td>
-                        <td class="text-center">{{$pb_oe[$i]["winning_num"]}}</td>
-                        <td class="text-center">{!! $po[$pb_oe[$i]["pick"]] !!}</td>
-                        <td class="text-center">{{$i+1}}</td>
-                        <td class="text-center">{{$pb_uo[$i]["ai_id"]}}</td>
-                        <td class="text-center">{{$pb_uo[$i]["winning_num"]}}</td>
-                        <td class="text-center">{!! $pu[$pb_uo[$i]["pick"]] !!}</td>
+                        <td class="text-center"><?php echo e($i+1); ?></td>
+                        <td class="text-center"><?php echo e($pb_oe[$i]["ai_id"]); ?></td>
+                        <td class="text-center"><?php echo e($pb_oe[$i]["winning_num"]); ?></td>
+                        <td class="text-center"><?php echo $po[$pb_oe[$i]["pick"]]; ?></td>
+                        <td class="text-center"><?php echo e($i+1); ?></td>
+                        <td class="text-center"><?php echo e($pb_uo[$i]["ai_id"]); ?></td>
+                        <td class="text-center"><?php echo e($pb_uo[$i]["winning_num"]); ?></td>
+                        <td class="text-center"><?php echo $pu[$pb_uo[$i]["pick"]]; ?></td>
                     </tr>
-                @endfor
-            @else
+                <?php endfor; ?>
+            <?php else: ?>
                 <tr>
                     <td colspan="8" class="text-center">배팅대기중...</td>
                 </tr>
-            @endif
+            <?php endif; ?>
             </tbody>
         </table>
     </div>
@@ -165,29 +165,29 @@ $sum4 = ($nb_uo_arr[0] + $nb_uo_arr[1] ) == 0 ? 1 : $nb_uo_arr[0] + $nb_uo_arr[1
                         <span class="font-weight-bold text-secondary">다음회차픽</span>
                     </td>
                 </tr>
-                @if(!empty($nb_oe))
-                    @for($i = 0 ;$i <sizeof($nb_oe);$i++)
+                <?php if(!empty($nb_oe)): ?>
+                    <?php for($i = 0 ;$i <sizeof($nb_oe);$i++): ?>
                         <tr>
-                            <td class="text-center">{{$i+1}}</td>
-                            <td class="text-center">{{$nb_oe[$i]["ai_id"]}}</td>
-                            <td class="text-center">{{$nb_oe[$i]["winning_num"]}}</td>
-                            <td class="text-center">{!! $po[$nb_oe[$i]["pick"]] !!}</td>
-                            <td class="text-center">{{$i+1}}</td>
-                            <td class="text-center">{{$nb_uo[$i]["ai_id"]}}</td>
-                            <td class="text-center">{{$nb_uo[$i]["winning_num"]}}</td>
-                            <td class="text-center">{!! $pu[$nb_uo[$i]["pick"]] !!}</td>
+                            <td class="text-center"><?php echo e($i+1); ?></td>
+                            <td class="text-center"><?php echo e($nb_oe[$i]["ai_id"]); ?></td>
+                            <td class="text-center"><?php echo e($nb_oe[$i]["winning_num"]); ?></td>
+                            <td class="text-center"><?php echo $po[$nb_oe[$i]["pick"]]; ?></td>
+                            <td class="text-center"><?php echo e($i+1); ?></td>
+                            <td class="text-center"><?php echo e($nb_uo[$i]["ai_id"]); ?></td>
+                            <td class="text-center"><?php echo e($nb_uo[$i]["winning_num"]); ?></td>
+                            <td class="text-center"><?php echo $pu[$nb_uo[$i]["pick"]]; ?></td>
                         </tr>
-                    @endfor
-                @else
+                    <?php endfor; ?>
+                <?php else: ?>
                     <tr>
                         <td colspan="8" class="text-center">배팅대기중...</td>
                     </tr>
-                @endif
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
 <style>
 #powerball-category .nav-link{
@@ -339,3 +339,5 @@ $sum4 = ($nb_uo_arr[0] + $nb_uo_arr[1] ) == 0 ? 1 : $nb_uo_arr[0] + $nb_uo_arr[1
     background-size: cover;
 }
 </style>
+
+<?php echo $__env->make('includes.empty_header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\work\xampp8.0\htdocs\powerball\resources\views/pick/winning.blade.php ENDPATH**/ ?>

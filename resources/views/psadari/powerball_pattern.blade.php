@@ -17,7 +17,7 @@
                     <a class="btn_date btn_minus" href="javascript:;" rel="down"><span class="ic">패턴추가</span></a>
                     <span class="date tx">10</span>
                     <a class="btn_date btn_plus" href="javascript:;" rel="up"><span class="ic">패턴삭제</span></a>
-                    <a href="#" onclick="patternSearch();return false;" style="float:left; margin-top: 15px" class="sp-search rollover">검색</a>
+                    <a href="#" onclick="patternSearch();return false;" style="float:left; margin-top: 14px" class="sp-search rollover">검색</a>
                 </form>
                 <a class="btn_refresh" id="btn_refresh" href="javascript:location.reload();" title="새로고침">
                     <span class="ic fa fa-refresh"></span><span id="refresh-element">새로고침</span>
@@ -45,7 +45,7 @@
         <div class="tit">
             <span class="t1">패턴수</span>
             <span class="t2">결과</span>
-            <span class="t2">회차</span>
+            <span class="t3">회차</span>
         </div>
         <div class="inner">
             <ul id="patternSet">

@@ -1,8 +1,7 @@
 <?php $__env->startSection("header"); ?>
-    <?php echo $__env->make('Analyse/psadari/analyse-menu', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <?php echo $__env->make('Analyse/analyse-menu', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection("content"); ?>
-
     <script>
         var old_date=date = "<?php echo e(date("Y-m-d")); ?>";
         var old_round=round = <?php echo e($next_round); ?>;
@@ -16,27 +15,30 @@
                     <a class="btn_date btn_minus" href="javascript:;" rel="down"><span class="ic">패턴추가</span></a>
                     <span class="date tx">10</span>
                     <a class="btn_date btn_plus" href="javascript:;" rel="up"><span class="ic">패턴삭제</span></a>
-                    <a href="#" onclick="patternSearch();return false;" style="float:left; margin-top: 15px" class="sp-search rollover">검색</a>
+                    <a href="#" onclick="patternSearch();return false;" style="float:left; margin-top: 14px" class="sp-search rollover">검색</a>
                 </form>
-                <a class="btn_refresh" id="btn_refresh" href="javascript:location.reload();" title="새로고침">
+                <a class="btn_refresh" id="btn_refresh" href="javascript:location.reload();" title="새로고침" >
                     <span class="ic fa fa-refresh"></span><span id="refresh-element">새로고침</span>
                 </a>
             </div>
         </div>
     </div>
     <div class="">
-        <ul class="nav nav-tabs" id="pattern-sec" role="tablist">
-            <li class="nav-item" style="width: 25%">
-                <a href="javascript:void(0)" class="btn btn-jin-green btn-sm pl-3 pr-3 nav-link" rel="left_right">시작방향</a>
+        <ul class="nav nav-tabs border-bottom-0" id="pattern-sec" role="tablist">
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="btn btn-jin-green btn-sm pl-3 pr-3 nav-link on1" rel="pb_oe">파워볼 홀/짝</a>
             </li>
-            <li class="nav-item" style="width: 25%">
-                <a href="javascript:void(0)" class="btn btn-green btn-sm pl-3 pr-3 nav-link" rel="three_four">사다리수</a>
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="btn btn-green btn-sm pl-3 pr-3 nav-link" rel="pb_uo">파워볼 언더/오버</a>
             </li>
-            <li class="nav-item" style="width: 25%">
-                <a href="javascript:void(0)" class="btn btn-green btn-sm pl-3 pr-3 nav-link on1" rel="odd_even">홀/짝</a>
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="btn btn-green btn-sm pl-3 pr-3 nav-link" rel="nb_oe">숫자합 홀/짝</a>
             </li>
-            <li class="nav-item" style="width: 25%">
-                <a href="javascript:void(0)" class="btn btn-green btn-sm pl-3 pr-3 nav-link" rel="total">시작방향+사다리수</a>
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="btn btn-green btn-sm pl-3 pr-3 nav-link" rel="nb_uo">숫자합 언더/오버</a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="btn btn-green btn-sm pl-3 pr-3 nav-link" rel="nb_size">숫자합 대/중/소</a>
             </li>
         </ul>
     </div>
@@ -44,7 +46,7 @@
         <div class="tit">
             <span class="t1">패턴수</span>
             <span class="t2">결과</span>
-            <span class="t2">회차</span>
+            <span class="t3">회차</span>
         </div>
         <div class="inner">
             <ul id="patternSet">
@@ -53,7 +55,7 @@
         </div>
     </div>
     <?php
-        $title = "패턴별 통계데이터";
+    $title = "패턴별 통계데이터";
     ?>
     <?php echo $__env->make("Analyse.patternTerms", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <table id="patternLogBox" class="patternBox table table-bordered" style="margin-top: 5px;">
@@ -82,9 +84,9 @@
         <img src="https://simg.powerballgame.co.kr/images/loading2.gif" width="50" height="50">
     </div>
     <div class="moreBox"><a href="#" onclick="searchPattern(2,date,round);return false;">더보기</a></div>
-    <?php echo $__env->make("Analyse/psadari/pattern", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-    <?php echo $__env->make("Analyse/psadari/pattern_next", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-    <?php echo $__env->make("Analyse/psadari/chart", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <?php echo $__env->make("Analyse/pattern", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <?php echo $__env->make("Analyse/pattern_next", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <?php echo $__env->make("Analyse.chart", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('includes.empty_header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\work\xampp8.0\htdocs\powerball\resources\views/psadari/powerball_pattern.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('includes.empty_header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\work\xampp8.0\htdocs\powerball\resources\views/powerball_pattern.blade.php ENDPATH**/ ?>
