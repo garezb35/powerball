@@ -224,7 +224,7 @@ $sum4 = ($nb_uo_arr[0] + $nb_uo_arr[1] ) == 0 ? 1 : $nb_uo_arr[0] + $nb_uo_arr[1
 }
 
 .bar_graph .bar {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     width: 100%;
     height: 21px;
     border-radius: 11px;
@@ -323,7 +323,7 @@ $sum4 = ($nb_uo_arr[0] + $nb_uo_arr[1] ) == 0 ? 1 : $nb_uo_arr[0] + $nb_uo_arr[1
 }
 
 .bar_graph dt {
-  padding: 19px 10px 28px;
+  padding: 11px 10px 17px;
   font-weight: 600;
   font-size: 17px;
 }
@@ -345,7 +345,7 @@ $sum4 = ($nb_uo_arr[0] + $nb_uo_arr[1] ) == 0 ? 1 : $nb_uo_arr[0] + $nb_uo_arr[1
 
 td{
     vertical-align: middle !important;
-    height: 45px;
+    height: 38px;
     padding: 0px !important;
 }
 </style>
