@@ -11,7 +11,7 @@
                     <table class="table-bordered">
                         <tbody>
                             <tr>
-                                <td class="patternImg border-none"><div class="{{#oddClass this ../this.type}}{{/oddClass}}">{{#subRoundUntilThr this.day_round}}{{/subRoundUntilThr}}</div></td>
+                                <td class="patternImg border-none"><div class="{{#oddClass this ../this.type}}{{/oddClass}}">{{this.round}}</div></td>
                             </tr>
                             <tr>
                                 <td class="patternRound border-none">{{#oddClassAlias this ../this.type}}{{/oddClassAlias}}</td>
@@ -28,7 +28,7 @@
         <table width="100%">
             <tbody>
             <tr>
-                <td class="patternImg border-none"><div class="{{#oddClass this.next this.type}}{{/oddClass}}">{{#subRoundUntilThr this.next.day_round}}{{/subRoundUntilThr}}</div></td>
+                <td class="patternImg border-none"><div class="{{#oddClass this.next this.type}}{{/oddClass}}">{{this.next.round}}</div></td>
             </tr>
             <tr>
                 <td class="patternRound border-none">{{#oddClassAlias this.next this.type}}{{/oddClassAlias}}</td>
@@ -39,4 +39,3 @@
 </tr>
 {{/each}}
 </script>
-

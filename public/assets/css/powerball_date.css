@@ -14,7 +14,13 @@
     border: none;
 }
 
+.table-striped tbody tr:nth-of-type(odd){
+      background-color: #fff;
+}
 
+.table-striped tbody tr:nth-of-type(even){
+      background-color: rgba(0,0,0,.05);
+}
 
 .defaultTable th.menu {
     border-top: 2px solid #0E609C;
@@ -1427,4 +1433,5 @@ resultBox .bar.odd {
     padding-right: 2px ;
     padding-top: 0px ;
     padding-bottom: 0px ;
+    background: rgba(0,0,0,.05);
 }

@@ -522,7 +522,7 @@ class PowerballController extends SecondController
                     $powerball_list_to = new Pb_Result_Powerball;
                 if ($i < date("Y"))
                     $powerball_list_to = DB::connection("comm" . $i)->table("pb_result_powerball");
-                $powerball_list_to = $powerball_list_to->orderBy("day_round", "ASC")->select(DB::raw("SUBSTR(pb_result_powerball.day_round,5) as `data`"),DB::raw("pb_result_powerball.".$type." as type"));
+                $powerball_list_to = $powerball_list_to->orderBy("day_round", "ASC")->select(DB::raw("pb_result_powerball.round as `data`"),DB::raw("pb_result_powerball.".$type." as type"));
                 if ($i == $to_year || $i == $from_year) {
                     $powerball_list_to = $powerball_list_to->where("created_date", ">=", $from . " 00:00:00");
                     $powerball_list_to = $powerball_list_to->where("created_date", "<=", $to . " 23:59:59");
@@ -534,7 +534,7 @@ class PowerballController extends SecondController
 
         elseif ($limit != "") {
             $powerball_list_to = new Pb_Result_Powerball;
-            $powerball_list_to = $powerball_list_to->orderBy("day_round", "DESC")->select(DB::raw("SUBSTR(pb_result_powerball.day_round,5) as `data`"),DB::raw("pb_result_powerball.".$type." as type"));
+            $powerball_list_to = $powerball_list_to->orderBy("day_round", "DESC")->select(DB::raw("pb_result_powerball.round as `data`"),DB::raw("pb_result_powerball.".$type." as type"));
             $powerball_list_to = array_reverse($powerball_list_to->limit($limit)->get()->toArray());
             $powerball_list_to = json_decode(json_encode($powerball_list_to));
             $list = array_merge($list, $powerball_list_to);
@@ -993,9 +993,9 @@ class PowerballController extends SecondController
         {
             foreach($model_list as $value){
                 $temp = array();
-                $arr_len = strlen($value["day_round"]) - 3;
-                $temp["round"] = substr($value["day_round"],$arr_len);
-                $temp["day_round"] = $value["day_round"];
+                $arr_len = 3;
+                $temp["round"] = $value["round"];
+                $temp["day_round"] = $value["round"];
                 $temp["code"] = $value[$types];
                 if($types=="pb_oe" || $types =="nb_oe"){
                     $temp["class"] = $value[$types] == 1 ? "sp-odd":"sp-even";
@@ -1836,16 +1836,15 @@ class PowerballController extends SecondController
             return array("status"=>0,"result"=>array());
         else
         {
-            $day_round = $lists[0]->day_round;
+            $day_round = $lists[0]->round;
             $pick_info = $lists[0]->$type;
-            $arr_len = strlen($day_round) - 3;
-            $previous_list = array(substr($day_round,$arr_len));
+            $previous_list = array($day_round);
             $previous_item = strval($pick_info);
             $pung =0;
             $temp_pung = 1;
             $result = array();
             foreach ($lists as $key => $index){
-                $day_round = $index->day_round;
+                $day_round = $index->round;
                 $pick_info = $index->$type;
                 if( $key ==0)
                     continue;
@@ -1854,7 +1853,7 @@ class PowerballController extends SecondController
                     if($temp_pung > 1 && $temp_pung > $pung)
                         $pung = $temp_pung;
                     $temp_pung = 0;
-                    array_push($previous_list,substr($day_round,$arr_len));
+                    array_push($previous_list,$day_round);
                     if($key == sizeof($lists)-1)
                     {
                         array_push($result,array("alias"=>$temp[1],"type"=>$temp[0],"list"=>$previous_list));
@@ -1868,7 +1867,7 @@ class PowerballController extends SecondController
                     array_push($result,array("alias"=>$temp[1],"type"=>$temp[0],"list"=>$previous_list));
                     if(sizeof($previous_list) > $max_appear)
                         $max_appear = sizeof($previous_list);
-                    $previous_list= array(substr($day_round,$arr_len));
+                    $previous_list= array($day_round);
                     $previous_item =  $pick_info;
                     if($key == sizeof($lists)-1)
                     {

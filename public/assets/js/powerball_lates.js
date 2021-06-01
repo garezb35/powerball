@@ -141,6 +141,7 @@ function ajaxSixPattern(cnt,type)
             }
         })
     }
+    $("#sixBox .content").animate({scrollLeft:10000},1000);
 }
 
 function moreClick()
