@@ -30,7 +30,7 @@
     <div class="table-type-1">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="chatroomListBox-tab" data-toggle="tab" data-bs-toggle="tab" href="#chatTap" role="tab" aria-controls="home" aria-selected="true">연병장</a>
+                <a class="nav-link active" id="chatroomListBox-tab" data-toggle="tab" data-bs-toggle="tab" href="#chatTap" role="tab" aria-controls="home" aria-selected="true">채팅</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="room-tab" data-toggle="tab" data-bs-toggle="tab" href="#roomTap" role="tab" aria-controls="profile" aria-selected="false">방채팅</a>

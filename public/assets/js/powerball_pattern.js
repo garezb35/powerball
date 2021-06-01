@@ -218,6 +218,8 @@ function searchPattern(append = 1,var_date=old_date,var_round=old_round){
             {
                 $(".moreBox a").addClass("disabled");
             }
+        }).fail(function(xhr){
+          console.log(xhr)
         })
     }
 }
