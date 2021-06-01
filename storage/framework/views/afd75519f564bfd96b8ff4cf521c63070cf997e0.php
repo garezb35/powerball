@@ -37,7 +37,7 @@
                     <li><a href="<?php echo e(route('psadari_analyse')); ?>?terms=lates&pageType=display" target="mainFrame" class="hiddenBorard" >파사중계<div class="border-half"></div></a></li>
                     <li><a href="<?php echo e(route('pick-powerball')); ?>" target="mainFrame" style="width:80px;text-align:center;" class="hiddenBorard">픽<div class="border-half"></div></a></li>
                     <li><a href="<?php echo e(route("pick-simulator")); ?>" target="mainFrame" rel="hidden" class="hiddenBorard">파워모의배팅<div class="border-half"></div></a></li>
-                    <li><a href="/pick/winning-machine"  target="mainFrame"  rel="hidden" class="hiddenBorard">연승제조기<div class="border-half"></div></a></li>
+                    <li><a href="/pick/winning-machine"  target="mainFrame"   class="hiddenBorard">연승제조기<div class="border-half"></div></a></li>
                     <li><a href="<?php echo e(route('market')); ?>" target="mainFrame" class="hiddenBorard">마켓<div class="border-half"></div></a></li>
                     <li><a href="#" onclick="openChatRoom();return false;" class="hiddenBorard">방채팅<div class="border-half"></div></a></li>
                     <li><a href="<?php echo e("board"); ?>?board_type=none&board_category=humor" target="mainFrame" class="hiddenBorard">커뮤니티<div class="border-half"></div></a></li>
@@ -63,14 +63,15 @@
 </html>
 <script>
     $(document).ready(function(){
-        var noticeTimer = "";
-        $('#scrollNotice > ul li a').hover(function(){
-            clearInterval(noticeTimer);
-        },function(){
-            noticeTimer = setInterval("rollingNotice()",3000);
-        });
+        // var noticeTimer = "";
+        // $('#scrollNotice > ul li a').hover(function(){
+        //     clearInterval(noticeTimer);
+        // },function(){
+        //     noticeTimer = setInterval("rollingNotice()",3000);
+        // });
 
-        noticeTimer = setInterval("rollingNotice()",3000);
+        // noticeTimer = setInterval("rollingNotice()",3000);
+        setInterval("rollingNotice()",5000);
     })
     function rollingNotice()
     {
