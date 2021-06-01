@@ -4,7 +4,7 @@
 
     </li>
     <li class="nav-item">
-        <a class="nav-link border-right-0  @if ( Request::get('terms') =="period" || Request::get('terms') =="date") active @endif" href="/p_analyse?terms=period">일자별 분석</a>
+        <a class="nav-link border-right-0  @if ( Request::get('terms') =="period" || Request::get('terms') =="date") active @endif" href="/p_analyse?terms=date">일자별 분석</a>
     </li>
     <li class="nav-item">
         <a class="nav-link border-right-0 @if ( (Request::get('terms') =="round" || Request::get('terms') =="roundbox") || (Request::get('terms') =="lates" && Request::get('pageType') =="late")) active @endif" href="/p_analyse?terms=round">회차별 분석</a>

@@ -53,10 +53,10 @@
 				</colgroup>
         <thead>
           <tr>
-					<th>수감번호</th>
-					<th>수감자</th>
+					<th>정지번호</th>
+					<th>닉네임</th>
 					<th>사유</th>
-					<th>수감일</th>
+					<th>정지날자</th>
 				</tr>
         </thead>
 				<tbody>

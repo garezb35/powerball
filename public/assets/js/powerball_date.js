@@ -103,7 +103,7 @@ function ajaxPattern(type,date,dateTo="",round="")
                 compileJson("#pattern-info","#head-info",pattern_header[type]);
                 compileJson("#pattern-date",".pattern-t",pattern[type]);
             }
-            $('#patternBox').find('.content').animate({scrollLeft:10000},1000);
+            $('#patternBox .content').animate({scrollLeft:10000},1000);
         }
     });
 }
@@ -163,5 +163,3 @@ function moreClick()
         })
     }
 }
-
-
