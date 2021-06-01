@@ -152,7 +152,7 @@
         <?php elseif($result["type"] == "customer"): ?>
         <li><a href="<?php echo e("board"); ?>?board_type=customer&board_category=notice" <?php if(Request::get("board_category") == "notice"): ?> class="on" <?php endif; ?>>공지사항</a></li>
         <li><a href="<?php echo e("board"); ?>?board_type=customer&board_category=event" <?php if(Request::get("board_category") == "event"): ?> class="on" <?php endif; ?>>이벤트</a></li>
-        <li><a href="#">영창</a></li>
+        <li><a href="<?php echo e(route("prison")); ?>?page_type=prison" <?php if(Request::get("page_type") == "prison"): ?> class="on" <?php endif; ?>>정지</a></li>
         <?php else: ?>
         <li><a href="<?php echo e("board"); ?>?board_type=none&board_category=humor" <?php if(Request::get("board_category") == "humor"): ?> class="on" <?php endif; ?>>유버</a></li>
         <li><a href="<?php echo e("board"); ?>?board_type=none&board_category=photo" <?php if(Request::get("board_category") == "photo"): ?> class="on" <?php endif; ?>>포토</a></li>

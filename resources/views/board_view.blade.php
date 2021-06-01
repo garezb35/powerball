@@ -148,7 +148,7 @@
         @elseif($result["type"] == "customer")
         <li><a href="{{"board"}}?board_type=customer&board_category=notice" @if(Request::get("board_category") == "notice") class="on" @endif>공지사항</a></li>
         <li><a href="{{"board"}}?board_type=customer&board_category=event" @if(Request::get("board_category") == "event") class="on" @endif>이벤트</a></li>
-        <li><a href="#">영창</a></li>
+        <li><a href="{{route("prison")}}?page_type=prison" @if(Request::get("page_type") == "prison") class="on" @endif>정지</a></li>
         @else
         <li><a href="{{"board"}}?board_type=none&board_category=humor" @if(Request::get("board_category") == "humor") class="on" @endif>유버</a></li>
         <li><a href="{{"board"}}?board_type=none&board_category=photo" @if(Request::get("board_category") == "photo") class="on" @endif>포토</a></li>

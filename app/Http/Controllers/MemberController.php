@@ -1680,4 +1680,15 @@ class MemberController extends SecondController
         PbBettingCtl::where("userId",$this->user->userId)->delete();
         echo json_encode(array("status"=>1,"msg"=>"탈퇴되었습니다."));
     }
+
+    public function prison(Request $request){
+      if(!$this->isLogged){
+          echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.history.back(1)</script>";
+          return;
+      }
+      return view('member/prison', [
+          "js" => "",
+          "css" => "board.css",
+      ]);
+    }
 }
