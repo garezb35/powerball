@@ -59,7 +59,7 @@
                 <div class="side left">
                     <div class="powerball_board">
                         <div id="result_board" class="result_board">
-                            <img src="/assets/images/pick/bulb.png" class=""/>
+                            <img src="/assets/images/pick/bulb.png" class="bulb-img"/>
                             <img src="/assets/images/pick/balls.png" class="stopped_balls"/>
                             <div id="div_machine_glass" class="full_size"></div>
                             <div id="lotteryBall"></div>

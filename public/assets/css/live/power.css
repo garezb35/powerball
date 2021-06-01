@@ -682,13 +682,13 @@
 .result_ball.yellow {
     width: 32px;
     height: 32px;
-    background: url(/assets/images/powerball/black.svg) no-repeat ;
-    color: #fff;
+    background: url(/assets/images/pick/orange.png) no-repeat ;
+    color: #000;
 }
 .result_ball.pb {
     width: 32px;
     height: 32px;
-    background: url(/assets/images/powerball/pb.svg);
+    background: url(/assets/images/powerball/black.svg);
     color: #000;
 }
 
@@ -795,7 +795,7 @@
 
 .ready-txt{
     margin: 7px;
-    color: #000;
+    color: #fff;
     font-size: 20px;
     text-shadow: 1px 1px 2px #181717, 0 0 1em white, 0 0 0.2em white;
 }
