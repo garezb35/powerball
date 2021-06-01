@@ -507,8 +507,8 @@ resultBox .bar.odd {
 .powerballBox td {
   font-size: 12px;
   color: #5F6164;
-  height: 40px;
-  padding: 0px;
+  height: 38px;
+  padding: 0px !important;
 }
 
 .trEven {
@@ -1020,8 +1020,8 @@ resultBox .bar.odd {
 }
 
 .sub_tab {
-    padding: 15px 0 0 20px;
-    height: 36px;
+  padding: 11px 0 0 9px;
+  height: 11px;
 }
 .sub_tab li {
     float: left;
@@ -1351,6 +1351,7 @@ resultBox .bar.odd {
 #pattern-sec  .nav-item:first-child .nav-link , #boardmenu-sec .nav-item:first-child .nav-link {
     border-left: #ddd 1px solid;
     border-top-left-radius: 5px;
+    margin-left: -1px;
 }
 #pattern-sec .nav-item.show .nav-link, #pattern-sec .nav-link.active, #boardmenu-sec .nav-item.show .nav-link, #boardmenu-sec .nav-link.active {
     border-bottom: none;
@@ -1359,16 +1360,15 @@ resultBox .bar.odd {
     border-left: #00b4b4 1px solid !important;
     font-weight: 700;
     background: none;
+    margin-top: -1px;
 }
 #boardmenu-sec .nav-link {
-    border-radius: 0px;
-    border-right: 1px solid #ddd;
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #00b4b4;
-    background: #f4f5f7fa;
-    padding-top: 14px;
-    padding-bottom: 14px;
-    font-size: 15px;
+  border-radius: 0px;
+  border-bottom: 1px solid #00b4b4;
+  background: #f4f5f7fa;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  font-size: 15px;
 }
 
 #pattern-sec .nav-link{
@@ -1425,6 +1425,6 @@ resultBox .bar.odd {
     font-weight: bold;
     padding-left: 2px ;
     padding-right: 2px ;
-    padding-top: 9px ;
-    padding-bottom: 9px ;
+    padding-top: 0px ;
+    padding-bottom: 0px ;
 }

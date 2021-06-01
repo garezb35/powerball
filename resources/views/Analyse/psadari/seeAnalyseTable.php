@@ -1,9 +1,9 @@
 <div class="collapse-div position-relative">
     <h5 class="text-center" style="font-size: 18px;">회차별 분석 데이터 <div class="half-label" style="width: 141px;"></div></h5>
     <div style="width: 95%;margin: auto">
-        <table  id="powerballLogBox" class="powerballBox table table-bordered mt-2">
+        <table  id="powerballLogBox" class="powerballBox table table-bordered mt-2 table-striped">
             <tbody class="see-t">
-                <tr class="thirdTitle">
+                <tr class="subTitle pheader">
                     <td class="p-3">회차</td>
                     <td class="p-3">시간</td>
                     <td class="p-3">시작</td>

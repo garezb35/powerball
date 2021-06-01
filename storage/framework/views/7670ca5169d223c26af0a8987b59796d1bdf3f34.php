@@ -72,7 +72,7 @@
         </tr>
         <tr>
             <td colspan="3" class="border-none p-0">
-                <table class="innerTable table">
+                <table class="innerTable table table-striped">
                     <tbody id="patternList">
 
                     </tbody>

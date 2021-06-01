@@ -1,7 +1,7 @@
 <div class="collapse-div position-relative">
     <h5 class="text-center" style="font-size: 18px;">회차별 분석 데이터 <div class="half-label" style="width: 141px;"></div></h5>
     <div style="width: 99%;margin: auto">
-        <table  id="powerballLogBox" class="powerballBox table table-bordered mt-2">
+        <table  id="powerballLogBox" class="powerballBox table table-bordered mt-2 table-striped">
             <colgroup>
                 <col width="9%" />
                 <col width="8%" />
