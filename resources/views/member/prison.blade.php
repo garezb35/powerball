@@ -10,7 +10,7 @@
 </div>
 <div class="prisonBox">
 		<div class="content tbl_head01 tbl_wrap">
-			<table class="table table-bordered">
+			<table class="table table-bordered mb-0">
 				<colgroup>
 					<col width="170">
 					<col>
