@@ -16,6 +16,7 @@ class PbAutoHistory extends Model
         'auto_kind',
         'auto_type',
         'is_win',
-        'bet_amount'
+        'bet_amount',
+        'reason'
     ];
 }

@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use App\Models\Pb_Result_Powerball;
 use App\Models\PbAutoSetting;
 use App\Models\PbBettingCtl;
+use App\Models\PbWinLose;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use DB;
@@ -1265,14 +1266,13 @@ class PowerballController extends SecondController
                 break;
         }
 
-        $auto_info = PbAutoSetting::where("userId",$userId )->first();
-        $auto_matches =PbAutoMatch::where("userId",$userId )->get()->toArray();
+        $auto_info = PbAutoSetting::with("winlose")->where("userId",$userId )->first();
+        $auto_matches = PbAutoMatch::where("userId",$userId )->get()->toArray();
         foreach($auto_matches as $autoes){
             if(empty($match[$autoes["auto_type"]]))
                 $match[$autoes["auto_type"]] = array();
             if(empty($match[$autoes["auto_type"]][$autoes["auto_kind"]]))
-                $match[$autoes["auto_type"]][$autoes["auto_kind"]] = array();
-                $match[$autoes["auto_type"]][$autoes["auto_kind"]][$autoes["auto_index"]] = $autoes;
+                $match[$autoes["auto_type"]][$autoes["auto_kind"]] = $autoes;
         }
         $remain = array(0,0);
         $autos = -1;
@@ -1292,7 +1292,7 @@ class PowerballController extends SecondController
         if($autos > 0 && $autos ==2){
             $current = Pb_Result_Powerball::orderBy("day_round","DESC")->first()["day_round"]+1;
         }
-        $history=PbAutoHistory::where("userId",$userId)->orderBy("id","DESC")->orderBy("created_at","DESC")->limit(30)->get()->toArray();
+        $history=PbAutoHistory::where("userId",$userId)->get()->toArray();
         return view("pick.simulate", [
                                             "css"=>"simulator.css",
                                             "js"=>"simulator.js",
@@ -1303,7 +1303,8 @@ class PowerballController extends SecondController
                                             "remain"=>$remain,
                                             "autos"=>$autos,
                                             "current"=>$current,
-                                            "history"=>$history
+                                            "history"=>$history,
+                                            "nickname"=>$this->user->nickname
                                             ]);
     }
 
@@ -1349,46 +1350,64 @@ class PowerballController extends SecondController
 
         foreach($p1 as $key=>$val){
             $round_t = "round1_".($key + 1);
-            PbAutoMatch::updateorCreate([
-                            "auto_type"=>1,
-                            "auto_kind"=>$key+1,
-                            "userId"=>$userId
-                        ],[
-                            "auto_pattern"=>$p1[$key],
-                            "money"=>$a1[$key],
-                            "auto_cate"=>$request->$round_t
-                        ]);
+            if(!empty($a1[$key]) && !empty($p1[$key])){
+              PbAutoMatch::updateorCreate([
+                              "auto_type"=>1,
+                              "auto_kind"=>$key+1,
+                              "userId"=>$userId,
+                          ],[
+                              "auto_pattern"=>trim(str_replace("<br>","",$p1[$key])),
+                              "money"=>trim(str_replace("<br>","",$a1[$key])),
+                              "auto_cate"=>$request->$round_t,
+                              "game_kind"=>$key+1
+                          ]);
+            }
         }
 
         foreach($second_pat as $key=>$value){
+          if(!empty($request->$value)){
             PbAutoMatch::updateorCreate([
                             "auto_type"=>2,
                             "auto_kind"=>$key+1,
-                            "userId"=>$userId
+                            "userId"=>$userId,
                         ],[
-                            "auto_pattern"=>$request->$value,
+                            "auto_pattern"=>trim(str_replace("<br>","",$request->$value)),
+                            "game_kind"=>explode("_",$value)[1]
                         ]);
+          }
         }
         echo json_encode(array("status"=>1));
     }
 
     public function setAutoStart(Request $request){
-//        $check = PbAutoSetting::where("userId",Auth::user()->userId)->where("state",1)->first();
-//        if(!empty($check)){
-//            echo 2;
-//            return;
-//        }
-
         $type = $request->type;
         $code = $request->code;
-
         if($code == -1)
             $state = 1;
         else
             $state = 0;
-        PbAutoSetting::where("userid",$this->user->userId)->update([
+        PbAutoSetting::where("userId",$this->user->userId)->update([
             "state"=>$state,
-            "betting_type"=>$type
+            "betting_type"=>$type,
+            "current_round"=>0,
+            "bet_amount"=>0,
+            "user_amount"=>DB::raw("start_amount"),
+            "w1"=>0,
+            "w2"=>0,
+            "w3"=>0,
+            "w4"=>0,
+            "rest1"=>0,
+            "rest2"=>0,
+            "rest3"=>0,
+            "rest4"=>0
+        ]);
+        PbAutoMatch::where("userId",$this->user->userId)->update([
+          "auto_step"=>0,
+          "auto_train"=>0,
+          "past_step"=>"",
+          "past_cruiser"=>"",
+          "past_pattern"=>"",
+          "amount_step"=>0
         ]);
         echo 1;
     }
@@ -1944,5 +1963,75 @@ class PowerballController extends SecondController
 
     public function setRound(Request $request){
         echo Route::input("name");
+    }
+
+    public function setGameSettings(Request $request){
+      $power_request = $request->all();
+      $profit = array();
+      $profit["win_limit"] = trim($power_request["win_limit"]);
+      $profit["lost_limit"] = trim($power_request["lost_limit"]);
+      if(!empty($profit))
+        PbAutoSetting::where("userId",$this->user->userId)->update($profit);
+
+      foreach($power_request["wtimes"] as $key=>$v){
+        PbWinLose::updateorCreate(
+            ["userId"=>$this->user->userId,
+             "win_type"=>1,
+             "game_type"=>$key+1],
+             [
+               "times"=>$v,
+               "rest"=>$power_request["wrtimes"][$key]
+             ]
+        );
+      }
+
+      foreach($power_request["ltimes"] as $key=>$v){
+        PbWinLose::updateorCreate(
+            ["userId"=>$this->user->userId,
+             "win_type"=>2,
+             "game_type"=>$key+1],
+             [
+               "times"=>$v,
+               "rest"=>$power_request["lrtimes"][$key]
+             ]
+        );
+      }
+
+      echo json_encode(array("status"=>1));
+
+    }
+
+    public function setIndividualGame(Request $request){
+      $id = $request->id;
+      if($id <= 0)
+      {
+        echo json_encode(array("status"=>0,"msg"=>"잘못된 파라메터입니다."));
+        return;
+      }
+      else{
+          $game = PbAutoMatch::find($id);
+          if(empty($game) || $game->userId != $this->user->userId)
+          {
+            echo json_encode(array("status"=>0,"msg"=>"비여있는 게임입니다."));
+            return;
+          }
+          if($request->type == "rest"){
+            $game->state = ($game->state + 1) % 2;
+            $game->save();
+            echo json_encode(array("status"=>1,"type"=>$game->state));
+          }
+          else{
+            $game->auto_step = 0;
+            $game->auto_train = 0;
+            $game->past_step = "";
+            $game->past_cruiser = "";
+            $game->past_pattern = "";
+            $game->amount_step  = 0;
+            $game->save();
+            echo json_encode(array("status"=>1));
+          }
+          return;
+      }
+      echo json_encode(array("status"=>0,"msg"=>"잘못된 요청입니다."));
     }
 }

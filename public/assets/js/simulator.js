@@ -16,6 +16,13 @@ result["nb_uo"] = new Array();
 var loading = false;
 var simulator_in = ["pb_oe","pb_uo","nb_oe","nb_uo"]
 var simulator_in_index= 0;
+var presult = new Array()
+presult[0] = "";
+presult[1] = "";
+presult[2] = "";
+presult[3] = "";
+var rr  = new Array();
+var clicked = false;
 $(".pow-element").click(function() {
     initOdd();
     if ($(this).hasClass("pow-element-blue")) {
@@ -48,7 +55,10 @@ function openCity(evt,patt_index) {
 }
 
 function getResultFromDatabase(){
-  if(simulator_in_index == 4) return false;
+  if(simulator_in_index == 4) {
+    processResult()
+    return false;
+  }
   var typeo = simulator_in[simulator_in_index];
   if(round > 0){
     $.ajax({
@@ -57,11 +67,12 @@ function getResultFromDatabase(){
         url:'/api/get_more/power_data-simulator',
         data:{round:round,type:typeo},
         success:function(data,textStatus){
-          result[typess[typeo]] = data.result.list
           if(data.status ==1){
+              var tem = "";
               result[typess[typeo]] = data.result;
               compileJson("#pattern-date",".pattern-tr",result[typess[typeo]],2);
               $('.pattern-t').animate({scrollLeft:10000},1000);
+              rr[simulator_in_index] = data.result.list
           }
         }
     }).done(function(){
@@ -76,7 +87,11 @@ function getResultFromDatabase(){
 }
 
 function hideType(type,obj){
-    $(".powerball-kind-all th").removeClass("text-danger")
+    $(".auto-content").css("height","unset")
+    $(".auto-content").css("overflow","unset")
+    $(".category-auto").removeClass("text-danger")
+    $(".category-auto").addClass("text-white")
+    $(obj).removeClass("text-white")
     $(obj).addClass("text-danger")
     if(type == 1){
         $(".mulebanga").show();
@@ -129,8 +144,11 @@ $(document).ready(function(){
       $(this).parent().find("textarea").val($(this).html());
   });
     if(started > 0)
-        checkTimer();
-    api_token = $("#part2").find("#api_token").val();
+    {
+      checkTimer();
+    }
+
+    api_token = $("#api_token").val();
     $("#btn-money-keep").click(function(){
         $(".first-martin").each(function(index,value){
             if($(value).val().trim() == "" || $(value).val().trim() <=0 ){
@@ -190,6 +208,8 @@ $(document).ready(function(){
         processAutoStart(code,type);
     });
     getResultFromDatabase();
+
+    // setCaret();
 })
 
 
@@ -203,6 +223,8 @@ function processAutoStart(code,type){
         success:function(data,textStatus){
             location.reload();
         }
+    }).fail(function(xhr){
+      console.log(xhr)
     })
 }
 
@@ -276,18 +298,7 @@ function changeRow(evt,rows){
     }
 }
 
-function startAction(bet_type){
-    if(bet_type ==1){
-        setInterval(function(){
-            $.ajax({
-                type:"get",
-                url:'/api/processSimulatorBet',
-                success: function (data) {
-                }
-            });
-        },100000);
-    }
-}
+
 
 function savePatt(tt=type,alert=true,callback){
     if(check_save){
@@ -334,7 +345,7 @@ function initOdd(){
 function checkTimer(){
     var full = -1;
     if(started == 1){
-        full = 10;
+        full = 20;
     }
     else
         full = 300;
@@ -369,8 +380,215 @@ function save(){
         else
             alert(data.msg);
       }
+  })
+}
+
+function saveGameSettings(){
+  var myform = document.getElementById("gameForm");
+  var fd = new FormData(myform);
+  $.ajax({
+      url:'/api/setGameSettings',
+      data: fd,
+      cache: false,
+      processData: false,
+      contentType: false,
+      type: 'POST',
+      dataType:"json",
+      success: function(data){
+        console.log(data)
+        if(data.status == "1")
+        {
+            alert("성공적으로 저장되였습니다.");
+        }
+        else
+            alert(data.msg);
+      }
   }).fail(function(xhr){
-    debugger;
     console.log(xhr)
   })
+}
+
+
+
+
+function setCaret(el,line=0,start,end,color = "blue") {
+    var range = document.createRange()
+    var sel = window.getSelection()
+    if(el.childNodes.length > 0){
+      if(typeof el.childNodes[line].firstChild == "undefined" ||  el.childNodes[line].firstChild == null)
+        var temp = el.childNodes[line];
+      else {
+        var temp = el.childNodes[line].firstChild;
+      }
+      range.setStart(temp, start)
+      range.setEnd(temp, end)
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      document.execCommand ('backColor', false, color);
+      document.execCommand ('foreColor', false, "#FFF");
+      var scrollTop = line > 0 ? line-1 : line
+      $(el).parent().scrollTop(scrollTop * 19)
+      sel.removeAllRanges();
+    }
+}
+
+function getdataFromLine(el,line){
+  temp = "";
+  var outTer = el.outerText.split("\n");
+  return outTer[line];
+}
+
+function processResult(){
+  rr.forEach(function(val,key) {
+      var tye = key;
+      var temp = "";
+      val.forEach(function(val1,key1){
+        if(val1.type == "odd" || val1.type == "under"){
+          for(var i = 0 ;i < val1.list.length ; i++){
+            temp =  temp + "1"
+          }
+        }
+        else{
+          for(var i= 0 ;i < val1.list.length; i++){
+            temp =  temp + "0"
+          }
+        }
+      })
+      if(temp != ""){
+        presult[key] = temp.replaceAll("2","0")
+      }
+  });
+  var p1 = document.getElementsByClassName("p1");
+  $('.p1').each(function(i, obj) {
+      var html_dom = $(obj)[0];
+      if(typeof patts1[i+1] !="undefined" && patts1[i+1].money !="" && patts1[i+1].pattern !=""){
+        var mny = getdataFromLine($(".amount1")[0],patts1[i+1].amount_step);
+        if(mny == null || isNaN(mny)){
+
+        }
+        else{
+          var step = parseInt(patts1[i+1].step);
+          setCaret(html_dom,0,step,step+1)
+          setCaret($(".amount1")[i],parseInt(patts1[i+1].amount_step),0,mny.length)
+        }
+      }
+  }).promise().done( function(){
+
+      $('.p2').each(function(i, obj) {
+          var html_dom = $(obj)[0];
+          if(typeof patts2[i+1] !="undefined" &&  patts2[i+1].pattern.trim() !=""){
+            var pattern =  new Array()
+            var compare_pattern = new Array()
+            var pick = new Array()
+            var pattern_split  = $(html_dom)[0].innerHTML.trim().split("</div>");
+            pattern_split.forEach(function(val,key){
+              if(key == 0){
+                var div_split = val.split("<div>")
+                if(div_split.length == 2)
+                  {
+                    if(div_split[0].trim() !=""){
+                      pattern.push(div_split[0])
+                    }
+                    if(div_split[1].trim() !=""){
+                      pattern.push(div_split[1])
+                    }
+                  }
+                else
+                  pattern.push(div_split[0])
+              }
+              else{
+                var divv_split = val.split("<div>")
+                if(typeof divv_split[1] != "undefined")
+                  pattern.push(divv_split[1])
+              }
+            })
+
+            if(pattern.length > 0 && pattern[0] != ""){
+              var step = parseInt(patts2[i+1].step);
+              var cruiser = parseInt(patts2[i+1].cruiser);
+              if(typeof pattern[step].split("/")[cruiser] != "undefined")
+              {
+                var cruiser_arr = pattern[step].split("/")
+                var current_part = cruiser_arr[cruiser]
+                var header_split = current_part.split("단-")
+                if(header_split.length == 2)
+                  header_split = header_split[1];
+                else
+                  header_split = header_split[0];
+                dash_split = header_split.split(":")
+                dash_split.splice(0,1)
+                dash_split.forEach(function(dash_val,dash_key){
+                  var com_pattern = dash_val.split("-")
+                  compare_pattern.push(dash_val)
+                })
+                if(compare_pattern.length > 0  && presult[i % 4].length > 0){
+                  compare_pattern.sort(function(a, b){
+                    return b.length - a.length;
+                  });
+                  compare_pattern.forEach(function(compare_val,compare_key){
+                    var splitbyDash = compare_val.split("-")
+                    if(splitbyDash[0].replaceAll("2","0") == presult[i % 4].substring(presult[i % 4].length - splitbyDash[0].length)){
+                        var offer_index =  0;
+                        for(var cruiser_index = 0; cruiser_index < cruiser ; cruiser++){
+                          offer_index += cruiser_arr[cruiser_index].length;
+                        }
+                        offer_index +=cruiser_arr[cruiser].indexOf(compare_val)
+                        setCaret(html_dom,step,offer_index,offer_index+compare_val.length)
+                    }
+                  })
+                }
+              }
+            }
+          }
+      }).promise().done( function(){
+        $(".autopattern").css("display","none")
+      });
+  });
+}
+
+function doRest(id,obj){
+  if(!clicked)
+    $.ajax({
+        type:'POST',
+        dataType:'json',
+        url:'/api/setIndividualGame',
+        data:{id:id,api_token:api_token,type:"rest"},
+        beforeSend:function(){
+          clicked = true;
+        },
+        success:function(data,textStatus){
+          if(data.status ==1){
+              if(data.type == 0) $(obj).text("시작")
+              else $(obj).text("휴식")
+          }
+          else {
+            alert(data.msg)
+          }
+        }
+    }).done(function(){
+      clicked = false;
+    })
+}
+function doInit(id){
+  if(!clicked)
+    $.ajax({
+        type:'POST',
+        dataType:'json',
+        url:'/api/setIndividualGame',
+        data:{id:id,api_token:api_token,type:"init"},
+        beforeSend:function(){
+          clicked = true;
+        },
+        success:function(data,textStatus){
+          if(data.status ==1){
+              alert("초기화되였습니다.")
+          }
+          else {
+            alert(data.msg)
+          }
+        }
+    }).done(function(){
+      clicked = false;
+    })
 }

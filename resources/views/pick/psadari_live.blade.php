@@ -15,25 +15,6 @@
 <div class="gmContent" data-type="POWERLADDER" data-round="{{$last + 1}}"  data-game="nlotto_power"></div>
 <div class="lottery_wrap powerball dark">
     <div class="header_wrap">
-        <div class="header flex_row">
-            <div class="game_type" style="position:relative;">
-                <img class="img_title_dark" src="/assets/images/pick/logo-sadari.png" style="width:190px;position:absolute;top:0px;left:0px;">
-            </div>
-            <div class="today_star">
-                <p>
-                    동행복권의 파워볼을 기준으로<br>
-                    5분 단위로 추첨하며 288회차까지 진행
-                </p>
-            </div>
-            <div class="func_btns">
-                <ul class="flex_row">
-                    <li id="btn_share" class="btn btn_share" title="퍼가기"><i class="fa fa-share-alt"></i></li>
-                    <li id="btn_tip" class="btn btn_tip" title="게임안내"><i class="fa fa-question"></i></li>
-                    <li id="btn_sound" class="btn btn_sound on" title="소리 켜기/끄기"><i class="fa fa-volume-up"></i></li>
-                </ul>
-
-            </div>
-        </div>
         <div id="caution-area" class="inprogress_wrap">
             <div id="timer_gauge" class="fill_bar" ></div>
             <div class="progress_text">
@@ -90,6 +71,13 @@
         <div class="side right">
             <div class="tit_wrap flex_row">
                 <h2 class="section_tit">회차별 결과</h2>
+                <div class="func_btns">
+                    <ul class="flex_row">
+                        <li id="btn_share" class="btn btn_share" title="퍼가기"><i class="fa fa-share-alt"></i></li>
+                        <li id="btn_tip" class="btn btn_tip" title="게임안내"><i class="fa fa-question"></i></li>
+                        <li id="btn_sound" class="btn btn_sound on" title="소리 켜기/끄기"><i class="fa fa-volume-up"></i></li>
+                    </ul>
+                </div>
             </div>
             <ul class="result_history">
                 @if(!empty($psadari_result))

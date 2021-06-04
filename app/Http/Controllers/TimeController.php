@@ -41,6 +41,6 @@ class TimeController extends Controller
     }
     public static function getTimerInPast(){
         $second = (int)date("s");
-        return array(10-$second % 10,0);
+        return array(20-$second % 20,0);
     }
 }

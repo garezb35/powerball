@@ -574,8 +574,8 @@ resultBox .bar.odd {
 .patternBox .innerTable td.patternRound {
     color: #000;
     width: 40px;
-    height: 23px !important;
-    line-height: 23px;
+    height: 15px !important;
+    line-height: 15px;
     text-align: center;
     border-top: 1px solid #e9ecef !important;
 }

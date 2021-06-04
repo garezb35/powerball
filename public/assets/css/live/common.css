@@ -68,7 +68,8 @@ body{
 }
 
 .lottery_wrap .header_wrap {
-    height: 131px
+  height: 40px;
+  padding-top: 25px;
 }
 
 .lottery_wrap .header {
@@ -129,22 +130,22 @@ body{
     margin-right: 5px
 }
 
-.lottery_wrap .header .func_btns>p {
+.func_btns>p {
     text-align: right;
     color: #3f4e8e;
     font-size: 11px
 }
 
-.lottery_wrap .header .func_btns>ul {
+.func_btns>ul {
     justify-content: flex-end;
-    margin-bottom: 25px
+    margin: 0px
 }
 
-.lottery_wrap .header .func_btns>ul>li:not(:last-child) {
+.func_btns>ul>li:not(:last-child) {
     margin-right: 5px
 }
 
-.lottery_wrap .header .func_btns>ul>li {
+.func_btns>ul>li {
     list-style: none;
     width: 30px;
     height: 30px;
@@ -155,33 +156,33 @@ body{
     color: #fff;
 }
 
-.lottery_wrap .header .func_btns .btn_mode,
-.lottery_wrap.dark .header .func_btns .btn_mode {
+.func_btns .btn_mode,
+.func_btns .btn_mode {
     background-position: 0 0
 }
 
-.lottery_wrap .header .func_btns .btn_share,
-.lottery_wrap.dark .header .func_btns .btn_share {
+.func_btns .btn_share,
+.func_btns .btn_share {
     background-position: -35px 0
 }
 
-.lottery_wrap .header .func_btns .btn_tip,
-.lottery_wrap.dark .header .func_btns .btn_tip {
+.func_btns .btn_tip,
+.func_btns .btn_tip {
     background-position: -70px 0
 }
 
-.lottery_wrap .header .func_btns .btn_sound.on,
-.lottery_wrap.dark .header .func_btns .btn_sound.on {
+ .func_btns .btn_sound.on,
+ .func_btns .btn_sound.on {
     background-position: -105px 0
 }
 
-.lottery_wrap .header .func_btns .btn_sound,
-.lottery_wrap.dark .header .func_btns .btn_sound {
+.func_btns .btn_sound,
+.func_btns .btn_sound {
     background-position: -105px -35px
 }
 
-.lottery_wrap .header .func_btns .btn_tip.on,
-.lottery_wrap .header .func_btns .btn_share.on {
+.func_btns .btn_tip.on,
+.func_btns .btn_share.on {
     background-position: 0 -35px;
     z-index: 3
 }

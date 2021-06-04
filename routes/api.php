@@ -22,6 +22,7 @@ Route::middleware('auth:api')->group(function(){
     Route::post("/setAutoConfig",[App\Http\Controllers\PowerballController::class,'setAutoConfig']);
     Route::post("/setAutoMatch",[App\Http\Controllers\PowerballController::class,'setAutoMatch']);
     Route::post("/setAutoStart",[App\Http\Controllers\PowerballController::class,'setAutoStart']);
+    Route::post("/setGameSettings",[App\Http\Controllers\PowerballController::class,'setGameSettings'])->name("setGameSettings");
     Route::post("/buyItem",[App\Http\Controllers\MarketController::class,'buyItem']);
     Route::post("/useItem",[App\Http\Controllers\MarketController::class,'useItem']);
     Route::post("/checkNickName",[App\Http\Controllers\MemberController::class,'checkNickName']);
@@ -54,6 +55,7 @@ Route::middleware('auth:api')->group(function(){
     Route::post("/setSecondPassword",[App\Http\Controllers\MemberController::class,'setSecondPassword']);
     Route::post("/setoutIP",[App\Http\Controllers\MemberController::class,'setoutIP']);
     Route::post("/exitMember",[App\Http\Controllers\MemberController::class,'exitMember'])->name("exitMember");
+    Route::post("/setIndividualGame",[App\Http\Controllers\PowerballController::class,'setIndividualGame'])->name("setIndividualGame");
 });
 
 Route::post("/get_more/powerball",[App\Http\Controllers\PowerballController::class,'resultList']);

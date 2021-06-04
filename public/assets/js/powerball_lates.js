@@ -23,7 +23,8 @@ $(document).ready(function(){
 
     connect();
     socket.on('result',function(data){
-        console.log(data)
+        $(".see-t").find("tr").removeClass("current")
+        $(".see-t tr:nth-child(2)").after(getPowerball(data.body))
     });
     $( "#roundCnt" ).selectmenu(
         {
@@ -184,10 +185,60 @@ function connect()
         if(socket == null)
         {
             socket = io.connect('http://127.0.0.1:3000/result',socketOption);
-            socket.emit('presult',"success");
         }
     }
     catch(e){
 
     }
+}
+
+function getPowerball(data){
+  var power_under = data.powerballUnderOverMsg == "언더" ? "under":"over";
+  var number_under = data.numberUnderOverMsg == "언더" ? "under":"over";
+  var numPer = "";
+  if(data.numberPeriodMsg == "소")
+    numPer = "소 (15~64)";
+  if(data.numberPeriodMsg == "중")
+      numPer = "중 (65~80)	";
+  if(data.numberPeriodMsg == "대")
+      numPer = "대 (81~130)";
+  var pb_term="",nb_term ="";
+  if(data.pb_term == "A")
+    pb_term = "A (0~2)";
+  if(data.pb_term == "B")
+    pb_term = "B (3~4)";
+  if(data.pb_term == "C")
+    pb_term = "C (5~6)";
+  if(data.pb_term == "D")
+    pb_term = "D (7~9)";
+
+    if(data.nb_term == "A")
+      nb_term = "A (15~35)";
+    if(data.nb_term == "B")
+      nb_term = "B (36~49)";
+    if(data.nb_term == "C")
+      nb_term = "C (50~57)";
+    if(data.nb_term == "D")
+      nb_term = "D (58~65)";
+    if(data.nb_term == "E")
+      nb_term = "E (66~78)";
+    if(data.nb_term == "F")
+      nb_term = "F (15~35)";
+  return '<tr class="current">\
+        <td height="40" align="center">\
+            <span class="numberText">'+data.round+'회</span><br>\
+            ( <span class="numberText">'+data.day_round+'회</span> )\
+        </td>\
+        <td align="center" class="numberText">'+data.time+'</td>\
+        <td align="center" class="numberText"><div class="sp-ball_bg">'+data.powerball+'</div></td>\
+        <td align="center" class="numberText">'+pb_term+'</td>\
+        <td align="center"> <div class="sp-'+data.powerballOddEven+'">'+data.powerballOddEvenMsg+'</div></td>\
+        <td align="center"><div class="sp-'+power_under+'"></div></td>\
+        <td align="center" class="numberText">'+data.balls+'</td>\
+        <td align="center" class="numberText">'+data.numberSum+'</td>\
+        <td align="center" class="numberText">'+nb_term+'</td>\
+        <td align="center" class="numberText">'+numPer+'</td>\
+        <td align="center"><div class="sp-'+data.numberOddEven+'">'+data.numberOddEvenMsg+'</div> </td>\
+        <td align="center"><div class="sp-'+number_under+' "></div></td>\
+    </tr>';
 }

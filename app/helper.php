@@ -316,4 +316,44 @@ function randomItemMessage(){
                 "꿈과 현실의 차이를 두려워하지 말아라.");
 }
 
+function strip_tags_content($text) {
+
+    return preg_replace('@<(\w+)\b.*?>.*?</\1>@si', '', $text);
+
+}
+
+function sort_custrom($a,$b){
+    return strlen($b)-strlen($a);
+}
+
+function getPowerHeader(){
+    return array(
+      "pb_oe1"=>"파워볼 홀",
+      "pb_oe0"=>"파워볼 짝",
+      "pb_uo1"=>"파워볼 언",
+      "pb_uo0"=>"파워볼 오",
+      "nb_oe1"=>"일반볼 홀",
+      "nb_oe0"=>"일반볼 짝",
+      "nb_uo1"=>"일반볼 언",
+      "nb_uo0"=>"일반볼 오"
+    );
+}
+function getPowerHeaderBet(){
+    return array(
+      "11"=>"파워볼 홀",
+      "10"=>"파워볼 짝",
+      "21"=>"파워볼 언",
+      "20"=>"파워볼 오",
+      "31"=>"일반볼 홀",
+      "30"=>"일반볼 짝",
+      "41"=>"일반볼 언",
+      "40"=>"일반볼 오"
+    );
+}
+
+function getPowerballBetSim($auto_type,$auto_kind,$pick,$win){
+  $win_alias = $win == 1 ? "(승)" : "(패)";
+  $game_alias = $auto_type  == 1 ? "물레방아":"패턴배팅";
+  return "당첨결과 : ".$game_alias." ".getPowerHeaderBet()[$auto_kind.$pick]." ".$win_alias;
+}
 ?>

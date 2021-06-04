@@ -25,8 +25,7 @@ presult.on("connection",(client) => {
 
     })
     client.on("receive",(data,callback) => {
-        console.log(data)
-        client.emit("result",data);
+        presult.emit("result",data);
     })
 });
 
@@ -57,9 +56,7 @@ public.on("connection",(client) => {
     })
     client.on("receive",(data,callback) =>{
         if(data.body.cmd == "powerballResult"){
-            setTimeout(function(){
-                presult.emit("receive",data),1000
-            })
+            presult.emit("receive",data)
         }
         else{
             client.to(data.body.roomIdx).emit("receive",data);
