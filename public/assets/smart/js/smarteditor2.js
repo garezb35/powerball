@@ -15083,7 +15083,7 @@ nhn.husky.LazyLoader = jindo.$Class({
 	//		2 : loading ended
 	aLoadingInfo : null,
 
-	// aToDo : [{aMsgs: ["EXECCOMMAND"], sURL: "http://127.0.0.1/html_snippet.txt", elTarget: elPlaceHolder}, ...]
+	// aToDo : [{aMsgs: ["EXECCOMMAND"], sURL: "http://203.109.14.130/html_snippet.txt", elTarget: elPlaceHolder}, ...]
 	$init : function(aToDo){
 		this.htMsgInfo = {};
 		this.aLoadingInfo = [];
