@@ -600,7 +600,11 @@ $bet_amouont = $auto_info["bet_amount"] ?? 0;
           @foreach($history as $h)
             @php
             $parse  = get_object_vars(json_decode($h["reason"]));
-            $win_class =  $parse["win_type"] ?? "";
+            if(empty($parse["win_type"]))
+              $win_class = "";
+            else {
+              $win_class =  $parse["win_type"] ?? "";
+            }
             @endphp
           <li class="{{$parse["type"]}} win{{$win_class}}">
               @if($parse["type"] == "current_result")
