@@ -157,7 +157,7 @@ body, input, textarea, select, table, button {
 }
 #topArea .logo a.none{
     position: absolute;
-    top: -12px;
+    top: 10px;
     left: 19px;
 }
 
@@ -1469,5 +1469,48 @@ td.simu-head{
   background-color: #e0f6f6 !important;
   border: 2px solid #00b4b4;
   -webkit-animation: blink .6s step-end 1s 6 forwards;
-  animation: blink .6s step-end 1s 6 forwards; 
+  animation: blink .6s step-end 1s 6 forwards;
+}
+.pickView {
+    position: absolute;
+    right: 7px;
+    width: 81px;
+    height: 20px !important;
+    line-height: 20px;
+    z-index: 99;
+    top: 17px
+}
+
+.pickView a {
+    color: #fff;
+    display: block;
+    background-color: #00b4b4;
+    color: #fff;
+    text-align: center;
+    font-size: 12px;
+    text-decoration: none;
+    border-radius: 3px
+}
+
+#ladderResultBox{
+  position: relative;
+  min-height: 44px
+}
+
+.pickBtn{
+  position: absolute;
+  left: 7px;
+  width: 51px;
+  height: 20px !important;
+  line-height: 20px;
+  z-index: 99;
+  top: 12px;
+}
+
+.pick-btns{
+  display: block;
+  border-radius: 5px;
+  background: #00b4b4;
+  color: #fff;
+  text-align: center
 }

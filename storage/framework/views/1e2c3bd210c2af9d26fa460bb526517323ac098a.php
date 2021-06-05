@@ -60,7 +60,7 @@
         </div>
 
         <div class="listBox tbl_head01 tbl_wrap">
-            <table class="table table-bordered">
+            <table class="table table-bordered" style="width:calc(100% - 1px)">
                 <colgroup>
                     <col width="50">
                     <col width="50">

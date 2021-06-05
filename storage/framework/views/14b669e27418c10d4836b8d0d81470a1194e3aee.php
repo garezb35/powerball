@@ -15,12 +15,6 @@
 <div class="gmContent" data-type="POWERLADDER" data-round="<?php echo e($last + 1); ?>"  data-game="nlotto_power"></div>
 <div class="lottery_wrap powerball dark">
     <div class="header_wrap">
-        <div id="caution-area" class="inprogress_wrap">
-            <div id="timer_gauge" class="fill_bar" ></div>
-            <div class="progress_text">
-                <span id="countdown_clock"></span>
-            </div>
-        </div>
         <div id="ly_game_tip" class="ly_game_tip" style="display: none">
             <h1 class="tit">몬스터 파워사다리 게임 설명</h1>
             <p>- 동행복권의 파워볼의 첫번째 숫자를 기준으로 진행됩니다.</p>
@@ -31,13 +25,19 @@
         <div id="ly_share" class="ly_share" style="display:none;">
             <h1 class="tit">몬스터 파워사다리 중계화면 퍼가기</h1>
             <div class="source">
-                <textarea>&lt;iframe src="http://<?php echo e(Request::getHost()); ?>/pick/powerball/live" width="830" height="641" scrolling="no" frameborder="0"&gt;&lt;/iframe&gt;</textarea>
+                <textarea>&lt;iframe src="<?php echo e(Request::getHost()); ?>/pick/powerball/live" width="830" height="641" scrolling="no" frameborder="0"&gt;&lt;/iframe&gt;</textarea>
             </div>
             <p>위의 HTML의 코드를 복사하여 원하시는 페이지에 아이프레임으로 추가하시면 파워볼 게임 영역만 중계화면으로 이용 가능합니다.</p>
         </div>
     </div>
     <div class="contents">
         <div class="side left">
+          <div id="caution-area" class="inprogress_wrap">
+              <div id="timer_gauge" class="fill_bar" ></div>
+              <div class="progress_text">
+                  <span id="countdown_clock"></span>
+              </div>
+          </div>
             <div class="powerball_board">
                 <div class="playBox">
                     <div id="result_board" class="result_board relativeBox">
@@ -60,7 +60,7 @@
                         <div class="lineBox"></div>
                     </div>
                 </div>
-                <a href="/" target="_top" style="color:wheat;margin-top:17px;display:block;margin-left: 61px;">몬스터파워볼주소 : http://<?php echo e(Request::root()); ?></a> 
+                <a href="/" target="_top" style="color:wheat;margin-top:17px;display:block;margin-left: 87px;">몬스터파워볼주소 : <?php echo e(Request::root()); ?></a>
             </div>
         </div>
         <div class="side right">

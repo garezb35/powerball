@@ -15,12 +15,6 @@
 <div class="gmContent" data-type="POWERLADDER" data-round="{{$last + 1}}"  data-game="nlotto_power"></div>
 <div class="lottery_wrap powerball dark">
     <div class="header_wrap">
-        <div id="caution-area" class="inprogress_wrap">
-            <div id="timer_gauge" class="fill_bar" ></div>
-            <div class="progress_text">
-                <span id="countdown_clock"></span>
-            </div>
-        </div>
         <div id="ly_game_tip" class="ly_game_tip" style="display: none">
             <h1 class="tit">몬스터 파워사다리 게임 설명</h1>
             <p>- 동행복권의 파워볼의 첫번째 숫자를 기준으로 진행됩니다.</p>
@@ -38,6 +32,12 @@
     </div>
     <div class="contents">
         <div class="side left">
+          <div id="caution-area" class="inprogress_wrap">
+              <div id="timer_gauge" class="fill_bar" ></div>
+              <div class="progress_text">
+                  <span id="countdown_clock"></span>
+              </div>
+          </div>
             <div class="powerball_board">
                 <div class="playBox">
                     <div id="result_board" class="result_board relativeBox">
@@ -60,7 +60,7 @@
                         <div class="lineBox"></div>
                     </div>
                 </div>
-                <a href="/" target="_top" style="color:wheat;margin-top:17px;display:block;margin-left: 61px;">몬스터파워볼주소 : http://{{Request::root()}}</a>
+                <a href="/" target="_top" style="color:wheat;margin-top:17px;display:block;margin-left: 87px;">몬스터파워볼주소 : {{Request::root()}}</a>
             </div>
         </div>
         <div class="side right">

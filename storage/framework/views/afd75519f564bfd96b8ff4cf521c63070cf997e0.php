@@ -23,7 +23,7 @@
     <div id="wrap">
         <div id="topArea">
             <div class="logo">
-                <a href="/" class="none"><img src="<?php echo e(Request::root()); ?>/assets/images/logo.svg" width="144" ></a>
+                <a href="/" class="none"><img src="<?php echo e(Request::root()); ?>/assets/images/logo.png" width="144" ></a>
                 <div class="top-header-right">
                     <a href="/member?type=charge" target="mainFrame">
                         <div class="d-inline-flex align-middle" style="transform:rotate(-40deg)"><img src="/assets/images/powerball/dangun.svg" width="60" height="60"></div>

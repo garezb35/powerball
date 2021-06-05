@@ -299,3 +299,27 @@ function ajaxBestPickster()
         $( "#bestPicksterList" ).slideUp(300);
     }
 }
+
+function toggleMiniView(){
+  if($(".pick-screeen").hasClass("d-none")){
+    $(".pick-screeen").removeClass("d-none")
+    $(".miniView").text("미니뷰 닫기")
+  }
+  else {
+    $(".pick-screeen").addClass("d-none")
+    $(".miniView").text("미니뷰 열기")
+  }
+  heightResize()
+}
+
+function togglePickView(){
+  if($(".pick-part").hasClass("d-none")){
+    $(".pick-part").removeClass("d-none")
+    $(".pick-btns").text("픽 닫기")
+  }
+  else {
+    $(".pick-part").addClass("d-none")
+    $(".pick-btns").text("픽 열기")
+  }
+  heightResize()
+}

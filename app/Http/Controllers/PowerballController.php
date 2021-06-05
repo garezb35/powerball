@@ -33,6 +33,7 @@ class PowerballController extends SecondController
 
     public function view(Request $request)
     {
+
         if (!$request->has("terms"))
             $key = "date";
         else
@@ -54,6 +55,7 @@ class PowerballController extends SecondController
                             );
                 break;
             case "lates":
+                $token = empty($this->user) ? "" : $this->user->api_token;
                 if($request->pageType == "late")
                     $default = 50;
                 else
@@ -68,11 +70,12 @@ class PowerballController extends SecondController
                     $prev = 2000;
                 return view('powerball_lates', [   "js" => "powerball_lates.js",
                                                         "css" => "powerball_date.css",
-                                                        "pick_visible" => "none",
+                                                        "pick_visible" => "block",
                                                         "p_remain"=>TimeController::getTimer(2),
                                                         "from"=>"",
                                                         "next"=>$next,
                                                         "prev"=>$prev,
+                                                        "token"=>$token,
                                                         "title"=>"최근 {$limit}회차 기준 오늘 통계데이터",
                                                         "limit"=>$limit]
                             );

@@ -39,7 +39,7 @@
               </div>
               <div class="info">
                   @if($result["article"]["fromId"] == 0)
-                      <img src="/assets/images/powerball/class/M30.gif">
+                      <img src="/assets/images/powerball/class/M30.gif" width="32">
                       <a href="#" class="uname"><span class="sv_member">운영자</span></a><span class="bar">|</span>
                   @else
                       <img src="{{$result["article"]["send_usr"]["getLevel"]["value3"]}}">
@@ -159,23 +159,21 @@
 </div>
 <div class="tbl_head01 tbl_wrap">
     @if($result["board"]["name"] != "photo")
-        <table class="table table-bordered">
+        <table class="table table-bordered" style="width:calc(100% - 1px)">
             <colgroup>
                 <col width="60px">
-                <col>
+                <col width="*">
                 <col width="150px">
                 <col width="70px">
-                <col width="60px">
-                <col width="60px">
             </colgroup>
             <thead>
             <tr>
                 <th scope="col">번호</th>
                 <th scope="col">제목</th>
                 <th scope="col">글쓴이</th>
-                <th scope="col" class="text-center"><a href="#">날짜</a></th>
+                <th scope="col" class="text-center">날짜</th>
                 @if($result["board"]["view_use"] == "1")
-                    <th scope="col" class="text-center"><a href="#">조회</a></th>
+                    <th scope="col" class="text-center">조회</th>
                 @endif
                 @if($result["board"]["recommend_use"] == "1")
                     <th scope="col" class="text-center">
@@ -231,7 +229,7 @@
                         </td>
                         <td class="td_name sv_use">
                             @if($mail["fromId"] == 0)
-                                <img src="/assets/images/powerball/class/M30.gif"> <span class="sv_member">운영자</span>
+                                <img src="/assets/images/powerball/class/M30.gif" width="32"> <span class="sv_member">운영자</span>
                             @else
                                 <span class="sv_member">
                                 <img src="{{$mail["send_usr"]["getLevel"]["value3"]}}" /> {{$mail["send_usr"]["nickname"]}}
