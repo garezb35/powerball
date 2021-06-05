@@ -23,6 +23,7 @@ $(document).ready(function(){
     socket.on('result',function(data){
         $(".see-t").find("tr").removeClass("current")
         $(".see-t tr:nth-child(2)").after(getPowerball(data.body))
+        heightResize();
     });
     $( "#roundCnt" ).selectmenu(
         {
