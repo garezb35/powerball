@@ -544,7 +544,7 @@ $bet_amouont = $auto_info["bet_amount"] ?? 0;
                 <col width = "25%"/>
                 <col width = "25%"/>
                 </colgroup>
-                  <tbody>
+                  <tbody class="bg-white">
 
                   <input type="hidden" name="api_token" id="api_token" value="<?php echo e(Auth::user()->api_token); ?>" />
                   <input type="hidden" name="type" value="<?php echo e($index); ?>" />
@@ -554,7 +554,7 @@ $bet_amouont = $auto_info["bet_amount"] ?? 0;
 
                     <?php if(!empty($matches[2][4*$index + $i-3])): ?>
                     <tr>
-                      <td class="position-relative text-left pl-1" style="height:14px">
+                      <td class="position-relative text-left pl-1 border-bottom-none" style="height:14px">
                         <span class="text-secondary font-weight-bold">배팅패턴</span>
                         <div class="position-absolute" style="top:2px;right:0px">
                           <button class="btn btn-secondary btn-sm border-round-none btn-rest" type="button" onclick="doRest(<?php echo e($matches[2][4*$index + $i-3]["id"]); ?>,this)">
@@ -565,14 +565,14 @@ $bet_amouont = $auto_info["bet_amount"] ?? 0;
                       </td>
                     </tr>
                     <tr class="pattern1">
-                      <td>
+                      <td class="border-top-none">
                         <div class="editor-text p2" id="p2_<?php echo e($index); ?>_<?php echo e($i); ?>" contenteditable="true" spellcheck="false" data-class="p2_<?php echo e($index); ?>_<?php echo e($i); ?>"><?php echo $matches[2][4*$index + $i-3]["auto_pattern"]; ?></div>
                         <textarea class="d-none" name="p2_<?php echo e($index); ?>_<?php echo e($i); ?>"><?php echo $matches[2][4*$index + $i-3]["auto_pattern"]; ?></textarea>
                       </td>
                     </tr>
                   <?php else: ?>
                     <tr>
-                      <td class="position-relative text-left pl-1" style="height:14px">
+                      <td class="position-relative text-left pl-1 border-bottom-none" style="height:14px">
                         <span class="text-secondary font-weight-bold">배팅패턴</span>
                         <div class="position-absolute" style="top:2px;right:0px">
                           <button class="btn btn-secondary btn-sm border-round-none btn-rest" type="button">휴식</button>
@@ -581,7 +581,7 @@ $bet_amouont = $auto_info["bet_amount"] ?? 0;
                       </td>
                     </tr>
                     <tr class="pattern1">
-                      <td>
+                      <td class="border-top-none">
                         <div class="editor-text p2" id="p2_<?php echo e($index); ?>_<?php echo e($i); ?>" contenteditable="true" spellcheck="false" data-class="p2_<?php echo e($index); ?>_<?php echo e($i); ?>"></div>
                         <textarea class="d-none" name="p2_<?php echo e($index); ?>_<?php echo e($i); ?>"></textarea>
                       </td>
