@@ -828,3 +828,12 @@ body{
     border-radius: 15px;
     width: 13px;
 }
+.txt-round{
+  font-size: 15px;
+  display: block;
+  margin-bottom: 3px
+}
+
+#countdown_clock{
+  color: #ffdd25
+}

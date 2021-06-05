@@ -1,6 +1,6 @@
 <div id="ladderResultBox">
   <div class="pickView">
-    <a href="#" onclick="toggleMiniView();return false;" class="miniView">미니뷰 닫기</a>
+    <a href="#" onclick="toggleMiniView();return false;" class="miniView">게임닫기</a>
   </div>
   <div class="pickBtn">
     <a href="#" onclick="togglePickView();return false;" class="pick-btns">픽 열기</a>

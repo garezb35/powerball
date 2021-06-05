@@ -13,7 +13,7 @@ $(document).ready(function(){
     var FRIEND = content.data('friend');
     var timestamp = content.data('timestamp');
     var nowClock = new Date(timestamp * 1000);
-    var nextUserTime, nowTime, gameTime, gameRound, gameLimit, gameAjax = 0;
+    var nextUserTime, nowTime, gameTime, gameRound, gameLimit, gameAjax = 0,unique = 0;
     var sound_mute =  'false';
     var sound_play = null;
     var sound_effect = null;
@@ -26,6 +26,7 @@ $(document).ready(function(){
             },
             timerSet: function () {
                 gameRound = parseInt($('.gmContent').data('round'));
+                unique = parseInt($('.gmContent').data('unique'));
                 if(gameRound > 288)
                     gameRound = 1;
                 gameTime = 300;
@@ -43,12 +44,14 @@ $(document).ready(function(){
                 // $('#timer_gauge').css('width', (nextTime / gameTime) * 100 + '%');
                 $('#countdown_clock').html(HTML);
                 $("#ready-round").text(gameRound)
+                $("#ready-unique").text(unique)
                 setTimeout(function () {
                     core.timer();
                 }, 1000);
                 if (nextTime == 0) {
                     // nextUserTime = userTime + gameTime;
                     nextTime = 300;
+                    unique++;
                     gameRound = gameRound + 1;
                     gameRound = gameRound > 288 ? 1 : gameRound;
                     core.startGame();

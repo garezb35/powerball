@@ -1933,13 +1933,15 @@ class PowerballController extends SecondController
     }
 
     public function powLive(Request $request){
-        $last_round = Pb_Result_Powerball::orderBy("day_round","DESC")->first();
-        $last_round = !empty($last_round) ? $last_round["round"] : 0;
+        $last = Pb_Result_Powerball::orderBy("day_round","DESC")->first();
+        $last_round = !empty($last) ? $last["round"] : 0;
+        $last_unique_round = !empty($last) ? $last["day_round"] : 0;
         $powerball_result = Pb_Result_Powerball::orderBy("day_round","DESC")->limit(288)->get()->toArray();
         return view('pick.powerball_live', [
                 "js" =>"",
                 "css" => "",
                 "last"=>$last_round,
+                "last_unique_round"=>$last_unique_round,
                 "powerball_result" =>$powerball_result
             ]
         );

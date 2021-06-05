@@ -13,7 +13,7 @@
 
     </head>
     <body style="margin: 0;">
-    <div class="gmContent" data-type="POWERBALL" data-round="<?php echo e($last + 1); ?>"  data-game="nlotto_power"></div>
+    <div class="gmContent" data-type="POWERBALL" data-round="<?php echo e($last + 1); ?>" data-unique=<?php echo e($last_unique_round+1); ?>  data-game="nlotto_power"></div>
         <div class="lottery_wrap powerball dark">
             <div class="header_wrap">
                 <div id="ly_game_tip" class="ly_game_tip" style="display:none;">
@@ -40,8 +40,8 @@
                             <div id="lotteryBall"></div>
                             <div id="ready-screen">
                                 <div>
-                                    <span id="ready-round"></span>
-                                    <span>회차</span>
+                                    <span class="txt-round">제 <span id="ready-unique"></span> 회차</span>
+                                    <span class="txt-round"><span id="ready-round"></span></span>
                                     <span id="countdown_clock"></span>
                                 </div>
                                 <p class="ready-txt">추첨준비중</p>

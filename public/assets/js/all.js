@@ -303,11 +303,11 @@ function ajaxBestPickster()
 function toggleMiniView(){
   if($(".pick-screeen").hasClass("d-none")){
     $(".pick-screeen").removeClass("d-none")
-    $(".miniView").text("미니뷰 닫기")
+    $(".miniView").text("게임닫기")
   }
   else {
     $(".pick-screeen").addClass("d-none")
-    $(".miniView").text("미니뷰 열기")
+    $(".miniView").text("게임열기")
   }
   heightResize()
 }
@@ -315,11 +315,11 @@ function toggleMiniView(){
 function togglePickView(){
   if($(".pick-part").hasClass("d-none")){
     $(".pick-part").removeClass("d-none")
-    $(".pick-btns").text("픽 닫기")
+    $(".pick-btns").text("게임닫기")
   }
   else {
     $(".pick-part").addClass("d-none")
-    $(".pick-btns").text("픽 열기")
+    $(".pick-btns").text("게임열기")
   }
   heightResize()
 }

@@ -5,9 +5,7 @@
     margin-left: 15px
 }
 
-#countdown_clock{
-  display: block;
-}
+
 
 .powerball.dark{
     background: url(/assets/images/pick/power_back.png);
@@ -752,15 +750,15 @@
 #ready-screen{
     position: absolute;
     left: 147px;
-    top: 125px;
+    top: 107px;
     text-align: center;
 }
 #ready-screen div{
     background: #000;
-    padding: 6px 15px 0px 15px;
+    padding: 9px 15px 0px 15px;
     border-radius: 25px;
     text-align: center;
-    font-size: 28px;
+    font-size: 30px;
     min-width: 140px;
 }
 
@@ -772,7 +770,7 @@
     background: #002042;
     position: absolute;
     left: 117px;
-    top: 100px;
+    top: 106px;
     width: 211px;
     text-align: center;
     padding: 10px;
@@ -801,4 +799,10 @@
     color: #fff;
     font-size: 20px;
     text-shadow: 1px 1px 2px #181717, 0 0 1em white, 0 0 0.2em white;
+}
+
+.pick-part{
+  position: absolute;
+  z-index: 1000;
+  top: 24px;
 }
