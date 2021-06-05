@@ -16,6 +16,20 @@ if(!empty($auto_info)){
     $martin = $auto_info["martin"];
     $step = $auto_info["step"];
     $mny = !empty($auto_info["mny"]) ? explode(",",$auto_info["mny"]) : array();
+    $win_limit = $auto_info["win_limit"];
+    $lost_limit = $auto_info["lost_limit"];
+}
+else{
+    $start_amount = 0;
+    $user_amount = 0;
+    $profit = 0;
+    $start_round = 0;
+    $end_round = 0;
+    $martin = 0;
+    $step = 0;
+    $mny = "";
+    $win_limit = 0;
+    $lost_limit = 0;
 }
 $class[3] = "pow-element-blue pow-element";
 $class[2] = "pow-element-red pow-element";
@@ -187,7 +201,7 @@ $bet_amouont = $auto_info["bet_amount"] ?? 0;
                                     <div class="input-group-prepend">
                                       <span class="input-group-text">이익상한</span>
                                     </div>
-                                    <input type="number" min="0" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="win_limit" value="<?php echo e($auto_info["win_limit"]); ?>">
+                                    <input type="number" min="0" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="win_limit" value="<?php echo e($win_limit); ?>">
                                   </div>
                               </td>
                                 <td  class="pl-0">
@@ -195,7 +209,7 @@ $bet_amouont = $auto_info["bet_amount"] ?? 0;
                                     <div class="input-group-prepend">
                                       <span class="input-group-text">손해상한</span>
                                     </div>
-                                    <input type="number" min="0" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="lost_limit" value="<?php echo e($auto_info["lost_limit"]); ?>">
+                                    <input type="number" min="0" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="lost_limit" value="<?php echo e($lost_limit); ?>">
                                   </div>
                                 </td>
                               </tr>

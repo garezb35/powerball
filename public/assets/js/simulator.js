@@ -68,6 +68,7 @@ function getResultFromDatabase(){
         data:{round:round,type:typeo},
         success:function(data,textStatus){
           if(data.status ==1){
+              console.log(data.result)
               var tem = "";
               var alias = result[typeo]["alias"]
               result[typeo] = data.result;
