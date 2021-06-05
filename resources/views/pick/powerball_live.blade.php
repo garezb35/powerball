@@ -30,7 +30,7 @@
                 <div id="ly_share" class="ly_share" style="display:none;">
                     <h1 class="tit">몬스터 파워볼 중계화면 퍼가기</h1>
                     <div class="source">
-                        <textarea>&lt;iframe src="http://{{Request::getHost()}}/pick/powerball/live" width="830" height="641" scrolling="no" frameborder="0"&gt;&lt;/iframe&gt;</textarea>
+                        <textarea>&lt;iframe src="{{Request::getHost()}}/pick/powerball/live" width="830" height="641" scrolling="no" frameborder="0"&gt;&lt;/iframe&gt;</textarea>
                     </div>
                     <p>위의 HTML의 코드를 복사하여 원하시는 페이지에 아이프레임으로 추가하시면 파워볼 게임 영역만 중계화면으로 이용 가능합니다.</p>
                 </div>
@@ -60,7 +60,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="/" target="_top" style="text-align:center;color:wheat;margin-top:17px;display:block">몬스터파워볼주소 : http://{{Request::root()}}</a> 
+                        <a href="/" target="_top" style="text-align:center;color:wheat;margin-top:17px;display:block">몬스터파워볼주소 : http://{{Request::root()}}</a>
                     </div>
                 </div>
                 <div class="side right">
