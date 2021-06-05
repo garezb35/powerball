@@ -1512,3 +1512,8 @@ td.simu-head{
   color: #fff;
   text-align: center
 }
+.pick-part{
+  position: absolute;
+  z-index: 1000;
+  top: 24px;
+}

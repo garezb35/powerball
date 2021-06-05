@@ -315,11 +315,11 @@ function toggleMiniView(){
 function togglePickView(){
   if($(".pick-part").hasClass("d-none")){
     $(".pick-part").removeClass("d-none")
-    $(".pick-btns").text("게임닫기")
+    $(".pick-btns").text("픽닫기")
   }
   else {
     $(".pick-part").addClass("d-none")
-    $(".pick-btns").text("게임열기")
+    $(".pick-btns").text("픽열기")
   }
   heightResize()
 }

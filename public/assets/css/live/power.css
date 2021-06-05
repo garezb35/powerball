@@ -800,9 +800,3 @@
     font-size: 20px;
     text-shadow: 1px 1px 2px #181717, 0 0 1em white, 0 0 0.2em white;
 }
-
-.pick-part{
-  position: absolute;
-  z-index: 1000;
-  top: 24px;
-}

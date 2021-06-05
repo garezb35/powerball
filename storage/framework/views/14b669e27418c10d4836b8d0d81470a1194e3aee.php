@@ -13,7 +13,7 @@
 </head>
 <body style="margin: 0;">
 <div class="gmContent" data-type="POWERLADDER" data-round="<?php echo e($last + 1); ?>" data-unique=<?php echo e($last_unique_round+1); ?>  data-game="nlotto_power"></div>
-<div class="lottery_wrap powerball dark">
+<div class="lottery_wrap powerball dark" style="height:361px">
     <div class="header_wrap">
         <div id="ly_game_tip" class="ly_game_tip" style="display: none">
             <h1 class="tit">몬스터 파워사다리 게임 설명</h1>
@@ -35,7 +35,7 @@
           
             <div class="powerball_board">
                 <div class="playBox">
-                    <div id="result_board" class="result_board relativeBox">
+                    <div id="result_board" class="result_board relativeBox" style="margin-top:32px">
                         <div id="div_sadari_machine_glass" class="full_size">
                             <img class="bar1" src="/assets/images/pick/empty-sadari.png" />
                             <img class="bar2" src="/assets/images/pick/empty-sadari.png" />
