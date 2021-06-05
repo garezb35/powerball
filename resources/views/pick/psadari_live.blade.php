@@ -68,7 +68,7 @@
             <div class="tit_wrap flex_row">
                 <h2 class="section_tit">회차별 결과</h2>
                 <div class="func_btns">
-                    <ul class="flex_row">
+                    <ul class="flex_row" style="padding-inline-start:14px">
                         <li id="btn_share" class="btn btn_share" title="퍼가기"><i class="fa fa-share-alt"></i></li>
                         <li id="btn_tip" class="btn btn_tip" title="게임안내"><i class="fa fa-question"></i></li>
                         <li id="btn_sound" class="btn btn_sound on" title="소리 켜기/끄기"><i class="fa fa-volume-up"></i></li>
