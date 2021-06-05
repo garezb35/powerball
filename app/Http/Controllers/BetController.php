@@ -220,7 +220,7 @@ class BetController extends Controller
                         ->toArray(); /// 유저들 게임 설정들 얻기
 
         if(empty($autoConfig)){    /////////////비였다면 모의베팅에 참가한 유저들 없음
-            echo json_encode(array("status"=>0,"msg"=>"파워볼모의베팅설정이 비였습니다."));
+            echo json_encode(array("status"=>0,"msg"=>"파워볼모의베팅설정이 비였습니다.no empty settings"));
             return;
         }
 
