@@ -9,10 +9,10 @@ typess[2] = "pb_uo";
 typess[3] = "nb_oe";
 typess[4] = "nb_uo";
 var result = new Array();
-result["pb_oe"] = new Array();
-result["pb_uo"] = new Array();
-result["nb_oe"] = new Array();
-result["nb_uo"] = new Array();
+result["pb_oe"] = {alias:"[1]파홀(1.95)vs[2]파짝(1.95)"};
+result["pb_uo"] = {alias:"[1]파언(1.95)vs[2]파오(1.95)"};
+result["nb_oe"] = {alias:"[1]일홀(1.95)vs[2]일짝(1.95)"};
+result["nb_uo"] = {alias:"[1]일언(1.95)vs[2]일오(1.95)"};
 var loading = false;
 var simulator_in = ["pb_oe","pb_uo","nb_oe","nb_uo"]
 var simulator_in_index= 0;
@@ -69,8 +69,10 @@ function getResultFromDatabase(){
         success:function(data,textStatus){
           if(data.status ==1){
               var tem = "";
-              result[typess[typeo]] = data.result;
-              compileJson("#pattern-date",".pattern-tr",result[typess[typeo]],2);
+              var alias = result[typeo]["alias"]
+              result[typeo] = data.result;
+              result[typeo]["alias"] = alias;
+              compileJson("#pattern-date",".pattern-tr",result[typeo],2);
               $('.pattern-t').animate({scrollLeft:10000},1000);
               rr[simulator_in_index] = data.result.list
           }
@@ -82,7 +84,10 @@ function getResultFromDatabase(){
     })
   }
   else{
-    compileJson("#pattern-date",".pattern-tr",result[typess[type]]);
+    compileJson("#pattern-date",".pattern-tr",result["pb_oe"],2);
+    compileJson("#pattern-date",".pattern-tr",result["pb_uo"],2);
+    compileJson("#pattern-date",".pattern-tr",result["nb_oe"],2);
+    compileJson("#pattern-date",".pattern-tr",result["nb_uo"],2);
   }
 }
 

@@ -49,12 +49,6 @@
                         <div class="abs_img right-s">우</div>
                         <div class="abs_img even-s">짝</div>
                         <div class="abs_img odd-s">홀</div>
-
-
-{{--                        <img class="abs_img left-s" src="/assets/images/pick/left.png" />--}}
-{{--                        <img class="abs_img right-s" src="/assets/images/pick/right.png" />--}}
-{{--                        <img class="abs_img even-s" src="/assets/images/pick/even.png" />--}}
-{{--                        <img class="abs_img odd-s" src="/assets/images/pick/odd.png" />--}}
                         <div id="ready-screen">
                             <div>
                                 <span id="ready-round">83</span>
@@ -66,6 +60,7 @@
                         <div class="lineBox"></div>
                     </div>
                 </div>
+                <a href="/" target="_top" style="color:wheat;margin-top:17px;display:block;margin-left: 61px;">몬스터파워볼주소 : http://{{Request::root()}}</a> 
             </div>
         </div>
         <div class="side right">

@@ -1468,4 +1468,6 @@ td.simu-head{
 .current{
   background-color: #e0f6f6 !important;
   border: 2px solid #00b4b4;
+  -webkit-animation: blink .6s step-end 1s 6 forwards;
+  animation: blink .6s step-end 1s 6 forwards; 
 }

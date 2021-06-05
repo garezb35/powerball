@@ -4,25 +4,11 @@
 var $calendar;
 $(document).ready(function(){
     $('body').on('click','.choice',function(){
-        $('.choice').css('background-color','#fff');
         $('.choice').css('border-color','#BEE0FA');
         $('.choice').css('color','#000');
-        $(this).css('background-color','#00b4b4');
         $(this).css('border-color','#127CCB');
-        $(this).css('color','#FFF');
+        $(this).css('color','red');
         $('#selectNumber').val($(this).text());
-    });
-
-    $('body').on('mouseover','.submit',function(){
-        $(this).css('background-color','#00b4b4');
-        $(this).css('border-color','#00b4b4');
-        $(this).css('color','#fff');
-    });
-
-    $('body').on('mouseleave','.submit',function(){
-        $(this).css('background-color','#8ee2e2');
-        $(this).css('border-color','#8ee2e2');
-        $(this).css('color','#000');
     });
 
     $('body').on('click','.submit',function(){
@@ -57,11 +43,6 @@ $(document).ready(function(){
                             {
                                 alert('축하합니다. 당첨되어 [랜덤아이템상자]가 지급되었습니다. 아이템 메뉴에서 확인하세요!');
                             }
-                            else
-                            {
-                                alert('꽝입니다. 다음에 이용해주세요~');
-                            }
-
                             location.reload();
 
                         },3000);
@@ -112,4 +93,3 @@ $(window).resize(function(){
 });
 
 //]]>
-

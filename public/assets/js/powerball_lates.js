@@ -15,8 +15,6 @@ if('WebSocket' in window)
 {
     socketOption['transports'] = ['websocket'];
 }
-
-
 var socket =  null;
 
 $(document).ready(function(){

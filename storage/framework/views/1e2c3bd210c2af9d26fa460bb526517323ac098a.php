@@ -35,6 +35,7 @@
                 </div>
 
                 <div class="contentArea">
+                    <div class="text">출석 코멘트</div>
                     <form name="attendanceForm" id="attendanceForm" method="post" action="/">
                         <?php echo csrf_field(); ?>
                         <input type="hidden" name="selectNumber" id="selectNumber">
@@ -45,9 +46,8 @@
                             <li class="choice">2</li>
                             <li class="choice">3</li>
                         </ul>
-                        <div class="text">출석 코멘트</div>
                         <div class="inputBox"><input type="text" name="comment" class="input" value="<?php echo e(randomItemMessage()[$size]); ?>" readonly=""></div>
-                        <div class="submit" style="background-color: #8ee2e2">출석체크</div>
+                        <div class="submit present-btn">출석체크</div>
                     </form>
                 </div>
 

@@ -60,6 +60,7 @@
                                 </div>
                             </div>
                         </div>
+                        <a href="/" target="_top" style="text-align:center;color:wheat;margin-top:17px;display:block">몬스터파워볼주소 : http://<?php echo e(Request::root()); ?></a> 
                     </div>
                 </div>
                 <div class="side right">

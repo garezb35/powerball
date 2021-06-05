@@ -333,7 +333,7 @@ $bet_amouont = $auto_info["bet_amount"] ?? 0;
             <span class="amount">{{number_format($user_amount)}}</span>
           </div>
         </div>
-        <table class="table table-bordered">
+        <table class="table table-bordered mb-1">
           <colgroup>
             <col width="190px"/>
           </colgroup>
@@ -389,7 +389,7 @@ $bet_amouont = $auto_info["bet_amount"] ?? 0;
 </div>
 
 <form id="autoForm">
-  <div class="auto-content" style="height:567px;overflow:hidden">
+  <div class="auto-content" style="height:597px;overflow:hidden">
       <div class="content-left">
           <table class="table table-bordered mb-0">
               <colgroup>

@@ -464,3 +464,8 @@ body{
 .win0{
   color: red
 }
+
+.presult-header{
+  border-bottom: 1px solid #a9a9a9;
+  background: #dcdcdc;
+}

@@ -333,7 +333,7 @@ $bet_amouont = $auto_info["bet_amount"] ?? 0;
             <span class="amount"><?php echo e(number_format($user_amount)); ?></span>
           </div>
         </div>
-        <table class="table table-bordered">
+        <table class="table table-bordered mb-1">
           <colgroup>
             <col width="190px"/>
           </colgroup>
@@ -390,7 +390,7 @@ $bet_amouont = $auto_info["bet_amount"] ?? 0;
 </div>
 
 <form id="autoForm">
-  <div class="auto-content" style="height:567px;overflow:hidden">
+  <div class="auto-content" style="height:597px;overflow:hidden">
       <div class="content-left">
           <table class="table table-bordered mb-0">
               <colgroup>
@@ -597,28 +597,34 @@ $bet_amouont = $auto_info["bet_amount"] ?? 0;
 </form>
 <div class="log-part">
     <ul>
-        <?php $__currentLoopData = $history; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $h): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-          <?php
-          $parse  = get_object_vars(json_decode($h["reason"]));
-          $win_class =  $parse["win_type"] ?? "";
-          ?>
-        <li class="<?php echo e($parse["type"]); ?> win<?php echo e($win_class); ?>">
-            <?php if($parse["type"] == "current_result"): ?>
-              <?php
-                $pb_oe ="pb_oe".$parse["pb_oe"];
-                $pb_uo ="pb_uo".$parse["pb_uo"];
-                $nb_oe ="nb_oe".$parse["nb_oe"];
-                $nb_uo ="nb_uo".$parse["nb_uo"];
-              ?>
-              #<?php echo e($parse['date']); ?> > <?php echo e($parse["rownum"]); ?>차 결과 : <?php echo e(getPowerHeader()[$pb_oe]); ?> / <?php echo e(getPowerHeader()[$pb_uo]); ?> / <?php echo e(getPowerHeader()[$nb_oe]); ?> / <?php echo e(getPowerHeader()[$nb_uo]); ?>
+        <?php if(!empty($history)): ?>
+          <?php $__currentLoopData = $history; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $h): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php
+            $parse  = get_object_vars(json_decode($h["reason"]));
+            if(empty($parse["win_type"]))
+              $win_class = "";
+            else {
+              $win_class =  $parse["win_type"] ?? "";
+            }
+            ?>
+          <li class="<?php echo e($parse["type"]); ?> win<?php echo e($win_class); ?>">
+              <?php if($parse["type"] == "current_result"): ?>
+                <?php
+                  $pb_oe ="pb_oe".$parse["pb_oe"];
+                  $pb_uo ="pb_uo".$parse["pb_uo"];
+                  $nb_oe ="nb_oe".$parse["nb_oe"];
+                  $nb_uo ="nb_uo".$parse["nb_uo"];
+                ?>
+                #<?php echo e($parse['date']); ?> > <?php echo e($parse["rownum"]); ?>차 결과 : <?php echo e(getPowerHeader()[$pb_oe]); ?> / <?php echo e(getPowerHeader()[$pb_uo]); ?> / <?php echo e(getPowerHeader()[$nb_oe]); ?> / <?php echo e(getPowerHeader()[$nb_uo]); ?>
 
-            <?php endif; ?>
-            <?php if($parse["type"] == "betting"): ?>
-            #<?php echo e($h['created_at']); ?> > <?php echo e(getPowerballBetSim($parse["auto_type"],$parse["auto_kind"],$parse["pick"],$parse["win_type"])); ?> <?php echo e($parse["amount"]); ?>
+              <?php endif; ?>
+              <?php if($parse["type"] == "betting"): ?>
+              #<?php echo e($h['created_at']); ?> > <?php echo e(getPowerballBetSim($parse["auto_type"],$parse["auto_kind"],$parse["pick"],$parse["win_type"])); ?> <?php echo e($parse["amount"]); ?>
 
-            <?php endif; ?>
-        </li>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+              <?php endif; ?>
+          </li>
+          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php endif; ?>
     </ul>
 </div>
 <?php $__env->stopSection(); ?>

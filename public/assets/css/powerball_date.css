@@ -22,6 +22,15 @@
       background-color: rgba(0,0,0,.05);
 }
 
+.table-striped-saddari tbody tr:nth-of-type(even){
+      background-color: #fff;
+}
+
+.table-striped-saddari tbody tr:nth-of-type(odd){
+      background-color: rgba(0,0,0,.05);
+}
+
+
 .defaultTable th.menu {
     border-top: 2px solid #0E609C;
     border-right: 1px solid #D5D5D5;
@@ -1435,3 +1444,5 @@ resultBox .bar.odd {
     padding-bottom: 0px ;
     background: rgba(0,0,0,.05);
 }
+
+@-webkit-keyframes blink { 50% { border-color: #ff0000; }  }

@@ -7,6 +7,15 @@ var six_alias = "left_right";
 var pagination = 0;
 var loading =false;
 
+var socketOption = {};
+socketOption['reconnect'] = true;
+socketOption['force new connection'] = true;
+socketOption['sync disconnect on unload'] = true;
+if('WebSocket' in window)
+{
+    socketOption['transports'] = ['websocket'];
+}
+var socket =  null;
 
 
 function ajaxPattern(type,from='',to='',limit)
@@ -48,6 +57,13 @@ function ajaxPattern(type,from='',to='',limit)
 }
 
 $(document).ready(function(){
+
+    connect();
+    socket.on('result',function(data){
+        $(".see-t").find("tr").removeClass("current")
+        $(".see-t tr:nth-child(1)").after(getPowreball(data.body))
+    });
+
     $( "#roundCnt" ).selectmenu(
         {
             change: function( event, ui ) {
@@ -119,4 +135,49 @@ function moreClick()
                 loading  = true;
         })
     }
+}
+
+function connect()
+{
+    try{
+        if(socket == null)
+        {
+            socket = io.connect('http://203.109.14.130:3000/result',socketOption);
+        }
+    }
+    catch(e){
+
+    }
+}
+
+function getPowreball(data){
+  var direct_alias = "우";
+  var direct = "RIGHT";
+  var odd_alias = "홀";
+  var odd = "odd";
+  var count_alias = "3";
+  var nb1 = parseInt(data.balls.split(",")[0]);
+  if(nb1 % 2 == 1){
+    direct_alias = "좌";
+    direct = "LEFT";
+  }
+  if(nb1 >=15){
+    count_alias = 4
+  }
+
+  if((direct == "LEFT" && count_alias == 3) || (direct == "RIGHT" && count_alias == 4)){
+    odd_alias = "짝";
+    odd = "even";
+  }
+
+  return '<tr class="current">\
+        <td height="40" align="center">\
+            <span class="numberText">'+data.round+'회</span><br>\
+            ( <span class="numberText">'+data.day_round+'회</span> )\
+        </td>\
+        <td align="center" class="numberText">'+data.time+'</td>\
+        <td align="center" class="numberText"><div class="sp-'+direct+'">'+direct_alias+'</div></td>\
+        <td align="center" class="numberText"><div class="sp_'+count_alias+'">'+count_alias+'</div></td>\
+        <td align="center" class="numberText"><div class="sp-'+odd+'">'+odd_alias+'</div></td>\
+    </tr>';
 }
