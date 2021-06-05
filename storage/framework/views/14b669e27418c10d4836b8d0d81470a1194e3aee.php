@@ -32,12 +32,7 @@
     </div>
     <div class="contents">
         <div class="side left">
-          <div id="caution-area" class="inprogress_wrap">
-              <div id="timer_gauge" class="fill_bar" ></div>
-              <div class="progress_text">
-                  <span id="countdown_clock"></span>
-              </div>
-          </div>
+          
             <div class="powerball_board">
                 <div class="playBox">
                     <div id="result_board" class="result_board relativeBox">
@@ -53,6 +48,7 @@
                             <div>
                                 <span id="ready-round">83</span>
                                 <span>회차</span>
+                                <span id="countdown_clock"></span>
                             </div>
                             <p class="ready-txt">추첨준비중</p>
                         </div>

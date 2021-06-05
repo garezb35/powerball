@@ -31,12 +31,12 @@
             </div>
             <div class="contents">
                 <div class="side left">
-                  <div id="caution-area" class="inprogress_wrap">
+                  {{-- <div id="caution-area" class="inprogress_wrap">
                       <div id="timer_gauge" class="fill_bar" ></div>
                       <div class="progress_text">
                           <span id="countdown_clock"></span>
                       </div>
-                  </div>
+                  </div> --}}
                     <div class="powerball_board">
                         <div id="result_board" class="result_board">
                             <img src="/assets/images/pick/bulb.png" class="bulb-img"/>
@@ -47,6 +47,7 @@
                                 <div>
                                     <span id="ready-round"></span>
                                     <span>회차</span>
+                                    <span id="countdown_clock"></span>
                                 </div>
                                 <p class="ready-txt">추첨준비중</p>
                             </div>

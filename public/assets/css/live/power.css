@@ -5,6 +5,10 @@
     margin-left: 15px
 }
 
+#countdown_clock{
+  display: block;
+}
+
 .powerball.dark{
     background: url(/assets/images/pick/power_back.png);
 }

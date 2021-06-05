@@ -1472,13 +1472,13 @@ td.simu-head{
   animation: blink .6s step-end 1s 6 forwards;
 }
 .pickView {
-    position: absolute;
-    right: 7px;
-    width: 81px;
-    height: 20px !important;
-    line-height: 20px;
-    z-index: 99;
-    top: 17px
+  position: absolute;
+  right: 2px;
+  width: 81px;
+  height: 20px !important;
+  line-height: 20px;
+  z-index: 99;
+  top: 2px
 }
 
 .pickView a {
@@ -1489,7 +1489,6 @@ td.simu-head{
     text-align: center;
     font-size: 12px;
     text-decoration: none;
-    border-radius: 3px
 }
 
 #ladderResultBox{
@@ -1499,17 +1498,16 @@ td.simu-head{
 
 .pickBtn{
   position: absolute;
-  left: 7px;
+  left: 2px;
   width: 51px;
   height: 20px !important;
   line-height: 20px;
   z-index: 99;
-  top: 12px;
+  top: 2px
 }
 
 .pick-btns{
   display: block;
-  border-radius: 5px;
   background: #00b4b4;
   color: #fff;
   text-align: center

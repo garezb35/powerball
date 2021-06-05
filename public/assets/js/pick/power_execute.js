@@ -37,9 +37,10 @@ $(document).ready(function(){
                 var ss = Math.floor(((nextTime) % 60));
                 ii = ii < 10 ? '0' + ii : ii;
                 ss = ss < 10 ? '0' + ss : ss;
-                var HTML = ii + ":" + ss + " 후 " + gameRound + "회차 추첨 시작";
+                // var HTML = ii + ":" + ss + " 후 " + gameRound + "회차 추첨 시작";
+                var HTML = ii + ":" + ss
                 nextTime = powerballDiff();
-                $('#timer_gauge').css('width', (nextTime / gameTime) * 100 + '%');
+                // $('#timer_gauge').css('width', (nextTime / gameTime) * 100 + '%');
                 $('#countdown_clock').html(HTML);
                 $("#ready-round").text(gameRound)
                 setTimeout(function () {
@@ -473,7 +474,7 @@ $(document).ready(function(){
     })();
 
     nextTime = powerballDiff();
-    $("#timer_gauge").css("width",(100*nextTime/300)+"%");
+    // $("#timer_gauge").css("width",(100*nextTime/300)+"%");
     core.init();
 
     $('#btn_tip').click(function () {
