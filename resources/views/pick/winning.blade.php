@@ -84,7 +84,7 @@ $sum4 = ($nb_uo_arr[0] + $nb_uo_arr[1] ) == 0 ? 1 : $nb_uo_arr[0] + $nb_uo_arr[1
   <div class="time-part">
     @include('chat.countdown')
   </div>
-  <div class="bet-part d-none" style="text-align:center"><span>다음 회차 다음회차 픽 갱신중~<span id="bettingPart" class="font-weight-bold"></span></span></div>
+  <div class="bet-part d-none" style="text-align:center"><span>다음회차 픽 갱신중~<span id="bettingPart" class="font-weight-bold"></span></span></div>
 </div>
 
 <div class="tab-content" id="pills-tabContent">
