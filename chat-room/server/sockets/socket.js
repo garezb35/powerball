@@ -55,15 +55,10 @@ public.on("connection",(client) => {
         }
     })
     client.on("receive",(data,callback) =>{
-        if(data.body.cmd == "powerballResult"){
-            presult.emit("receive",data)
-        }
-        else{
-            client.to(data.body.roomIdx).emit("receive",data);
-            setTimeout(function(){
-                roomio.emit("receive",data);
-            },1000)
-        }
+      client.to(data.body.roomIdx).emit("receive",data);
+      setTimeout(function(){
+          roomio.emit("receive",data);
+      },1000)
     })
 });
 
