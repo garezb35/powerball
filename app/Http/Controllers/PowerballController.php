@@ -33,7 +33,6 @@ class PowerballController extends SecondController
 
     public function view(Request $request)
     {
-
         if (!$request->has("terms"))
             $key = "date";
         else
@@ -469,6 +468,7 @@ class PowerballController extends SecondController
     public function dataSimulate(Request $request){
       $list = array();
       $round = $request->post("round");
+      $start_round = $request->post("start_round");
       $type = $request->post("type");
       $range  = PbRange::where("range1","<=",$round)->orderBy("year","DESC")->first();
       if(empty($range)){
@@ -483,6 +483,7 @@ class PowerballController extends SecondController
         $powerball_list_to = DB::connection("comm" . $year)->table("pb_result_powerball");
       }
       $powerball_list_to = $powerball_list_to->where("day_round","<=",$round);
+      $powerball_list_to = $powerball_list_to->where("day_round",">=",$start_round);
       $powerball_list_to = $powerball_list_to->orderBy("day_round", "DESC");
       $powerball_list_to = $powerball_list_to->offset(0)->limit(20)->get()->toArray();
       if(sizeof($powerball_list_to) < 20){
@@ -490,6 +491,7 @@ class PowerballController extends SecondController
         if($year  > 2013){
           $year = $year - 1;
           $powerball_list_to1 = DB::connection("comm" .$year)->table("pb_result_powerball");
+          $powerball_list_to1 = $powerball_list_to1->where("day_round",">=",$start_round);
           $powerball_list_to1 = $powerball_list_to1->orderBy("day_round", "DESC");
           $powerball_list_to1 = $powerball_list_to1->offset(0)->limit($temp)->get()->toArray();
         }
@@ -502,7 +504,6 @@ class PowerballController extends SecondController
       $list = array_merge($list,$powerball_list_to);
       echo json_encode($this->getPatternDataFromArray($list,$type,date('Y')));
     }
-
 
     /* 육매 분석데이터 */
     public function getSixAnalyse(Request $request){
@@ -1365,6 +1366,9 @@ class PowerballController extends SecondController
                               "game_kind"=>$key+1
                           ]);
             }
+            else {
+              PbAutoMatch::where("userId",$userId)->where("auto_type",1)->where("auto_kind",$key+1)->delete();
+            }
         }
 
         foreach($second_pat as $key=>$value){
@@ -1377,6 +1381,9 @@ class PowerballController extends SecondController
                             "auto_pattern"=>trim(str_replace("<br>","",$request->$value)),
                             "game_kind"=>explode("_",$value)[1]
                         ]);
+          }
+          else {
+            PbAutoMatch::where("userId",$userId)->where("auto_type",2)->where("auto_kind",$key+1)->delete();
           }
         }
         echo json_encode(array("status"=>1));
@@ -1440,7 +1447,7 @@ class PowerballController extends SecondController
         $pb_oe = $pb_uo = $nb_oe = $nb_uo = array();
         $data = TblWinning::get()->toArray();
         $pb_oe_arr = $pb_uo_arr = $nb_oe_arr = $nb_uo_arr = array(0,0);
-        if(!empty($data))
+        if(!empty($data) && sizeof($data) == 400)
             foreach($data as $value){
                 if($value["kind"] ==1)
                 {
@@ -1466,6 +1473,7 @@ class PowerballController extends SecondController
         return view("pick.winning", [
             "css"=>"winning.css",
             "js"=>"winning.js",
+            "p_remain"=>TimeController::getTimer(2),
             "pb_oe"=>$pb_oe,
             "pb_uo"=>$pb_uo,
             "nb_oe"=>$nb_oe,
@@ -1473,7 +1481,8 @@ class PowerballController extends SecondController
             "pb_oe_arr"=>$pb_oe_arr,
             "pb_uo_arr"=>$pb_uo_arr,
             "nb_oe_arr"=>$nb_oe_arr,
-            "nb_uo_arr"=>$nb_uo_arr
+            "nb_uo_arr"=>$nb_uo_arr,
+            "winning"=>1
         ]);
     }
 
@@ -1868,6 +1877,11 @@ class PowerballController extends SecondController
             foreach ($lists as $key => $index){
                 $day_round = $index->round;
                 $pick_info = $index->$type;
+                if(sizeof($lists) == 1){
+                  $temp = $this->getTypePower($type,$previous_item);
+                  array_push($result,array("alias"=>$temp[1],"type"=>$temp[0],"list"=>$previous_list));
+                  return array("status"=>1,"result"=>array("max"=>1,"list"=>$result,"type"=>$type,"pung"=>1));
+                }
                 if( $key ==0)
                     continue;
                 $temp = $this->getTypePower($type,$previous_item);

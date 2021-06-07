@@ -12,6 +12,9 @@ $sum4 = ($nb_uo_arr[0] + $nb_uo_arr[1] ) == 0 ? 1 : $nb_uo_arr[0] + $nb_uo_arr[1
 ?>
 
 <?php $__env->startSection("content"); ?>
+  <script>
+    var winning = <?php echo e($winning); ?>;
+  </script>
   <ul class="nav mb-2" id="powerball-category" role="tablist">
       <li class="nav-item">
           <a class="nav-link active" id="powerball-tab" data-toggle="pill" href="#powerball-content" role="tab" >파워볼</a>
@@ -77,35 +80,42 @@ $sum4 = ($nb_uo_arr[0] + $nb_uo_arr[1] ) == 0 ? 1 : $nb_uo_arr[0] + $nb_uo_arr[1
   </div>
 </div>
 
+<div class="mb-1">
+  <div class="time-part">
+    <?php echo $__env->make('chat.countdown', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+  </div>
+  <div class="bet-part d-none" style="text-align:center"><span>다음 회차 다음회차 픽 갱신중~<span id="bettingPart" class="font-weight-bold"></span></span></div>
+</div>
+
 <div class="tab-content" id="pills-tabContent">
     <div class="tab-pane fade show active tbl_head01 tbl_wrap" id="powerball-content" role="tabpanel" aria-labelledby="pills-home-tab">
-        <table class="table table-bordered">
+        <table class="table table-bordered" style="width: calc(100% - 0.1em);">
           <thead>
             <tr>
                 <th class="text-center align-middle" rowspan="2">
-                    <span class="font-weight-bold text-secondary" style="display:block;width:80px">번호</span>
+                    <span class="font-weight-bold" style="display:block;width:80px">번호</span>
                 </th>
                 <th colspan="3" class="text-center" width="50%">파워볼</th>
                 <th colspan="3" class="text-center" width="50%">파워볼언옵</th>
             </tr>
             <tr class ="bl_gray">
                 <td class="text-center ">
-                    <span class="font-weight-bold text-secondary">AI번호</span>
+                    <span class="font-weight-bold">AI번호</span>
                 </td>
                 <td class="text-center ">
-                    <span class="font-weight-bold text-secondary">현재연승</span>
+                    <span class="font-weight-bold">현재연승</span>
                 </td>
                 <td class="text-center ">
-                    <span class="font-weight-bold text-secondary">다음회차픽</span>
+                    <span class="font-weight-bold">다음회차픽</span>
                 </td>
                 <td class="text-center ">
-                    <span class="font-weight-bold text-secondary">AI번호</span>
+                    <span class="font-weight-bold">AI번호</span>
                 </td>
                 <td class="text-center ">
-                    <span class="font-weight-bold text-secondary">현재연승</span>
+                    <span class="font-weight-bold">현재연승</span>
                 </td>
                 <td class="text-center ">
-                    <span class="font-weight-bold text-secondary">다음회차픽</span>
+                    <span class="font-weight-bold">다음회차픽</span>
                 </td>
             </tr>
           </thead>
@@ -115,10 +125,10 @@ $sum4 = ($nb_uo_arr[0] + $nb_uo_arr[1] ) == 0 ? 1 : $nb_uo_arr[0] + $nb_uo_arr[1
                     <tr>
                         <td class="text-center" style="width:150px"><?php echo e($i+1); ?></td>
                         <td class="text-center"><?php echo e($pb_oe[$i]["ai_id"]); ?></td>
-                        <td class="text-center"><?php echo e($pb_oe[$i]["winning_num"]); ?></td>
+                        <td class="text-center"><?php echo e($pb_oe[$i]["winning_num"]); ?>연승중</td>
                         <td class="text-center"><?php echo $po[$pb_oe[$i]["pick"]]; ?></td>
                         <td class="text-center"><?php echo e($pb_uo[$i]["ai_id"]); ?></td>
-                        <td class="text-center"><?php echo e($pb_uo[$i]["winning_num"]); ?></td>
+                        <td class="text-center"><?php echo e($pb_uo[$i]["winning_num"]); ?>연승중</td>
                         <td class="text-center"><?php echo $pu[$pb_uo[$i]["pick"]]; ?></td>
                     </tr>
                 <?php endfor; ?>
@@ -135,29 +145,29 @@ $sum4 = ($nb_uo_arr[0] + $nb_uo_arr[1] ) == 0 ? 1 : $nb_uo_arr[0] + $nb_uo_arr[1
           <thead>
             <tr>
                 <th class="text-center align-middle" rowspan="2">
-                    <span class="font-weight-bold text-secondary" style="display:block;width:80px">번호</span>
+                    <span class="font-weight-bold" style="display:block;width:80px">번호</span>
                 </th>
                 <th colspan="3" class="text-center" width="50%">일반볼</th>
                 <th colspan="3" class="text-center" width="50%">일반볼언옵</th>
             </tr>
             <tr class="bl_gray">
                 <td class="text-center ">
-                    <span class="font-weight-bold text-secondary">AI번호</span>
+                    <span class="font-weight-bold">AI번호</span>
                 </td>
                 <td class="text-center ">
-                    <span class="font-weight-bold text-secondary">현재연승</span>
+                    <span class="font-weight-bold">현재연승</span>
                 </td>
                 <td class="text-center ">
-                    <span class="font-weight-bold text-secondary">다음회차픽</span>
+                    <span class="font-weight-bold">다음회차픽</span>
                 </td>
                 <td class="text-center ">
-                    <span class="font-weight-bold text-secondary">AI번호</span>
+                    <span class="font-weight-bold">AI번호</span>
                 </td>
                 <td class="text-center ">
-                    <span class="font-weight-bold text-secondary">현재연승</span>
+                    <span class="font-weight-bold">현재연승</span>
                 </td>
                 <td class="text-center ">
-                    <span class="font-weight-bold text-secondary">다음회차픽</span>
+                    <span class="font-weight-bold">다음회차픽</span>
                 </td>
             </tr>
           </thead>
@@ -167,10 +177,10 @@ $sum4 = ($nb_uo_arr[0] + $nb_uo_arr[1] ) == 0 ? 1 : $nb_uo_arr[0] + $nb_uo_arr[1
                         <tr>
                             <td class="text-center"><?php echo e($i+1); ?></td>
                             <td class="text-center"><?php echo e($nb_oe[$i]["ai_id"]); ?></td>
-                            <td class="text-center"><?php echo e($nb_oe[$i]["winning_num"]); ?></td>
+                            <td class="text-center"><?php echo e($nb_oe[$i]["winning_num"]); ?>연승중</td>
                             <td class="text-center"><?php echo $po[$nb_oe[$i]["pick"]]; ?></td>
                             <td class="text-center"><?php echo e($nb_uo[$i]["ai_id"]); ?></td>
-                            <td class="text-center"><?php echo e($nb_uo[$i]["winning_num"]); ?></td>
+                            <td class="text-center"><?php echo e($nb_uo[$i]["winning_num"]); ?>연승중</td>
                             <td class="text-center"><?php echo $pu[$nb_uo[$i]["pick"]]; ?></td>
                         </tr>
                     <?php endfor; ?>

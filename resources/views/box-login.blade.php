@@ -90,7 +90,7 @@
                             <i class="fa fa-gift" aria-hidden="true"></i>
                         </div>
                         아이템
-                        @if($item_count > 0)<div class="itemCntBox">{{$item_count}}</div>@endif
+                        @if($item_count > 0)<div class="itemCntBox" id="item-count">{{$item_count}}</div>@endif
                     </a>
                     </div>
                 </td>

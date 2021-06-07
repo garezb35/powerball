@@ -1472,23 +1472,26 @@ td.simu-head{
   animation: blink .6s step-end 1s 6 forwards;
 }
 .pickView {
-  position: absolute;
-  right: 2px;
-  width: 81px;
-  height: 20px !important;
-  line-height: 20px;
-  z-index: 99;
-  top: 2px
+    position: absolute;
+    right: 4px;
+    width: 81px;
+    height: 20px !important;
+    line-height: 20px;
+    z-index: 99;
+    top: 7px;
 }
 
 .pickView a {
-    color: #fff;
-    display: block;
-    background-color: #00b4b4;
-    color: #fff;
-    text-align: center;
-    font-size: 12px;
-    text-decoration: none;
+  color: #fff;
+  display: block;
+  background-color: #00b4b4;
+  color: #fff;
+  text-align: center;
+  font-size: 12px;
+  text-decoration: none;
+  background: url(/assets/images/pick/present.png);
+  background-size: 81px 20px;
+  background-repeat: no-repeat;
 }
 
 #ladderResultBox{
@@ -1497,23 +1500,30 @@ td.simu-head{
 }
 
 .pickBtn{
-  position: absolute;
-  left: 2px;
-  width: 51px;
-  height: 20px !important;
-  line-height: 20px;
-  z-index: 99;
-  top: 2px
+    position: absolute;
+    left: 4px;
+    width: 51px;
+    height: 20px !important;
+    line-height: 20px;
+    z-index: 99;
+    top: 7px;
+    background: url(/assets/images/pick/present.png);
+    background-size: 51px 20px;
+    background-repeat: no-repeat;
 }
 
 .pick-btns{
   display: block;
-  background: #00b4b4;
   color: #fff;
   text-align: center
 }
 .pick-part{
   position: absolute;
   z-index: 1000;
-  top: 24px;
+  top: 44px;
+}
+
+.hover-none:hover{
+  text-decoration: none;
+  color: #fff
 }

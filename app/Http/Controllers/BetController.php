@@ -220,7 +220,7 @@ class BetController extends Controller
                         ->toArray(); /// 유저들 게임 설정들 얻기
 
         if(empty($autoConfig)){    /////////////비였다면 모의베팅에 참가한 유저들 없음
-            echo json_encode(array("status"=>0,"msg"=>"파워볼모의베팅설정이 비였습니다.no empty settings"));
+            echo json_encode(array("status"=>0,"msg"=>"파워볼모의베팅설정이 비였습니다.no empty setting"));
             return;
         }
 
@@ -252,6 +252,7 @@ class BetController extends Controller
                 continue;
             if(empty($config["game"]))
               continue;
+            $start_round = $config["start_round"];
             $first_round  = $config["start_round"]; // 시작 회차와 마감 회차를 얻는다.
             $end_round  = $config["end_round"];    // 시작 회차와 마감 회차를 얻는다.
             $money  = explode(",",$config["mny"]); // 단계별 금액을 얻는다.
@@ -267,14 +268,14 @@ class BetController extends Controller
                 if(empty($first_round) || empty($end_round)){  ///   시작라운드와 마감 라운드를 검사한다.
                     continue;
                 }
-
                 $current  = empty($config['current_round']) ? $first_round : $config['current_round'];
                 $database_year = PowerballRange::where("range1","<=",$current)->orderBy("year","DESC")->first(); // 회차에 따르는 년도수를 구하여 현재 년도인지 지난 년도에것인지 검사한다.
+
                 if($database_year["year"] == date("Y")){
                     $pb_database = new Pb_Result_Powerball();
                 }
                 else{
-                    $pb_database = DB::connect("powerball_community".$database_year["year"])->table("pb_result_powerball");
+                    $pb_database = DB::connection("powerball_community".$database_year["year"])->table("pb_result_powerball");
                     $year = $database_year["year"];
                 }
 
@@ -291,7 +292,7 @@ class BetController extends Controller
                     $pb_database = new Pb_Result_Powerball();
                 }
                 else{
-                    $pb_database = DB::connect("powerball_community".$database_year["year"])->table("pb_result_powerball");
+                    $pb_database = DB::connection("comm".$database_year["year"])->table("pb_result_powerball");
                 }
             }
             else{
@@ -301,7 +302,13 @@ class BetController extends Controller
                 $nb_uo = $request->nb_uo;
                 $current = $request->rownum;
                 $pb_database = new Pb_Result_Powerball();
+                if(empty($config['current_round'])){
+                  $start_round = $current;
+                  $insert_config["start_round"] = $current;
+                }
             }
+
+
 
             $history["type"] = "current_result";
             $history["pb_oe"] = $pb_oe;
@@ -319,9 +326,10 @@ class BetController extends Controller
                 DB::raw("GROUP_CONCAT(pb_result_powerball.pb_oe ORDER BY day_round ASC  SEPARATOR '') as `poe`"),
                 DB::raw("GROUP_CONCAT(pb_result_powerball.nb_oe ORDER BY day_round ASC  SEPARATOR '') as `noe`"),
                 DB::raw("GROUP_CONCAT(pb_result_powerball.nb_uo ORDER BY day_round ASC  SEPARATOR '') as `nuo`")
-            )->where("day_round","<",$current)->get()->toArray();
+            )->where("day_round","<=",$current)->where("day_round",'>=',$start_round)->get()->toArray();
 
             $match_type = json_decode(json_encode($match_type));
+
 
             if(empty($match_type[0]->poe))  // 결과가 없다면 다음 순환으로 넘긴다.
             {
@@ -329,16 +337,15 @@ class BetController extends Controller
                 continue;
             }
 
-            if(strlen($match_type[0]->poe) < 50 && $year > 2013){    //  이전회차결과길이가 50보다 작고 현재 년도가 2013년보다 크다면 이전 년도의 자료기지로 넘어간다.
-                $year = $year-1;
-                $pb_database = $pb_database = DB::connect("powerball_community".$year)->table("pb_result_powerball");
+            if(strlen($match_type[0]->poe) < 20 && $year > 2013 && $bet_type == 1){
+                $pb_database = DB::connection("comm".$year)->table("pb_result_powerball");
                 $match_type_previous = json_decode(json_encode( $pb_database->select(
                     DB::raw("GROUP_CONCAT(pb_result_powerball.pb_uo ORDER BY day_round ASC  SEPARATOR '') as `puo`"),
                     DB::raw("GROUP_CONCAT(pb_result_powerball.pb_oe ORDER BY day_round ASC  SEPARATOR '') as `poe`"),
                     DB::raw("GROUP_CONCAT(pb_result_powerball.nb_oe ORDER BY day_round ASC  SEPARATOR '') as `noe`"),
                     DB::raw("GROUP_CONCAT(pb_result_powerball.nb_uo ORDER BY day_round ASC  SEPARATOR '') as `nuo`")
-                )->get()->toArray()));
-                $match_type_previous[0]->poe .= $match_type[0]->poe;  //이전과 현재 회차를 합치고
+                )->where("day_round",'>=',$start_round)->get()->toArray()));
+                $match_type_previous[0]->poe .= $match_type[0]->poe;
                 $match_type_previous[0]->puo .= $match_type[0]->puo;
                 $match_type_previous[0]->noe .= $match_type[0]->noe;
                 $match_type_previous[0]->nuo .= $match_type[0]->nuo;
@@ -349,10 +356,10 @@ class BetController extends Controller
                 $match_type[0]->nuo = $match_type_previous[0]->nuo;
             }
 
-            $match_type[0]->poe = str_replace("0","2",substr($match_type[0]->poe,strlen($match_type[0]->poe)-50)); // 최상위문자 길이의 50자를 뽑아낸다.
-            $match_type[0]->puo = str_replace("0","2",substr($match_type[0]->puo,strlen($match_type[0]->puo)-50));
-            $match_type[0]->noe = str_replace("0","2",substr($match_type[0]->noe,strlen($match_type[0]->noe)-50));
-            $match_type[0]->nuo = str_replace("0","2",substr($match_type[0]->nuo,strlen($match_type[0]->nuo)-50));
+            $match_type[0]->poe = str_replace("0","2",substr($match_type[0]->poe,strlen($match_type[0]->poe)-20)); // 최상위문자 길이의 50자를 뽑아낸다.
+            $match_type[0]->puo = str_replace("0","2",substr($match_type[0]->puo,strlen($match_type[0]->puo)-20));
+            $match_type[0]->noe = str_replace("0","2",substr($match_type[0]->noe,strlen($match_type[0]->noe)-20));
+            $match_type[0]->nuo = str_replace("0","2",substr($match_type[0]->nuo,strlen($match_type[0]->nuo)-20));
 
             $games = $config["game"];
             $auto_games = json_decode(json_encode($games)); // 오토 게임들을 뽑아낸다.
@@ -405,7 +412,7 @@ class BetController extends Controller
                   {
                     if(empty(trim($game->money))) continue;
                     $check = array(1,-1);
-                    $pattern = trim(str_replace("<br>","",preg_replace("/<.*?>/", "", $game->auto_pattern)));
+                    $pattern = trim(str_replace("<br>","",strip_tags($game->auto_pattern)));
                     $moneys = strip_tags($game->money,"<div>");
                     $first_val = strip_tags_content($moneys);
                     if(!empty($first_val))
@@ -460,8 +467,11 @@ class BetController extends Controller
                       if(empty($amounts[$amount_step]) || !is_numeric($amounts[$amount_step])) continue;
                       $bet_money = $amounts[$amount_step];
                       $step = $game->auto_step;
-                      $split_pattern = str_split(str_replace("2","0",$game->auto_pattern));
-                      if(!isset($split_pattern[$step])) continue;
+                      $split_pattern = str_split(str_replace("2","0",$pattern));
+                      if(!isset($split_pattern[$step])){
+                        $step = 0;
+                        return;
+                      }
                       $betting_pick = $split_pattern[$step];
                       if($compare !="-1" && $betting_pick != $compare)
                       {
@@ -549,7 +559,7 @@ class BetController extends Controller
               if($current >= $end_round){   //// 현재 회차가 마감회차보다 커지면 빠진다.
                   $insert_config["state"] = 0;
               }
-              if($remain_amount >= $config["win_limit"] || $remain_amount <= $config["win_limit"] * (-1)){
+              if(($remain_amount >= $config["win_limit"] || $remain_amount <= $config["win_limit"] * (-1)) && $config["win_limit"]  != 0 && $config["win_limit"] != ""){
                 $insert_config["state"] = 0;
               }
               $insert_config["current_round"] = $current+1;

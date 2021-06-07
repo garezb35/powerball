@@ -106,7 +106,10 @@ $(document).ready(function(){
                             alert(data.msg)
                         }
                         else
-                            alert("아이템 사용이 정상적으로 처리되었습니다.");
+                            {
+                              $(top.document).find("#item-count").text(data.item_count)
+                              $(top.document).find("#item-count").text(data.item_count)
+                            }
                         return;
                     }
                     if(data.status ==0){
@@ -158,6 +161,7 @@ $(document).ready(function(){
                     isClick = false;
                     if(data.status ==1){
                         alert("성공적으로 구매하였습니다.");
+                        $(top.document).find("#item-count").text(data.item_count)
                     }
                     if(data.status ==0 && data.code== 0){
                         if(confirm('코인이 부족합니다.\n코인 충전 페이지로 이동하시겠습니까?'))
@@ -217,4 +221,3 @@ function countChk(obj)
 
     $(obj).val($(obj).attr('rel')+'개');
 }
-

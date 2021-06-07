@@ -90,7 +90,7 @@
                             <i class="fa fa-gift" aria-hidden="true"></i>
                         </div>
                         아이템
-                        <?php if($item_count > 0): ?><div class="itemCntBox"><?php echo e($item_count); ?></div><?php endif; ?>
+                        <?php if($item_count > 0): ?><div class="itemCntBox" id="item-count"><?php echo e($item_count); ?></div><?php endif; ?>
                     </a>
                     </div>
                 </td>

@@ -9,15 +9,19 @@ use App\Models\Pb_Result_Speedkeno;
 class TimeController extends Controller
 {
 
-
     public static function getTimer(int $type)
     {
         $round = 0;
+        $day_round = 0;
         switch ($type){
             case 2:
                 $pb_result = new Pb_Result_Powerball;
                 $pb_result = $pb_result->orderBy("day_round","DESC")->first();
-                $round = !empty($pb_result) ?  $pb_result["day_round"] + 1 : 0;
+                if(!empty($pb_result)){
+                  $round = $pb_result["day_round"] + 1;
+                  $day_round = $pb_result["round"]  == 288 ? 1 : $pb_result["round"] + 1;
+                }
+
                 break;
             case 0:
                 $sp_result = new Pb_Result_Speedkeno;
@@ -37,7 +41,7 @@ class TimeController extends Controller
                 $g_nMinute = 4;
             $g_nSecond = 60 + $g_nSecond;
         }
-        return array($g_nMinute*60 + $g_nSecond,$round);
+        return array($g_nMinute*60 + $g_nSecond,$round,$day_round);
     }
     public static function getTimerInPast(){
         $second = (int)date("s");

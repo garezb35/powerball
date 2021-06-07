@@ -123,7 +123,7 @@ class MarketController extends SecondController
                 "ip"=>$request->ip()
             ]);
 
-        echo json_encode(array("status"=>1));
+        echo json_encode(array("status"=>1,"item_count"=>PbPurItem::where("userId",$user->userId)->where("active",1)->sum("count")));
     }
 
     public function useItem(Request $request){
@@ -186,14 +186,14 @@ class MarketController extends SecondController
                 "userId"=>$user->userId,
                 "ip"=>$request->ip()
             ]);
-            echo json_encode(array("status"=>1,"code"=>-100));
+            echo json_encode(array("status"=>1,"code"=>-100,"item_count"=>PbPurItem::where("userId",$user->userId)->where("active",1)->sum("count")));
             return;
         }
         else if($code == "SUPER_NICKNAME_RIGHT"){
             PbPurItem::where("id",$pur_item["id"])->update(["count"=>$pur_item["count"]-1]);
             $user->nickname = $user->old_nickname;
             $user->save();
-            echo json_encode(array("status"=>1,"code"=>-3));
+            echo json_encode(array("status"=>1,"code"=>-3,"item_count"=>PbPurItem::where("userId",$user->userId)->where("active",1)->sum("count")));
         }
         else if($code =="RANDOM_EXP_BOX_20"){
             PbPurItem::where("id",$pur_item["id"])->update(["count"=>$pur_item["count"]-1]);
@@ -211,7 +211,7 @@ class MarketController extends SecondController
                 "userId"=>$user->userId,
                 "ip"=>$request->ip()
             ]);
-            echo json_encode(array("status"=>1,"code"=>"msg","msg"=>"{$rand_exp}의 경험치가 추가되였습니다."));
+            echo json_encode(array("status"=>1,"code"=>"msg","msg"=>"{$rand_exp}의 경험치가 추가되였습니다.","item_count"=>PbPurItem::where("userId",$user->userId)->where("active",1)->sum("count")));
 
         }
         else if($code == "PICK_INIT"){
@@ -241,7 +241,7 @@ class MarketController extends SecondController
             $win_h->nb_size->lose = 0;
             $user->winning_history = json_encode($win_h);
             $user->save();
-            echo json_encode(array("status"=>1,"code"=>-1));
+            echo json_encode(array("status"=>1,"code"=>-1,"item_count"=>PbPurItem::where("userId",$user->userId)->where("active",1)->sum("count")));
         }
 
         else if($code == "RANDOM_ITEM"){

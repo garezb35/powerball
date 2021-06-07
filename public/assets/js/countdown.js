@@ -10,8 +10,8 @@ $(document).ready(function(){
     //         },1000);
     //     }
     // })
-
+    var w = typeof winning != "undefined" && winning !=null ? winning : 0;
     setInterval(function(){
-        ladderTimer(300,'chatTimer');
+        ladderTimer(300,'chatTimer',w);
     },1000);
 })

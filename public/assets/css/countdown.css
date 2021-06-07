@@ -12,6 +12,6 @@
     border-bottom:1px solid #676767;
 }
 
-#timeRound,.minute,.second{
+#timeRound,.minute,.second,#timedayRound{
     color: #b30000;
 }

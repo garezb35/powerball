@@ -63,14 +63,22 @@ if(!empty($auto_info["winlose"])){
   }
 }
 $bet_amouont = $auto_info["bet_amount"] ?? 0;
+if(empty($auto_info["current_round"])){
+  $s = $auto_info["start_round"];
+}
+else{
+  $s = $auto_info["current_round"];
+}
 ?>
 
 <?php $__env->startSection("content"); ?>
     <script>
+      var start_round = 0;
         var type = <?php echo e($type); ?>;
         var patts1 = {} ,patts2 = {};
         <?php if(!empty($auto_info) && $auto_info["state"] == 1): ?>
         var started = <?php echo e($auto_info["betting_type"]); ?>;
+        var start_round =<?php echo e($auto_info["start_round"]); ?>;
         <?php else: ?>
         var started =  0;
         <?php endif; ?>
@@ -79,7 +87,7 @@ $bet_amouont = $auto_info["bet_amount"] ?? 0;
         var round = 0;
 
         <?php if($autos ==1): ?>
-        round =  <?php echo e($start_round); ?>;
+        round =  <?php echo e($s); ?>;
         <?php endif; ?>
         <?php if($autos ==2): ?>
         round = <?php echo e($current); ?>;
@@ -349,11 +357,11 @@ $bet_amouont = $auto_info["bet_amount"] ?? 0;
         </div>
         <table class="table table-bordered mb-1">
           <colgroup>
-            <col width="190px"/>
+            <col width="150px"/>
           </colgroup>
             <tbody>
                 <tr>
-                  <td class="align-middle">
+                  <td class="align-middle p-0">
                       <table class="table-init">
                          <tr>
                            <td class="text-center text-danger font-weight-bold">
@@ -367,20 +375,21 @@ $bet_amouont = $auto_info["bet_amount"] ?? 0;
                           </tr>
                       </table>
                   </td>
-                    <td class="align-middle">
+                    <td class="align-middle p-0">
                        <table class="table-init">
                            <tr class="text-left">
                                <td>시작금액</td>
                                <td class="start-amount"><?php echo e(number_format($start_amount)); ?>원</td>
-                               <td>보유금액</td>
-                               <td class="saved-amount"><?php echo e(number_format($user_amount)); ?>원</td>
+                               <td>손익금액</td>
+                               <td class="profit-amount"><?php echo e(number_format($profit)); ?>원</td>
                            </tr>
                            <tr class="text-left">
 
                            </tr>
                            <tr class="text-left">
-                               <td>손익금액</td>
-                               <td class="profit-amount"><?php echo e(number_format($profit)); ?>원</td>
+                               <td>보유금액</td>
+                               <td class="saved-amount"><?php echo e(number_format($user_amount)); ?>원</td>
+
                                <td>배팅금액</td>
                                <td class="profit-amount"><?php echo e(number_format($bet_amouont)); ?>원</td>
                            </tr>

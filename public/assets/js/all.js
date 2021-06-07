@@ -92,21 +92,20 @@ function setGameTimer(count, betLeft) {
 }
 
 
-function ladderTimer(remain,divId)
+function ladderTimer(remain,divId,w)
 {
 	remainTime = powerballDiff();
     if(remainTime == 0)
 	{
 		remainTime = remain;
-
 		if(divId != ""){
             var roundNum = parseInt($('#timeRound').text())+1;
-            if(roundNum == 289) roundNum = 1;
-
+            var dayRound  = parseInt($('#timedayRound').text())+1;
+            if(dayRound > 288) dayRound = 1;
             $('#timeRound').text(roundNum);
-
+            $('#timedayRound').text(dayRound);
             roundNum = null;
-
+            dayRound = null;
             if($('#powerballPointBetGraph').length)
             {
                 setTimeout(function(){
@@ -121,6 +120,20 @@ function ladderTimer(remain,divId)
             }
         }
 	}
+
+  if(w == 1){
+    if(remainTime <=300 && remainTime >=280 ){
+      $(".bet-part").removeClass("d-none")
+      $(".time-part").addClass("d-none")
+      $("#bettingPart").text(remainTime-280)
+      if(remainTime == 300) {$("tbody").html("");heightResize()}
+      if(remainTime == 280) location.reload()
+    }
+    else{
+      $(".bet-part").addClass("d-none")
+      $(".time-part").removeClass("d-none")
+    }
+  }
 
 	// remainTime--;
     if(divId != ""){

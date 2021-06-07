@@ -65,10 +65,9 @@ function getResultFromDatabase(){
         type:'POST',
         dataType:'json',
         url:'/api/get_more/power_data-simulator',
-        data:{round:round,type:typeo},
+        data:{round:round,type:typeo,start_round:start_round},
         success:function(data,textStatus){
           if(data.status ==1){
-              console.log(data.result)
               var tem = "";
               var alias = result[typeo]["alias"]
               result[typeo] = data.result;
@@ -82,6 +81,8 @@ function getResultFromDatabase(){
       loading  = false;
       simulator_in_index++;
       getResultFromDatabase();
+    }).fail(function(xhr){
+      console.log(xhr)
     })
   }
   else{
