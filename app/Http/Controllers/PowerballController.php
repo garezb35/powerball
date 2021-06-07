@@ -1393,24 +1393,42 @@ class PowerballController extends SecondController
         $type = $request->type;
         $code = $request->code;
         if($code == -1)
-            $state = 1;
+            {
+              $state = 1;
+              $insert = [
+                  "state"=>$state,
+                  "betting_type"=>$type,
+                  "current_round"=>0,
+                  "bet_amount"=>0,
+                  "user_amount"=>DB::raw("start_amount"),
+                  "w1"=>0,
+                  "w2"=>0,
+                  "w3"=>0,
+                  "w4"=>0,
+                  "rest1"=>0,
+                  "rest2"=>0,
+                  "rest3"=>0,
+                  "rest4"=>0
+              ];
+            }
         else
-            $state = 0;
-        PbAutoSetting::where("userId",$this->user->userId)->update([
-            "state"=>$state,
-            "betting_type"=>$type,
-            "current_round"=>0,
-            "bet_amount"=>0,
-            "user_amount"=>DB::raw("start_amount"),
-            "w1"=>0,
-            "w2"=>0,
-            "w3"=>0,
-            "w4"=>0,
-            "rest1"=>0,
-            "rest2"=>0,
-            "rest3"=>0,
-            "rest4"=>0
-        ]);
+            {
+              $state = 0;
+              $insert = [
+                  "state"=>$state,
+                  "betting_type"=>$type,
+                  "current_round"=>0,
+                  "w1"=>0,
+                  "w2"=>0,
+                  "w3"=>0,
+                  "w4"=>0,
+                  "rest1"=>0,
+                  "rest2"=>0,
+                  "rest3"=>0,
+                  "rest4"=>0
+              ];
+            }
+        PbAutoSetting::where("userId",$this->user->userId)->update($insert);
         PbAutoMatch::where("userId",$this->user->userId)->update([
           "auto_step"=>0,
           "auto_train"=>0,
