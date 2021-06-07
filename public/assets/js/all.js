@@ -127,7 +127,7 @@ function ladderTimer(remain,divId,w)
       $(".time-part").addClass("d-none")
       $("#bettingPart").text(remainTime-260)
       if(remainTime == 300) {$("tbody").html("");heightResize()}
-      if(remainTime == 260) self.reload()
+      if(remainTime == 260) window.location.href=window.location.href
     }
     else{
       $(".bet-part").addClass("d-none")
