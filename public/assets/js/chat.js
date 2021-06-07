@@ -1031,7 +1031,7 @@ function roomName(roomIdx)
     switch(roomIdx)
     {
         case 'channel1':
-            returnName = '연병장';
+            returnName = '채팅방';
             break;
 
         case 'channel2':
