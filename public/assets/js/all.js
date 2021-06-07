@@ -122,12 +122,12 @@ function ladderTimer(remain,divId,w)
 	}
 
   if(w == 1){
-    if(remainTime <=300 && remainTime >=280 ){
+    if(remainTime <=300 && remainTime >=260 ){
       $(".bet-part").removeClass("d-none")
       $(".time-part").addClass("d-none")
-      $("#bettingPart").text(remainTime-280)
+      $("#bettingPart").text(remainTime-260)
       if(remainTime == 300) {$("tbody").html("");heightResize()}
-      if(remainTime == 280) location.reload()
+      if(remainTime == 260) location.reload()
     }
     else{
       $(".bet-part").addClass("d-none")
