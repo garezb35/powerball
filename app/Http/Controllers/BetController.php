@@ -259,21 +259,19 @@ class BetController extends Controller
             $end_round  = $config["end_round"];    // 시작 회차와 마감 회차를 얻는다.
             $money  = explode(",",$config["mny"]); // 단계별 금액을 얻는다.
             $user_amount =  $config["user_amount"];   // 보유금액을 얻는다.
+            echo $bet_type;
             if(empty($money[0])){       //////     시작 금액 없으면 다음으로 넘어간다.
                 continue;
             }
             if(empty($user_amount)){ /////////////       유저 보유금액 없으면 다음으로 넘긴다.
                 continue;
             }
-            echo $bet_type;
+
             if($bet_type ==1){         ///////////////    1이면 지난 회차
                 if(empty($first_round) || empty($end_round)){  ///   시작라운드와 마감 라운드를 검사한다.
                     continue;
                 }
                 $current  = empty($config['current_round']) ? $first_round : $config['current_round'];
-                echo $bet_type;
-                echo $current;
-                return;
                 $database_year = PowerballRange::where("range1","<=",$current)->orderBy("year","DESC")->first(); // 회차에 따르는 년도수를 구하여 현재 년도인지 지난 년도에것인지 검사한다.
 
                 if($database_year["year"] == date("Y")){
