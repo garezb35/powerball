@@ -55,10 +55,7 @@ function openCity(evt,patt_index) {
 }
 
 function getResultFromDatabase(){
-  if(simulator_in_index == 4) {
-    processResult()
-    return false;
-  }
+  simulator_in_index = 0;
   var typeo = simulator_in[simulator_in_index];
   if(round > 0){
     $.ajax({
@@ -67,22 +64,58 @@ function getResultFromDatabase(){
         url:'/api/get_more/power_data-simulator',
         data:{round:round,type:typeo,start_round:start_round},
         success:function(data,textStatus){
-          if(data.status ==1){
-              var tem = "";
-              var alias = result[typeo]["alias"]
-              result[typeo] = data.result;
-              result[typeo]["alias"] = alias;
-              compileJson("#pattern-date",".pattern-tr",result[typeo],2);
-              $('.pattern-t').animate({scrollLeft:10000},100);
-              rr[simulator_in_index] = data.result.list
-          }
+           for(var i = 0 ;i < simulator_in.length;i++){
+             if(simulator_in[i] == "pb_oe")
+            {
+              if(dta.pb_oe.status == 1){
+                var tem = "";
+                var alias = result["pb_oe"]["alias"]
+                result["pb_oe"] = data.pb_oe.result;
+                result["pb_oe"]["alias"] = alias;
+                rr[0] = data.pb_oe.result.list;
+              }
+            }
+             if(simulator_in[i] == "pb_uo")
+            {
+              if(dta.pb_uo.status == 1){
+                var tem = "";
+                var alias = result["pb_uo"]["alias"]
+                result["pb_uo"] = data.pb_uo.result;
+                result["pb_uo"]["alias"] = alias;
+                rr[1] = data.pb_uo.result.list;
+              }
+            }
+             if(simulator_in[i] == "bb_oe")
+            {
+              if(dta.nb_oe.status == 1){
+                var tem = "";
+                var alias = result["nb_oe"]["alias"]
+                result["nb_oe"] = data.nb_oe.result;
+                result["nb_oe"]["alias"] = alias;
+                rr[2] = data.nb_oe.result.list;
+              }
+            }
+             if(simulator_in[i] == "nb_uo")
+            {
+              if(dta.nb_uo.status == 1){
+                var tem = "";
+                var alias = result["nb_uo"]["alias"]
+                result["nb_uo"] = data.nb_uo.result;
+                result["pb_uo"]["alias"] = alias;
+                rr[3] = data.nb_uo.result.list;
+              }
+            }
+
+             compileJson("#pattern-date",".pattern-tr",result["pb_oe"],2);
+             compileJson("#pattern-date",".pattern-tr",result["pb_uo"],2);
+             compileJson("#pattern-date",".pattern-tr",result["nb_oe"],2);
+             compileJson("#pattern-date",".pattern-tr",result["nb_uo"],2);
+             $('.pattern-t').animate({scrollLeft:10000},100);
+             processResult();
+           }
         }
     }).done(function(){
       loading  = false;
-      simulator_in_index++;
-      setTimeout(function(){
-        getResultFromDatabase()
-      },1000)
     })
   }
   else{

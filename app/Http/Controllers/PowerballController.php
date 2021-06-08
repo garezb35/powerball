@@ -502,7 +502,10 @@ class PowerballController extends SecondController
       $powerball_list_to = array_reverse($powerball_list_to);
       $powerball_list_to = json_decode(json_encode($powerball_list_to));
       $list = array_merge($list,$powerball_list_to);
-      echo json_encode($this->getPatternDataFromArray($list,$type,date('Y')));
+      echo json_encode(array(  "pb_oe"=>$this->getPatternDataFromArray($list,"pb_oe",date('Y')),
+                                "pb_uo"=>$this->getPatternDataFromArray($list,"pb_uo",date('Y')),
+                                "nb_oe"=>$this->getPatternDataFromArray($list,"nb_oe",date('Y')),
+                                "nb_uo"=>$this->getPatternDataFromArray($list,"nb_uo",date('Y'))));
     }
 
     /* 육매 분석데이터 */
