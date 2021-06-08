@@ -561,7 +561,7 @@ if(!empty($auto_info)){
                   </tr>
                   </tbody>
               </table>
-              <table class="table table-bordered table-gray table-pad autopattern">
+              <table class="table table-bordered table-gray table-pad autopattern" style="display:none">
                 <colgroup>
                 <col width = "25%"/>
                 <col width = "25%"/>
