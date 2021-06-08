@@ -109,6 +109,7 @@ function hideType(type,obj){
         $(".autopattern").show();
     }
     heightResize();
+    setCookie("simulate_tap",type,3);
 }
 
 function saveAutoSetting(){
@@ -146,6 +147,24 @@ function saveAutoSetting(){
 }
 
 $(document).ready(function(){
+
+  var simulate_tap = getCookie("simulate_tap");
+  if( typeof simulate_tap == "undefined" || simulate_tap == null || simulate_tap.trim() == "" || simulate_tap == 1){
+    $("#category-auto1").addClass("text-danger")
+    $("#category-auto1").removeClass("text-white")
+    $("#category-auto2").addClass("text-white")
+    $("#category-auto2").removeClass("text-danger")
+    $(".mulebanga").show();
+    $(".autopattern").hide();
+  }
+  else{
+    $("#category-auto1").addClass("text-white")
+    $("#category-auto1").removeClass("text-danger")
+    $("#category-auto2").addClass("text-danger")
+    $("#category-auto2").removeClass("text-white")
+    $(".mulebanga").hide();
+    $(".autopattern").show();
+  }
 
   $('.editor-text').on('DOMSubtreeModified', function(){
       $(this).parent().find("textarea").val($(this).html());

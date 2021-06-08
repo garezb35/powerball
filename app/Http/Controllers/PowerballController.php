@@ -1360,7 +1360,7 @@ class PowerballController extends SecondController
                               "auto_kind"=>$key+1,
                               "userId"=>$userId,
                           ],[
-                              "auto_pattern"=>trim(str_replace("<br>","",$p1[$key])),
+                              "auto_pattern"=>str_replace(" ","",trim(str_replace("<br>","",$p1[$key]))),
                               "money"=>trim(str_replace("<br>","",$a1[$key])),
                               "auto_cate"=>$request->$round_t,
                               "game_kind"=>$key+1
@@ -1378,7 +1378,7 @@ class PowerballController extends SecondController
                             "auto_kind"=>$key+1,
                             "userId"=>$userId,
                         ],[
-                            "auto_pattern"=>trim(str_replace("<br>","",$request->$value)),
+                            "auto_pattern"=>str_replace(" ","",trim(str_replace("<br>","",$request->$value))),
                             "game_kind"=>explode("_",$value)[1]
                         ]);
           }
@@ -1393,41 +1393,45 @@ class PowerballController extends SecondController
         $type = $request->type;
         $code = $request->code;
         if($code == -1)
-            {
-              $state = 1;
-              $insert = [
-                  "state"=>$state,
-                  "betting_type"=>$type,
-                  "current_round"=>0,
-                  "bet_amount"=>0,
-                  "user_amount"=>DB::raw("start_amount"),
-                  "w1"=>0,
-                  "w2"=>0,
-                  "w3"=>0,
-                  "w4"=>0,
-                  "rest1"=>0,
-                  "rest2"=>0,
-                  "rest3"=>0,
-                  "rest4"=>0
-              ];
-            }
+        {
+          $state = 1;
+          $settings = PbAutoSetting::where("userId",$this->user->userId)->first();
+          if(empty($settings) || empty($settings["user_amount"]) || ( (empty($settings["start_round"]) || empty($settings["end_round"])) && $type == 1 )){
+            $state = 0;
+          }
+          $insert = [
+              "state"=>$state,
+              "betting_type"=>$type,
+              "current_round"=>0,
+              "bet_amount"=>0,
+              "user_amount"=>DB::raw("start_amount"),
+              "w1"=>0,
+              "w2"=>0,
+              "w3"=>0,
+              "w4"=>0,
+              "rest1"=>0,
+              "rest2"=>0,
+              "rest3"=>0,
+              "rest4"=>0
+          ];
+        }
         else
-            {
-              $state = 0;
-              $insert = [
-                  "state"=>$state,
-                  "betting_type"=>$type,
-                  "current_round"=>0,
-                  "w1"=>0,
-                  "w2"=>0,
-                  "w3"=>0,
-                  "w4"=>0,
-                  "rest1"=>0,
-                  "rest2"=>0,
-                  "rest3"=>0,
-                  "rest4"=>0
-              ];
-            }
+        {
+          $state = 0;
+          $insert = [
+              "state"=>$state,
+              "betting_type"=>$type,
+              "current_round"=>0,
+              "w1"=>0,
+              "w2"=>0,
+              "w3"=>0,
+              "w4"=>0,
+              "rest1"=>0,
+              "rest2"=>0,
+              "rest3"=>0,
+              "rest4"=>0
+          ];
+        }
         PbAutoSetting::where("userId",$this->user->userId)->update($insert);
         PbAutoMatch::where("userId",$this->user->userId)->update([
           "auto_step"=>0,

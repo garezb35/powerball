@@ -352,8 +352,8 @@ if(!empty($auto_info)){
 <div class="auto-info">
     <div class="auto-left">
         <div class="auto-header p-3">
-          <span  class="text-center font-weight-bold text-danger category-auto" onclick="hideType(1,this)">물레방아</span>
-          <span class="text-center text-white category-auto" onclick="hideType(2,this)">패턴배팅</span>
+          <span  class="text-center font-weight-bold text-danger category-auto" onclick="hideType(1,this)" id="category-auto1">물레방아</span>
+          <span class="text-center text-white category-auto" onclick="hideType(2,this)" id="category-auto2">패턴배팅</span>
           <div class="position-absolute auto-info-right">
             <span class="nickname"><?php echo e($nickname); ?></span>님,로그인 중
             <span class="amount"><?php echo e(number_format($user_amount)); ?></span>
