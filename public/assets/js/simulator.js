@@ -524,9 +524,6 @@ function processResult(){
   }).promise().done( function(){
       $('.p2').each(function(i, obj) {
           var html_dom = $(obj)[0];
-          setCaret(html_dom,0,1,5);
-          setCaret(html_dom,1,0,5);
-          return false;
           if(typeof patts2[i+1] !="undefined" &&  patts2[i+1].pattern.trim() !=""){
             var pattern =  new Array()
             var compare_pattern = new Array()
@@ -583,7 +580,7 @@ function processResult(){
                         for(var cruiser_index = 0; cruiser_index < cruiser ; cruiser_index++){
                           offer_index += cruiser_arr[cruiser_index].length;
                         }
-                        offer_index += cruiser_arr[cruiser].indexOf(compare_val)
+                        offer_index += cruiser_arr[cruiser].indexOf(compare_val) + cruiser
                         setCaret(html_dom,step,offer_index,offer_index+compare_val.length)
                     }
                   })
