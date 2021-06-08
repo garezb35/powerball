@@ -550,6 +550,7 @@ function processResult(){
             }
           }
       }).promise().done( function(){
+      });
   });
   var simulate_tap = getCookie("simulate_tap");
   if( typeof simulate_tap == "undefined" || simulate_tap == null || simulate_tap.trim() == "" || simulate_tap == 1){
@@ -569,7 +570,6 @@ function processResult(){
     $(".autopattern").show();
     $(".auto-content").css("height","355px");
   }
-});
 }
 
 function doRest(id,obj){
