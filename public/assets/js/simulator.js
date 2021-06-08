@@ -82,7 +82,7 @@ function getResultFromDatabase(){
       simulator_in_index++;
       setTimeout(function(){
         getResultFromDatabase()
-      },500)
+      },1000)
     })
   }
   else{
