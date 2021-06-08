@@ -114,11 +114,11 @@ function getResultFromDatabase(){
              // compileJson("#pattern-date",".pattern-tr",result["nb_oe"],2);
              // compileJson("#pattern-date",".pattern-tr",result["nb_uo"],2);
            }
-           // compileJson("#pattern-date",".pattern-tr",result["pb_oe"],2);
-           // compileJson("#pattern-date",".pattern-tr",result["pb_uo"],2);
-           // compileJson("#pattern-date",".pattern-tr",result["nb_oe"],2);
-           // compileJson("#pattern-date",".pattern-tr",result["nb_uo"],2);
-           // $('.pattern-t').animate({scrollLeft:10000},100);
+           compileJson("#pattern-date",".pattern-tr",result["pb_oe"],2);
+           compileJson("#pattern-date",".pattern-tr",result["pb_uo"],2);
+           compileJson("#pattern-date",".pattern-tr",result["nb_oe"],2);
+           compileJson("#pattern-date",".pattern-tr",result["nb_uo"],2);
+           $('.pattern-t').animate({scrollLeft:10000},100);
            processResult();
         }
     }).done(function(){
