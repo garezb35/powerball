@@ -118,8 +118,8 @@ function getResultFromDatabase(){
            // compileJson("#pattern-date",".pattern-tr",result["pb_uo"],2);
            // compileJson("#pattern-date",".pattern-tr",result["nb_oe"],2);
            // compileJson("#pattern-date",".pattern-tr",result["nb_uo"],2);
-           $('.pattern-t').animate({scrollLeft:10000},100);
-           // processResult();
+           // $('.pattern-t').animate({scrollLeft:10000},100);
+           processResult();
         }
     }).done(function(){
       loading  = false;
@@ -522,7 +522,6 @@ function processResult(){
         }
       }
   }).promise().done( function(){
-
       $('.p2').each(function(i, obj) {
           var html_dom = $(obj)[0];
           if(typeof patts2[i+1] !="undefined" &&  patts2[i+1].pattern.trim() !=""){
