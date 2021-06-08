@@ -505,10 +505,7 @@ class MemberController extends SecondController
     public function umodify(Request $request){
         $type = $request->type ?? "";
         $userId= $this->user->userId;
-
         $user = User::with(["item"])->where("userId",$userId)->first();
-        echo json_encode($user);
-        return;
         $item_count = array();
         foreach($user->item as $index){
             $item_count[$index["market_id"]] = $index["count"];
