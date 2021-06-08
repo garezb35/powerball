@@ -510,7 +510,7 @@ class MemberController extends SecondController
         echo json_encode($user);
         return;
         $item_count = array();
-        foreach($user->item->toArray() as $index){
+        foreach($user->item as $index){
             $item_count[$index["market_id"]] = $index["count"];
         }
         switch ($type) {
