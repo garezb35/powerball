@@ -444,7 +444,7 @@ if(!empty($auto_info)){
                   $dis=  $dis2;
               @endphp
           <div class="part" >
-              <table class="table table-gray mulebanga">
+              <table class="table table-gray mulebanga" >
                   <tbody class="back-gray">
                   <tr>
                       <td  class="p-0">
