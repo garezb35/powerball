@@ -107,9 +107,9 @@ function getResultFromDatabase(){
             }
 
              compileJson("#pattern-date",".pattern-tr",result["pb_oe"],2);
-             setTimeout(function(){
-               compileJson("#pattern-date",".pattern-tr",result["pb_uo"],2);
-             },400)
+             // setTimeout(function(){
+             //   compileJson("#pattern-date",".pattern-tr",result["pb_uo"],2);
+             // },400)
              // compileJson("#pattern-date",".pattern-tr",result["pb_uo"],2);
              // compileJson("#pattern-date",".pattern-tr",result["nb_oe"],2);
              // compileJson("#pattern-date",".pattern-tr",result["nb_uo"],2);

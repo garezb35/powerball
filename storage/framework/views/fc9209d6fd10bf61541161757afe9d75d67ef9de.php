@@ -77,7 +77,8 @@ if(!empty($auto_info)){
 
 <?php $__env->startSection("content"); ?>
     <script>
-      var start_round = 0;
+        var start_round = 0;
+        var round = 0;
         var type = <?php echo e($type); ?>;
         var patts1 = {} ,patts2 = {};
         <?php if(!empty($auto_info) && $auto_info["state"] == 1): ?>
@@ -87,9 +88,6 @@ if(!empty($auto_info)){
         var started =  0;
         <?php endif; ?>
         var remain = <?php echo e($remain[0]); ?>;
-
-        var round = 0;
-
         <?php if($autos ==1): ?>
         round =  <?php echo e($s); ?>;
         <?php endif; ?>
@@ -447,7 +445,7 @@ if(!empty($auto_info)){
                   $dis=  $dis2;
               ?>
           <div class="part" >
-              <table class="table table-gray mulebanga">
+              <table class="table table-gray mulebanga" >
                   <tbody class="back-gray">
                   <tr>
                       <td  class="p-0">
