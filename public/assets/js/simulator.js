@@ -102,7 +102,7 @@ function getResultFromDatabase(){
                 var tem = "";
                 var alias = result["nb_uo"]["alias"]
                 result["nb_uo"] = data.nb_uo.result;
-                result["pb_uo"]["alias"] = alias;
+                result["nb_uo"]["alias"] = alias;
                 rr[3] = data.nb_uo.result.list;
               }
             }
