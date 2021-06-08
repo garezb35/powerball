@@ -7,6 +7,7 @@ $pattern3="";
 $zul3 = $money3 = 0;
 $step3 = 10;
 $current_step3 = 0;
+$s = 0;
 if(!empty($auto_info)){
     $start_amount = $auto_info["start_amount"];
     $user_amount = $auto_info["user_amount"];
@@ -63,12 +64,15 @@ if(!empty($auto_info["winlose"])){
   }
 }
 $bet_amouont = $auto_info["bet_amount"] ?? 0;
-if(empty($auto_info["current_round"])){
-  $s = $auto_info["start_round"];
+if(!empty($auto_info)){
+  if(empty($auto_info["current_round"])){
+    $s = $auto_info["start_round"];
+  }
+  else{
+    $s = $auto_info["current_round"];
+  }
 }
-else{
-  $s = $auto_info["current_round"];
-}
+
 ?>
 
 <?php $__env->startSection("content"); ?>
