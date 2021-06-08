@@ -77,7 +77,8 @@ if(!empty($auto_info)){
 @extends('includes.empty_header')
 @section("content")
     <script>
-      var start_round = 0;
+        var start_round = 0;
+        var round = 0;
         var type = {{$type}};
         var patts1 = {} ,patts2 = {};
         @if(!empty($auto_info) && $auto_info["state"] == 1)
@@ -87,9 +88,6 @@ if(!empty($auto_info)){
         var started =  0;
         @endif
         var remain = {{$remain[0]}};
-
-        var round = 0;
-
         @if($autos ==1)
         round =  {{$s}};
         @endif
