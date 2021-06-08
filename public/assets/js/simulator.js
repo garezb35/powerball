@@ -119,7 +119,7 @@ function getResultFromDatabase(){
            // compileJson("#pattern-date",".pattern-tr",result["nb_oe"],2);
            // compileJson("#pattern-date",".pattern-tr",result["nb_uo"],2);
            $('.pattern-t').animate({scrollLeft:10000},100);
-           processResult();
+           // processResult();
         }
     }).done(function(){
       loading  = false;
