@@ -56,7 +56,7 @@ function openCity(evt,patt_index) {
 
 function getResultFromDatabase(){
   if(simulator_in_index == 4) {
-    processResult()
+    // processResult()
     return false;
   }
   var typeo = simulator_in[simulator_in_index];
