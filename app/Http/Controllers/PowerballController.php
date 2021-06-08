@@ -1360,7 +1360,7 @@ class PowerballController extends SecondController
                               "auto_kind"=>$key+1,
                               "userId"=>$userId,
                           ],[
-                              "auto_pattern"=>str_replace("&nbsp;","",str_replace(" ","",trim(str_replace("<br>","",$p1[$key])))),
+                              "auto_pattern"=>str_replace('&nbsp;','',str_replace(" ","",trim(str_replace("<br>","",$p1[$key])))),
                               "money"=>trim(str_replace("<br>","",$a1[$key])),
                               "auto_cate"=>$request->$round_t,
                               "game_kind"=>$key+1
@@ -1378,7 +1378,7 @@ class PowerballController extends SecondController
                             "auto_kind"=>$key+1,
                             "userId"=>$userId,
                         ],[
-                            "auto_pattern"=>str_replace("&nbsp;","",str_replace(" ","",trim(str_replace("<br>","",$request->$value)))),
+                            "auto_pattern"=>str_replace('&nbsp;','',str_replace(" ","",trim(str_replace("<br>","",$request->$value)))),
                             "game_kind"=>explode("_",$value)[1]
                         ]);
           }
