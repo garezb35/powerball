@@ -81,9 +81,9 @@ function getResultFromDatabase(){
     }).done(function(){
       loading  = false;
       simulator_in_index++;
-      getResultFromDatabase();
-    }).fail(function(xhr){
-      console.log(xhr)
+      setTimeout(function(){
+        getResultFromDatabase()
+      },1000)
     })
   }
   else{
