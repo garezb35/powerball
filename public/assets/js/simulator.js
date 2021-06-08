@@ -67,7 +67,7 @@ function getResultFromDatabase(){
            for(var i = 0 ;i < simulator_in.length;i++){
              if(simulator_in[i] == "pb_oe")
             {
-              if(dta.pb_oe.status == 1){
+              if(data.pb_oe.status == 1){
                 var tem = "";
                 var alias = result["pb_oe"]["alias"]
                 result["pb_oe"] = data.pb_oe.result;
@@ -77,7 +77,7 @@ function getResultFromDatabase(){
             }
              if(simulator_in[i] == "pb_uo")
             {
-              if(dta.pb_uo.status == 1){
+              if(data.pb_uo.status == 1){
                 var tem = "";
                 var alias = result["pb_uo"]["alias"]
                 result["pb_uo"] = data.pb_uo.result;
@@ -87,7 +87,7 @@ function getResultFromDatabase(){
             }
              if(simulator_in[i] == "bb_oe")
             {
-              if(dta.nb_oe.status == 1){
+              if(data.nb_oe.status == 1){
                 var tem = "";
                 var alias = result["nb_oe"]["alias"]
                 result["nb_oe"] = data.nb_oe.result;
@@ -97,7 +97,7 @@ function getResultFromDatabase(){
             }
              if(simulator_in[i] == "nb_uo")
             {
-              if(dta.nb_uo.status == 1){
+              if(data.nb_uo.status == 1){
                 var tem = "";
                 var alias = result["nb_uo"]["alias"]
                 result["nb_uo"] = data.nb_uo.result;
