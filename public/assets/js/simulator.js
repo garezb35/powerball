@@ -68,13 +68,12 @@ function getResultFromDatabase(){
         data:{round:round,type:typeo,start_round:start_round},
         success:function(data,textStatus){
           if(data.status ==1){
-            debugger;
               var tem = "";
               var alias = result[typeo]["alias"]
               result[typeo] = data.result;
               result[typeo]["alias"] = alias;
               compileJson("#pattern-date",".pattern-tr",result[typeo],2);
-              $('.pattern-t').animate({scrollLeft:10000},1000);
+              $('.pattern-t').animate({scrollLeft:10000},100);
               rr[simulator_in_index] = data.result.list
           }
         }
@@ -83,7 +82,7 @@ function getResultFromDatabase(){
       simulator_in_index++;
       setTimeout(function(){
         getResultFromDatabase()
-      },1000)
+      },500)
     })
   }
   else{
