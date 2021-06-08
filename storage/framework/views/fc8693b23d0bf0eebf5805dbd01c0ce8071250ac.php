@@ -27,14 +27,6 @@
 
 <script>
 $(document).ready(function(){
-    // var noticeTimer = "";
-    // $('#scrollNotice > ul li a').hover(function(){
-    //     clearInterval(noticeTimer);
-    // },function(){
-    //     noticeTimer = setInterval("rollingNotice()",3000);
-    // });
-
-    // noticeTimer = setInterval("rollingNotice()",3000);
     setInterval("rollingNotice()",1000);
 })
 

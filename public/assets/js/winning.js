@@ -17,6 +17,7 @@ function getWiningMachine(){
         compileJson("#bar-info",".bar-header",data.total,1);
         compileJson("#winning-date",".pb_tbody",data.result.pb,2);
         compileJson("#winning-date",".nb_tbody",data.result.nb,2);
+        heightResize();
       }
       else {
         alert(data.msg)
