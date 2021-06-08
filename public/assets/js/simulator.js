@@ -156,6 +156,7 @@ $(document).ready(function(){
     $("#category-auto2").removeClass("text-danger")
     $(".mulebanga").show();
     $(".autopattern").hide();
+    heightResize();
   }
   else{
     $("#category-auto1").addClass("text-white")
@@ -164,7 +165,8 @@ $(document).ready(function(){
     $("#category-auto2").removeClass("text-white")
     $(".mulebanga").hide();
     $(".autopattern").show();
-    $(".auto-content").css("height","355px")
+    $(".auto-content").css("height","355px");
+    heightResize();
   }
 
   $('.editor-text').on('DOMSubtreeModified', function(){
