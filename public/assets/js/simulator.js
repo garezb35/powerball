@@ -577,7 +577,7 @@ function processResult(){
                     var splitbyDash = compare_val.split("-")
                     if(splitbyDash[0].replaceAll("2","0") == presult[i % 4].substring(presult[i % 4].length - splitbyDash[0].length)){
                         var offer_index =  0;
-                        for(var cruiser_index = 0; cruiser_index < cruiser ; cruiser++){
+                        for(var cruiser_index = 0; cruiser_index < cruiser ; cruiser_index++){
                           offer_index += cruiser_arr[cruiser_index].length;
                         }
                         offer_index +=cruiser_arr[cruiser].indexOf(compare_val)
