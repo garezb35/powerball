@@ -505,7 +505,7 @@ class MemberController extends SecondController
     public function umodify(Request $request){
         $type = $request->type ?? "";
         $userId= $this->user->userId;
-        echo json_encode(User::find($userId));
+        echo json_encode(User::find($userId)->with(["item"]));
         return;
         $user = User::find($userId)->with(["item"])->first();
         $item_count = array();
