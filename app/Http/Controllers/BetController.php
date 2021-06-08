@@ -259,10 +259,6 @@ class BetController extends Controller
             $end_round  = $config["end_round"];    // 시작 회차와 마감 회차를 얻는다.
             $money  = explode(",",$config["mny"]); // 단계별 금액을 얻는다.
             $user_amount =  $config["user_amount"];   // 보유금액을 얻는다.
-            echo $bet_type;
-            if(empty($money[0])){       //////     시작 금액 없으면 다음으로 넘어간다.
-                continue;
-            }
             if(empty($user_amount)){ /////////////       유저 보유금액 없으면 다음으로 넘긴다.
                 continue;
             }
