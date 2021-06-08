@@ -581,6 +581,7 @@ function processResult(){
                           offer_index += cruiser_arr[cruiser_index].length;
                         }
                         offer_index +=cruiser_arr[cruiser].indexOf(compare_val)
+                        debugger;
                         setCaret(html_dom,step,offer_index,offer_index+compare_val.length)
                     }
                   })
