@@ -331,7 +331,8 @@ class BetController extends Controller
 
             $match_type = json_decode(json_encode($match_type));
 
-
+            echo $current;
+            echo $start_round;
             if(empty($match_type[0]->poe))  // 결과가 없다면 다음 순환으로 넘긴다.
             {
                 echo json_encode(array("status"=>0,"msg"=>"이전 회차 자료가 존재하지 않습니다.no previous rounds"));
