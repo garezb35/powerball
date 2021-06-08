@@ -525,7 +525,7 @@ function processResult(){
       $('.p2').each(function(i, obj) {
           var html_dom = $(obj)[0];
           setCaret(html_dom,0,1,5);
-          setCaret(html_dom,0,0,5);
+          setCaret(html_dom,1,0,5);
           return false;
           if(typeof patts2[i+1] !="undefined" &&  patts2[i+1].pattern.trim() !=""){
             var pattern =  new Array()
