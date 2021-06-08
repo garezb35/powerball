@@ -206,6 +206,8 @@ class BetController extends Controller
         $pb_oe= $pb_uo=$nb_oe=$nb_uo ="";  //////////////////결과변수
         $bet_type  = $request->bet_type;   //////////////////베팅 타입 지난회차 , 진행중회차
         $current = 0;                     /////////////////////////  현재 베팅하려는 회차
+        echo $bet_type;
+        return;
         $pbAutoSetting = new PbAutoSetting();
         $autoConfig = $pbAutoSetting
                         ->with([
@@ -271,8 +273,7 @@ class BetController extends Controller
                     continue;
                 }
                 $current  = empty($config['current_round']) ? $first_round : $config['current_round'];
-                echo $current;
-                return false;
+
                 $database_year = PowerballRange::where("range1","<=",$current)->orderBy("year","DESC")->first(); // 회차에 따르는 년도수를 구하여 현재 년도인지 지난 년도에것인지 검사한다.
 
                 if($database_year["year"] == date("Y")){
