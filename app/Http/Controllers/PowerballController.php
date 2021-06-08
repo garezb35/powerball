@@ -2102,7 +2102,7 @@ class PowerballController extends SecondController
         echo json_encode(array("status"=>1,"result"=>$winning_data,"total"=>array("pb_oe"=>$pb_oe_arr,"pb_uo"=>$pb_uo_arr,"nb_oe"=>$nb_oe_arr,"nb_uo"=>$nb_uo_arr)));
         return;
       }
-      echo json_encode(array("status"=>1,"msg"=>"결과가 없습니다."));
+      echo json_encode(array("status"=>0,"msg"=>"결과가 없습니다."));
       return;
     }
 }
