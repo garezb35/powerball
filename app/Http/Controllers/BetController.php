@@ -303,10 +303,7 @@ class BetController extends Controller
                 $current = $request->rownum;
                 $day_round = (int)$request->day_round;
                 $pb_database = new Pb_Result_Powerball();
-                if(empty($config['current_round'])){
-                  $start_round = $current;
-                  $insert_config["start_round"] = $current;
-                }
+                $current  = empty($config['current_round']) ? $first_round : $config['current_round'];
             }
 
 
