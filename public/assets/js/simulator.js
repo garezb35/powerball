@@ -164,6 +164,7 @@ $(document).ready(function(){
     $("#category-auto2").removeClass("text-white")
     $(".mulebanga").hide();
     $(".autopattern").show();
+    $(".auto-content").css("height","355px")
   }
 
   $('.editor-text').on('DOMSubtreeModified', function(){
