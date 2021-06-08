@@ -85,7 +85,7 @@ function getResultFromDatabase(){
                 rr[1] = data.pb_uo.result.list;
               }
             }
-             if(simulator_in[i] == "bb_oe")
+             if(simulator_in[i] == "nb_oe")
             {
               if(data.nb_oe.status == 1){
                 var tem = "";
