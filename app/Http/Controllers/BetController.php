@@ -331,261 +331,265 @@ class BetController extends Controller
 
             $match_type = json_decode(json_encode($match_type));
 
-            var_dump($match_type);
-            echo $current;
-            echo $start_round;
-            if(empty($match_type[0]->poe))  // 결과가 없다면 다음 순환으로 넘긴다.
+            if(strlen($match_type[0]->poe) == 0)  // 결과가 없다면 다음 순환으로 넘긴다.
             {
+              if($current >= $end_round){   //// 현재 회차가 마감회차보다 커지면 빠진다.
+                  $insert_config["state"] = 0;
+              }
+                $insert_config["current_round"] = $current+1;
+                PbAutoSetting::where("userId",$config["userId"])->update($insert_config);
                 echo json_encode(array("status"=>0,"msg"=>"이전 회차 자료가 존재하지 않습니다.no previous rounds"));
                 continue;
             }
 
-            if(strlen($match_type[0]->poe) < 20 && $year > 2013 && $bet_type == 1){
-                $pb_database = DB::connection("comm".$year)->table("pb_result_powerball");
-                $match_type_previous = json_decode(json_encode( $pb_database->select(
-                    DB::raw("GROUP_CONCAT(pb_result_powerball.pb_uo ORDER BY day_round ASC  SEPARATOR '') as `puo`"),
-                    DB::raw("GROUP_CONCAT(pb_result_powerball.pb_oe ORDER BY day_round ASC  SEPARATOR '') as `poe`"),
-                    DB::raw("GROUP_CONCAT(pb_result_powerball.nb_oe ORDER BY day_round ASC  SEPARATOR '') as `noe`"),
-                    DB::raw("GROUP_CONCAT(pb_result_powerball.nb_uo ORDER BY day_round ASC  SEPARATOR '') as `nuo`")
-                )->where("day_round",'>=',$start_round)->get()->toArray()));
-                $match_type_previous[0]->poe .= $match_type[0]->poe;
-                $match_type_previous[0]->puo .= $match_type[0]->puo;
-                $match_type_previous[0]->noe .= $match_type[0]->noe;
-                $match_type_previous[0]->nuo .= $match_type[0]->nuo;
+            else{
+              if(strlen($match_type[0]->poe) < 20 && $year > 2013 && $bet_type == 1){
+                  $pb_database = DB::connection("comm".$year)->table("pb_result_powerball");
+                  $match_type_previous = json_decode(json_encode( $pb_database->select(
+                      DB::raw("GROUP_CONCAT(pb_result_powerball.pb_uo ORDER BY day_round ASC  SEPARATOR '') as `puo`"),
+                      DB::raw("GROUP_CONCAT(pb_result_powerball.pb_oe ORDER BY day_round ASC  SEPARATOR '') as `poe`"),
+                      DB::raw("GROUP_CONCAT(pb_result_powerball.nb_oe ORDER BY day_round ASC  SEPARATOR '') as `noe`"),
+                      DB::raw("GROUP_CONCAT(pb_result_powerball.nb_uo ORDER BY day_round ASC  SEPARATOR '') as `nuo`")
+                  )->where("day_round",'>=',$start_round)->get()->toArray()));
+                  $match_type_previous[0]->poe .= $match_type[0]->poe;
+                  $match_type_previous[0]->puo .= $match_type[0]->puo;
+                  $match_type_previous[0]->noe .= $match_type[0]->noe;
+                  $match_type_previous[0]->nuo .= $match_type[0]->nuo;
 
-                $match_type[0]->poe = $match_type_previous[0]->poe;
-                $match_type[0]->puo = $match_type_previous[0]->puo;
-                $match_type[0]->noe = $match_type_previous[0]->noe;
-                $match_type[0]->nuo = $match_type_previous[0]->nuo;
-            }
+                  $match_type[0]->poe = $match_type_previous[0]->poe;
+                  $match_type[0]->puo = $match_type_previous[0]->puo;
+                  $match_type[0]->noe = $match_type_previous[0]->noe;
+                  $match_type[0]->nuo = $match_type_previous[0]->nuo;
+              }
 
-            $match_type[0]->poe = str_replace("0","2",substr($match_type[0]->poe,strlen($match_type[0]->poe)-20)); // 최상위문자 길이의 50자를 뽑아낸다.
-            $match_type[0]->puo = str_replace("0","2",substr($match_type[0]->puo,strlen($match_type[0]->puo)-20));
-            $match_type[0]->noe = str_replace("0","2",substr($match_type[0]->noe,strlen($match_type[0]->noe)-20));
-            $match_type[0]->nuo = str_replace("0","2",substr($match_type[0]->nuo,strlen($match_type[0]->nuo)-20));
+              $match_type[0]->poe = str_replace("0","2",substr($match_type[0]->poe,strlen($match_type[0]->poe)-20)); // 최상위문자 길이의 50자를 뽑아낸다.
+              $match_type[0]->puo = str_replace("0","2",substr($match_type[0]->puo,strlen($match_type[0]->puo)-20));
+              $match_type[0]->noe = str_replace("0","2",substr($match_type[0]->noe,strlen($match_type[0]->noe)-20));
+              $match_type[0]->nuo = str_replace("0","2",substr($match_type[0]->nuo,strlen($match_type[0]->nuo)-20));
 
-            $games = $config["game"];
-            $auto_games = json_decode(json_encode($games)); // 오토 게임들을 뽑아낸다.
-            if(!empty($auto_games)){
-              $remain_amount = $user_amount;
-              $is_win= -1;
-              foreach ($auto_games as $game){
-                  if(!empty($config["rest".$game->game_kind])){
-                    $insert_config["rest".$game->game_kind] = $config["rest".$game->game_kind]-1;
-                    if($config["rest".$game->game_kind] == 1)
-                      {
-                        $w[$game->game_kind] = 0;
-                      }
-                    continue;
-                  }
-                     // 승률 변수를 초기화한다.
-                  if(empty($game->auto_pattern))  // 패턴이 비였으면 다음으로 넘어간다.
-                  {
-                      echo json_encode(array("status"=>0,"msg"=>"패턴이 없습니다.no pattern"));
+              $games = $config["game"];
+              $auto_games = json_decode(json_encode($games)); // 오토 게임들을 뽑아낸다.
+              if(!empty($auto_games)){
+                $remain_amount = $user_amount;
+                $is_win= -1;
+                foreach ($auto_games as $game){
+                    if(!empty($config["rest".$game->game_kind])){
+                      $insert_config["rest".$game->game_kind] = $config["rest".$game->game_kind]-1;
+                      if($config["rest".$game->game_kind] == 1)
+                        {
+                          $w[$game->game_kind] = 0;
+                        }
                       continue;
-                  }
-                  $split_pattern = array();
-                  $step = $game->auto_step;   // 게임 단계를 얻는다.
-                  $bet_money = 0;
-                  $next_step = 0;
-                  $next_cruiser = 0;
-                  $past_pattern = "";
-                  $past_cruiser = 0;
-                  $past_step = 0;
-                  $amount_step = 0;
-                  $check = array(0,-1);  // 베팅검사변수를 초기화한다. 1번이 0이면 베팅조건 불만족, 1일때에만 만족 , 2번 첨수는 베팅하려는 값
-                  $amounts = array();
-
-                  switch ($game->game_kind){
-                      case "1":
-                          $compare = $pb_oe;  //  compare변수에 패턴종류에 따르는 결과값을 넣는다.
-                          break;
-                      case "2":
-                          $compare = $pb_uo;
-                          break;
-                      case "3":
-                          $compare = $nb_oe;
-                          break;
-                      case "4":
-                          $compare = $nb_uo;
-                          break;
-                      default:
-                          break;
-                  }
-                  if($game->auto_type ==1)  // auto _kind 1이면 물레방아,2,3 이면 페턴배팅 1,2,
-                  {
-                    if(empty(trim($game->money))) continue;
-                    $check = array(1,-1);
-                    $pattern = trim(str_replace("<br>","",strip_tags($game->auto_pattern)));
-                    $moneys = strip_tags($game->money,"<div>");
-                    $first_val = strip_tags_content($moneys);
-                    if(!empty($first_val))
-                    {
-                      array_push($amounts,$first_val);
                     }
-                    preg_match_all('#<div>(.+?)</div>#', $moneys, $parts );
-                    if(!empty($parts[1]))
-                      $amounts = array_merge($amounts,$parts[1]);
-                    if(sizeof($amounts) == 0 || empty($pattern)) continue;
-                  }
-                  else
-                  {
-                      $pattern = array();
-                      $pat = strip_tags($game->auto_pattern,"<div>");
-                      $first_val = strip_tags_content($pat);
+                       // 승률 변수를 초기화한다.
+                    if(empty($game->auto_pattern))  // 패턴이 비였으면 다음으로 넘어간다.
+                    {
+                        echo json_encode(array("status"=>0,"msg"=>"패턴이 없습니다.no pattern"));
+                        continue;
+                    }
+                    $split_pattern = array();
+                    $step = $game->auto_step;   // 게임 단계를 얻는다.
+                    $bet_money = 0;
+                    $next_step = 0;
+                    $next_cruiser = 0;
+                    $past_pattern = "";
+                    $past_cruiser = 0;
+                    $past_step = 0;
+                    $amount_step = 0;
+                    $check = array(0,-1);  // 베팅검사변수를 초기화한다. 1번이 0이면 베팅조건 불만족, 1일때에만 만족 , 2번 첨수는 베팅하려는 값
+                    $amounts = array();
+
+                    switch ($game->game_kind){
+                        case "1":
+                            $compare = $pb_oe;  //  compare변수에 패턴종류에 따르는 결과값을 넣는다.
+                            break;
+                        case "2":
+                            $compare = $pb_uo;
+                            break;
+                        case "3":
+                            $compare = $nb_oe;
+                            break;
+                        case "4":
+                            $compare = $nb_uo;
+                            break;
+                        default:
+                            break;
+                    }
+                    if($game->auto_type ==1)  // auto _kind 1이면 물레방아,2,3 이면 페턴배팅 1,2,
+                    {
+                      if(empty(trim($game->money))) continue;
+                      $check = array(1,-1);
+                      $pattern = trim(str_replace("<br>","",strip_tags($game->auto_pattern)));
+                      $moneys = strip_tags($game->money,"<div>");
+                      $first_val = strip_tags_content($moneys);
                       if(!empty($first_val))
                       {
-                        array_push($pattern,$first_val);
+                        array_push($amounts,$first_val);
                       }
-                      preg_match_all('#<div>(.+?)</div>#', $pat, $parts );
+                      preg_match_all('#<div>(.+?)</div>#', $moneys, $parts );
                       if(!empty($parts[1]))
-                        $pattern = array_merge($pattern,$parts[1]);
-                      $real_matches = "";
-
-                      switch ($game->game_kind){
-                          case "1":
-                              $match_count = $this->sumPatt($game->auto_pattern);  // 패턴에 따르는 최대 픽 개수를 얻고
-                              $real_matches = $match_type[0]->poe;  // 배팅 매칭변수에 해당 결과값들을 써넣기한다.
-                              break;
-                          case "2":
-                              $match_count = $this->sumPatt($game->auto_pattern);
-                              $real_matches = $match_type[0]->puo;
-                              break;
-                          case "3":
-                              $match_count = $this->sumPatt($game->auto_pattern);
-                              $real_matches= $match_type[0]->noe;
-                              break;
-                          case "4":
-                              $match_count = $this->sumPatt($game->auto_pattern);
-                              $real_matches = $match_type[0]->nuo;
-                              break;
-                          default:
-                              break;
-                      }
-
-                      $check = $this->processAutoBackground($game,$pattern,$real_matches);  // 패턴방식이 조건에 만족하는지 그렇지 않은지 따져 보고 만족하면 체크변수에 해당 값들을 써넣기 한다.
-                  }
-                  $betting_pick = "-1";
-                  if($game->auto_type ==1){    // 물레방아면 순차적으로 그냥 베팅한다.
-                      $amount_step = $game->amount_step;
-                      if(empty($amounts[$amount_step]) || !is_numeric($amounts[$amount_step])) continue;
-                      $bet_money = $amounts[$amount_step];
-                      $step = $game->auto_step;
-                      $split_pattern = str_split(str_replace("2","0",$pattern));
-                      if($game->auto_cate == 1){
-                          if(empty($day_round)) continue;
-                          $step = $day_round % sizeof($split_pattern);
-                      }
-                      if(!isset($split_pattern[$step])){
-                        $step = 0;
-                        return;
-                      }
-                      $betting_pick = $split_pattern[$step];
-                      if($compare !="-1" && $betting_pick != $compare)
-                      {
-                          $is_win = 0;
-                          $amount_step += 1;
-                      }
-                      if($compare !="-1" && $betting_pick == $compare)
-                      {
-                        $is_win = 1;
-                        if($game->auto_cate == 2 || $game->auto_cate == 1){
-                            $amount_step = 0;
+                        $amounts = array_merge($amounts,$parts[1]);
+                      if(sizeof($amounts) == 0 || empty($pattern)) continue;
+                    }
+                    else
+                    {
+                        $pattern = array();
+                        $pat = strip_tags($game->auto_pattern,"<div>");
+                        $first_val = strip_tags_content($pat);
+                        if(!empty($first_val))
+                        {
+                          array_push($pattern,$first_val);
                         }
-                        if($game->auto_cate == 3){
-                            $amount_step +=1;
+                        preg_match_all('#<div>(.+?)</div>#', $pat, $parts );
+                        if(!empty($parts[1]))
+                          $pattern = array_merge($pattern,$parts[1]);
+                        $real_matches = "";
+
+                        switch ($game->game_kind){
+                            case "1":
+                                $match_count = $this->sumPatt($game->auto_pattern);  // 패턴에 따르는 최대 픽 개수를 얻고
+                                $real_matches = $match_type[0]->poe;  // 배팅 매칭변수에 해당 결과값들을 써넣기한다.
+                                break;
+                            case "2":
+                                $match_count = $this->sumPatt($game->auto_pattern);
+                                $real_matches = $match_type[0]->puo;
+                                break;
+                            case "3":
+                                $match_count = $this->sumPatt($game->auto_pattern);
+                                $real_matches= $match_type[0]->noe;
+                                break;
+                            case "4":
+                                $match_count = $this->sumPatt($game->auto_pattern);
+                                $real_matches = $match_type[0]->nuo;
+                                break;
+                            default:
+                                break;
                         }
-                      }
-                      if($amount_step >=sizeof($amounts)) $amount_step = 0;
-                      $betting_pick = $split_pattern[$step];
-                      if($game->auto_cate != 1){
-                        $step = $step + 1;
-                        if($step >= sizeof($split_pattern))
+
+                        $check = $this->processAutoBackground($game,$pattern,$real_matches);  // 패턴방식이 조건에 만족하는지 그렇지 않은지 따져 보고 만족하면 체크변수에 해당 값들을 써넣기 한다.
+                    }
+                    $betting_pick = "-1";
+                    if($game->auto_type ==1){    // 물레방아면 순차적으로 그냥 베팅한다.
+                        $amount_step = $game->amount_step;
+                        if(empty($amounts[$amount_step]) || !is_numeric($amounts[$amount_step])) continue;
+                        $bet_money = $amounts[$amount_step];
+                        $step = $game->auto_step;
+                        $split_pattern = str_split(str_replace("2","0",$pattern));
+                        if($game->auto_cate == 1){
+                            if(empty($day_round)) continue;
+                            $step = $day_round % sizeof($split_pattern);
+                        }
+                        if(!isset($split_pattern[$step])){
                           $step = 0;
-                      }
-                      else{
-                        if($day_round == 288){
-                          $step = 1;
+                          return;
                         }
-                        else $step = ($day_round + 1) % sizeof($split_pattern);
-                      }
-                      $next_step = $step;
-                  }
-                  else if($check["status"] == "pick"){
-
-                      $betting_pick = $check["pick"] == 1 ? 1 : 0;
-                      if($betting_pick == $compare)
-                      {
+                        $betting_pick = $split_pattern[$step];
+                        if($compare !="-1" && $betting_pick != $compare)
+                        {
+                            $is_win = 0;
+                            $amount_step += 1;
+                        }
+                        if($compare !="-1" && $betting_pick == $compare)
+                        {
                           $is_win = 1;
-                          $next_step = $check["next_win"]["step"];
-                          $next_cruiser = $check["next_win"]["curiser_step"];
-                      }
-                      else
-                      {
-                        $is_win = 0;
-                        $next_step = $check["next_lose"]["step"];
-                        $next_cruiser = $check["next_lose"]["curiser_step"];
-                      }
-                      $past_pattern = $check["current"]["pattern"];
-                      $past_cruiser = $check["current"]["current_cruiser"];
-                      $past_step = $check["current"]["current_step"];
-                      $bet_money = $check["bet_money"];
-                  }
-
-                  if(!is_numeric($bet_money) || empty($bet_money)) continue;
-                  $bet_all_mny += $bet_money;
-                  if($is_win ==1){
-                      $remain_amount  += ($config["martin"]-1) * $bet_money;
-                      if($w[$game->game_kind] <= 0) $w[$game->game_kind] = 1;
-                      else  $w[$game->game_kind]++;
-                  }
-                  if($is_win ==0){
-                      $remain_amount  -= $bet_money;
-                      if($w[$game->game_kind] >= 0) $w[$game->game_kind] = -1;
-                      else  $w[$game->game_kind]--;
-                  }
-                  if($remain_amount < 0)
-                      continue;
-                  if($is_win !=-1){
-
-                      $pick = "";
-                      $mul = $betting_pick == 1 ? -1 : 0;
-                      $pick = $game->auto_type*2 +$mul;
-                      $config["user_amount"] = $remain_amount;
-                      PbAutoMatch::where("id",$game->id)->update(["auto_step"=>$next_step,"auto_train"=>$next_cruiser,"auto_start"=>1,"past_cruiser"=>$past_cruiser,"past_step"=>$past_step,"past_pattern"=>$past_pattern,"amount_step"=>$amount_step]);
-                      if($betting_pick !=-1 && $bet_money . 0){
-                        $history = array();
-                        $history["type"] = "betting";
-                        $history["win_type"] = $is_win;
-                        if($is_win == 1)
-                          $history["amount"] = number_format($bet_money)."=>".number_format(1.95 * $bet_money);
-                        else {
-                          $history["amount"] = number_format($bet_money);
+                          if($game->auto_cate == 2 || $game->auto_cate == 1){
+                              $amount_step = 0;
+                          }
+                          if($game->auto_cate == 3){
+                              $amount_step +=1;
+                          }
                         }
-                        $history["auto_kind"] = $game->game_kind;
-                        $history["auto_type"] = $game->auto_type;
-                        $history["pick"] = $betting_pick;
-                        PbAutoHistory::insert(["userId"=>$config["userId"],"reason"=>json_encode($history)]);
-                      }
-                  }
-                  if($is_win == -1){
-                      PbAutoMatch::where("id",$game->id)->update(["auto_start"=>0]);
-                  }
-              }
-              if($current >= $end_round){   //// 현재 회차가 마감회차보다 커지면 빠진다.
+                        if($amount_step >=sizeof($amounts)) $amount_step = 0;
+                        $betting_pick = $split_pattern[$step];
+                        if($game->auto_cate != 1){
+                          $step = $step + 1;
+                          if($step >= sizeof($split_pattern))
+                            $step = 0;
+                        }
+                        else{
+                          if($day_round == 288){
+                            $step = 1;
+                          }
+                          else $step = ($day_round + 1) % sizeof($split_pattern);
+                        }
+                        $next_step = $step;
+                    }
+                    else if($check["status"] == "pick"){
+
+                        $betting_pick = $check["pick"] == 1 ? 1 : 0;
+                        if($betting_pick == $compare)
+                        {
+                            $is_win = 1;
+                            $next_step = $check["next_win"]["step"];
+                            $next_cruiser = $check["next_win"]["curiser_step"];
+                        }
+                        else
+                        {
+                          $is_win = 0;
+                          $next_step = $check["next_lose"]["step"];
+                          $next_cruiser = $check["next_lose"]["curiser_step"];
+                        }
+                        $past_pattern = $check["current"]["pattern"];
+                        $past_cruiser = $check["current"]["current_cruiser"];
+                        $past_step = $check["current"]["current_step"];
+                        $bet_money = $check["bet_money"];
+                    }
+
+                    if(!is_numeric($bet_money) || empty($bet_money)) continue;
+                    $bet_all_mny += $bet_money;
+                    if($is_win ==1){
+                        $remain_amount  += ($config["martin"]-1) * $bet_money;
+                        if($w[$game->game_kind] <= 0) $w[$game->game_kind] = 1;
+                        else  $w[$game->game_kind]++;
+                    }
+                    if($is_win ==0){
+                        $remain_amount  -= $bet_money;
+                        if($w[$game->game_kind] >= 0) $w[$game->game_kind] = -1;
+                        else  $w[$game->game_kind]--;
+                    }
+                    if($remain_amount < 0)
+                        continue;
+                    if($is_win !=-1){
+
+                        $pick = "";
+                        $mul = $betting_pick == 1 ? -1 : 0;
+                        $pick = $game->auto_type*2 +$mul;
+                        $config["user_amount"] = $remain_amount;
+                        PbAutoMatch::where("id",$game->id)->update(["auto_step"=>$next_step,"auto_train"=>$next_cruiser,"auto_start"=>1,"past_cruiser"=>$past_cruiser,"past_step"=>$past_step,"past_pattern"=>$past_pattern,"amount_step"=>$amount_step]);
+                        if($betting_pick !=-1 && $bet_money . 0){
+                          $history = array();
+                          $history["type"] = "betting";
+                          $history["win_type"] = $is_win;
+                          if($is_win == 1)
+                            $history["amount"] = number_format($bet_money)."=>".number_format(1.95 * $bet_money);
+                          else {
+                            $history["amount"] = number_format($bet_money);
+                          }
+                          $history["auto_kind"] = $game->game_kind;
+                          $history["auto_type"] = $game->auto_type;
+                          $history["pick"] = $betting_pick;
+                          PbAutoHistory::insert(["userId"=>$config["userId"],"reason"=>json_encode($history)]);
+                        }
+                    }
+                    if($is_win == -1){
+                        PbAutoMatch::where("id",$game->id)->update(["auto_start"=>0]);
+                    }
+                }
+                if($current >= $end_round){   //// 현재 회차가 마감회차보다 커지면 빠진다.
+                    $insert_config["state"] = 0;
+                }
+                if(($remain_amount >= $config["win_limit"] || $remain_amount <= $config["win_limit"] * (-1)) && $config["win_limit"]  != 0 && $config["win_limit"] != ""){
                   $insert_config["state"] = 0;
+                }
+                $insert_config["current_round"] = $current+1;
+                $insert_config["user_amount"] = $remain_amount;
+                $insert_config["w1"] = $w[1];
+                $insert_config["w2"] = $w[2];
+                $insert_config["w3"] = $w[3];
+                $insert_config["w4"] = $w[4];
+                $insert_config["bet_amount"] = $bet_all_mny;
+                PbAutoSetting::where("userId",$config["userId"])->update($insert_config);
               }
-              if(($remain_amount >= $config["win_limit"] || $remain_amount <= $config["win_limit"] * (-1)) && $config["win_limit"]  != 0 && $config["win_limit"] != ""){
-                $insert_config["state"] = 0;
-              }
-              $insert_config["current_round"] = $current+1;
-              $insert_config["user_amount"] = $remain_amount;
-              $insert_config["w1"] = $w[1];
-              $insert_config["w2"] = $w[2];
-              $insert_config["w3"] = $w[3];
-              $insert_config["w4"] = $w[4];
-              $insert_config["bet_amount"] = $bet_all_mny;
-              PbAutoSetting::where("userId",$config["userId"])->update($insert_config);
             }
         }
     }
