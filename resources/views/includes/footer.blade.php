@@ -27,19 +27,13 @@
 
 <script>
 $(document).ready(function(){
-    // var noticeTimer = "";
-    // $('#scrollNotice > ul li a').hover(function(){
-    //     clearInterval(noticeTimer);
-    // },function(){
-    //     noticeTimer = setInterval("rollingNotice()",3000);
-    // });
-
-    // noticeTimer = setInterval("rollingNotice()",3000);
-    setInterval("rollingNotice()",5000);
+    setInterval("rollingNotice()",1000);
 })
 
 function rollingNotice()
 {
+  var date_diff = new Date();
+  if(date_diff.getSeconds() % 10 == 0){
     $('#scrollNotice').animate({'top':'-=20'},{
         duration:500,
         easing: "linear",
@@ -48,5 +42,6 @@ function rollingNotice()
             $('#scrollNotice').css({'top':0});
         }
     });
+  }
 }
 </script>

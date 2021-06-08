@@ -180,10 +180,34 @@ function isNumber(event)
     return false;
 }
 
+Handlebars.registerHelper('percentageofTwo', function(context,ndx) {
+    var sum = context[0] +  context[1];
+    if(sum == 0) sum = 1;
+    return 100 * context[ndx] / sum;
+});
+
 
 Handlebars.registerHelper('index_of', function(context,ndx) {
     return context[ndx];
 });
+
+Handlebars.registerHelper("index_ofWithPick",function(context,type,ndx){
+  if(type == "oe"){
+    if(context[ndx].pick == 1)
+      return "<div class='sp-odd'>홀</div>";
+    else {
+        return "<div class='sp-even'>짝</div>";
+    }
+  }
+  else{
+    if(context[ndx].pick == 1)
+      return "<div class='sp-under'></div>";
+    else {
+        return "<div class='sp-over'></div>";
+    }
+  }
+});
+
 Handlebars.registerHelper('index_ofWithKey', function(context,ndx,key) {
     if(context.hasOwnProperty(ndx) ==true)
         return context[ndx][key];
@@ -712,8 +736,8 @@ function powerballDiff(){
     var current = calcTime("+9");
     var second = current.getSeconds();
     var minute = current.getMinutes()
-    var g_nMinute = 4 - (minute + 2) % 5;
-    var g_nSecond = 55 - second;
+    var g_nMinute = 4 - (minute) % 5;
+    var g_nSecond = 40 - second;
     --g_nSecond;
     if (g_nSecond < 0)
     {

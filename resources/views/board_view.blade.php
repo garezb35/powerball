@@ -150,7 +150,7 @@
         <li><a href="{{"board"}}?board_type=customer&board_category=event" @if(Request::get("board_category") == "event") class="on" @endif>이벤트</a></li>
         <li><a href="{{route("prison")}}?page_type=prison" @if(Request::get("page_type") == "prison") class="on" @endif>정지</a></li>
         @else
-        <li><a href="{{"board"}}?board_type=none&board_category=humor" @if(Request::get("board_category") == "humor") class="on" @endif>유버</a></li>
+        <li><a href="{{"board"}}?board_type=none&board_category=humor" @if(Request::get("board_category") == "humor") class="on" @endif>유머</a></li>
         <li><a href="{{"board"}}?board_type=none&board_category=photo" @if(Request::get("board_category") == "photo") class="on" @endif>포토</a></li>
         <li><a href="{{"board"}}?board_type=none&board_category=pick" @if(Request::get("board_category") == "pick") class="on" @endif>분석픽공유</a></li>
         <li><a href="{{"board"}}?board_type=none&board_category=free" @if(Request::get("board_category") == "free") class="on" @endif>자유</a></li>

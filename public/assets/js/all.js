@@ -99,26 +99,26 @@ function ladderTimer(remain,divId,w)
 	{
 		remainTime = remain;
 		if(divId != ""){
-            var roundNum = parseInt($('#timeRound').text())+1;
-            var dayRound  = parseInt($('#timedayRound').text())+1;
-            if(dayRound > 288) dayRound = 1;
-            $('#timeRound').text(roundNum);
-            $('#timedayRound').text(dayRound);
-            roundNum = null;
-            dayRound = null;
-            if($('#powerballPointBetGraph').length)
-            {
-                setTimeout(function(){
-                    $('#powerballPointBetGraph .oddChart .oddBar').animate({width:'0px'},1000,function(){
-                        $(this).next().text('0%');
-                    });
+        var roundNum = parseInt($('#timeRound').text())+1;
+        var dayRound  = parseInt($('#timedayRound').text())+1;
+        if(dayRound > 288) dayRound = 1;
+        $('#timeRound').text(roundNum);
+        $('#timedayRound').text(dayRound);
+        roundNum = null;
+        dayRound = null;
+        if($('#powerballPointBetGraph').length)
+        {
+            setTimeout(function(){
+                $('#powerballPointBetGraph .oddChart .oddBar').animate({width:'0px'},1000,function(){
+                    $(this).next().text('0%');
+                });
 
-                    $('#powerballPointBetGraph .evenChart .evenBar').animate({width:'0px'},1000,function(){
-                        $(this).next().text('0%');
-                    });
-                },3000);
-            }
+                $('#powerballPointBetGraph .evenChart .evenBar').animate({width:'0px'},1000,function(){
+                    $(this).next().text('0%');
+                });
+            },3000);
         }
+    }
 	}
 
   if(w == 1){
@@ -127,7 +127,7 @@ function ladderTimer(remain,divId,w)
       $(".time-part").addClass("d-none")
       $("#bettingPart").text(remainTime-260)
       if(remainTime == 300) {$("tbody").html("");heightResize()}
-      if(remainTime == 260) window.location.href=window.location.href
+      if(remainTime == 260) {getWiningMachine();}
     }
     else{
       $(".bet-part").addClass("d-none")

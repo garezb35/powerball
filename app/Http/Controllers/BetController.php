@@ -252,6 +252,7 @@ class BetController extends Controller
                 continue;
             if(empty($config["game"]))
               continue;
+            $day_round = 0;
             $start_round = $config["start_round"];
             $first_round  = $config["start_round"]; // 시작 회차와 마감 회차를 얻는다.
             $end_round  = $config["end_round"];    // 시작 회차와 마감 회차를 얻는다.
@@ -288,6 +289,7 @@ class BetController extends Controller
                 $pb_uo = $current_result->pb_uo;
                 $nb_oe = $current_result->nb_oe;
                 $nb_uo = $current_result->nb_uo;
+                $day_round = (int)$current_result->round;
                 if($database_year["year"] == date("Y")){
                     $pb_database = new Pb_Result_Powerball();
                 }
@@ -301,6 +303,7 @@ class BetController extends Controller
                 $nb_oe = $request->nb_oe;
                 $nb_uo = $request->nb_uo;
                 $current = $request->rownum;
+                $day_round = (int)$request->day_round;
                 $pb_database = new Pb_Result_Powerball();
                 if(empty($config['current_round'])){
                   $start_round = $current;
@@ -381,6 +384,7 @@ class BetController extends Controller
                       echo json_encode(array("status"=>0,"msg"=>"패턴이 없습니다.no pattern"));
                       continue;
                   }
+                  $split_pattern = array();
                   $step = $game->auto_step;   // 게임 단계를 얻는다.
                   $bet_money = 0;
                   $next_step = 0;
@@ -422,7 +426,7 @@ class BetController extends Controller
                     preg_match_all('#<div>(.+?)</div>#', $moneys, $parts );
                     if(!empty($parts[1]))
                       $amounts = array_merge($amounts,$parts[1]);
-                    if(sizeof($amounts) == 0) continue;
+                    if(sizeof($amounts) == 0 || empty($pattern)) continue;
                   }
                   else
                   {
@@ -468,6 +472,10 @@ class BetController extends Controller
                       $bet_money = $amounts[$amount_step];
                       $step = $game->auto_step;
                       $split_pattern = str_split(str_replace("2","0",$pattern));
+                      if($game->auto_cate == 1){
+                          if(empty($day_round)) continue;
+                          $step = $day_round % sizeof($split_pattern);
+                      }
                       if(!isset($split_pattern[$step])){
                         $step = 0;
                         return;
@@ -481,7 +489,7 @@ class BetController extends Controller
                       if($compare !="-1" && $betting_pick == $compare)
                       {
                         $is_win = 1;
-                        if($game->auto_cate == 2){
+                        if($game->auto_cate == 2 || $game->auto_cate == 1){
                             $amount_step = 0;
                         }
                         if($game->auto_cate == 3){
@@ -490,9 +498,17 @@ class BetController extends Controller
                       }
                       if($amount_step >=sizeof($amounts)) $amount_step = 0;
                       $betting_pick = $split_pattern[$step];
-                      $step = $step + 1;
-                      if($step >= sizeof($split_pattern))
-                        $step = 0;
+                      if($game->auto_cate != 1){
+                        $step = $step + 1;
+                        if($step >= sizeof($split_pattern))
+                          $step = 0;
+                      }
+                      else{
+                        if($day_round == 288){
+                          $step = 1;
+                        }
+                        else $step = ($day_round + 1) % sizeof($split_pattern);
+                      }
                       $next_step = $step;
                   }
                   else if($check["status"] == "pick"){

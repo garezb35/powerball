@@ -1,19 +1,12 @@
 @php
 $po = $pu = array();
-$po[0]="<div class=\"sp-odd\">홀</div>";
-$po[1]="<div class=\"sp-even\">짝</div>";
-$pu[0]="<div class='sp-under'></div>";
-$pu[1]="<div class='sp-over''></div>";
-$sum1 = $sum2 = $sum3 = $sum4 = 0;
-$sum1 = ($pb_oe_arr[0] + $pb_oe_arr[1] ) == 0 ? 1 : $pb_oe_arr[0] + $pb_oe_arr[1];
-$sum2 = ($pb_uo_arr[0] + $pb_uo_arr[1] ) == 0 ? 1 : $pb_uo_arr[0] + $pb_uo_arr[1];
-$sum3 = ($nb_oe_arr[0] + $nb_oe_arr[1] ) == 0 ? 1 : $nb_oe_arr[0] + $nb_oe_arr[1];
-$sum4 = ($nb_uo_arr[0] + $nb_uo_arr[1] ) == 0 ? 1 : $nb_uo_arr[0] + $nb_uo_arr[1];
+
 @endphp
 @extends('includes.empty_header')
 @section("content")
   <script>
     var winning = {{$winning}};
+    var api_token = "{{$api_token}}";
   </script>
   <ul class="nav mb-2" id="powerball-category" role="tablist">
       <li class="nav-item">
@@ -24,60 +17,6 @@ $sum4 = ($nb_uo_arr[0] + $nb_uo_arr[1] ) == 0 ? 1 : $nb_uo_arr[0] + $nb_uo_arr[1
       </li>
   </ul>
 <div class="bar-header">
-  <div class="bar_graph">
-    <dl class="border-top-none">
-        <dt>파워볼</dt>
-        <dd>
-            <div class="bar">
-                <p class="left @if($pb_oe_arr[1] > $pb_oe_arr[0]){{"on"}}@endif" style="width:{{$pb_oe_arr[1]*100/$sum1}}%;">
-                    <span class="per"><strong>{{$pb_oe_arr[1]}}</strong> ({{$pb_oe_arr[1]*100/$sum1}}%)</span>
-                    <span class="tx">홀</span>
-                </p>
-                <p class="right @if($pb_oe_arr[0] > $pb_oe_arr[1]){{"on"}}@endif" style="width:{{$pb_oe_arr[0]*100/$sum1}}%;">
-                    <span class="per"><strong>{{$pb_oe_arr[0]}}</strong> ({{$pb_oe_arr[0]*100/$sum1}}%)</span>
-                    <span class="tx">짝</span>
-                </p>
-            </div>
-            <div class="bar">
-                <p class="left @if($pb_uo_arr[1] > $pb_uo_arr[0]){{"on"}}@endif" style="width:{{$pb_uo_arr[1]*100/$sum2}}%;">
-                    <span class="per"><strong>{{$pb_uo_arr[1]}}</strong> ({{$pb_uo_arr[1]*100/$sum2}}%)</span>
-                    <span class="tx">언더</span>
-                </p>
-                <p class="right  @if($pb_uo_arr[0] > $pb_uo_arr[1]){{"on"}}@endif" style="width:{{$pb_uo_arr[0]*100/$sum2}}%;">
-                    <span class="per"><strong>{{$pb_uo_arr[0]}}</strong> ({{$pb_uo_arr[0]*100/$sum2}}%)</span>
-                    <span class="tx">오버</span>
-                </p>
-            </div>
-        </dd>
-    </dl>
-  </div>
-  <div class="bar_graph">
-    <dl class="border-top-none">
-        <dt>일반볼</dt>
-        <dd>
-            <div class="bar">
-                <p class="left @if($nb_oe_arr[1] > $nb_oe_arr[0]){{"on"}}@endif" style="width:{{$nb_oe_arr[1]*100/$sum3}}%;">
-                    <span class="per"><strong>{{$nb_oe_arr[1]}}</strong> ({{$nb_oe_arr[1]*100/$sum3}}%)</span>
-                    <span class="tx">홀</span>
-                </p>
-                <p class="right @if($nb_oe_arr[0] > $nb_oe_arr[1]){{"on"}}@endif" style="width:{{$nb_oe_arr[0]*100/$sum3}}%;">
-                    <span class="per"><strong>{{$nb_oe_arr[0]}}</strong> ({{$nb_oe_arr[0]*100/$sum3}}%)</span>
-                    <span class="tx">짝</span>
-                </p>
-            </div>
-            <div class="bar">
-                <p class="left @if($nb_uo_arr[1] > $nb_uo_arr[0]){{"on"}}@endif" style="width:{{$nb_uo_arr[1]*100/$sum4}}%;">
-                    <span class="per"><strong>{{$nb_uo_arr[1]}}</strong> ({{$nb_uo_arr[1]*100/$sum4}}%)</span>
-                    <span class="tx">언더</span>
-                </p>
-                <p class="right @if($nb_uo_arr[0] > $nb_uo_arr[1]){{"on"}}@endif" style="width:{{$nb_uo_arr[0]*100/$sum4}}%;">
-                    <span class="per"><strong>{{$nb_uo_arr[0]}}</strong> ({{$nb_uo_arr[0]*100/$sum4}}%)</span>
-                    <span class="tx">오버</span>
-                </p>
-            </div>
-        </dd>
-    </dl>
-  </div>
 </div>
 
 <div class="mb-1">
@@ -119,24 +58,10 @@ $sum4 = ($nb_uo_arr[0] + $nb_uo_arr[1] ) == 0 ? 1 : $nb_uo_arr[0] + $nb_uo_arr[1
                 </td>
             </tr>
           </thead>
-            <tbody>
-            @if(!empty($pb_oe))
-                @for($i = 0 ;$i <sizeof($pb_oe);$i++)
-                    <tr>
-                        <td class="text-center" style="width:150px">{{$i+1}}</td>
-                        <td class="text-center">{{$pb_oe[$i]["ai_id"]}}</td>
-                        <td class="text-center">{{$pb_oe[$i]["winning_num"]}}연승중</td>
-                        <td class="text-center">{!! $po[$pb_oe[$i]["pick"]] !!}</td>
-                        <td class="text-center">{{$pb_uo[$i]["ai_id"]}}</td>
-                        <td class="text-center">{{$pb_uo[$i]["winning_num"]}}연승중</td>
-                        <td class="text-center">{!! $pu[$pb_uo[$i]["pick"]] !!}</td>
-                    </tr>
-                @endfor
-            @else
+            <tbody class="pb_tbody">
                 <tr>
                     <td colspan="8" class="text-center">배팅대기중...</td>
                 </tr>
-            @endif
             </tbody>
         </table>
     </div>
@@ -171,30 +96,17 @@ $sum4 = ($nb_uo_arr[0] + $nb_uo_arr[1] ) == 0 ? 1 : $nb_uo_arr[0] + $nb_uo_arr[1
                 </td>
             </tr>
           </thead>
-            <tbody>
-                @if(!empty($nb_oe))
-                    @for($i = 0 ;$i <sizeof($nb_oe);$i++)
-                        <tr>
-                            <td class="text-center">{{$i+1}}</td>
-                            <td class="text-center">{{$nb_oe[$i]["ai_id"]}}</td>
-                            <td class="text-center">{{$nb_oe[$i]["winning_num"]}}연승중</td>
-                            <td class="text-center">{!! $po[$nb_oe[$i]["pick"]] !!}</td>
-                            <td class="text-center">{{$nb_uo[$i]["ai_id"]}}</td>
-                            <td class="text-center">{{$nb_uo[$i]["winning_num"]}}연승중</td>
-                            <td class="text-center">{!! $pu[$nb_uo[$i]["pick"]] !!}</td>
-                        </tr>
-                    @endfor
-                @else
-                    <tr>
-                        <td colspan="8" class="text-center">배팅대기중...</td>
-                    </tr>
-                @endif
+            <tbody class="nb_tbody">
+              <tr>
+                  <td colspan="8" class="text-center">배팅대기중...</td>
+              </tr>
             </tbody>
         </table>
     </div>
 </div>
 @endsection
-
+@include("Analyse.winning")
+@include("Analyse.bar_graph")
 <style>
 #powerball-category .nav-link{
     display: block;

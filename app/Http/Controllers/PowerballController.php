@@ -1462,44 +1462,12 @@ class PowerballController extends SecondController
                             window.parent.document.getElementById('mainFrame').height = '500px';</script>";
             return;
         }
-        $pb_oe = $pb_uo = $nb_oe = $nb_uo = array();
-        $data = TblWinning::get()->toArray();
-        $pb_oe_arr = $pb_uo_arr = $nb_oe_arr = $nb_uo_arr = array(0,0);
-        if(!empty($data) && sizeof($data) == 400)
-            foreach($data as $value){
-                if($value["kind"] ==1)
-                {
-                    array_push($pb_oe,$value);
-                    $pb_oe_arr[$value["pick"]]++;
-                }
-                if($value["kind"] ==2)
-                {
-                  array_push($pb_uo,$value);
-                  $pb_uo_arr[$value["pick"]]++;
-                }
-                if($value["kind"] ==3)
-                {
-                  array_push($nb_oe,$value);
-                  $nb_oe_arr[$value["pick"]]++;
-                }
-                if($value["kind"] ==4)
-                {
-                  array_push($nb_uo,$value);
-                  $nb_uo_arr[$value["pick"]]++;
-                }
-            }
+
         return view("pick.winning", [
             "css"=>"winning.css",
             "js"=>"winning.js",
             "p_remain"=>TimeController::getTimer(2),
-            "pb_oe"=>$pb_oe,
-            "pb_uo"=>$pb_uo,
-            "nb_oe"=>$nb_oe,
-            "nb_uo"=>$nb_uo,
-            "pb_oe_arr"=>$pb_oe_arr,
-            "pb_uo_arr"=>$pb_uo_arr,
-            "nb_oe_arr"=>$nb_oe_arr,
-            "nb_uo_arr"=>$nb_uo_arr,
+            "api_token"=>$this->user->api_token,
             "winning"=>1
         ]);
     }
@@ -2070,5 +2038,71 @@ class PowerballController extends SecondController
           return;
       }
       echo json_encode(array("status"=>0,"msg"=>"잘못된 요청입니다."));
+    }
+
+  public function getWinningMachine(Request $request){
+      if(!$this->isLogged)
+      {
+          echo json_encode(array("status"=>0,"msg"=>"로그인 이후 이용가능한 서비스입니다."));
+          return;
+      }
+      $ana_title = PbMarket::where("code","WINNING_MACHINE")->first();
+      if(empty($ana_title)){
+        echo json_encode(array("status"=>0,"msg"=>"연승제조기 아이템이 존재하지 않습니다."));
+        return;
+      }
+      $userId = $this->user->userId;
+      $item_use = PbItemUse::where("userId",$userId)
+          ->where("terms1","<=",date("Y-m-d H:i:s"))
+          ->where("terms2",">=",date("Y-m-d H:i:s"))
+          ->where("market_id","WINNING_MACHINE")
+          ->first();
+      if(empty($item_use)){
+          echo json_encode(array("status"=>0,"code"=>1,"msg"=>"[{$ana_title['name']}] 아이템 구매 후 이용 가능합니다. 구매하신 분은 [아이템]에서  [사용] 눌러주세요"));
+          return;
+      }
+      $pb_oe = $pb_uo = $nb_oe = $nb_uo = array();
+      $data = TblWinning::get()->toArray();
+      $pb_oe_arr = $pb_uo_arr = $nb_oe_arr = $nb_uo_arr = array(0,0);
+      $winning_data = array();
+      $winning_data["pb"] = $winning_data["nb"] = array();
+      $winning_data["pb"]["oe"] = array();
+      $winning_data["pb"]["uo"] = array();
+      $winning_data["nb"]["oe"] = array();
+      $winning_data["nb"]["uo"] = array();
+      if(!empty($data) && sizeof($data) == 400)
+      {
+        foreach($data as $value){
+            if($value["kind"] ==1)
+            {
+                array_push($pb_oe,$value);
+                array_push($winning_data["pb"]["oe"],$value);
+                $pb_oe_arr[$value["pick"]]++;
+            }
+            if($value["kind"] ==2)
+            {
+              array_push($pb_uo,$value);
+              $pb_uo_arr[$value["pick"]]++;
+              array_push($winning_data["pb"]["uo"],$value);
+            }
+            if($value["kind"] ==3)
+            {
+              array_push($nb_oe,$value);
+              array_push($winning_data["nb"]["oe"],$value);
+              $nb_oe_arr[$value["pick"]]++;
+            }
+            if($value["kind"] ==4)
+            {
+              array_push($nb_uo,$value);
+              array_push($winning_data["nb"]["uo"],$value);
+              $nb_uo_arr[$value["pick"]]++;
+            }
+        }
+
+        echo json_encode(array("status"=>1,"result"=>$winning_data,"total"=>array("pb_oe"=>$pb_oe_arr,"pb_uo"=>$pb_uo_arr,"nb_oe"=>$nb_oe_arr,"nb_uo"=>$nb_uo_arr)));
+        return;
+      }
+      echo json_encode(array("status"=>1,"msg"=>"결과가 없습니다."));
+      return;
     }
 }

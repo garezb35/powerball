@@ -56,6 +56,7 @@ Route::middleware('auth:api')->group(function(){
     Route::post("/setoutIP",[App\Http\Controllers\MemberController::class,'setoutIP']);
     Route::post("/exitMember",[App\Http\Controllers\MemberController::class,'exitMember'])->name("exitMember");
     Route::post("/setIndividualGame",[App\Http\Controllers\PowerballController::class,'setIndividualGame'])->name("setIndividualGame");
+    Route::post("/getWinningMachine",[App\Http\Controllers\PowerballController::class,'getWinningMachine'])->name("getWinningMachine");
 });
 
 Route::post("/get_more/powerball",[App\Http\Controllers\PowerballController::class,'resultList']);
