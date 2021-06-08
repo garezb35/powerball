@@ -57,6 +57,7 @@ function openCity(evt,patt_index) {
 function getResultFromDatabase(){
   simulator_in_index = 0;
   var typeo = simulator_in[simulator_in_index];
+
   if(round > 0){
     $.ajax({
         type:'POST',

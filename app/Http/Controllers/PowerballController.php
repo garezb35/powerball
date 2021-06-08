@@ -1417,6 +1417,17 @@ class PowerballController extends SecondController
               "rest3"=>0,
               "rest4"=>0
           ];
+          if($type == 2){
+            $last_r = Pb_Result_Powerball::orderBy("day_round","DESC")->first();
+            $insert["state"] = 0;
+            if(!empty($last_r)){
+              if(strtotime("now") - strtotime($last_r["created_date"]) < 300){
+                $insert["state"] = 1;
+                $insert["start_round"] = $last_r["day_round"];
+                $insert["end_round"] = $last_r["day_round"] + 10000;
+              }
+            }
+          }
         }
         else
         {
