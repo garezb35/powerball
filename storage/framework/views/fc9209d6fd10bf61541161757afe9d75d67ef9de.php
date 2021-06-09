@@ -405,9 +405,9 @@ if(!empty($auto_info)){
                         <button class="btn-secondary btn-sm ft-btsize" id="past_start" style="cursor:pointer;width:40%" data-code="<?php echo e($autos); ?>">지난회차시작</button>
                         <?php endif; ?>
                         <?php if($autos ==2): ?>
-                        <button class="btn-secondary btn-sm ft-btsize" id="current_start" style="cursor:pointer;width:40%" data-code="<?php echo e($autos); ?>"></button>
+                        <button class="btn-dark btn-sm ft-btsize" id="current_start" style="cursor:pointer;width:40%" data-code="<?php echo e($autos); ?>">현재회차중지</button>
                         <?php else: ?>
-                        <button class="btn-secondary btn-sm ft-btsize" id="current_start" style="cursor:pointer;width:40%" data-code="<?php echo e($autos); ?>"></button>  
+                        <button class="btn-secondary btn-sm ft-btsize" id="current_start" style="cursor:pointer;width:40%" data-code="<?php echo e($autos); ?>">현재회차시작</button>
                         <?php endif; ?>
 
                         <div class="mt-1">

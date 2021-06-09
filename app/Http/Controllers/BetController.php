@@ -309,17 +309,18 @@ class BetController extends Controller
                 $current = $request->rownum;
                 $day_round = (int)$request->day_round;
                 $pb_database = new Pb_Result_Powerball();
-                $current  = empty($config['current_round']) ? $first_round : $config['current_round'];
                 if($current == $first_round){
                   $not_simulate = true;
                 }
             }
 
+            //
             if($not_simulate)
             {
               PbAutoSetting::where("userId",$config["userId"])->update(["current_round"=>$current+1]);
               continue;
             }
+
             $history_date = date("Y-m-d H:i:s");
             $history["type"] = "current_result";
             $history["pb_oe"] = $pb_oe;
@@ -328,8 +329,9 @@ class BetController extends Controller
             $history["nb_uo"] = $nb_uo;
             $history["date"] = $history_date;
             $history["rownum"] = $current;
+            if(trim($pb_oe) != "" && trim($pb_uo) != "" && trim($nb_uo) != "" && trim($nb_uo) != "")
+              PbAutoHistory::insert(["created_at"=>$history_date,"auto_type"=>1,"userId"=>$config["userId"],"reason"=>json_encode($history)]);
 
-            PbAutoHistory::insert(["created_at"=>$history_date,"auto_type"=>1,"userId"=>$config["userId"],"reason"=>json_encode($history)]);
             $history = array();
 
             $match_type = $pb_database->select(
@@ -340,9 +342,6 @@ class BetController extends Controller
             )->where("day_round","<=",$current)->where("day_round",'>=',$start_round+1)->get()->toArray();
 
             $match_type = json_decode(json_encode($match_type));
-
-
-
             if(strlen($match_type[0]->poe) == 0)  // 결과가 없다면 다음 순환으로 넘긴다.
             {
               if($current >= $end_round){   //// 현재 회차가 마감회차보다 커지면 빠진다.
