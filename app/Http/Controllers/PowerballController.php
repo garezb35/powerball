@@ -483,7 +483,7 @@ class PowerballController extends SecondController
         $powerball_list_to = DB::connection("comm" . $year)->table("pb_result_powerball");
       }
       $powerball_list_to = $powerball_list_to->where("day_round","<=",$round);
-      $powerball_list_to = $powerball_list_to->where("day_round",">=",$start_round);
+      $powerball_list_to = $powerball_list_to->where("day_round",">",$start_round);
       $powerball_list_to = $powerball_list_to->orderBy("day_round", "DESC");
       $powerball_list_to = $powerball_list_to->offset(0)->limit(20)->get()->toArray();
       if(sizeof($powerball_list_to) < 20){
@@ -491,7 +491,7 @@ class PowerballController extends SecondController
         if($year  > 2013){
           $year = $year - 1;
           $powerball_list_to1 = DB::connection("comm" .$year)->table("pb_result_powerball");
-          $powerball_list_to1 = $powerball_list_to1->where("day_round",">=",$start_round);
+          $powerball_list_to1 = $powerball_list_to1->where("day_round",">",$start_round);
           $powerball_list_to1 = $powerball_list_to1->orderBy("day_round", "DESC");
           $powerball_list_to1 = $powerball_list_to1->offset(0)->limit($temp)->get()->toArray();
         }
@@ -1097,8 +1097,6 @@ class PowerballController extends SecondController
 
         if(!empty($total["poe"])){
             $poe_array = $total["poe"];
-            var_dump($poe_array);
-            return;
             $poe_max = $this->getMax($poe_array,1);
             $poe_count = array_count_values($poe_array);
         }
@@ -1299,7 +1297,7 @@ class PowerballController extends SecondController
         if($autos > 0 && $autos ==2){
             $current = Pb_Result_Powerball::orderBy("day_round","DESC")->first()["day_round"]+1;
         }
-        $history=PbAutoHistory::where("userId",$userId)->get()->toArray();
+        $history=PbAutoHistory::where("userId",$userId)->orderBy("created_at","DESC")->orderBy("auto_type","ASC")->paginate(20);
         return view("pick.simulate", [
                                             "css"=>"simulator.css",
                                             "js"=>"simulator.js",
@@ -1347,7 +1345,7 @@ class PowerballController extends SecondController
 
     public function setAutoMatch(Request $request){
         $insert_data = array();
-        $second_pat = ["p2_1_0","p2_1_1","p2_1_2","p2_1_3","p2_2_0","p2_2_1","p2_2_2","p2_2_3","p2_3_0","p2_3_1","p2_3_2","p2_3_3","p2_4_0","p2_4_1","p2_4_2","p2_4_3"];
+        $second_pat = ["p2_1_0","p2_2_0","p2_3_0","p2_4_0"];
         $userId = $this->user->userId;
         $var_type = $request->var_type; ///////////파워볼 패턴 종류
         $type = $request->type;   //////////파워볼 종류
@@ -1358,6 +1356,7 @@ class PowerballController extends SecondController
         foreach($p1 as $key=>$val){
             $round_t = "round1_".($key + 1);
             if(!empty($a1[$key]) && !empty($p1[$key])){
+              $p1[$key] = strip_tags($p1[$key]);
               PbAutoMatch::updateorCreate([
                               "auto_type"=>1,
                               "auto_kind"=>$key+1,
@@ -1376,6 +1375,7 @@ class PowerballController extends SecondController
 
         foreach($second_pat as $key=>$value){
           if(!empty($request->$value)){
+            $request->$value = strip_tags($request->$value,"<div>");
             PbAutoMatch::updateorCreate([
                             "auto_type"=>2,
                             "auto_kind"=>$key+1,
@@ -1397,6 +1397,7 @@ class PowerballController extends SecondController
         $code = $request->code;
         if($code == -1)
         {
+          PbAutoHistory::where("userId",$this->user->userId)->delete();
           $state = 1;
           $settings = PbAutoSetting::where("userId",$this->user->userId)->first();
           if(empty($settings) || empty($settings["user_amount"]) || ( (empty($settings["start_round"]) || empty($settings["end_round"])) && $type == 1 )){

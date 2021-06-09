@@ -76,6 +76,7 @@ if(!empty($auto_info)){
 ?>
 
 <?php $__env->startSection("content"); ?>
+  <script src="/assets/js/jscroll.min.js"></script>
     <script>
         var start_round = 0;
         var round = 0;
@@ -115,7 +116,7 @@ if(!empty($auto_info)){
             <?php if($value["state"] == 1): ?>
               patts2[<?php echo e($key); ?>] = {  pattern:"<?php echo e($value["auto_pattern"]); ?>",
                                     past_step:"<?php echo e($value["past_step"]); ?>",
-                                    past_cruiser:"<?php echo e($value["past_step"]); ?>",
+                                    past_cruiser:"<?php echo e($value["past_cruiser"]); ?>",
                                     past_pattern:"<?php echo e($value["past_pattern"]); ?>",
                                     step : "<?php echo e($value["auto_step"]); ?>",
                                     cruiser : "<?php echo e($value["auto_train"]); ?>",
@@ -398,8 +399,17 @@ if(!empty($auto_info)){
                        </table>
                     </td>
                     <td class="align-middle p-1">
-                        <button class="btn-secondary btn-sm ft-btsize" id="past_start" style="cursor:pointer;width:40%" data-code="<?php echo e($autos); ?>"><?php if($autos ==1): ?><?php echo e('지난회차중지'); ?><?php else: ?><?php echo e('지난회차시작'); ?><?php endif; ?></button>
-                        <button class="btn-secondary btn-sm ft-btsize" id="current_start" style="cursor:pointer;width:40%" data-code="<?php echo e($autos); ?>"><?php if($autos ==2): ?><?php echo e('현재회차중지'); ?><?php else: ?><?php echo e('현재회차시작'); ?><?php endif; ?></button>
+                        <?php if($autos ==1): ?>
+                        <button class="btn-dark btn-sm ft-btsize" id="past_start" style="cursor:pointer;width:40%" data-code="<?php echo e($autos); ?>">지난회차중지</button>
+                        <?php else: ?>
+                        <button class="btn-secondary btn-sm ft-btsize" id="past_start" style="cursor:pointer;width:40%" data-code="<?php echo e($autos); ?>">지난회차시작</button>
+                        <?php endif; ?>
+                        <?php if($autos ==2): ?>
+                        <button class="btn-secondary btn-sm ft-btsize" id="current_start" style="cursor:pointer;width:40%" data-code="<?php echo e($autos); ?>"></button>
+                        <?php else: ?>
+                        <button class="btn-secondary btn-sm ft-btsize" id="current_start" style="cursor:pointer;width:40%" data-code="<?php echo e($autos); ?>"></button>  
+                        <?php endif; ?>
+
                         <div class="mt-1">
                           <button class="btn-secondary  btn-sm  ft-btsize" data-toggle="modal" data-target="#gameSettings" style="cursor:pointer;width:40%">게임설정</button>
                           <button class="btn-secondary  btn-sm  ft-btsize" data-toggle="modal" data-target="#settingWindow" style="cursor:pointer;width:40%">이전회차설정</button>
@@ -577,22 +587,22 @@ if(!empty($auto_info)){
 
                   <?php for($i =0 ; $i < 1 ; $i++): ?>
 
-                    <?php if(!empty($matches[2][4*$index + $i-3])): ?>
+                    <?php if(!empty($matches[2][$index])): ?>
                     <tr>
                       <td class="position-relative text-left pl-1 border-bottom-none" style="height:14px">
                         <span class="text-secondary font-weight-bold">배팅패턴</span>
                         <div class="position-absolute" style="top:2px;right:0px">
-                          <button class="btn btn-secondary btn-sm border-round-none btn-rest" type="button" onclick="doRest(<?php echo e($matches[2][4*$index + $i-3]["id"]); ?>,this)">
-                          <?php if($matches[2][4*$index + $i-3]["state"] == 1): ?><?php echo e("휴식"); ?><?php else: ?><?php echo e("시작"); ?><?php endif; ?>
+                          <button class="btn btn-secondary btn-sm border-round-none btn-rest" type="button" onclick="doRest(<?php echo e($matches[2][$index]["id"]); ?>,this)">
+                          <?php if($matches[2][$index]["state"] == 1): ?><?php echo e("휴식"); ?><?php else: ?><?php echo e("시작"); ?><?php endif; ?>
                           </button>
-                          <button class="btn btn-secondary btn-sm border-round-none btn-rest" type="button" onclick="doInit(<?php echo e($matches[2][4*$index + $i-3]["id"]); ?>,this)">초기</button>
+                          <button class="btn btn-secondary btn-sm border-round-none btn-rest" type="button" onclick="doInit(<?php echo e($matches[2][$index]["id"]); ?>,this)">초기</button>
                         </div>
                       </td>
                     </tr>
                     <tr class="pattern1">
                       <td class="border-top-none">
-                        <div class="editor-text p2" id="p2_<?php echo e($index); ?>_<?php echo e($i); ?>" contenteditable="true" spellcheck="false" data-class="p2_<?php echo e($index); ?>_<?php echo e($i); ?>"><?php echo $matches[2][4*$index + $i-3]["auto_pattern"]; ?></div>
-                        <textarea class="d-none" name="p2_<?php echo e($index); ?>_<?php echo e($i); ?>"><?php echo $matches[2][4*$index + $i-3]["auto_pattern"]; ?></textarea>
+                        <div class="editor-text p2" id="p2_<?php echo e($index); ?>_<?php echo e($i); ?>" contenteditable="true" spellcheck="false" data-class="p2_<?php echo e($index); ?>_<?php echo e($i); ?>"><?php echo $matches[2][$index]["auto_pattern"]; ?></div>
+                        <textarea class="d-none" name="p2_<?php echo e($index); ?>_<?php echo e($i); ?>"><?php echo $matches[2][$index]["auto_pattern"]; ?></textarea>
                       </td>
                     </tr>
                   <?php else: ?>
@@ -621,7 +631,7 @@ if(!empty($auto_info)){
   </div>
 </form>
 <div class="log-part">
-    <ul>
+    <ul class="infinite-scroll">
         <?php if(!empty($history)): ?>
           <?php $__currentLoopData = $history; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $h): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <?php
@@ -640,17 +650,19 @@ if(!empty($auto_info)){
                   $nb_oe ="nb_oe".$parse["nb_oe"];
                   $nb_uo ="nb_uo".$parse["nb_uo"];
                 ?>
-                #<?php echo e($parse['date']); ?> > <?php echo e($parse["rownum"]); ?>차 결과 : <?php echo e(getPowerHeader()[$pb_oe]); ?> / <?php echo e(getPowerHeader()[$pb_uo]); ?> / <?php echo e(getPowerHeader()[$nb_oe]); ?> / <?php echo e(getPowerHeader()[$nb_uo]); ?>
+                #<?php echo e(date("Y-m-d H:i:s",strtotime($parse['date']))); ?> > <?php echo e($parse["rownum"]); ?>차 결과 : <?php echo e(getPowerHeader()[$pb_oe]); ?> / <?php echo e(getPowerHeader()[$pb_uo]); ?> / <?php echo e(getPowerHeader()[$nb_oe]); ?> / <?php echo e(getPowerHeader()[$nb_uo]); ?>
 
               <?php endif; ?>
               <?php if($parse["type"] == "betting"): ?>
-              #<?php echo e($h['created_at']); ?> > <?php echo e(getPowerballBetSim($parse["auto_type"],$parse["auto_kind"],$parse["pick"],$parse["win_type"])); ?> <?php echo e($parse["amount"]); ?>
+              #<?php echo e(date("Y-m-d H:i:s",strtotime($h['created_at']))); ?> <?php echo e($parse["rawnum"]); ?>(<?php echo e($parse["round"]); ?>)차 > <?php echo e(getPowerballBetSim($parse["auto_type"],$parse["auto_kind"],$parse["pick"],$parse["win_type"])); ?> <?php echo e($parse["amount"]); ?>
 
               <?php endif; ?>
           </li>
           <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         <?php endif; ?>
     </ul>
+    <?php echo e($history->links()); ?>
+
 </div>
 <?php $__env->stopSection(); ?>
 

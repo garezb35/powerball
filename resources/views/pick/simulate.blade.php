@@ -76,6 +76,7 @@ if(!empty($auto_info)){
 @endphp
 @extends('includes.empty_header')
 @section("content")
+  <script src="/assets/js/jscroll.min.js"></script>
     <script>
         var start_round = 0;
         var round = 0;
@@ -115,7 +116,7 @@ if(!empty($auto_info)){
             @if($value["state"] == 1)
               patts2[{{$key}}] = {  pattern:"{{$value["auto_pattern"]}}",
                                     past_step:"{{$value["past_step"]}}",
-                                    past_cruiser:"{{$value["past_step"]}}",
+                                    past_cruiser:"{{$value["past_cruiser"]}}",
                                     past_pattern:"{{$value["past_pattern"]}}",
                                     step : "{{$value["auto_step"]}}",
                                     cruiser : "{{$value["auto_train"]}}",
@@ -397,8 +398,17 @@ if(!empty($auto_info)){
                        </table>
                     </td>
                     <td class="align-middle p-1">
-                        <button class="btn-secondary btn-sm ft-btsize" id="past_start" style="cursor:pointer;width:40%" data-code="{{$autos}}">@if($autos ==1){{'지난회차중지'}}@else{{'지난회차시작'}}@endif</button>
-                        <button class="btn-secondary btn-sm ft-btsize" id="current_start" style="cursor:pointer;width:40%" data-code="{{$autos}}">@if($autos ==2){{'현재회차중지'}}@else{{'현재회차시작'}}@endif</button>
+                        @if($autos ==1)
+                        <button class="btn-dark btn-sm ft-btsize" id="past_start" style="cursor:pointer;width:40%" data-code="{{$autos}}">지난회차중지</button>
+                        @else
+                        <button class="btn-secondary btn-sm ft-btsize" id="past_start" style="cursor:pointer;width:40%" data-code="{{$autos}}">지난회차시작</button>
+                        @endif
+                        @if($autos ==2)
+                        <button class="btn-dark btn-sm ft-btsize" id="current_start" style="cursor:pointer;width:40%" data-code="{{$autos}}">현재회차중지</button>
+                        @else
+                        <button class="btn-secondary btn-sm ft-btsize" id="current_start" style="cursor:pointer;width:40%" data-code="{{$autos}}">현재회차시작</button>
+                        @endif
+
                         <div class="mt-1">
                           <button class="btn-secondary  btn-sm  ft-btsize" data-toggle="modal" data-target="#gameSettings" style="cursor:pointer;width:40%">게임설정</button>
                           <button class="btn-secondary  btn-sm  ft-btsize" data-toggle="modal" data-target="#settingWindow" style="cursor:pointer;width:40%">이전회차설정</button>
@@ -576,22 +586,22 @@ if(!empty($auto_info)){
 
                   @for($i =0 ; $i < 1 ; $i++)
 
-                    @if(!empty($matches[2][4*$index + $i-3]))
+                    @if(!empty($matches[2][$index]))
                     <tr>
                       <td class="position-relative text-left pl-1 border-bottom-none" style="height:14px">
                         <span class="text-secondary font-weight-bold">배팅패턴</span>
                         <div class="position-absolute" style="top:2px;right:0px">
-                          <button class="btn btn-secondary btn-sm border-round-none btn-rest" type="button" onclick="doRest({{$matches[2][4*$index + $i-3]["id"]}},this)">
-                          @if($matches[2][4*$index + $i-3]["state"] == 1){{"휴식"}}@else{{"시작"}}@endif
+                          <button class="btn btn-secondary btn-sm border-round-none btn-rest" type="button" onclick="doRest({{$matches[2][$index]["id"]}},this)">
+                          @if($matches[2][$index]["state"] == 1){{"휴식"}}@else{{"시작"}}@endif
                           </button>
-                          <button class="btn btn-secondary btn-sm border-round-none btn-rest" type="button" onclick="doInit({{$matches[2][4*$index + $i-3]["id"]}},this)">초기</button>
+                          <button class="btn btn-secondary btn-sm border-round-none btn-rest" type="button" onclick="doInit({{$matches[2][$index]["id"]}},this)">초기</button>
                         </div>
                       </td>
                     </tr>
                     <tr class="pattern1">
                       <td class="border-top-none">
-                        <div class="editor-text p2" id="p2_{{$index}}_{{$i}}" contenteditable="true" spellcheck="false" data-class="p2_{{$index}}_{{$i}}">{!! $matches[2][4*$index + $i-3]["auto_pattern"] !!}</div>
-                        <textarea class="d-none" name="p2_{{$index}}_{{$i}}">{!! $matches[2][4*$index + $i-3]["auto_pattern"] !!}</textarea>
+                        <div class="editor-text p2" id="p2_{{$index}}_{{$i}}" contenteditable="true" spellcheck="false" data-class="p2_{{$index}}_{{$i}}">{!! $matches[2][$index]["auto_pattern"] !!}</div>
+                        <textarea class="d-none" name="p2_{{$index}}_{{$i}}">{!! $matches[2][$index]["auto_pattern"] !!}</textarea>
                       </td>
                     </tr>
                   @else
@@ -620,7 +630,7 @@ if(!empty($auto_info)){
   </div>
 </form>
 <div class="log-part">
-    <ul>
+    <ul class="infinite-scroll">
         @if(!empty($history))
           @foreach($history as $h)
             @php
@@ -639,14 +649,15 @@ if(!empty($auto_info)){
                   $nb_oe ="nb_oe".$parse["nb_oe"];
                   $nb_uo ="nb_uo".$parse["nb_uo"];
                 @endphp
-                #{{$parse['date']}} > {{$parse["rownum"]}}차 결과 : {{getPowerHeader()[$pb_oe]}} / {{getPowerHeader()[$pb_uo]}} / {{getPowerHeader()[$nb_oe]}} / {{getPowerHeader()[$nb_uo]}}
+                #{{date("Y-m-d H:i:s",strtotime($parse['date']))}} > {{$parse["rownum"]}}차 결과 : {{getPowerHeader()[$pb_oe]}} / {{getPowerHeader()[$pb_uo]}} / {{getPowerHeader()[$nb_oe]}} / {{getPowerHeader()[$nb_uo]}}
               @endif
               @if($parse["type"] == "betting")
-              #{{$h['created_at']}} > {{getPowerballBetSim($parse["auto_type"],$parse["auto_kind"],$parse["pick"],$parse["win_type"])}} {{$parse["amount"]}}
+              #{{date("Y-m-d H:i:s",strtotime($h['created_at']))}} {{$parse["rawnum"]}}({{$parse["round"]}})차 > {{getPowerballBetSim($parse["auto_type"],$parse["auto_kind"],$parse["pick"],$parse["win_type"])}} {{$parse["amount"]}}
               @endif
           </li>
           @endforeach
         @endif
     </ul>
+    {{$history->links()}}
 </div>
 @endsection

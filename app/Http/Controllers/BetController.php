@@ -242,7 +242,8 @@ class BetController extends Controller
               }
             }
           }
-          PbAutoHistory::where("userId",$config["userId"])->delete();
+
+          // PbAutoHistory::where("userId",$config["userId"])->delete();
             //  순환하면서 게임에 대한 베팅 진행
             $w= array();
             $w[1] = $config["w1"];
@@ -263,6 +264,7 @@ class BetController extends Controller
                 continue;
             }
 
+            $not_simulate = false;
             if($bet_type ==1){         ///////////////    1이면 지난 회차
                 if(empty($first_round) || empty($end_round)){  ///   시작라운드와 마감 라운드를 검사한다.
                     continue;
@@ -274,26 +276,30 @@ class BetController extends Controller
                     $pb_database = new Pb_Result_Powerball();
                 }
                 else{
-                    $pb_database = DB::connection("powerball_community".$database_year["year"])->table("pb_result_powerball");
+                    $pb_database = DB::connection("comm".$database_year["year"])->table("pb_result_powerball");
                     $year = $database_year["year"];
                 }
 
                 $current_result = json_decode(json_encode($pb_database->where("day_round",$current)->first()));
-                if(empty($current_result))
+                if(empty($current_result) || $current == $first_round)
                 {
-                    continue;
+                    $not_simulate = true;
                 }
-                $pb_oe = $current_result->pb_oe;
-                $pb_uo = $current_result->pb_uo;
-                $nb_oe = $current_result->nb_oe;
-                $nb_uo = $current_result->nb_uo;
-                $day_round = (int)$current_result->round;
-                if($database_year["year"] == date("Y")){
-                    $pb_database = new Pb_Result_Powerball();
-                }
+
                 else{
-                    $pb_database = DB::connection("comm".$database_year["year"])->table("pb_result_powerball");
+                    $pb_oe = $current_result->pb_oe;
+                    $pb_uo = $current_result->pb_uo;
+                    $nb_oe = $current_result->nb_oe;
+                    $nb_uo = $current_result->nb_uo;
+                    $day_round = (int)$current_result->round;
+                    if($database_year["year"] == date("Y")){
+                        $pb_database = new Pb_Result_Powerball();
+                    }
+                    else{
+                        $pb_database = DB::connection("comm".$database_year["year"])->table("pb_result_powerball");
+                    }
                 }
+
             }
             else{
                 $pb_oe = $request->pb_oe;     /// 진행중 회차이면 GET방식으로 결과들이 날아온다.
@@ -304,19 +310,26 @@ class BetController extends Controller
                 $day_round = (int)$request->day_round;
                 $pb_database = new Pb_Result_Powerball();
                 $current  = empty($config['current_round']) ? $first_round : $config['current_round'];
+                if($current == $first_round){
+                  $not_simulate = true;
+                }
             }
 
-
-
+            if($not_simulate)
+            {
+              PbAutoSetting::where("userId",$config["userId"])->update(["current_round"=>$current+1]);
+              continue;
+            }
+            $history_date = date("Y-m-d H:i:s");
             $history["type"] = "current_result";
             $history["pb_oe"] = $pb_oe;
             $history["pb_uo"] = $pb_uo;
             $history["nb_oe"] = $nb_oe;
             $history["nb_uo"] = $nb_uo;
-            $history["date"] = date("Y-m-d H:i:s");
+            $history["date"] = $history_date;
             $history["rownum"] = $current;
 
-            PbAutoHistory::insert(["userId"=>$config["userId"],"reason"=>json_encode($history)]);
+            PbAutoHistory::insert(["created_at"=>$history_date,"auto_type"=>1,"userId"=>$config["userId"],"reason"=>json_encode($history)]);
             $history = array();
 
             $match_type = $pb_database->select(
@@ -324,9 +337,11 @@ class BetController extends Controller
                 DB::raw("GROUP_CONCAT(pb_result_powerball.pb_oe ORDER BY day_round ASC  SEPARATOR '') as `poe`"),
                 DB::raw("GROUP_CONCAT(pb_result_powerball.nb_oe ORDER BY day_round ASC  SEPARATOR '') as `noe`"),
                 DB::raw("GROUP_CONCAT(pb_result_powerball.nb_uo ORDER BY day_round ASC  SEPARATOR '') as `nuo`")
-            )->where("day_round","<=",$current)->where("day_round",'>=',$start_round)->get()->toArray();
+            )->where("day_round","<=",$current)->where("day_round",'>=',$start_round+1)->get()->toArray();
 
             $match_type = json_decode(json_encode($match_type));
+
+
 
             if(strlen($match_type[0]->poe) == 0)  // 결과가 없다면 다음 순환으로 넘긴다.
             {
@@ -341,18 +356,19 @@ class BetController extends Controller
 
             else{
               if(strlen($match_type[0]->poe) < 20 && $year > 2013 && $bet_type == 1){
+                  $year = $year -1;
                   $pb_database = DB::connection("comm".$year)->table("pb_result_powerball");
                   $match_type_previous = json_decode(json_encode( $pb_database->select(
                       DB::raw("GROUP_CONCAT(pb_result_powerball.pb_uo ORDER BY day_round ASC  SEPARATOR '') as `puo`"),
                       DB::raw("GROUP_CONCAT(pb_result_powerball.pb_oe ORDER BY day_round ASC  SEPARATOR '') as `poe`"),
                       DB::raw("GROUP_CONCAT(pb_result_powerball.nb_oe ORDER BY day_round ASC  SEPARATOR '') as `noe`"),
                       DB::raw("GROUP_CONCAT(pb_result_powerball.nb_uo ORDER BY day_round ASC  SEPARATOR '') as `nuo`")
-                  )->where("day_round",'>=',$start_round)->get()->toArray()));
+                  )->where("day_round",'>=',$start_round+1)->where("day_round",'<=',$current)->get()->toArray()));
+
                   $match_type_previous[0]->poe .= $match_type[0]->poe;
                   $match_type_previous[0]->puo .= $match_type[0]->puo;
                   $match_type_previous[0]->noe .= $match_type[0]->noe;
                   $match_type_previous[0]->nuo .= $match_type[0]->nuo;
-
                   $match_type[0]->poe = $match_type_previous[0]->poe;
                   $match_type[0]->puo = $match_type_previous[0]->puo;
                   $match_type[0]->noe = $match_type_previous[0]->noe;
@@ -363,6 +379,8 @@ class BetController extends Controller
               $match_type[0]->puo = str_replace("0","2",substr($match_type[0]->puo,strlen($match_type[0]->puo)-20));
               $match_type[0]->noe = str_replace("0","2",substr($match_type[0]->noe,strlen($match_type[0]->noe)-20));
               $match_type[0]->nuo = str_replace("0","2",substr($match_type[0]->nuo,strlen($match_type[0]->nuo)-20));
+
+
 
               $games = $config["game"];
               $auto_games = json_decode(json_encode($games)); // 오토 게임들을 뽑아낸다.
@@ -564,8 +582,10 @@ class BetController extends Controller
                           }
                           $history["auto_kind"] = $game->game_kind;
                           $history["auto_type"] = $game->auto_type;
+                          $history["rawnum"] = $current;
+                          $history["round"] = $day_round;
                           $history["pick"] = $betting_pick;
-                          PbAutoHistory::insert(["userId"=>$config["userId"],"reason"=>json_encode($history)]);
+                          PbAutoHistory::insert(["created_at"=>$history_date,"auto_type"=>2,"userId"=>$config["userId"],"reason"=>json_encode($history)]);
                         }
                     }
                     if($is_win == -1){
