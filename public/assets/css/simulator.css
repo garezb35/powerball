@@ -322,7 +322,7 @@ body{
   max-height: 160px;
   height: 160px;
   overflow: auto;
-  background: #000;
+  background: #393c42;
   padding: 5px;
   border-radius: 5px
 }
@@ -456,13 +456,17 @@ body{
 }
 
 .current_result{
-  background: green
+  color: #90ee90
 }
-.win1{
-  color: yellow
+.betting.win1{
+  color: #ff6347
 }
-.win0{
-  color: red
+.win0,.betting.win{
+  color: #add8e6
+}
+
+.ready_betting{
+  color:#ffff00
 }
 
 .presult-header{

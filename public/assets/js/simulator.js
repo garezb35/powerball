@@ -23,6 +23,9 @@ presult[2] = "";
 presult[3] = "";
 var rr  = new Array();
 var clicked = false;
+var page = 0;
+var page_loaded  = false;
+var page_finished = false;
 $(".pow-element").click(function() {
     initOdd();
     if ($(this).hasClass("pow-element-blue")) {
@@ -188,6 +191,7 @@ function saveAutoSetting(){
 }
 
 $(document).ready(function(){
+
   var simulate_tap = getCookie("simulate_tap");
   if( typeof simulate_tap == "undefined" || simulate_tap == null || simulate_tap.trim() == "" || simulate_tap == 1){
     $("#category-auto1").addClass("text-danger")
@@ -274,17 +278,13 @@ $(document).ready(function(){
         processAutoStart(code,type);
     });
     getResultFromDatabase();
+    getPageLog()
 
-    $('ul.pagination').hide();
-    $('.log-part').jscroll({
-        autoTrigger: true,
-        padding: 0,
-        nextSelector: '.pagination li.active + li a',
-        contentSelector: 'ul.infinite-scroll',
-        callback: function() {
-            $('ul.pagination').remove();
-        }
-    });
+    $(".log-part").scroll(function(){
+      if($(".log-part").scrollTop() == 0){
+        getPageLog();
+      }
+    })
 })
 
 
@@ -711,5 +711,34 @@ function doInit(id){
         }
     }).done(function(){
       clicked = false;
+    })
+}
+
+function getPageLog(){
+  if(!page_loaded || !page_finished)
+    $.ajax({
+        type:'POST',
+        dataType:'json',
+        url:'/api/getLogData',
+        data:{page:page,api_token:api_token},
+        beforeSend:function(){
+          page_loaded = true;
+        },
+        success:function(data,textStatus){
+          if(data.status ==1){
+              compileJson("#log-data",".infinite-scroll",data.result,10)
+              if(page == 0)
+                $('.log-part').animate({scrollTop:10000},0);
+              else {
+                $('.log-part').animate({scrollTop:$('.log-part').height()},0);
+              }
+              page++;
+          }
+          else{
+            page_finished  = true;
+          }
+        }
+    }).done(function(){
+      page_loaded = false;
     })
 }

@@ -179,6 +179,41 @@ function isNumber(event)
 
     return false;
 }
+function getPowerHeader(){
+    return {
+      pb_oe1:"파워볼 홀",
+      pb_oe0:"파워볼 짝",
+      pb_uo1:"파워볼 언",
+      pb_uo0:"파워볼 오",
+      nb_oe1:"일반볼 홀",
+      nb_oe0:"일반볼 짝",
+      nb_uo1:"일반볼 언",
+      nb_uo0:"일반볼 오"
+    };
+}
+
+function getPowerHeaderBet(){
+    return {
+      11:"파워볼 홀",
+      10:"파워볼 짝",
+      21:"파워볼 언",
+      20:"파워볼 오",
+      31:"일반볼 홀",
+      30:"일반볼 짝",
+      41:"일반볼 언",
+      40:"일반볼 오",
+      "1-1":"NONE",
+      "2-1":"NONE",
+      "3-1":"NONE",
+      "4-1":"NONE",
+    };
+}
+
+function getPowerballBetSim(auto_type,auto_kind,pick,win){
+  var win_alias = win == 1 ? "(승)" : "(패)";
+  var game_alias = auto_type  == 1 ? "물레방아":"패턴배팅";
+  return "당첨결과 : " + game_alias + " " + getPowerHeaderBet()[auto_kind + pick] + " " + win_alias;
+}
 
 Handlebars.registerHelper('percentageofTwo', function(context,ndx) {
     var sum = context[0] +  context[1];
@@ -254,6 +289,50 @@ Handlebars.registerHelper('index_ofWithKeyPerSadari', function(context,ndx,key) 
     else
         return 0;
 });
+
+
+Handlebars.registerHelper("logData",function(data){
+  var content = "";
+  var created_at = data.created_at;
+  var parse = JSON.parse(data.reason)
+  var win_class = "";
+  if(typeof parse.win_type == "undefined" || parse.win_type == 0)
+    win_class = "";
+  else
+    win_class = parse.win_type;
+  if(parse.type == "current_result"){
+    var pb_oe ="pb_oe"+parse.pb_oe;
+    var pb_uo ="pb_uo"+parse.pb_uo;
+    var nb_oe ="nb_oe"+parse.nb_oe;
+    var nb_uo ="nb_uo"+parse.nb_uo;
+    content = "# " + created_at + " > " + parse.rownum + "차 결과 : " +
+    getPowerHeader()[pb_oe] + " / " + getPowerHeader()[pb_uo] + " / " + getPowerHeader()[nb_oe] + " / " + getPowerHeader()[nb_uo];
+  }
+  if(parse.type == "betting"){
+    content = "# " + created_at + " " + parse.rawnum+"("+parse.round+")차 > " +
+    getPowerballBetSim(parse.auto_type,parse.auto_kind,parse.pick,parse.win_type) + " " + parse.amount;
+  }
+  if(parse.type == "ready_betting")
+  {
+    content = powerballBetMnyKind(created_at,parse.mny)
+  }
+
+  return "<li class='" + parse.type + " win" +win_class+ "'>"+content+"</li>";
+})
+
+function powerballBetMnyKind(date,mnyKind){
+    var r = "";
+    for (var key in mnyKind) {
+      value = mnyKind[key]
+      if(value != 0 && value  !=""){
+        r =r+"<div>";
+        r =r+"#"+date + " > 배팅성공: "+getPowerHeaderBet()[key]+"에 * "+value+"원";
+        r =r+"</div>";
+      }
+    }
+    return r;
+}
+
 
 
 Handlebars.registerHelper("inc", function(value, options)

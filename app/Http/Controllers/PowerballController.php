@@ -1297,7 +1297,7 @@ class PowerballController extends SecondController
         if($autos > 0 && $autos ==2){
             $current = Pb_Result_Powerball::orderBy("day_round","DESC")->first()["day_round"]+1;
         }
-        $history=PbAutoHistory::where("userId",$userId)->orderBy("created_at","DESC")->orderBy("auto_type","ASC")->paginate(20);
+        $history= array();
 
         return view("pick.simulate", [
                                             "css"=>"simulator.css",
@@ -2124,5 +2124,16 @@ class PowerballController extends SecondController
       }
       echo json_encode(array("status"=>0,"msg"=>"결과가 없습니다."));
       return;
+    }
+
+    public function getLogData(Request $request){
+      $result = PbAutoHistory::where("userId",$this->user->userId)->orderBy("created_at","DESC")->orderBy("auto_type","ASC")->skip($request->page * 20)->take(20)->get()->toArray();
+      $result = array_reverse($result);
+      if(empty($result)){
+        echo json_encode(array("status"=>0));
+      }
+      else {
+        echo json_encode(array("status"=>1,"result"=>$result));
+      }
     }
 }

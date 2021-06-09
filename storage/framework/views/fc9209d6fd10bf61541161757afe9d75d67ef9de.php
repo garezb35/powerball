@@ -632,38 +632,10 @@ if(!empty($auto_info)){
 </form>
 <div class="log-part">
     <ul class="infinite-scroll">
-        <?php if(!empty($history)): ?>
-          <?php $__currentLoopData = $history; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $h): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <?php
-            $parse  = get_object_vars(json_decode($h["reason"]));
-            if(empty($parse["win_type"]))
-              $win_class = "";
-            else {
-              $win_class =  $parse["win_type"] ?? "";
-            }
-            ?>
-          <li class="<?php echo e($parse["type"]); ?> win<?php echo e($win_class); ?>">
-              <?php if($parse["type"] == "current_result"): ?>
-                <?php
-                  $pb_oe ="pb_oe".$parse["pb_oe"];
-                  $pb_uo ="pb_uo".$parse["pb_uo"];
-                  $nb_oe ="nb_oe".$parse["nb_oe"];
-                  $nb_uo ="nb_uo".$parse["nb_uo"];
-                ?>
-                #<?php echo e(date("Y-m-d H:i:s",strtotime($parse['date']))); ?> > <?php echo e($parse["rownum"]); ?>차 결과 : <?php echo e(getPowerHeader()[$pb_oe]); ?> / <?php echo e(getPowerHeader()[$pb_uo]); ?> / <?php echo e(getPowerHeader()[$nb_oe]); ?> / <?php echo e(getPowerHeader()[$nb_uo]); ?>
-
-              <?php endif; ?>
-              <?php if($parse["type"] == "betting"): ?>
-              #<?php echo e(date("Y-m-d H:i:s",strtotime($h['created_at']))); ?> <?php echo e($parse["rawnum"]); ?>(<?php echo e($parse["round"]); ?>)차 > <?php echo e(getPowerballBetSim($parse["auto_type"],$parse["auto_kind"],$parse["pick"],$parse["win_type"])); ?> <?php echo e($parse["amount"]); ?>
-
-              <?php endif; ?>
-          </li>
-          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        <?php endif; ?>
+      
     </ul>
-    <?php echo e($history->links()); ?>
-
 </div>
 <?php $__env->stopSection(); ?>
+<?php echo $__env->make("pick.log", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 <?php echo $__env->make('includes.empty_header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\work\xampp8.0\htdocs\powerball\resources\views/pick/simulate.blade.php ENDPATH**/ ?>

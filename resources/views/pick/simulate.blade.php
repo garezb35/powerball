@@ -631,33 +631,8 @@ if(!empty($auto_info)){
 </form>
 <div class="log-part">
     <ul class="infinite-scroll">
-        @if(!empty($history))
-          @foreach($history as $h)
-            @php
-            $parse  = get_object_vars(json_decode($h["reason"]));
-            if(empty($parse["win_type"]))
-              $win_class = "";
-            else {
-              $win_class =  $parse["win_type"] ?? "";
-            }
-            @endphp
-          <li class="{{$parse["type"]}} win{{$win_class}}">
-              @if($parse["type"] == "current_result")
-                @php
-                  $pb_oe ="pb_oe".$parse["pb_oe"];
-                  $pb_uo ="pb_uo".$parse["pb_uo"];
-                  $nb_oe ="nb_oe".$parse["nb_oe"];
-                  $nb_uo ="nb_uo".$parse["nb_uo"];
-                @endphp
-                #{{date("Y-m-d H:i:s",strtotime($parse['date']))}} > {{$parse["rownum"]}}차 결과 : {{getPowerHeader()[$pb_oe]}} / {{getPowerHeader()[$pb_uo]}} / {{getPowerHeader()[$nb_oe]}} / {{getPowerHeader()[$nb_uo]}}
-              @endif
-              @if($parse["type"] == "betting")
-              #{{date("Y-m-d H:i:s",strtotime($h['created_at']))}} {{$parse["rawnum"]}}({{$parse["round"]}})차 > {{getPowerballBetSim($parse["auto_type"],$parse["auto_kind"],$parse["pick"],$parse["win_type"])}} {{$parse["amount"]}}
-              @endif
-          </li>
-          @endforeach
-        @endif
+      
     </ul>
-    {{$history->links()}}
 </div>
 @endsection
+@include("pick.log")

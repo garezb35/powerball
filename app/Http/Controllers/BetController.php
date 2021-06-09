@@ -226,6 +226,10 @@ class BetController extends Controller
         }
 
         foreach($autoConfig as $config){
+          $bet_money_kind =  array();
+          $bet_money_kind[11] = $bet_money_kind[21] = $bet_money_kind[31] =$bet_money_kind[41] = 0;
+          $bet_money_kind[10] = $bet_money_kind[20] = $bet_money_kind[30] =$bet_money_kind[40] = 0;
+          $bet_money_kind["1-1"] = $bet_money_kind["2-1"] = $bet_money_kind["3-1"] =$bet_money_kind["4-1"] = 0;
           $bet_all_mny = $config["bet_amount"];
           $history = array();
           $insert_config  = array();
@@ -333,7 +337,7 @@ class BetController extends Controller
             $history["date"] = $history_date;
             $history["rownum"] = $current;
             if(trim($pb_oe) != "" && trim($pb_uo) != "" && trim($nb_uo) != "" && trim($nb_uo) != "")
-              PbAutoHistory::insert(["created_at"=>$history_date,"auto_type"=>1,"userId"=>$config["userId"],"reason"=>json_encode($history)]);
+              PbAutoHistory::insert(["created_at"=>$history_date,"auto_type"=>3,"userId"=>$config["userId"],"reason"=>json_encode($history)]);
 
             $history = array();
             if($bet_type ==2)
@@ -554,6 +558,7 @@ class BetController extends Controller
                     }
 
                     if(!is_numeric($bet_money) || empty($bet_money)) continue;
+                    $bet_money_kind[$game->game_kind.$betting_pick] += $bet_money;
                     $bet_all_mny += $bet_money;
                     if($is_win ==1){
                         $remain_amount  += ($config["martin"]-1) * $bet_money;
@@ -579,9 +584,9 @@ class BetController extends Controller
                           $history["type"] = "betting";
                           $history["win_type"] = $is_win;
                           if($is_win == 1)
-                            $history["amount"] = number_format($bet_money)."=>".number_format(1.95 * $bet_money);
+                            $history["amount"] = number_format($bet_money)." => ".number_format(1.95 * $bet_money);
                           else {
-                            $history["amount"] = number_format($bet_money);
+                            $history["amount"] = number_format($bet_money)." => 0";
                           }
                           $history["auto_kind"] = $game->game_kind;
                           $history["auto_type"] = $game->auto_type;
@@ -598,7 +603,7 @@ class BetController extends Controller
                 if($current >= $end_round){   //// 현재 회차가 마감회차보다 커지면 빠진다.
                     $insert_config["state"] = 0;
                 }
-                if(($remain_amount >= $config["win_limit"] || $remain_amount <= $config["win_limit"] * (-1)) && $config["win_limit"]  != 0 && $config["win_limit"] != ""){
+                if(($remain_amount - $config["start_amount"] >= $config["win_limit"] || $remain_amount - $config["start_amount"] <= $config["win_limit"] * (-1)) && $config["win_limit"]  != 0 && $config["win_limit"] != ""){
                   $insert_config["state"] = 0;
                 }
                 $insert_config["user_amount"] = $remain_amount;
@@ -608,6 +613,7 @@ class BetController extends Controller
                 $insert_config["w4"] = $w[4];
                 $insert_config["bet_amount"] = $bet_all_mny;
                 PbAutoSetting::where("userId",$config["userId"])->update($insert_config);
+                PbAutoHistory::insert(["created_at"=>$history_date,"auto_type"=>2,"userId"=>$config["userId"],"reason"=>json_encode(array("type"=>"ready_betting","mny"=>$bet_money_kind))]);
               }
             }
         }

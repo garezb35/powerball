@@ -347,7 +347,11 @@ function getPowerHeaderBet(){
       "31"=>"일반볼 홀",
       "30"=>"일반볼 짝",
       "41"=>"일반볼 언",
-      "40"=>"일반볼 오"
+      "40"=>"일반볼 오",
+      "1-1"=>"NONE",
+      "2-1"=>"NONE",
+      "3-1"=>"NONE",
+      "4-1"=>"NONE",
     );
 }
 
@@ -355,5 +359,20 @@ function getPowerballBetSim($auto_type,$auto_kind,$pick,$win){
   $win_alias = $win == 1 ? "(승)" : "(패)";
   $game_alias = $auto_type  == 1 ? "물레방아":"패턴배팅";
   return "당첨결과 : ".$game_alias." ".getPowerHeaderBet()[$auto_kind.$pick]." ".$win_alias;
+}
+
+function powerballBetMnyKind($date,$mnyKind){
+  $r = "";
+  $mnyKind  = get_object_vars($mnyKind);
+  foreach($mnyKind as $key=>$value){
+    if(!empty($value)){
+      if(!empty($mnyKind[$key])){
+        $r =$r."<li class='betting_ready'>";
+        $r =$r."#".date("Y-m-d H:i:s",strtotime($date))." > 배팅성공: ".getPowerHeaderBet()[$key]."에 * ".$value."원";
+        $r =$r."</li>";
+      }
+    }
+  }
+  return $r;
 }
 ?>
