@@ -270,8 +270,9 @@ class BetController extends Controller
                     continue;
                 }
                 $current  = empty($config['current_round']) ? $first_round : $config['current_round'];
+                $current++;
+                PbAutoSetting::where("userId",$config["userId"])->update(["current_round"=>$current]);
                 $database_year = PowerballRange::where("range1","<=",$current)->orderBy("year","DESC")->first(); // 회차에 따르는 년도수를 구하여 현재 년도인지 지난 년도에것인지 검사한다.
-
                 if($database_year["year"] == date("Y")){
                     $pb_database = new Pb_Result_Powerball();
                 }
@@ -281,10 +282,12 @@ class BetController extends Controller
                 }
 
                 $current_result = json_decode(json_encode($pb_database->where("day_round",$current)->first()));
-                if(empty($current_result) || $current == $first_round)
+                $current--;
+                if(empty($current_result))
                 {
                     $not_simulate = true;
                 }
+
 
                 else{
                     $pb_oe = $current_result->pb_oe;
@@ -597,7 +600,6 @@ class BetController extends Controller
                 if(($remain_amount >= $config["win_limit"] || $remain_amount <= $config["win_limit"] * (-1)) && $config["win_limit"]  != 0 && $config["win_limit"] != ""){
                   $insert_config["state"] = 0;
                 }
-                $insert_config["current_round"] = $current+1;
                 $insert_config["user_amount"] = $remain_amount;
                 $insert_config["w1"] = $w[1];
                 $insert_config["w2"] = $w[2];

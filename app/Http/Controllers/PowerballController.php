@@ -1298,6 +1298,7 @@ class PowerballController extends SecondController
             $current = Pb_Result_Powerball::orderBy("day_round","DESC")->first()["day_round"]+1;
         }
         $history=PbAutoHistory::where("userId",$userId)->orderBy("created_at","DESC")->orderBy("auto_type","ASC")->paginate(20);
+
         return view("pick.simulate", [
                                             "css"=>"simulator.css",
                                             "js"=>"simulator.js",
