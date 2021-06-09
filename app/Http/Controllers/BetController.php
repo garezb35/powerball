@@ -336,7 +336,8 @@ class BetController extends Controller
               PbAutoHistory::insert(["created_at"=>$history_date,"auto_type"=>1,"userId"=>$config["userId"],"reason"=>json_encode($history)]);
 
             $history = array();
-
+            if($bet_type ==2)
+              $current--;
             $match_type = $pb_database->select(
                 DB::raw("GROUP_CONCAT(pb_result_powerball.pb_uo ORDER BY day_round ASC  SEPARATOR '') as `puo`"),
                 DB::raw("GROUP_CONCAT(pb_result_powerball.pb_oe ORDER BY day_round ASC  SEPARATOR '') as `poe`"),
