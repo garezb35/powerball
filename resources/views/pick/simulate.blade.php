@@ -391,9 +391,6 @@ if(!empty($auto_info)){
                            <tr class="text-left">
                                <td>보유금액</td>
                                <td class="saved-amount">{{number_format($user_amount)}}원</td>
-
-                               <td>배팅금액</td>
-                               <td class="profit-amount">{{number_format($bet_amouont)}}원</td>
                            </tr>
                        </table>
                     </td>
@@ -631,7 +628,7 @@ if(!empty($auto_info)){
 </form>
 <div class="log-part">
     <ul class="infinite-scroll">
-      
+
     </ul>
 </div>
 @endsection
