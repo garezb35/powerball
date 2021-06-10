@@ -1,9 +1,15 @@
 var diff, timer, request_time = 0;
 var cookie = false;
 var i=0;
-
-
+var init_sound = null;
+var driving_sound = null;
+var zoomin_sound = null;
+var comein_sound = null;
 $(document).ready(function(){
+    if($('#init_sound').length>0){ init_sound=document.getElementById('init_sound') }
+    if($('#driving_sound').length>0){ driving_sound=document.getElementById('driving_sound') }
+    if($('#zoomin_sound').length>0){ zoomin_sound=document.getElementById('zoomin_sound') }
+    if($('#comein_sound').length>0){ comein_sound=document.getElementById('comein_sound') }
     var dURL = '/api/live/result';
     var content = $('.gmContent');
     var TYPE = content.data('type');
@@ -48,7 +54,11 @@ $(document).ready(function(){
                 setTimeout(function () {
                     core.timer();
                 }, 1000);
+                if(nextTime == 5){
+                  init_sound.play()
+                }
                 if (nextTime == 0) {
+
                     // nextUserTime = userTime + gameTime;
                     nextTime = 300;
                     unique++;
@@ -122,6 +132,8 @@ $(document).ready(function(){
                         }
                     } else {
                         powerball.start(response);
+                        init_sound.pause()
+                        init_sound.currentTime = 0;
                     }
                 }).fail(function () {
                     alert('게임데이터에 문제가 발생하였습니다.');
@@ -520,15 +532,20 @@ function showNumber(num,ii)
         $('#lotteryBall').html('<span class="result_ball '+ballColor+'">'+num+'</span>');
         TweenMax.to(document.getElementById('lotteryBall'),1,{bezier:{curviness:1.25,type:'cubic',values:[{x:207,y:10},{x:119,y:28},{x:72,y:77},{x:61,y:153},{x:92,y:221},{x:184,y:266},{x:366,y:279}],autoRotate:false},ease:Power1.easeInOut,
             onStart:function(){
+                driving_sound.play();
                 $('#lotteryResult').append('<span id="ballNumber_'+num+'" class="ball_'+ballColor+'"><span class="ballNumber">'+num+'</span></span>');
                 $('#ballNumber_'+num).addClass("animations")
 
             },
             onComplete:function(){
+                driving_sound.pause()
+                driving_sound.currentTime =0
                 $('#lotteryBall').find("span").removeClass("animations")
                 $("#lotteryBall").find("span.result_ball").addClass("zoomin")
+                zoomin_sound.play();
                 setTimeout(function(){
                     $("#current_result").find(".flex_row").append("<div class='result_ball "+ballColor+"'>"+num+"</div>");
+                    comein_sound.play();
                     $('#lotteryBall').html('').hide();
                 },1000)
             }
@@ -594,3 +611,11 @@ function updateResult(data)
         }
     },500);
 }
+
+// function controlMp4a(fmusic,type){
+//   if(type == 1) fmusic.play();
+//   else{
+//     fmusic.pause();
+//     fmusic.currentTime = 0;
+//   }
+// }
