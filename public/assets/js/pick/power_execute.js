@@ -5,11 +5,13 @@ var init_sound = null;
 var driving_sound = null;
 var zoomin_sound = null;
 var comein_sound = null;
+var last_result_sound = null;
 $(document).ready(function(){
     if($('#init_sound').length>0){ init_sound=document.getElementById('init_sound') }
     if($('#driving_sound').length>0){ driving_sound=document.getElementById('driving_sound') }
     if($('#zoomin_sound').length>0){ zoomin_sound=document.getElementById('zoomin_sound') }
     if($('#comein_sound').length>0){ comein_sound=document.getElementById('comein_sound') }
+    if($('#last_result_sound').length>0){ last_result_sound=document.getElementById('last_result_sound') }
     var dURL = '/api/live/result';
     var content = $('.gmContent');
     var TYPE = content.data('type');
@@ -547,7 +549,11 @@ function showNumber(num,ii)
                     $("#current_result").find(".flex_row").append("<div class='result_ball "+ballColor+"'>"+num+"</div>");
                     comein_sound.play();
                     $('#lotteryBall').html('').hide();
+                    if(ii == 5 ){
+                      last_result_sound.play()
+                    }
                 },1000)
+
             }
         });
     },3000*i);

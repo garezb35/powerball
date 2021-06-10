@@ -24,6 +24,9 @@
     <audio id="comein_sound">
         <source src="/assets/music/powerball/comein.m4a" type="audio/x-m4a">
     </audio>
+    <audio id="last_result_sound">
+        <source src="/assets/music/powerball/last_result.m4a" type="audio/x-m4a">
+    </audio>
     <body style="margin: 0;">
     <div class="gmContent" data-type="POWERBALL" data-round="{{$last + 1}}" data-unique={{$last_unique_round+1}}  data-game="nlotto_power"></div>
         <div class="lottery_wrap powerball dark">
