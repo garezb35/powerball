@@ -57,6 +57,7 @@ $(document).ready(function(){
                     core.timer();
                 }, 1000);
                 if(nextTime == 5){
+                  $(".stopped_balls").attr("src","/assets/images/pick/live.gif")
                   init_sound.play()
                 }
                 if (nextTime == 0) {
@@ -72,7 +73,6 @@ $(document).ready(function(){
             startGame: function () {
                 var TYPE = $('.gmContent').data("type")
                 if (TYPE == 'POWERBALL') {
-                    $(".stopped_balls").attr("src","/assets/images/pick/live.gif")
                     setTimeout(function(){
                         powerball.init();
                     },3000)
