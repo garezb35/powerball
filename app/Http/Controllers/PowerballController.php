@@ -1987,7 +1987,41 @@ class PowerballController extends SecondController
     }
 
     public function setRound(Request $request){
-        echo Route::input("name");
+        $name = Route::input("name");
+        $split_data = explode("x",$name);
+        if(sizeof($split_data) == 16){
+          $nb_size = 3;
+          if($split_data[6] == 1) $nb_size = 2;
+          if($split_data[6] == 2) $nb_size = 1;
+          $pb_terms = "A";
+          if($split_data[7] == 3 || $split_data[7] == 4) $pb_terms  ="B";
+          if($split_data[7] == 5 || $split_data[7] == 6 || $split_data[7] == 7) $pb_terms  ="C";
+          if($split_data[7] == 8 || $split_data[7] == 9) $pb_terms  ="D";
+          $nb_terms = "A";
+          if($split_data[9] >= 36 && $split_data[9] <= 49 ) $nb_terms = "B";
+          if($split_data[9] >= 50 && $split_data[9] <= 57 ) $nb_terms = "C";
+          if($split_data[9] >= 58 && $split_data[9] <= 65 ) $nb_terms = "D";
+          if($split_data[9] >= 66 && $split_data[9] <= 78 ) $nb_terms = "E";
+          if($split_data[9] >= 79 && $split_data[9] <= 130 ) $nb_terms = "F";
+          Pb_Result_Powerball::insert([
+            "round"=>$split_data[1],
+            "day_round"=>$split_data[0],
+            "nb1"=>$split_data[11],
+            "nb2"=>$split_data[12],
+            "nb3"=>$split_data[13],
+            "nb4"=>$split_data[14],
+            "nb5"=>$split_data[15],
+            "pb"=>$split_data[7],
+            "pb_terms"=>$pb_terms,
+            "pb_oe"=>$split_data[2],
+            "pb_uo"=>$split_data[3],
+            "nb_terms"=>$nb_terms,
+            "nb_size"=>$nb_size,
+            "nb_oe"=>$split_data[4],
+            "nb_uo"=>$split_data[5],
+            "nb"=>$split_data[9],
+          ])
+        }
     }
 
     public function setGameSettings(Request $request){
