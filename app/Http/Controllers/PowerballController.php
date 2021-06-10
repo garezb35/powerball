@@ -2020,7 +2020,7 @@ class PowerballController extends SecondController
             "nb_oe"=>$split_data[4],
             "nb_uo"=>$split_data[5],
             "nb"=>$split_data[9],
-          ])
+          ]);
         }
     }
 
