@@ -6,12 +6,25 @@ var driving_sound = null;
 var zoomin_sound = null;
 var comein_sound = null;
 var last_result_sound = null;
+var iru_tiny_player = null;
+var sadari_3_sound = null;
+var sadari_4_sound = null;
+var oddeven_sound = null;
+var sadari_started = null;
+var leftright = null;
 $(document).ready(function(){
     if($('#init_sound').length>0){ init_sound=document.getElementById('init_sound') }
     if($('#driving_sound').length>0){ driving_sound=document.getElementById('driving_sound') }
     if($('#zoomin_sound').length>0){ zoomin_sound=document.getElementById('zoomin_sound') }
     if($('#comein_sound').length>0){ comein_sound=document.getElementById('comein_sound') }
     if($('#last_result_sound').length>0){ last_result_sound=document.getElementById('last_result_sound') }
+    if($('#sadari_3_sound').length>0){ sadari_3_sound=document.getElementById('sadari_3_sound') }
+    if($('#sadari_4_sound').length>0){ sadari_4_sound=document.getElementById('sadari_4_sound') }
+    if($('#oddeven_sound').length>0){ oddeven_sound=document.getElementById('oddeven_sound') }
+    if($('#sadari_started_sound').length>0){ sadari_started=document.getElementById('sadari_started_sound') }
+    if($('#leftright_sound').length>0){ leftright=document.getElementById('leftright_sound') }
+    iru_tiny_player = document.getElementsByClassName("iru-tiny-player");
+
     var dURL = '/api/live/result';
     var content = $('.gmContent');
     var TYPE = content.data('type');
@@ -58,7 +71,13 @@ $(document).ready(function(){
                 }, 1000);
                 if(nextTime == 5){
                   $(".stopped_balls").attr("src","/assets/images/pick/live.gif")
-                  init_sound.play()
+                  if(TYPE == "POWERLADDER"){
+                    sadari_started.play()
+                  }
+                  else{
+                    init_sound.play()
+                  }
+
                 }
                 if (nextTime == 0) {
 
@@ -73,20 +92,12 @@ $(document).ready(function(){
             startGame: function () {
                 var TYPE = $('.gmContent').data("type")
                 if (TYPE == 'POWERBALL') {
-                    setTimeout(function(){
-                        powerball.init();
-                    },3000)
+                    powerball.init();
                 }
                 if (TYPE == 'POWERLADDER'){
-
-                    setTimeout(function(){
-                        powerladder.init();
-                    },3000)
+                  powerladder.init();
                 }
 
-                // if (TYPE == 'POWERLADDER') powerladder.init();
-                // if (TYPE == 'BTCLADDER') btcladder.init();
-                // if (TYPE == 'LADDER') ladder.init();
             },
             soundPlay: function () {
                 if (sound_mute == 'false') {
@@ -176,6 +187,7 @@ $(document).ready(function(){
                         }
                     } else {
                         powerladder.start(response);
+                        sadari_started.pause()
                     }
                 }).fail(function (error) {
                     console.log(error)
@@ -194,7 +206,7 @@ $(document).ready(function(){
                 var endIcon = content.find('.odd-s');
 
                 // content.find('.playBox ul').removeClass().addClass(ulClass).html(lis);
-
+                var sadari_type = 3;
                 var sType = response.list
                 $("#div_sadari_machine_glass").find(".bar1").css("display","none");
                 $("#div_sadari_machine_glass").find(".bar2").css("display","none");
@@ -220,16 +232,28 @@ $(document).ready(function(){
                 }
 
                 if(response.type.includes("_4"))
-                    $("#div_sadari_machine_glass").css("background","url(/assets/images/pick/sadari-machine.png)")
+                  {
+                      $("#div_sadari_machine_glass").css("background","url(/assets/images/pick/sadari-machine.png)")
+                      sadari_type = 4;
+                  }
                 else
-                    $("#div_sadari_machine_glass").css("background","url(/assets/images/pick/sadari-machine-3.png)")
+                  {
+                      $("#div_sadari_machine_glass").css("background","url(/assets/images/pick/sadari-machine-3.png)")
+                  }
                 new Promise(function (resolve, reject) {
+                    leftright.play(0)
                     startIcon.addClass('on');
                     setTimeout(function () {
                         resolve();
                     }, 500);
                 }).then(function () {
                     ladderLine = '<em class="line '+sType[0].class+' "></em>';
+                    if(sadari_type == 3){
+                      sadari_3_sound.play()
+                    }
+                    if(sadari_type == 4){
+                      sadari_4_sound.play()
+                    }
                     lineBox.append(ladderLine).find('em:eq(0)').css(sType[0].pos).animate(sType[0].size, sType[0].spd).promise().then(function () {
                         ladderLine = '<em class="line '+sType[1].class+' "></em>';
                         return lineBox.append(ladderLine).find('em:eq(1)').css(sType[1].pos).animate(sType[1].size, sType[1].spd).promise();
@@ -263,7 +287,10 @@ $(document).ready(function(){
                             return console.log('null');
                         }
                     }).then(function () {
+                        sadari_4_sound.pause()
+                        sadari_3_sound.pause()
                         endIcon.addClass('on');
+                        oddeven_sound.play()
                         setTimeout(function () {
                             location.reload()
                             content.find('.progressBar, .timeBox').hide();
@@ -530,7 +557,6 @@ function showNumber(num,ii)
 
         ballColor = ballColorSel(num,ii);
         $('#lotteryBall').show();
-        TweenMax.to
         $('#lotteryBall').html('<span class="result_ball '+ballColor+'">'+num+'</span>');
         TweenMax.to(document.getElementById('lotteryBall'),1,{bezier:{curviness:1.25,type:'cubic',values:[{x:207,y:10},{x:119,y:28},{x:72,y:77},{x:61,y:153},{x:92,y:221},{x:184,y:266},{x:366,y:279}],autoRotate:false},ease:Power1.easeInOut,
             onStart:function(){

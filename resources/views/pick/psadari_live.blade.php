@@ -11,6 +11,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenMax.min.js"></script>
     <script src="/assets/js/common.js"></script>
 </head>
+<audio id="init_sound" class="iru-tiny-player">
+    <source src="/assets/music/powerball/start_before5.m4a" type="audio/x-m4a">
+</audio>
+<audio id="sadari_3_sound" class="iru-tiny-player">
+    <source src="/assets/music/psadari/sadari-3.m4a" type="audio/x-m4a">
+</audio>
+<audio id="sadari_4_sound" class="iru-tiny-player">
+    <source src="/assets/music/psadari/sadari-4.m4a" type="audio/x-m4a">
+</audio>
+<audio id="oddeven_sound" class="iru-tiny-player">
+    <source src="/assets/music/psadari/oddeven.m4a" type="audio/x-m4a">
+</audio>
+<audio id="sadari_started_sound" class="iru-tiny-player">
+    <source src="/assets/music/psadari/sadari_started.m4a" type="audio/x-m4a">
+</audio>
+<audio id="leftright_sound" class="iru-tiny-player">
+    <source src="/assets/music/psadari/leftright.m4a" type="audio/x-m4a">
+</audio>
 <body style="margin: 0;">
 <div class="gmContent" data-type="POWERLADDER" data-round="{{$last + 1}}" data-unique={{$last_unique_round+1}}  data-game="nlotto_power"></div>
 <div class="lottery_wrap powerball dark" style="height:361px">

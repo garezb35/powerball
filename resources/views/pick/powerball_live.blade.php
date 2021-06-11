@@ -6,25 +6,28 @@
         <link rel="stylesheet" href="/assets/css/font.css">
         <script src="/assets/js/jquery.min.js"></script>
         <script src="/assets/js/handlebars.js"></script>
+        <script src="/assets/js/howl.min.js"></script>
+        <link href="/assets/css/tinyPlayer.css" rel="stylesheet" />
+        <script src="/assets/js/tinyPlayer.js"></script>
         <script src="/assets/js/common.js"></script>
         <script src="/assets/js/pick/power_execute.js"></script>
         <script src="/assets/js/all.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenMax.min.js"></script>
 
     </head>
-    <audio id="init_sound">
+    <audio id="init_sound" class="iru-tiny-player">
         <source src="/assets/music/powerball/start_before5.m4a" type="audio/x-m4a">
     </audio>
-    <audio id="driving_sound">
+    <audio id="driving_sound" class="iru-tiny-player">
         <source src="/assets/music/powerball/driving.m4a" type="audio/x-m4a">
     </audio>
-    <audio id="zoomin_sound">
+    <audio id="zoomin_sound" class="iru-tiny-player">
         <source src="/assets/music/powerball/zoomin.m4a" type="audio/x-m4a">
     </audio>
-    <audio id="comein_sound">
+    <audio id="comein_sound" class="iru-tiny-player">
         <source src="/assets/music/powerball/comein.m4a" type="audio/x-m4a">
     </audio>
-    <audio id="last_result_sound">
+    <audio id="last_result_sound" class="iru-tiny-player">
         <source src="/assets/music/powerball/last_result.m4a" type="audio/x-m4a">
     </audio>
     <body style="margin: 0;">

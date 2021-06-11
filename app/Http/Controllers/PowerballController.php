@@ -1991,13 +1991,20 @@ class PowerballController extends SecondController
         $split_data = explode("x",$name);
         if(sizeof($split_data) == 16){
           $nb_size = 3;
+          $pb_terms = "A";
+          $nb_terms = "A";
+          $split_data[7] = (int)$split_data[7];
+          $split_data[11] = (int)$split_data[11];
+          $split_data[12] = (int)$split_data[12];
+          $split_data[13] = (int)$split_data[13];
+          $split_data[14] = (int)$split_data[14];
+          $split_data[15] = (int)$split_data[15];
+          $split_data[9] = (int)$split_data[9];
           if($split_data[6] == 1) $nb_size = 2;
           if($split_data[6] == 2) $nb_size = 1;
-          $pb_terms = "A";
           if($split_data[7] == 3 || $split_data[7] == 4) $pb_terms  ="B";
           if($split_data[7] == 5 || $split_data[7] == 6 || $split_data[7] == 7) $pb_terms  ="C";
           if($split_data[7] == 8 || $split_data[7] == 9) $pb_terms  ="D";
-          $nb_terms = "A";
           if($split_data[9] >= 36 && $split_data[9] <= 49 ) $nb_terms = "B";
           if($split_data[9] >= 50 && $split_data[9] <= 57 ) $nb_terms = "C";
           if($split_data[9] >= 58 && $split_data[9] <= 65 ) $nb_terms = "D";

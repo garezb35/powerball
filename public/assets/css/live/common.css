@@ -837,3 +837,7 @@ body{
 #countdown_clock{
   color: #ffdd25
 }
+div.iru-tiny-player{
+  width: 0px;
+  height: 0px
+}
