@@ -549,10 +549,11 @@ class MemberController extends SecondController
                 case "family":
                     $family = $request->family;
                     $pur_item = PbMarket::where("code","FAMILY_NICKNAME_LICENSE_BREAD")->first();
-                    if(empty($item_count["FAMILY_NICKNAME_LICENSE_BREAD"]) || empty($pur_item)){
+                    if((empty($item_count["FAMILY_NICKNAME_LICENSE_BREAD"]) && empty($item_count["FAMILY_NICKNAME_LICENSE"])) || empty($pur_item)){
                         echo json_encode(array("status"=>0,"msg"=>"패밀리닉네임을 사용 또는 변경하려면 [패밀리닉네임 이용권] 아이템이 필요합니다."));
                     }
                     else{
+                        
                         $count_limit = strlen(utf8_decode($family));
                         if($count_limit > 4)
                         {

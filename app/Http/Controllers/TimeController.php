@@ -32,7 +32,7 @@ class TimeController extends Controller
         $minute = (int)date("i");
         $second = (int)date("s");
         $g_nMinute = 4 - ($minute) % 5;
-        $g_nSecond = 40 - $second;
+        $g_nSecond = 35 - $second;
         --$g_nSecond;
         if ($g_nSecond < 0)
         {

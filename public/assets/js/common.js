@@ -816,7 +816,7 @@ function powerballDiff(){
     var second = current.getSeconds();
     var minute = current.getMinutes()
     var g_nMinute = 4 - (minute) % 5;
-    var g_nSecond = 40 - second;
+    var g_nSecond = 35 - second;
     --g_nSecond;
     if (g_nSecond < 0)
     {
