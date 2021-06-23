@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/chat.css">
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/alertify.min.css">
     <script>
         var remainTime ={{$p_remain[0]}};
         var speedRemain = 0;
@@ -37,12 +38,15 @@
         var blackListArr = new Array();
         @endif
 
+        
+
     </script>
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://unpkg.com/tippy.js@6"></script>
     <script src="/assets/popper/popper.min.js"></script>
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/assets/js/alertify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.2/socket.io.js" ></script>
     <script src="/assets/js/all.js"></script>
     <script src="/assets/js/chat.js"></script>

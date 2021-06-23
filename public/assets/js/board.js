@@ -76,7 +76,7 @@ function fviewcomment_submit(f)
 
     if(!f.wr_content.value)
     {
-        alert('댓글 내용을 입력하세요.');
+        alertifyByCommon("댓글 내용을 입력하세요.")
         f.wr_content.focus();
         return false;
     }
@@ -86,7 +86,8 @@ function fviewcomment_submit(f)
         f.wr_name.value = f.wr_name.value.replace(pattern, "");
         if (f.wr_name.value == '')
         {
-            alert('이름이 입력되지 않았습니다.');
+
+            alertifyByCommon("이름이 입력되지 않았습니다.")
             f.wr_name.focus();
             return false;
         }
@@ -108,7 +109,7 @@ function comment_delete(id)
             data:{id : id,api_token:api_token},
             dataType:"json"
         }).done(function(data) {
-            alert(data.msg)
+            alertifyByCommon(data.msg)
             if(data.status ==1){
                 location.reload()
             }
@@ -131,7 +132,7 @@ function excute_good($el,$tx,$cid)
         { "id": $cid,api_token:api_token },
         function(data) {
             if(data.status ==0) {
-                alert(data.msg);
+                alertifyByCommon(data.msg)
                 return false;
             }
 
@@ -153,7 +154,7 @@ function del(id)
             data:{id : id,api_token:api_token},
             dataType:"json"
         }).done(function(data) {
-            alert(data.msg)
+            alertifyByCommon(data.msg)
             if(data.status ==1){
                 location.reload()
             }

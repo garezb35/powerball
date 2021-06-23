@@ -321,7 +321,7 @@ function wrestSubmit()
     // 오류 필드는 배경색상을 바꾼다.
     if (wrestFld != null) {
         // 경고메세지 출력
-        alert(wrestMsg);
+        alertifyByCommon(wrestMsg);
 
         if (wrestFld.style.display != "none") {
             var id = wrestFld.getAttribute("id");

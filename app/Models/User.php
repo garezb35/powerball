@@ -8,7 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
+use Illuminate\Database\Eloquent\Model;
 class User extends \TCG\Voyager\Models\User
 {
     protected $table = 'pb_users';
@@ -52,21 +52,17 @@ class User extends \TCG\Voyager\Models\User
         "except_ip"
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-        'api_token',
-    ];
 
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
+
+     protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
     public function getUserClass(){
         return $this->hasOne(CodeDetail::class,"code","level");

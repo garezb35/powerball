@@ -26,4 +26,5 @@ class PbMarket extends Model
     public function mitem(){
         return $this->belongsTo(PbPurItem::class,"market_id","code");
     }
+    
 }

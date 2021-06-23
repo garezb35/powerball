@@ -1,0 +1,248 @@
+<?php if(!defined('BASEPATH')) exit('No direct script access allowed');
+
+class Base_model extends CI_Model
+{
+
+
+    function plusValue($database,$field,$value,$val_array,$type,$filter=true){
+        $this->db->set($field, $field.$type.$value, FALSE);
+        foreach($val_array as $v):
+            if($filter ==true)
+                $this->db->where($v[0],$v[1]);
+            else
+                $this->db->where_in($v[0],$v[1]);
+        endforeach;
+        $this->db->update($database);
+    }
+
+    function updateDataById($id,$data,$database,$record){
+        if(is_array($id))
+            $this->db->where_in($record, $id);
+        else
+            $this->db->where($record, $id);
+        $this->db->update($database, $data);
+        return $this->db->affected_rows();
+    }
+
+    function deleteRecordCustom($database,$record,$id,$type = false,$or_where = false){
+        if(!$or_where){
+          if($type ==false)
+              $this->db->where($record, $id);
+          else
+            $this->db->where_in($record, $id);
+        }
+        else{
+          foreach($id as $v){
+            $this->db->or_where($v[0],$v[1]);
+          }
+        }
+        $this->db->delete($database);
+    }
+
+    function getSelect($database,$array1=null,$array2=null,$array3=null,$array4=null,$array5=null,$array6=null){
+        $this->db->select('*');
+        $this->db->from($database);
+        if($array1 !=null)
+            foreach($array1 as $value){
+                if(is_array($value["value"]))
+                    $this->db->where_in($value['record'], $value['value'][0],"both");
+                else
+                    $this->db->where($value['record'], $value['value']);
+
+            }
+        if($array2 !=null)
+            foreach($array2 as $value1){
+                if($value1['record']!="") $this->db->order_by($value1['record'], $value1['value']);
+            }
+        if($array3 !=null)
+            foreach($array3 as $value2){
+                if($value2['record']!="") $this->db->group_by($value2['record']);
+            }
+        if($array4 !=null)
+            foreach($array4 as $value3){
+                if($value3['record']!="") $this->db->limit($value3['record'], $value3['value']);
+            }
+        if($array5 !=null)
+            foreach($array5 as $value){
+                $this->db->like($value['record'], $value['value'],"both");
+            }
+        if($array6 !=null)
+            foreach($array6 as $value){
+                $this->db->where_in($value['record'], $value['value'],"both");
+            }
+        $query = $this->db->get();
+        $results = $query->result();
+        return  $results;
+    }
+
+    public function insertArrayData($database,$data){
+        $this->db->insert($database,$data);
+        return $this->db->insert_id();
+    }
+
+    public function getAll($database){
+        $this->db->select('*');
+        $this->db->from($database);
+        $query = $this->db->get();
+        $results = $query->result();
+        return  $results;
+    }
+
+    public function getPrivateCount(){
+      $query = $this->db->query("SELECT COUNT(*) AS private_count FROM (SELECT
+                                  COUNT(*) AS keys_count
+                                FROM
+                                  `pb_message`
+                                WHERE `type` = 'private'
+                                GROUP BY `keys`) a WHERE a.keys_count < 2 ");
+      return $query->result();
+    }
+
+    public function getRegsitesCountByM(){
+        $query = $this->db->query("SELECT  SUBSTRING_INDEX(created_at,\"-\",2) AS cdate,COUNT(*) AS c FROM pb_users  where isDeleted = 0 and user_type='01'  GROUP BY cdate order by cdate ASC");
+        return $query->result();
+    }
+    public function getReq($id,$limit1=10,$limit2=0,$category=null,$item=null,$content=null,$mode=null){
+        $this->db->select('BaseTbl.*,User.name as UserName,COUNT(Comment.id) as comment_count,User.userId,COUNT(View.id) as view_count');
+        $this->db->from('pb_message as BaseTbl');
+        $this->db->join("pb_users as User","User.userId=BaseTbl.fromId","left");
+        $this->db->join("pb_comment as Comment","Comment.messageId=BaseTbl.id","left");
+        $this->db->join("pb_view as View","View.postId=BaseTbl.id","left");
+        $this->db->where('BaseTbl.type',$id);
+        if($mode !=null && $mode !="" && $mode!="total") $this->db->where('BaseTbl.mode',$mode);
+        if($category !=null && $category !="" && $category!="total") $this->db->where('BaseTbl.category',$category);
+        if($content !=null && $content !=""){
+            if($item == "username")
+                $this->db->like('User.name',$content,"both");
+            else
+                $this->db->like('BaseTbl.'.$item,$content,"both");
+        }
+        $this->db->order_by('BaseTbl.updated_at','DESC');
+        if($limit1 ==null)  $this->db->limit(20,0);
+        else $this->db->limit($limit1,$limit2);
+        $this->db->group_by("BaseTbl.id");
+        $query = $this->db->get();
+        $results = $query->result();
+        return  $results;
+    }
+
+    public function getPutMoney($limit1=10,$limit2=0){
+      $this->db->select('BaseTbl.money,BaseTbl.coin,User.nickname,BaseTbl.created_at');
+      $this->db->from("pb_deposit as BaseTbl");
+      $this->db->join("pb_users as User","User.userId=BaseTbl.userId");
+      $this->db->where("BaseTbl.accept",0);
+      $this->db->where("User.isDeleted",0);
+      $this->db->where("User.user_type","01");
+      $this->db->order_by('BaseTbl.created_at','DESC');
+      if($limit1 ==null)  $this->db->limit(20,0);
+      else $this->db->limit($limit1,$limit2);
+      $query = $this->db->get();
+      $results = $query->result();
+      return  $results;
+    }
+
+    public function getReturnMoney($limit1=10,$limit2=0){
+      $this->db->select('BaseTbl.bullet,User.nickname,BaseTbl.created_at');
+      $this->db->from("pb_money_return as BaseTbl");
+      $this->db->join("pb_users as User","User.userId=BaseTbl.userId");
+      $this->db->where("BaseTbl.status",0);
+      $this->db->where("User.isDeleted",0);
+      $this->db->where("User.user_type","01");
+      $this->db->order_by('BaseTbl.created_at','DESC');
+      if($limit1 ==null)  $this->db->limit(20,0);
+      else $this->db->limit($limit1,$limit2);
+      $query = $this->db->get();
+      $results = $query->result();
+      return  $results;
+    }
+
+    public function getReqById($id){
+        $this->db->select(' BaseTbl.*,
+                            User.name as UserName,
+                            Board.category_use,
+                            Board.category as bcategory,
+                            Board.content as btitle,
+                            Board.id as bid,
+                            COUNT(View.id) as view_count');
+        $this->db->from('pb_message as BaseTbl');
+        $this->db->join("pb_users as User","User.userId=BaseTbl.fromId","left");
+        $this->db->join("pb_view as View","View.postId=BaseTbl.id","left");
+        $this->db->join("pb_board as Board","Board.name=BaseTbl.type");
+        $this->db->where('BaseTbl.id',$id);
+        $this->db->order_by('BaseTbl.updated_at','DESC');
+        $query = $this->db->get();
+        $results = $query->result();
+        return  $results;
+    }
+
+    public function getCommentsByPostId($limit1=5,$limit2=0,$id =0){
+        $this->db->select("BaseTbl.*,User.name");
+        $this->db->from("pb_comment as BaseTbl");
+        $this->db->join("pb_users as User","User.userId=BaseTbl.userId");
+        $this->db->where("BaseTbl.messageId",$id);
+        $this->db->order_by("BaseTbl.created_at","DESC");
+        if($limit1 ==null)  $this->db->limit(20,0);
+        $this->db->limit($limit1,$limit2);
+        $query = $this->db->get();
+        $results = $query->result();
+        return $results;
+    }
+
+    public function getDepositByUserId($limit1=10,$limit2=0,$v1=null,$v2=null,$v3=null,$v4=null,$v5=null){
+        $this->db->select(' BaseTbl.*,
+                            User.name as Uname,
+                            User.loginId,
+                            User.nickname,
+                            User.userId');
+        $this->db->from('pb_deposit as BaseTbl');
+        $this->db->join('pb_users as User','User.userId=BaseTbl.userId');
+        if($v1!=null) $this->db->where("BaseTbl.updated_at >=",$v1);
+        if($v2!=null) $this->db->where("BaseTbl.updated_at <=",$v2);
+        if($v3!=null) $this->db->where("BaseTbl.accept",$v3);
+        if($v5!=null && $v4!=null && $v4!="loginId1") $this->db->like("User.".$v4,$v5,"both");
+        if($v5!=null && $v4!=null && $v4=="loginId") $this->db->where("User.".$v4,$v5);
+        $this->db->order_by("BaseTbl.updated_at","DESC");
+        if($limit1!=null) $this->db->limit($limit1,$limit2);
+        $query = $this->db->get();
+        $results = $query->result();
+        return  $results;
+    }
+
+    public function updateDeposit($id,$state){
+        $this->db->where("id", $id);
+        $this->db->update("pb_deposit", array("accept"=>$state));
+        return $this->db->affected_rows();
+    }
+
+    public function getAmountD($id){
+        $this->db->select('*');
+        $this->db->from('pb_deposit');
+        $this->db->where('id',$id);
+        $query = $this->db->get();
+        $results = $query->result();
+        return$results;
+    }
+    public function increaseAmount($results){
+        $this->db->where('userId',$results[0]->userId);
+        $this->db->set('coin', 'coin+'.$results[0]->coin, FALSE);
+        $this->db->update('pb_users');
+    }
+
+    public function getReturnDeposits($limit1=10,$limit2=0,$v1=null,$v2=null,$v3=null,$v4=null,$v5=null){
+        $this->db->select('BaseTbl.*,User.nickname as Uname,User.loginId,Bank.name as bname,User.bullet as cbullet');
+        $this->db->from('pb_money_return as BaseTbl');
+        $this->db->join("pb_users as User","User.userId=BaseTbl.userId");
+        $this->db->join("pb_bank as Bank","Bank.id=BaseTbl.accountCode","left");
+        if($v1!=null) $this->db->where("BaseTbl.updated_at >=",$v1);
+        if($v2!=null) $this->db->where("BaseTbl.updated_at <=",$v2);
+        if($v3!=null) $this->db->where("BaseTbl.status",$v3);
+        if($v5!=null && $v4!=null && $v4!="loginId") $this->db->like("User.".$v4,$v5,"both");
+        if($v5!=null && $v4!=null && $v4=="loginId") $this->db->where("User.".$v4,$v5);
+        $this->db->order_by('BaseTbl.updated_at',"DESC");
+        if($limit1!=null) $this->db->limit($limit1,$limit2);
+        $query = $this->db->get();
+        $results = $query->result();
+        return $results;
+    }
+}
+?>

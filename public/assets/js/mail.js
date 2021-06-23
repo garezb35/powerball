@@ -72,13 +72,17 @@ $(document).ready(function(){
             $('.tooltip-content2').hide();
         }
     });
+
+    if(typeof viewed_count != "undefined" && viewed_count >= 0){
+      opener.updateBullet(viewed_count,"#mail-count")
+    }
 });
 
 function ajaxNicknameCheck()
 {
     if(!$('#receiveNick').val())
     {
-        alert('닉네임을 입력하세요.');
+        alertifyByCommon('닉네임을 입력하세요.');
         $('#receiveNick').focus();
         return false;
     }
@@ -93,27 +97,27 @@ function ajaxNicknameCheck()
         success:function (data,textStatus){
             if(data == 'myself')
             {
-                alert('자기 자신에게 메일을 보낼수 없습니다.');
+                alertifyByCommon('자기 자신에게 메일을 보낼수 없습니다.');
             }
             else if(data == 'noexist')
             {
-                alert('존재하지 않는 닉네임입니다.');
+                alertifyByCommon('존재하지 않는 닉네임입니다.');
             }
             else if(data == 'success')
             {
-                alert('존재하는 닉네임입니다.');
+                alertifyByCommon('존재하는 닉네임입니다.');
             }
             else if(data == 'leave')
             {
-                alert('탈퇴한 회원입니다.');
+                alertifyByCommon('탈퇴한 회원입니다.');
             }
             else if(data == 'intercept')
             {
-                alert('차단된 회원입니다.');
+                alertifyByCommon('차단된 회원입니다.');
             }
             else if(data == 'error')
             {
-                alert('잘못된 접근입니다.');
+                alertifyByCommon('잘못된 접근입니다.');
             }
         }
     });
@@ -130,13 +134,13 @@ function inputCheck()
     var fn = document.forms.writeForm;
     if(!fn.receiveNick.value && fn.randomMemo.checked == false)
     {
-        alert('받는 사람 닉네임을 입력하세요.');
+        alertifyByCommon('받는 사람 닉네임을 입력하세요.');
         fn.receiveNick.focus();
         return false;
     }
     else if(!fn.content.value.trim())
     {
-        alert('쪽지 내용을 입력하세요.');
+        alertifyByCommon('쪽지 내용을 입력하세요.');
         fn.content.focus();
         return false;
     }
@@ -150,7 +154,7 @@ function inputCheck()
             {
                 if(filterMsg.indexOf(filterWordArr[i]) != -1)
                 {
-                    alert('해당 단어 [' + filterWordArr[i] + '] (은)는 입력 금지어입니다.');
+                    alertifyByCommon('해당 단어 [' + filterWordArr[i] + '] (은)는 입력 금지어입니다.');
                     fn.content.value = '';
                     return false;
                 }
@@ -166,12 +170,12 @@ function inputCheck()
             if(data.status == 1)
             {
                 opener.memoSend(data.tuseridKey);
-                alert("발송되었습니다.");
+                alertifyByCommon("발송되었습니다.");
                 document.location.href = "/memo?type=send";
             }
             else
             {
-                alert(data.msg);
+                alertifyByCommon(data.msg);
             }
         },'json');
     }
@@ -191,7 +195,7 @@ function memoDel()
 
     if(checkFlag == 'N')
     {
-        alert('삭제할 쪽지를 선택해주세요.');
+        alertifyByCommon('삭제할 쪽지를 선택해주세요.');
         return false;
     }
     else if (confirm('선택된 쪽지를 삭제 하시겠습니까?'))
@@ -269,7 +273,7 @@ function listDel(type)
 
     if(checkFlag == 'N')
     {
-        alert('삭제할 회원을 선택해주세요.');
+        alertifyByCommon('삭제할 회원을 선택해주세요.');
         return false;
     }
     else if (confirm('선택된 회원을 '+msg+'에서 삭제 하시겠습니까?'))

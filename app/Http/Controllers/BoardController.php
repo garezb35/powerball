@@ -124,6 +124,10 @@ class BoardController extends SecondController
                 PbView::insert(["ip"=>$ip,"postId"=>$result["article"]["id"]]);
             }
         }
+
+        $result["b1"] = PbBoard::where("isDeleted",0)->where("type",1)->get()->toArray();
+        $result["b2"] = PbBoard::where("isDeleted",0)->where("type",2)->get()->toArray();
+        $result["b3"] = PbBoard::where("isDeleted",0)->where("type",3)->get()->toArray();
         return view('board_view',["css"=>"board.css","js"=>"board.js","result"=>$result]);
     }
 

@@ -221,6 +221,18 @@ Handlebars.registerHelper('percentageofTwo', function(context,ndx) {
     return 100 * context[ndx] / sum;
 });
 
+Handlebars.registerHelper('formatDate', function(dater) {
+    if(typeof dater != "undefined" || dater != null){
+      var date = new Date(dater)
+    }
+    else{
+        var date = new Date()
+    }
+    var mth = date.getMonth() + 1;
+    var dte = date.getDate()
+    return mth + "월 " + date.getDate()+"일"
+});
+
 
 Handlebars.registerHelper('index_of', function(context,ndx) {
     return context[ndx];
@@ -396,6 +408,15 @@ Handlebars.registerHelper('compareBig', function(arg1,arg2,options) {
 
 Handlebars.registerHelper('removeMinus', function(arg1) {
     return -1*arg1
+});
+
+Handlebars.registerHelper('substring', function(arg1) {
+    return arg1.substring(5,10)
+});
+
+Handlebars.registerHelper('ifSimilar', function(arg1,arg2,options) {
+    if(arg1.includes(arg2)) return options.fn(this);
+    else return options.inverse(this);
 });
 
 Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
@@ -930,4 +951,20 @@ function setCookie(name,value,expiredays)
     var todayDate = new Date();
     todayDate.setDate( todayDate.getDate() + expiredays );
     document.cookie = name + '=' + escape( value ) + '; path=/; expires=' + todayDate.toGMTString() + ';'
+}
+
+function alertifyByCommon(msg,type="error"){
+  alertify.set('notifier','delay', 1);
+  alertify.set('notifier','position', 'top-center');
+  if(type == "error"){
+    alertify.error(msg)
+  }
+  if(type == "warning"){
+    alertify.warning(msg)
+  }
+}
+
+
+function updateBullet(bullet,toele = "#bullet_cnt"){
+  $(top.document).find(toele).text(bullet)
 }

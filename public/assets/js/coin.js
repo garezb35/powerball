@@ -55,7 +55,7 @@ $(document).ready(function(){
 
         if($(this).val() % 10000 != 0)
         {
-            alert('코인의 충전금액은 만원 단위로 입력 가능합니다.');
+            alertifyByCommon('코인의 충전금액은 만원 단위로 입력 가능합니다.');
             $(this).val('');
             $(this).focus();
             $('#price').text(0);
@@ -128,24 +128,24 @@ function charge()
 
     if(!fn.chargePrice.value)
     {
-        alert('충전금액을 선택하세요.');
+        alertifyByCommon('충전금액을 선택하세요.');
         return false;
     }
     else if(fn.chargeCoin.value % 10000 != 0)
     {
-        alert('충전금액은 만원 단위로 가능합니다.');
+        alertifyByCommon('충전금액은 만원 단위로 가능합니다.');
         $('#chargeCoinInput').focus();
         return false;
     }
     else if(!fn.accountName.value)
     {
-        alert('입금자 이름을 입력하세요.');
+        alertifyByCommon('입금자 이름을 입력하세요.');
         fn.accountName.focus();
         return false;
     }
     else if(fn.smsYN.checked == true && !fn.mobileNum.value)
     {
-        alert('입금정보 받을 휴대폰번호를 입력하세요.');
+        alertifyByCommon('입금정보 받을 휴대폰번호를 입력하세요.');
         fn.mobileNum.focus();
         return false;
     }

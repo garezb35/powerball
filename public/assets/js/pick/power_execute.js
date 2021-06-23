@@ -1,29 +1,146 @@
 var diff, timer, request_time = 0;
 var cookie = false;
 var i=0;
-var init_sound = null;
-var driving_sound = null;
-var zoomin_sound = null;
-var comein_sound = null;
-var last_result_sound = null;
-var iru_tiny_player = null;
-var sadari_3_sound = null;
-var sadari_4_sound = null;
-var oddeven_sound = null;
-var sadari_started = null;
-var leftright = null;
+var sound_checked = getCookie("sound") == "true" || getCookie("sound") == "" ? true : false;
+var page_activated = true;
+
 $(document).ready(function(){
-    if($('#init_sound').length>0){ init_sound=document.getElementById('init_sound') }
-    if($('#driving_sound').length>0){ driving_sound=document.getElementById('driving_sound') }
-    if($('#zoomin_sound').length>0){ zoomin_sound=document.getElementById('zoomin_sound') }
-    if($('#comein_sound').length>0){ comein_sound=document.getElementById('comein_sound') }
-    if($('#last_result_sound').length>0){ last_result_sound=document.getElementById('last_result_sound') }
-    if($('#sadari_3_sound').length>0){ sadari_3_sound=document.getElementById('sadari_3_sound') }
-    if($('#sadari_4_sound').length>0){ sadari_4_sound=document.getElementById('sadari_4_sound') }
-    if($('#oddeven_sound').length>0){ oddeven_sound=document.getElementById('oddeven_sound') }
-    if($('#sadari_started_sound').length>0){ sadari_started=document.getElementById('sadari_started_sound') }
-    if($('#leftright_sound').length>0){ leftright=document.getElementById('leftright_sound') }
-    iru_tiny_player = document.getElementsByClassName("iru-tiny-player");
+  $(window).focus(function() {
+      page_activated++;
+      console.log(page_activated)
+  });
+    if(sound_checked == true){
+      $("#btn_sound").find("i").addClass("fa-volume-up")
+    }
+    else{
+      $("#btn_sound").find("i").addClass("fa-volume-off")
+    }
+    $("#btn_sound").click(function(){
+      sound_checked = !sound_checked;
+
+      if(!sound_checked){
+        setCookie("sound","false");
+        $("#btn_sound").find("i").removeClass("fa-volume-up")
+        $("#btn_sound").find("i").addClass("fa-volume-off")
+      }
+      else{
+        setCookie("sound","true");
+        $("#btn_sound").find("i").removeClass("fa-volume-off")
+        $("#btn_sound").find("i").addClass("fa-volume-up")
+      }
+
+    })
+    if($('#init_sound').length>0){
+      $('#init_sound').jPlayer({
+          ready: function (){
+              $(this).jPlayer('setMedia',{
+                  mp3:'/assets/music/powerball/start_before5.mp3'
+              });
+          },
+          swfPath:'/assets/jplayer/',
+          supplied:'mp3'
+      });
+    }
+    if($('#driving_sound').length>0){
+      $('#driving_sound').jPlayer({
+          ready: function (){
+              $(this).jPlayer('setMedia',{
+                  m4a:'/assets/music/powerball/driving.m4a'
+              });
+          },
+          swfPath:'/assets/jplayer/',
+          supplied:'m4a'
+      });
+    }
+    if($('#zoomin_sound').length>0){
+      $('#zoomin_sound').jPlayer({
+          ready: function (){
+              $(this).jPlayer('setMedia',{
+                  m4a:'/assets/music/powerball/zoomin.m4a'
+              });
+          },
+          swfPath:'/assets/jplayer/',
+          supplied:'m4a'
+      });
+    }
+    if($('#comein_sound').length>0){
+      $('#comein_sound').jPlayer({
+          ready: function (){
+              $(this).jPlayer('setMedia',{
+                  m4a:'/assets/music/powerball/comein.m4a'
+              });
+          },
+          swfPath:'/assets/jplayer/',
+          supplied:'m4a'
+      });
+    }
+    if($('#last_result_sound').length>0){
+      $('#last_result_sound').jPlayer({
+          ready: function (){
+              $(this).jPlayer('setMedia',{
+                  m4a:'/assets/music/powerball/last_result.m4a'
+              });
+          },
+          swfPath:'/assets/jplayer/',
+          supplied:'m4a'
+      });
+    }
+    if($('#sadari_3_sound').length>0){
+      $('#sadari_3_sound').jPlayer({
+          ready: function (){
+              $(this).jPlayer('setMedia',{
+                  m4a:'/assets/music/psadari/sadari-3.m4a'
+              });
+          },
+          swfPath:'/assets/jplayer/',
+          supplied:'m4a'
+      });
+    }
+    if($('#sadari_4_sound').length>0){
+      $('#sadari_4_sound').jPlayer({
+          ready: function (){
+              $(this).jPlayer('setMedia',{
+                  m4a:'/assets/music/psadari/sadari-4.m4a'
+              });
+          },
+          swfPath:'/assets/jplayer/',
+          supplied:'m4a'
+      });
+    }
+    if($('#oddeven_sound').length>0){
+      $('#oddeven_sound').jPlayer({
+          ready: function (){
+              $(this).jPlayer('setMedia',{
+                  m4a:'/assets/music/psadari/oddeven.m4a'
+              });
+          },
+          swfPath:'/assets/jplayer/',
+          supplied:'m4a'
+      });
+    }
+    if($('#sadari_started_sound').length>0){
+      $('#sadari_started_sound').jPlayer({
+          ready: function (){
+              $(this).jPlayer('setMedia',{
+                  m4a:'/assets/music/psadari/sadari_started.m4a'
+              });
+          },
+          swfPath:'/assets/jplayer/',
+          supplied:'m4a'
+      });
+    }
+    if($('#leftright_sound').length>0){
+      $('#leftright_sound').jPlayer({
+          ready: function (){
+              $(this).jPlayer('setMedia',{
+                  m4a:'/assets/music/psadari/leftright.m4a'
+              });
+          },
+          swfPath:'/assets/jplayer/',
+          supplied:'m4a'
+      });
+    }
+
 
     var dURL = '/api/live/result';
     var content = $('.gmContent');
@@ -40,6 +157,29 @@ $(document).ready(function(){
     var sound_effect = null;
     var nextUserTime = 0;
 
+    if(TYPE == "POWERBALL"){
+       var sprite_balls = Spritz('#sprite-balls', {
+           picture: { srcset: '/assets/images/pick/disply.png', width: 10367, height: 4968 },
+           steps: 28, rows: 4,
+       });
+      var ball_back = Spritz('#div_machine_glass', {
+          picture: { srcset: '/assets/images/pick/ball-back-ani.png', width: 2352, height: 1200 },
+          steps: 28, rows: 4,
+      });
+      var any_balls = Spritz('#any-balls', {
+          picture: { srcset: '/assets/images/pick/anyBalls.png', width: 2352, height: 899 },
+          steps: 21, rows: 3,
+      });
+      sprite_balls.play()
+      ball_back.play()
+      any_balls.play()
+      sprite_balls.on('change', (from, to) => {
+         if(to == 26) sprite_balls.step(1);
+     });
+      ball_back.on('change', (from, to) => {
+         if(to == 24) ball_back.step(1);
+     });
+    }
     var core = (function () {
         return {
             init: function () {
@@ -70,17 +210,21 @@ $(document).ready(function(){
                     core.timer();
                 }, 1000);
                 if(nextTime == 5){
-                  $(".stopped_balls").attr("src","/assets/images/pick/live.gif")
-                  if(TYPE == "POWERLADDER"){
-                    sadari_started.play()
-                  }
-                  else{
-                    init_sound.play()
+                  $("#ready-screen").hide()
+                  $("#div_machine_glass").hide()
+                  $("#any-balls").removeClass("d-none")
+                  // $(".stopped_balls").attr("src","/assets/images/pick/live.gif")
+                  if(sound_checked){
+                    if(TYPE == "POWERLADDER"){
+                      $("#sadari_started_sound").jPlayer("play")
+                    }
+                    else{
+                      $("#init_sound").jPlayer("play")
+                    }
                   }
 
                 }
                 if (nextTime == 0) {
-
                     // nextUserTime = userTime + gameTime;
                     nextTime = 300;
                     unique++;
@@ -135,7 +279,7 @@ $(document).ready(function(){
                 }).done(function (response) {
                     if (!diff_minutes(calcTime("+9"),new Date(response.created_date),false)) {
                         if (gameAjax == 5) {
-                            alert('게임데이터에 문제가 발생하였습니다.');
+                            alertifyByCommon('게임데이터에 문제가 발생하였습니다.');
                             window.location.reload(true);
                         } else {
                             setTimeout(function () {
@@ -145,11 +289,11 @@ $(document).ready(function(){
                         }
                     } else {
                         powerball.start(response);
-                        init_sound.pause()
-                        init_sound.currentTime = 0;
+
+                        $("#init_sound").jPlayer("stop")
                     }
                 }).fail(function () {
-                    alert('게임데이터에 문제가 발생하였습니다.');
+                    alertifyByCommon('게임데이터에 문제가 발생하였습니다.');
                     window.location.reload(true);
                 });
             },
@@ -177,7 +321,7 @@ $(document).ready(function(){
                 }).done(function (response) {
                     if (!diff_minutes(calcTime("+9"),new Date(response.created_date),false)) {
                         if (gameAjax == 5) {
-                            alert('게임데이터에 문제가 발생하였습니다.');
+                            alertifyByCommon('게임데이터에 문제가 발생하였습니다.');
                             window.location.reload(true);
                         } else {
                             setTimeout(function () {
@@ -187,11 +331,10 @@ $(document).ready(function(){
                         }
                     } else {
                         powerladder.start(response);
-                        sadari_started.pause()
+                        $("#sadari_started_sound").jPlayer("stop")
                     }
                 }).fail(function (error) {
-                    console.log(error)
-                    alert('게임데이터에 문제가 발생하였습니다.');
+                    alertifyByCommon('게임데이터에 문제가 발생하였습니다.');
                     window.location.reload(true);
                 });
             },
@@ -241,19 +384,24 @@ $(document).ready(function(){
                       $("#div_sadari_machine_glass").css("background","url(/assets/images/pick/sadari-machine-3.png)")
                   }
                 new Promise(function (resolve, reject) {
-                    leftright.play(0)
+                    if(sound_checked){
+                      $("#leftright_sound").jPlayer("play")
+                    }
                     startIcon.addClass('on');
                     setTimeout(function () {
                         resolve();
                     }, 500);
                 }).then(function () {
                     ladderLine = '<em class="line '+sType[0].class+' "></em>';
-                    if(sadari_type == 3){
-                      sadari_3_sound.play()
+                    if(sound_checked){
+                      if(sadari_type == 3){
+                        $("#sadari_3_sound").jPlayer("play")
+                      }
+                      if(sadari_type == 4){
+                        $("#sadari_4_sound").jPlayer("play")
+                      }
                     }
-                    if(sadari_type == 4){
-                      sadari_4_sound.play()
-                    }
+
                     lineBox.append(ladderLine).find('em:eq(0)').css(sType[0].pos).animate(sType[0].size, sType[0].spd).promise().then(function () {
                         ladderLine = '<em class="line '+sType[1].class+' "></em>';
                         return lineBox.append(ladderLine).find('em:eq(1)').css(sType[1].pos).animate(sType[1].size, sType[1].spd).promise();
@@ -287,10 +435,13 @@ $(document).ready(function(){
                             return console.log('null');
                         }
                     }).then(function () {
-                        sadari_4_sound.pause()
-                        sadari_3_sound.pause()
+                        $("#sadari_4_sound").jPlayer("stop")
+                        $("#sadari_3_sound").jPlayer("stop")
                         endIcon.addClass('on');
-                        oddeven_sound.play()
+                        if(sound_checked){
+                          $("#oddeven_sound").jPlayer("play")
+                        }
+
                         setTimeout(function () {
                             location.reload()
                             content.find('.progressBar, .timeBox').hide();
@@ -389,10 +540,10 @@ $(document).ready(function(){
                         HTML += '</ul>';
                         content.find('.rankingBox .rankingScroll').html(HTML);
                     } else {
-                        alert('래킹 데이터가 없습니다.');
+                        alertifyByCommon('래킹 데이터가 없습니다.');
                     }
                 }).fail(function () {
-                    alert('서버 통신간 오류가 발생하였습니다. 잠시후 다시 시도해주세요.');
+                    alertifyByCommon('서버 통신간 오류가 발생하였습니다. 잠시후 다시 시도해주세요.');
                 });
             },
             getMyPick: function () {
@@ -465,10 +616,10 @@ $(document).ready(function(){
 
                         content.find('.mypickBox .mypickStats').html(STATS);
                     } else {
-                        alert('픽 데이터가 없습니다.');
+                        alertifyByCommon('픽 데이터가 없습니다.');
                     }
                 }).fail(function () {
-                    alert('서버 통신간 오류가 발생하였습니다. 잠시후 다시 시도해주세요.');
+                    alertifyByCommon('서버 통신간 오류가 발생하였습니다. 잠시후 다시 시도해주세요.');
                 });
             },
             updateGamePick: function (data) {
@@ -548,6 +699,8 @@ $(document).ready(function(){
         $('#div_machine_result_board').fadeIn(1000);
     });
 
+
+
 })
 
 
@@ -558,31 +711,34 @@ function showNumber(num,ii)
         ballColor = ballColorSel(num,ii);
         $('#lotteryBall').show();
         $('#lotteryBall').html('<span class="result_ball '+ballColor+'">'+num+'</span>');
-        TweenMax.to(document.getElementById('lotteryBall'),1,{bezier:{curviness:1.25,type:'cubic',values:[{x:207,y:10},{x:119,y:28},{x:72,y:77},{x:61,y:153},{x:92,y:221},{x:184,y:266},{x:366,y:279}],autoRotate:false},ease:Power1.easeInOut,
+        TweenMax.to(document.getElementById('lotteryBall'),0.5,{bezier:{curviness:1.25,type:'cubic',values:[{x:207,y:10},{x:119,y:28},{x:72,y:77},{x:61,y:153},{x:92,y:221},{x:184,y:266},{x:366,y:279}],autoRotate:false},ease:Power1.easeInOut,
             onStart:function(){
-                driving_sound.play();
+                if(sound_checked){
+                  $("#driving_sound").jPlayer("play")
+                }
                 $('#lotteryResult').append('<span id="ballNumber_'+num+'" class="ball_'+ballColor+'"><span class="ballNumber">'+num+'</span></span>');
                 $('#ballNumber_'+num).addClass("animations")
-
             },
             onComplete:function(){
-                driving_sound.pause()
-                driving_sound.currentTime =0
+                $("#driving_sound").jPlayer("stop")
                 $('#lotteryBall').find("span").removeClass("animations")
-                $("#lotteryBall").find("span.result_ball").addClass("zoomin")
-                zoomin_sound.play();
                 setTimeout(function(){
                     $("#current_result").find(".flex_row").append("<div class='result_ball "+ballColor+"'>"+num+"</div>");
-                    comein_sound.play();
-                    $('#lotteryBall').html('').hide();
-                    if(ii == 5 ){
-                      last_result_sound.play()
+                    if(sound_checked){
+                      $("#comein_sound").jPlayer("play")
                     }
-                },1000)
+                    $('#lotteryBall').html('').hide();
+                    if(sound_checked){
+                      if(ii == 5 ){
+                        $("#last_result_sound").jPlayer("play")
+                      }
+                    }
+
+                },0)
 
             }
         });
-    },3000*i);
+    },1000*i);
 
     i++;
 
@@ -628,13 +784,12 @@ function updateResult(data)
         {
             if(i == 6)
             {
-
                 setTimeout(function(){
                     $('#lotteryBox .play').hide();
                     $('#ladderReady').show();
                     window.location.reload(true);
 
-                },18000);
+                },6300);
             }
             else
             {
@@ -644,10 +799,15 @@ function updateResult(data)
     },500);
 }
 
-// function controlMp4a(fmusic,type){
-//   if(type == 1) fmusic.play();
-//   else{
-//     fmusic.pause();
-//     fmusic.currentTime = 0;
-//   }
-// }
+function handleVisibilityChange() {
+  if (document.visibilityState === "hidden") {
+    page_activated = false;
+  } else  {
+    if(!page_activated){
+      location.reload()
+      page_activated = true
+    }
+  }
+}
+
+document.addEventListener("visibilitychange", handleVisibilityChange, false);

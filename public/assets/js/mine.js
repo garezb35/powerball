@@ -9,3 +9,16 @@ $(document).ready(function(){
         });
     })
 });
+
+
+function changeCountMine(type,content=""){
+  var count = parseInt($("."+type+"-item").text());
+  $("."+type+"-item").text(count-1);
+  if(content !=""){
+    $("."+type+"-msg").text(content)
+  }
+}
+
+function changeCountItemToTop(count){
+  $(top.document).find("#item-count").text(count)
+}

@@ -162,6 +162,8 @@ function powerballBetting(in_room = -1)
                     resetPowerballBetting()
                     $('.sm-message').modal('hide')
                     $('#betBox').slideToggle('fast')
+                    $("#btn_pointBet").parent().css("background","#00b4b4")
+                    $("#btn_pointBet").text("픽 열기")
                     setScroll();
                 }
             }
@@ -277,4 +279,3 @@ $(document).ready(function (){
         })
     }
 });
-

@@ -43,8 +43,13 @@ class MemberController extends SecondController
         $avata = empty($avata["value3"]) ? "": $avata["value3"];
         $type = empty($request->type) ? "mine" : $request->type;
         $item_count = array();
+
         foreach($user->item->toArray() as $index){
-            $item_count[$index["market_id"]] = $index["count"];
+            $pur_item = PbMarket::where("code",$index["market_id"])->where("state",1)->first();
+            if(!empty($pur_item)){
+              $item_count[$index["market_id"]] = $index["count"];
+            }
+
         }
         switch ($type){
             case "mine";
@@ -65,7 +70,9 @@ class MemberController extends SecondController
                 return view('member/powerball-item', [     "js" => "market.js",
                                                                 "css" => "member.css",
                                                                 "pur_item"=>$pur_item,
-                                                                "api_token"=>$user->api_token
+                                                                "api_token"=>$user->api_token,
+                                                                "userIdKey"=>$user->userIdKey,
+                                                                "family"=>$user->familynickname
                     ]
                 );
                 break;
@@ -541,34 +548,53 @@ class MemberController extends SecondController
                             "userId"=>$user->userId,
                             "ip"=>$request->ip()
                         ]);
-                        echo json_encode(array("status"=>1));
+                        echo json_encode(array("status"=>1,"type"=>"nickname","content"=>$nickname,"item_count"=>PbPurItem::leftJoin('pb_market', function($join) {
+                          $join->on('pb_pur_item.market_id', '=', 'pb_market.code');
+                        })->where("pb_pur_item.userId",$user->userId)->where("pb_market.state",1)->where("pb_pur_item.active",1)->sum("pb_pur_item.count")));
                     }
                 }
                 break;
 
                 case "family":
                     $family = $request->family;
-                    $pur_item = PbMarket::where("code","FAMILY_NICKNAME_LICENSE_BREAD")->first();
-                    if((empty($item_count["FAMILY_NICKNAME_LICENSE_BREAD"]) && empty($item_count["FAMILY_NICKNAME_LICENSE"])) || empty($pur_item)){
+                    $pur_item1 = PbMarket::where("code","FAMILY_NICKNAME_LICENSE_BREAD")->first();
+                    $pur_item2 = PbMarket::where("code","FAMILY_NICKNAME_LICENSE")->first();
+                    if((empty($item_count["FAMILY_NICKNAME_LICENSE_BREAD"]) && empty($item_count["FAMILY_NICKNAME_LICENSE"])) || (empty($pur_item1) && empty($pur_item2))){
                         echo json_encode(array("status"=>0,"msg"=>"패밀리닉네임을 사용 또는 변경하려면 [패밀리닉네임 이용권] 아이템이 필요합니다."));
+                        return;
                     }
+
                     else{
-                        
+                        $mar_id = "FAMILY_NICKNAME_LICENSE_BREAD";
+                        if(!empty($item_count["FAMILY_NICKNAME_LICENSE_BREAD"]) && !empty($pur_item1)){
+                          $pur_item = $pur_item1;
+                        }
+                        else if(!empty($item_count["FAMILY_NICKNAME_LICENSE"]) && !empty($pur_item2)){
+                          $pur_item = $pur_item2;
+                          $mar_id = "FAMILY_NICKNAME_LICENSE";
+                        }
+                        else{
+                          echo json_encode(array("status"=>0,"msg"=>"패밀리닉네임을 사용 또는 변경하려면 [패밀리닉네임 이용권] 아이템이 필요합니다."));
+                          return;
+                        }
                         $count_limit = strlen(utf8_decode($family));
                         if($count_limit > 4)
                         {
                             echo json_encode(array("status"=>0,"msg"=>"패밀리 닉네임은 4자이하로 가능합니다."));
                         }
                         else{
+
                             User::where("userId",$userId)->update(["familynickname"=>$family]);
-                            PbPurItem::where("userId",$userId)->where("market_id","FAMILY_NICKNAME_LICENSE_BREAD")->update(["count"=>$item_count["FAMILY_NICKNAME_LICENSE_BREAD"]-1]);
+
+                            PbPurItem::where("userId",$userId)->where("market_id",$mar_id)->update(["count"=>$item_count[$mar_id]-1]);
+
                             if($pur_item["period"] != 0){
                                 $terms1 = date("Y-m-d H:i:s");
                                 $terms2 = date("Y-m-d H:i:s", strtotime($pur_item["period"], strtotime($terms1)));
                                 $terms_type = 2;
                                 PbItemUse::updateorCreate([
                                     "userId"=>$userId,
-                                    "market_id"=>"FAMILY_NICKNAME_LICENSE_BREAD"
+                                    "market_id"=>$mar_id
                                 ],[
                                     "terms2"=>$terms2,
                                     "terms1"=>$terms1,
@@ -581,7 +607,7 @@ class MemberController extends SecondController
                                 "userId"=>$user->userId,
                                 "ip"=>$request->ip()
                             ]);
-                            echo json_encode(array("status"=>1));
+                            echo json_encode(array("status"=>1,"type"=>"family","content"=>$family,"item_count"=>PbPurItem::where("userId",$user->userId)->where("active",1)->sum("count")));
                         }
                     }
                     break;
@@ -613,7 +639,9 @@ class MemberController extends SecondController
                             "userId"=>$user->userId,
                             "ip"=>$request->ip()
                         ]);
-                        echo json_encode(array("status"=>1));
+                        echo json_encode(array("status"=>1,"type"=>"today","content"=>$todayMsg,"item_count"=>PbPurItem::leftJoin('pb_market', function($join) {
+                          $join->on('pb_pur_item.market_id', '=', 'pb_market.code');
+                        })->where("pb_pur_item.userId",$user->userId)->where("pb_market.state",1)->where("pb_pur_item.active",1)->sum("pb_pur_item.count")));
                     }
                     break;
                 case "family-init":
@@ -622,7 +650,9 @@ class MemberController extends SecondController
                     }
                     else{
                         User::where("userId",$userId)->update(["familynickname"=>""]);
-                        echo json_encode(array("status"=>1));
+                        echo json_encode(array("status"=>1,"type"=>"family","content"=>" ","item_count"=>PbPurItem::leftJoin('pb_market', function($join) {
+                          $join->on('pb_pur_item.market_id', '=', 'pb_market.code');
+                        })->where("pb_pur_item.userId",$user->userId)->where("pb_market.state",1)->where("pb_pur_item.active",1)->sum("pb_pur_item.count")));
                     }
                     break;
 
@@ -650,8 +680,9 @@ class MemberController extends SecondController
                 $user = User::find($userId);
                 $user->image = "/assets/images/mine/profile.png";
                 $user->save();
+                $cur_item = $item_count["PROFILE_IMAGE_RIGHT"]-1;
                 PbPurItem::where("userId",$user->userId)->where("market_id","PROFILE_IMAGE_RIGHT")->update(["count"=>$item_count["PROFILE_IMAGE_RIGHT"]-1]);
-                echo json_encode(array("status"=>2,"msg"=>"초기화되였습니다."));
+                echo json_encode(array("status"=>2,"msg"=>"초기화되였습니다.","cur"=>$cur_item));
             }
             else
                 echo json_encode(array("status"=>1));
@@ -697,7 +728,7 @@ class MemberController extends SecondController
             "userId"=>$user->userId,
             "ip"=>$request->ip()
         ]);
-        echo "<script>alert('성공적으로 변경하였습니다.');window.close()</script>";
+        echo "<script>alert('성공적으로 변경하였습니다.');opener.changeCountMine('profile');window.close()</script>";
 
     }
 
@@ -914,6 +945,7 @@ class MemberController extends SecondController
                 return view('member/fixMember',['css'=>"mail.css","js"=>"mail.js","result"=>$result]);
                 break;
             case "memoView":
+
                 $mid = $request->post("mid");
                 $memo = PbInbox::with(["received_usr.getLevel","send_usr.getLevel"])->where("id",$mid)->first();
                 if(empty($memo)){
@@ -934,7 +966,8 @@ class MemberController extends SecondController
                     $previous = PbInbox::where('id', '<', $mid)->where("fromId",$user->userId)->max('id');
                     $next = PbInbox::where('id', '>', $mid)->where("fromId",$user->userId)->min('id');
                 }
-                return view('member/memoView',['css'=>"mail.css","js"=>"mail.js","result"=>$result,"previous"=>$previous,"next"=>$next]);
+                $viewed_count = PbInbox::where('toId',$user->userId)->where("view_date",NULL)->get()->count();
+                return view('member/memoView',['css'=>"mail.css","js"=>"mail.js","result"=>$result,"previous"=>$previous,"next"=>$next,"viewed_count"=>$viewed_count]);
                 break;
             default:
                 break;
@@ -978,7 +1011,7 @@ class MemberController extends SecondController
         $item = array();
         if($randomMemo == "Y"){
             $inserts = array();
-            $item =  PbPurItem::where("userId",$user->userId)->where("market_id","RANDOM_NOTE")->where("count",">",0)->first();
+            $item =  PbPurItem::with("items")->where("userId",$user->userId)->where("market_id","RANDOM_NOTE")->where("count",">",0)->first();
             if(empty($item)){
                 echo json_encode(array("status"=>0,"msg"=>"랜덤 아이템이 필요합니다."));
                 return;
@@ -994,6 +1027,15 @@ class MemberController extends SecondController
                 array_push($insert_id,$ulist["userIdKey"]);
             }
             PbInbox::insert($inserts);
+
+            if(!empty($item["items"]["price"]))
+              PbLog::create([
+                  "type"=>2,
+                  "content"=>json_encode(array("class"=>"use","use"=>"사용","name"=>$item["items"]["name"],"count"=>1,"price"=>$item["items"]["price"])),
+                  "userId"=>$user->userId,
+                  "ip"=>$request->ip()
+              ]);
+
         }
         else{
             $receiveNick  = $request->post("receiveNick");
@@ -1018,7 +1060,7 @@ class MemberController extends SecondController
         if(sizeof($insert_id) > 0)
             echo json_encode(array("status"=>1,"tuseridKey"=>$insert_id));
         else
-            echo json_encode(array("status"=>1,"msg"=>"잘못된 접근입니다."));
+            echo json_encode(array("status"=>0,"msg"=>"잘못된 접근입니다."));
     }
 
     public function deleteMemo(Request $request){
@@ -1183,7 +1225,7 @@ class MemberController extends SecondController
             "fromId"=>$user->userId,
             "toId"=>$other["userId"],
         ]);
-        echo json_encode(array("status"=>1,"msg"=>"총알 선물이 완료되었습니다.","list"=>array("cmd"=>$cmd,"cnt"=>$cnt,"tuseridKey"=>$tuseridKey,"roomIdx"=>$roomIdx,"type"=>$type)));
+        echo json_encode(array("status"=>1,"msg"=>"당근 선물이 완료되었습니다.","list"=>array("cmd"=>$cmd,"cnt"=>$cnt,"tuseridKey"=>$tuseridKey,"roomIdx"=>$roomIdx,"type"=>$type)));
         return;
     }
 
@@ -1419,6 +1461,7 @@ class MemberController extends SecondController
         }
         arsort($win_users);
         $index = 0;
+        PbWinner::query()->delete();
         foreach($win_users  as $key=>$u){
             if($index == 10) break;
             $index++;

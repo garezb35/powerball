@@ -15,12 +15,12 @@ $(document).ready(function(){
         var fn = document.forms.attendanceForm;
         if(!fn.selectNumber.value)
         {
-            alert('사다리 숫자를 선택해주세요.');
+            alertifyByCommon('사다리 숫자를 선택해주세요.');
             return false;
         }
         else if(!fn.comment.value)
         {
-            alert('출석 코멘트를 입력해주세요.');
+            alertifyByCommon('출석 코멘트를 입력해주세요.');
             fn.comment.focus();
             return false;
         }
@@ -41,7 +41,7 @@ $(document).ready(function(){
                         setTimeout(function(){
                             if(data.ladderResult == 'win')
                             {
-                                alert('축하합니다. 당첨되어 [랜덤아이템상자]가 지급되었습니다. 아이템 메뉴에서 확인하세요!');
+                                alertifyByCommon('축하합니다. 당첨되어 [랜덤아이템상자]가 지급되었습니다. 아이템 메뉴에서 확인하세요!');
                             }
                             location.reload();
 
@@ -49,7 +49,7 @@ $(document).ready(function(){
                     }
                     else
                     {
-                        alert(data.msg);
+                        alertifyByCommon(data.msg);
                     }
                 },error:function(xhr){
                     console.log(xhr)

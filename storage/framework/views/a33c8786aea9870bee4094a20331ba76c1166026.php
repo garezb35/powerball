@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/assets/css/pball.css">
     <link rel="stylesheet" href="/assets/css/jquery-ui.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/alertify.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
     <script>
         var remainTime = 0;
@@ -23,6 +24,7 @@
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/jquery-ui.min.js"></script>
     <script src="/assets/jplayer/jquery.jplayer.min.js"></script>
+    <script src="/assets/js/alertify.min.js"></script>
     <script src="/assets/chart/Chart.min.js"></script>
     <script src="/assets/js/common.js"></script>
     <?php if(empty(!$css)): ?>
@@ -51,6 +53,8 @@
     </div>
     <?php echo $__env->yieldContent('header'); ?>
     <?php echo $__env->yieldContent('content'); ?>
+    <div id="pickSound"></div>
+    <div id="five"></div>
 </body>
 <?php echo $__env->make('includes.empty_footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 </html>
@@ -63,6 +67,24 @@
         $('.collapsing-element').on('show.bs.collapse', function () {
             $(this).parent().find(".closing").text("닫기");
         })
+        $('#pickSound').jPlayer({
+            ready: function (){
+                $(this).jPlayer('setMedia',{
+                    m4a:'/assets/call/pick.m4a'
+                });
+            },
+            swfPath:'/assets/jplayer/',
+            supplied:'m4a'
+        });
+        $('#five').jPlayer({
+            ready: function (){
+                $(this).jPlayer('setMedia',{
+                    m4a:'/assets/music/powerball/start_before5.m4a'
+                });
+            },
+            swfPath:'/assets/jplayer/',
+            supplied:'m4a'
+        });
     })
 </script>
 <?php /**PATH D:\xampp1\htdocs\powerball\resources\views/includes/empty_header.blade.php ENDPATH**/ ?>

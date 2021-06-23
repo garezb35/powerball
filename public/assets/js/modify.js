@@ -47,12 +47,14 @@ function inputCheck(){
         dataType:'json',
         success:function (data){
             if(data.status ==1){
-                alert("성공적으로 변경되였습니다.");
+                alertifyByCommon("성공적으로 변경되였습니다.");
+                opener.changeCountItemToTop(data.item_count)
+                opener.changeCountMine(data.type,data.content)
                 window.close();
                 return;
             }
             if(data.status ==0){
-                alert(data.msg);
+                alertifyByCommon(data.msg);
             }
         },
         error:function(xhr){
@@ -80,12 +82,12 @@ function familyNickInit(){
         dataType:'json',
         success:function (data){
             if(data.status ==1){
-                alert("초기화되였습니다.");
+                alertifyByCommon("초기화되였습니다.");
                 window.close();
                 return;
             }
             if(data.status ==0){
-                alert(data.msg);
+                alertifyByCommon(data.msg);
             }
         },
         error:function(xhr){
@@ -102,10 +104,10 @@ function imgCheck(){
         dataType:'json',
         success:function (data){
             if(data.status ==1){
-
+                opener.changeCountMine("profile")
             }
             if(data.status ==0){
-                alert(data.msg);
+                alertifyByCommon(data.msg);
             }
         }
     });
@@ -119,9 +121,13 @@ function profileImgInit(){
         data:{api_token:$("#token").val(),type:"delete"},
         dataType:'json',
         success:function (data){
-            alert(data.msg);
+            alertifyByCommon(data.msg);
             if(data.status == 2){
-                window.close();
+                {
+                  opener.changeCountMine("profile")
+                  window.close();
+
+                }
             }
         }
     });

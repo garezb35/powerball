@@ -10,7 +10,8 @@ const {
     setUserMuteById,
     setUserManageById,
     setFixManageById,
-    getUsersByRoomIdx
+    getUsersByRoomIdx,
+    setUserItem
 
 } = require('../utils/utils')
 
@@ -176,6 +177,16 @@ pick.on("connection",(client) => {
         obj.body = {type:"pick",pick:data.body.cmd};
         public.emit("receive",obj);
         roomio.emit("receive",obj);
+    })
+});
+
+let item_socket = io.of('/item');
+item_socket.on("connection",(client) => {
+    client.on('disconnect', () => {
+
+    })
+    client.on("send",(data,callback) => {
+      setUserItem(data)
     })
 });
 

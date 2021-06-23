@@ -13,6 +13,39 @@
         var remainTime = 0;
         var speedRemain = 0;
         var userIdToken = "{{$userIdToken}}";
+        var count_machine = 0;
+    </script>
+    <script src="/assets/js/jquery.min.js"></script>
+
+    <script>
+    $(document).ready(function(){
+
+        setInterval("rollingNotice()",1000);
+    })
+
+    function rollingNotice()
+    {
+      var date_diff = new Date();
+      if(date_diff.getSeconds() % 10 == 0){
+        $('#scrollNotice').animate({'top':'-=20'},{
+            duration:500,
+            easing: "linear",
+            complete:function(){
+                $('#scrollNotice > ul').children('li:last').after($('#scrollNotice > ul li:eq(0)'));
+                $('#scrollNotice').css({'top':0});
+            }
+        });
+        if(count_machine % 2 == 0){
+          $(".machine1").removeClass("d-none")
+          $(".machine2").addClass("d-none")
+        }
+        else{
+          $(".machine1").addClass("d-none")
+          $(".machine2").removeClass("d-none")
+        }
+        count_machine++;
+      }
+    }
     </script>
 </head>
 <body>
@@ -36,7 +69,7 @@
                     <li><a href="{{route('p_analyse')}}?terms=lates&pageType=display" target="mainFrame" class="on hiddenBorard" >파워볼분석 <div class="border-half"></div></a></li>
                     <li><a href="{{route('psadari_analyse')}}?terms=lates&pageType=display" target="mainFrame" class="hiddenBorard" >파사중계<div class="border-half"></div></a></li>
                     <li><a href="{{route('pick-powerball')}}" target="mainFrame" style="width:80px;text-align:center;" class="hiddenBorard">픽<div class="border-half"></div></a></li>
-                    <li><a href="{{route("pick-simulator")}}" target="mainFrame" rel="hidden" class="hiddenBorard">파워모의배팅<div class="border-half"></div></a></li>
+                    <li><a href="{{route("pick-simulator")}}" target="mainFrame" rel="hidden" class="hiddenBorard">파워시뮬레이션<div class="border-half"></div></a></li>
                     <li><a href="/pick/winning-machine"  target="mainFrame"   class="hiddenBorard">연승제조기<div class="border-half"></div></a></li>
                     <li><a href="{{route('market')}}" target="mainFrame" class="hiddenBorard">마켓<div class="border-half"></div></a></li>
                     <li><a href="#" onclick="openChatRoom();return false;" class="hiddenBorard">방채팅<div class="border-half"></div></a></li>

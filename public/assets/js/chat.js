@@ -477,7 +477,7 @@ function sendMsg()
             {
                 if($('#msg').val().indexOf(' ') == -1 || ($('#msg').val().indexOf(' ') != -1 && !$('#msg').val().substring($('#msg').val().indexOf(' ')+1)))
                 {
-                    alert('내용을 입력하세요.');
+                    alertifyByCommon('내용을 입력하세요.');
                     $('#msg').focus();
                     return false;
                 }
@@ -543,10 +543,9 @@ function receiveProcess(data)
                 switch(bPacket.type)
                 {
                     case 'DUPLICATE':
-
                         printSystemMsg('guide','중복 로그인으로 인해 이전 접속을 종료합니다.');
                         socket.disconnect();
-                        document.location.href = '/chat?state=doubled_display';
+                        document.location.href = '/chat?state=doubled_display&logout='+bPacket.logout;
                         break;
                 }
                 break;
@@ -784,6 +783,7 @@ function receiveProcess(data)
     }
     else if(hPacket.type == 'INITMSG')
     {
+        console.log(bPacket.connectList)
         compileJson("#users","#connectList",bPacket.connectList,1,false);
         total_num = bPacket.connectList.length;
         $("#connectUserCnt").html(number_format(total_num.toString()));
@@ -885,7 +885,7 @@ function receiveProcess(data)
                 break;
 
             case 'NOT_LOGIN':
-                compileJson("#users","#connectList",bPacket.connectList,0,false);
+                compileJson("#users","#connectList",bPacket.connectList,1,false);
                 if(typeof bPacket.connectList != "undefined"){
                     total_num = bPacket.connectList.length;
                     $("#connectUserCnt").html(number_format(total_num.toString()));
@@ -1077,7 +1077,7 @@ function chatManager(type,nick)
     }
     else if(type == 'popupChat')
     {
-        windowOpen('/chat.php','chatPopup',330,575,'no');
+        windowOpen('/chat','chatPopup',330,575,'no');
     }
     else if(type == 'help')
     {
@@ -1143,11 +1143,11 @@ function chatManager(type,nick)
                 success:function(data,textStatus){
                     if(data.status == 1)
                     {
-                        alert('['+data.friendNickname+']님을 친구 추가했습니다.');
+                        alertifyByCommon('['+data.friendNickname+']님을 친구 추가했습니다.');
                     }
                     else
                     {
-                        alert(data.msg);
+                        alertifyByCommon(data.msg);
                     }
                 }
             });
@@ -1170,11 +1170,11 @@ function chatManager(type,nick)
                     if(data.status == 1)
                     {
                         blackListArr.push(data.blackUseridKey);
-                        alert('['+data.blackNickname+']님을 블랙리스트에 추가했습니다.');
+                        alertifyByCommon('['+data.blackNickname+']님을 블랙리스트에 추가했습니다.');
                     }
                     else
                     {
-                        alert(data.msg);
+                        alertifyByCommon(data.msg);
                     }
                 }
             });
@@ -1259,7 +1259,7 @@ function printChatMsg(level,sex,mark,useridKey,nickname,msg,item,winFixCnt)
 
         if(item.indexOf('levelupx4') != -1)
         {
-            itemView = '<span style="position:absolute;left:-3px;z-index:-1;"><img src="/assets/images/powerball/levelupx4.gif" width="29" height="30"></span>';
+            itemView = '<span style="position:absolute;left:0px;z-index:-1;"><img src="/assets/images/powerball/levelupx4.gif" width="30" height="30"></span>';
         }
         else if(item.indexOf('levelupx2') != -1)
         {
@@ -1458,7 +1458,7 @@ function memoSend(tuseridKey,memoid)
 
 function openChatRoom()
 {
-    chatRoomPop = window.open('/chatRoom','chatRoom','width=1054px,height=565px,status=no,scrollbars=no,toolbar=no');
+    chatRoomPop = window.open('/chatRoom','chatRoom','width=1069px,height=565px,status=no,scrollbars=no,toolbar=no');
 }
 
 function windowOpen(src,target,width,height,scroll)
@@ -1493,11 +1493,11 @@ function giftManager(type,tuseridKey,cnt)
         data:data
     }).done(function(data) {
         if(data.status == 1){
-            alert(data.msg);
+            alertifyByCommon(data.msg);
             sendProcess('GIFT',data.list);
         }
         else{
-            alert(data.msg);
+            alertifyByCommon(data.msg);
         }
     });
 }
@@ -1547,7 +1547,12 @@ function printItemMsg(type,cnt,nickname,tnickname)
         var itemMsg = '<div class="bulletBox"><div class="cnt">'+cnt+'</div></div>';
 
         $('#msgBox').append('<li>'+itemMsg+'</li>');
-        $('#msgBox').append('<li><p class="msg-gift"><span>'+nickname+'</span> 님이 <span>'+tnickname+'</span> 님에게 <span>총알 '+cnt+'개</span>를 선물하셨습니다.</p></li>');
+        $('#msgBox').append('<li><p class="msg-gift"><span>'+nickname+'</span> 님이 <span>'+tnickname+'</span> 님에게 <span>당근 '+cnt+'개</span>를 선물하셨습니다.</p></li>');
+        if(tnickname == cur_nickname){
+          bullet += parseInt(cnt)
+          updateBullet(bullet);
+          opner.updateBullet(bullet)
+        }
     }
     else if(type == 'biscuit')
     {
@@ -1591,4 +1596,20 @@ function printItemMsg(type,cnt,nickname,tnickname)
     }
 
     setScroll();
+}
+
+function fontZoom(num)
+{
+	var zoomFontSize = parseFloat($('#msgBox').css('font-size')) + num;
+	var zoomLineHeight = parseFloat($('#msgBox p').css('line-height')) + num;
+
+	if(zoomFontSize > 18 || zoomFontSize < 11)
+	{
+		return false;
+	}
+
+	setCookie('fontSize',zoomFontSize,365);
+
+	$('#msgBox').css('font-size',zoomFontSize+'px');
+	$('#msgBox p').css('line-height',zoomLineHeight+'px');
 }

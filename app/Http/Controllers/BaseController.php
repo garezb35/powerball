@@ -24,7 +24,7 @@ class BaseController  extends Controller
     protected $next_code = "";
     protected $mail_count = 0;
     protected  $rooms = array();
-    protected $simulate = 0;
+    protected $simulate = array(0,0);
     public function  __construct(){
         $this->isLogged = false;
         $this->middleware(function ($request, $next) {
@@ -47,11 +47,22 @@ class BaseController  extends Controller
                 } else {
                     $this->next = 0;
                 }
-                $this->item = PbPurItem::where("userId",Auth::id())->where("active",1)->sum("count");
+                $this->item = PbPurItem::leftJoin('pb_market', function($join) {
+                  $join->on('pb_pur_item.market_id', '=', 'pb_market.code');
+                })->where("pb_pur_item.userId",Auth::id())->where("pb_market.state",1)->where("pb_pur_item.active",1)->sum("pb_pur_item.count");
                 $this->mail_count = PbInbox::where('toId',$this->user->userId)->where("view_date",NULL)->get()->count();
-                $item_sim = PbItemUse::where("userId",$this->user->userId)->where("market_id","PREMIUM_ANALYZER")->where("terms2",">",date("Y-m-d H:i:s"))->first();
+                $item_sim = PbItemUse::where("userId",$this->user->userId)->where("terms2",">",date("Y-m-d H:i:s"))
+                ->where(function($query){
+                    $query->where('market_id',"PREMIUM_ANALYZER");
+                    $query->orWhere('market_id', "WINNING_MACHINE");
+                })->get()->toArray();
                 if(!empty($item_sim)){
-                    $this->simulate = date_diff(date_create(date("Y-m-d")),date_create($item_sim["terms2"]));
+                    foreach($item_sim as $value){
+                      if($value["market_id"] == "PREMIUM_ANALYZER")
+                        $this->simulate[0] = date_diff(date_create(date("Y-m-d")),date_create($value["terms2"]));
+                      else
+                        $this->simulate[1] = date_diff(date_create(date("Y-m-d")),date_create($value["terms2"]));
+                    }
                 }
             }
 

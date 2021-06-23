@@ -1684,7 +1684,8 @@ fieldset {
 .rightArea .resultBox .content ul.resultList li .pick.eeoom {background-position:-1088px -1020px;}
 .rightArea .resultBox .content ul.resultList li .pick.eeoos {background-position:-1156px -1020px;}
 
-.rightArea .resultBox .content ul.resultList li .pass {    background: radial-gradient(#fcfcfc, #e3e3e3);
+.rightArea .resultBox .content ul.resultList li .pass {
+    background: url(/assets/images/powerball/chat/ready.png) no-repeat !important;
     border-radius: 50%;
     border: 1px solid #fff;
 }

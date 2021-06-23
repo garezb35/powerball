@@ -32,25 +32,34 @@ class ChatController extends SecondController
     public function index(Request $request)
     {
         if($request->get("state") == "doubled_display"){
+            if($request->get("logout") == 1){
+              Auth::logout();
+              $request->session()->invalidate();
+              $request->session()->regenerateToken();
+            }
             return view('chat/duplicate',["js"=>"","css"=>"","pick_visible"=>"none","p_remain"=>0]);
-            return;
         }
 
         $item_count= 0;
         $api_token = "";
         $userIdKey = "";
+        $nickname = "";
+        $bullet = 0;
+
         if($this->isLogged)
         {
             $item_count = PbPurItem::where("userId",$this->user->userId)->where("active",1)->sum("count");
             $api_token = $this->user->api_token;
             $userIdKey = $this->user->userIdKey;
+            $nickname = $this->user->nickname;
+            $bullet = $this->user->bullet;
         }
-        return view('chat/home',["p_remain"=>TimeController::getTimer(2),"item_count"=>$item_count,"api_token"=>$api_token,"userIdKey"=>$userIdKey,"profile"=>json_encode($this->profile)]);
+        return view('chat/home',["cur_nickname"=>$nickname,"bullet"=>$bullet,"p_remain"=>TimeController::getTimer(2),"item_count"=>$item_count,"api_token"=>$api_token,"userIdKey"=>$userIdKey,"profile"=>json_encode($this->profile)]);
     }
 
     public function roomWait(Request $request){
         if(!$this->isLogged){
-            $user = User::with("getLevel")->where("userId",1000000)->first();
+            $user = User::with("getLevel")->where("userId",3)->first();
         }
         else
         {
@@ -98,7 +107,7 @@ class ChatController extends SecondController
                                 ->orderBy("updated_at","DESC")->get()->toArray();
         }
 
-        $favor_count = PbFavorRoom::where("userId",$user->userId)->get()->count();
+        $favor_count = PbFavorRoom::where("userId",$user["userId"])->get()->count();
 
         $win = array();
         if(!empty($pb_rooms)){
@@ -186,8 +195,8 @@ class ChatController extends SecondController
             ->where("roomIdx",$request->token)
             ->where("round",$next_round)
             ->groupBy("round")
-            ->groupBy("userId")
             ->first();
+
         $cur_bet = empty($cur_bet["content"]) ? "" : $cur_bet["content"];
         return view('chat/view',[   "js"=>"chat-view.js",
                                          "css"=>"chat-room.css",
@@ -202,6 +211,7 @@ class ChatController extends SecondController
                                          "cur_bet"=>$cur_bet,
                                          "api_token"=>$user->api_token,
                                          "userIdKey"=>$user->userIdKey,
+                                         "bullet"=>$user->bullet,
                                          "profile"=>json_encode($this->profile),
                                          "p_remain"=>TimeController::getTimer(2),
                                             ]);
@@ -492,7 +502,7 @@ class ChatController extends SecondController
             $rest = $user->bullet - $gift;
 
             if($rest < 0 ){
-                echo json_encode(array("status"=>0,"msg"=>"보유한 총알이 부족합니다."));
+                echo json_encode(array("status"=>0,"msg"=>"보유한 당근이 부족합니다."));
                 return;
             }
 

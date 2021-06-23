@@ -4,8 +4,9 @@
     background: url(/public/img/score/ui_game/v2/sp_logotype.svg) no-repeat 0 0;
     margin-left: 15px
 }
-
-
+.d-none{
+    display: none;
+}
 
 .powerball.dark{
     background: url(/assets/images/pick/power_back.png);
@@ -278,7 +279,9 @@
 }
 
 #div_machine_glass {
-    background: url(/assets/images/pick/ball-container.png) no-repeat;
+  width: 277px;
+  left: 84px;
+  z-index: 1
 }
 
 #div_sadari_machine_glass {
@@ -710,6 +713,26 @@
     font-size: 22px;
     text-align: center;
     line-height: 32px;
+    z-index: 9
+}
+
+#powerball-letter{
+    position: absolute;
+    background: url(/assets/images/pick/poweball-letter.png);
+    width: 241px;
+    height: 80px;
+    left: 103px;
+    top: 277px;
+    z-index: 6;
+    background-size: 100%;
+}
+
+#any-balls {
+    width: 292px;
+    position: absolute;
+    height: 254px;
+    left: 77px;
+    top: 48px;
 }
 
 .bulb-img{
@@ -717,7 +740,7 @@
     width: 288px;
     left: 56px;
     top: 0px;
-    z-index: 1;
+    z-index: 10;
 }
 
 .animations{
@@ -782,7 +805,7 @@
 #current_result .result_ball{
     margin-right: 2px;
 }
-#current_result .result_ball:last-child{
+#current_result .result_ball:nth-child(6){
     margin-right: 0px;
     margin-left: 11px;
 }

@@ -20,7 +20,7 @@ function getWiningMachine(){
         heightResize();
       }
       else {
-        alert(data.msg)
+        alertifyByCommon(data.msg)
       }
   })
 }

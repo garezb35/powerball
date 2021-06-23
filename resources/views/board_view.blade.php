@@ -142,18 +142,24 @@
 <div class="categoryTit">
     <ul>
         @if($result["type"] == "community")
-        <li><a href="{{"board"}}?board_type=community&board_category=offten" @if(Request::get("board_category") == "offten") class="on" @endif>자주 하시는 질문</a></li>
-        <li><a href="{{"board"}}?board_type=community&board_category=private" @if(Request::get("board_category") == "private") class="on" @endif>1:1문의</a></li>
-        <li><a href="{{"board"}}?board_type=community&board_category=advanced" @if(Request::get("board_category") == "advanced") class="on" @endif>기능개선요청</a></li>
+        @if(!empty($result["b1"]))
+        @foreach($result["b1"]  as $v)
+        <li><a href="{{"board"}}?board_type=community&board_category={{$v["name"]}}" @if(Request::get("board_category") == $v["name"]) class="on" @endif>{{$v["content"]}}</a></li>
+        @endforeach
+        @endif
         @elseif($result["type"] == "customer")
-        <li><a href="{{"board"}}?board_type=customer&board_category=notice" @if(Request::get("board_category") == "notice") class="on" @endif>공지사항</a></li>
-        <li><a href="{{"board"}}?board_type=customer&board_category=event" @if(Request::get("board_category") == "event") class="on" @endif>이벤트</a></li>
+        @if(!empty($result["b2"]))
+        @foreach($result["b2"]  as $v)
+        <li><a href="{{"board"}}?board_type=customer&board_category={{$v["name"]}}" @if(Request::get("board_category") == $v["name"]) class="on" @endif>{{$v["content"]}}</a></li>
+        @endforeach
+        @endif
         <li><a href="{{route("prison")}}?page_type=prison" @if(Request::get("page_type") == "prison") class="on" @endif>정지</a></li>
         @else
-        <li><a href="{{"board"}}?board_type=none&board_category=humor" @if(Request::get("board_category") == "humor") class="on" @endif>유머</a></li>
-        <li><a href="{{"board"}}?board_type=none&board_category=photo" @if(Request::get("board_category") == "photo") class="on" @endif>포토</a></li>
-        <li><a href="{{"board"}}?board_type=none&board_category=pick" @if(Request::get("board_category") == "pick") class="on" @endif>분석픽공유</a></li>
-        <li><a href="{{"board"}}?board_type=none&board_category=free" @if(Request::get("board_category") == "free") class="on" @endif>자유</a></li>
+        @if(!empty($result["b3"]))
+        @foreach($result["b3"]  as $v)
+        <li><a href="{{"board"}}?board_type=none&board_category={{$v["name"]}}" @if(Request::get("board_category") == $v["name"]) class="on" @endif>{{$v["content"]}}</a></li>
+        @endforeach
+        @endif
         @endif
     </ul>
 </div>
@@ -207,7 +213,10 @@
                                     <img src="/assets/images/powerball/icon_reply.png" style="margin-left:10px;" alt="답변글">
                                 @endif
                                 @if($result["board"]["security"] == 1 && (($mail["fromId"] != 0 && $mail["fromId"] != $result["userId"]) || ($mail["toId"] != 0 && $mail["toId"] != $result["userId"])))
-                                    <a href="/bbs/board.php?bo_table=humor&amp;wr_id=1" onclick="alert('비밀글은 작성자와 운영진만 열람 가능합니다.');return false;">
+                                    <a href="/bbs/board.php?bo_table=humor&amp;wr_id=1" onclick="
+                                                                                                alertify.set('notifier','delay', 1);
+                                                                                                alertify.set('notifier','position', 'top-center');
+                                                                                                alertify.error('비밀글은 작성자와 운영진만 열람 가능합니다.');return false;">
                                         <span class="gray">비밀글로 작성된 글입니다.</span>
                                         <img src="/assets/images/powerball/icon_secret.png" alt="비밀글"><img src="/assets/images/powerball/icon_new.gif" alt="새글">
                                     </a>

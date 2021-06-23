@@ -12,7 +12,7 @@
             .privacyTable td {background-color:#fff;border:1px solid #ddd;padding:5px 12px;line-height:20px;}
         </style>
 
-        <div style="margin-bottom:5px;"><span class="b">■ 총알 환전</span>&nbsp;&nbsp;<span style="font-size:11px;">총알 보유현황 확인 및 총알 환전 신청을 하실 수 있습니다.</span></div>
+        <div style="margin-bottom:5px;"><span class="b">■ 당근 환전</span>&nbsp;&nbsp;<span style="font-size:11px;">당근 보유현황 확인 및 당근 환전 신청을 하실 수 있습니다.</span></div>
         <div class="memberInfoBox">
 
             <table border="0" cellspacing="0" cellpadding="0" class="table">
@@ -21,19 +21,19 @@
                 </colgroup>
 
                 <tbody><tr>
-                    <td class="tit">이미 환전한 총알 개수 : <span class="highlight">0</span>개</td>
+                    <td class="tit">이미 환전한 당근 개수 : <span class="highlight">0</span>개</td>
                 </tr>
                 <tr>
-                    <td class="tit">환전 가능한 총알이 <span class="highlight">100개 이상</span>이어야 환전 신청이 가능하며 <span class="highlight">총알 1개당 현금 70원</span>으로 환전됩니다.</td>
+                    <td class="tit">환전 가능한 당근이 <span class="highlight">100개 이상</span>이어야 환전 신청이 가능하며 <span class="highlight">당근 1개당 현금 70원</span>으로 환전됩니다.</td>
                 </tr>
                 <tr>
-                    <td class="tit">환전 신청한 총알의 환전액수에 관계없이 <span class="highlight">소득세 3%, 주민세 0.3%</span>가 적용됩니다.</td>
+                    <td class="tit">환전 신청한 당근의 환전액수에 관계없이 <span class="highlight">소득세 3%, 주민세 0.3%</span>가 적용됩니다.</td>
                 </tr>
                 <tr>
-                    <td class="tit highlight">총알을 현금으로 환전 받으시면 환전액수에 관계없이 종합소득세 신고의무가 발생합니다.<br>(매년 5월은 종합소득세 신고기간 입니다.)</td>
+                    <td class="tit highlight">당근을 현금으로 환전 받으시면 환전액수에 관계없이 종합소득세 신고의무가 발생합니다.<br>(매년 5월은 종합소득세 신고기간 입니다.)</td>
                 </tr>
                 <tr>
-                    <td class="tit">21시 이전 신청건은 당일 처리 되며. 21시 이후 신청건은 익일 오전 10시 이후에 처리됩니다.<br><span class="highlight">총알 환전 시각 : 10시, 21시 (일괄처리)</span></td>
+                    <td class="tit">21시 이전 신청건은 당일 처리 되며. 21시 이후 신청건은 익일 오전 10시 이후에 처리됩니다.<br><span class="highlight">당근 환전 시각 : 10시, 21시 (일괄처리)</span></td>
                 </tr>
                 <tr>
                     <td class="tit">※ 불법적인 용도, 법적인 문제가 발생하는 경우, 비정상적인 경우, 본 사이트 약관에 위배되는 경우에는 <span class="highlight">환전 신청 승인이 거절</span>됩니다.</td>
@@ -53,11 +53,11 @@
                     </colgroup>
 
                     <tbody><tr>
-                        <td class="tit">환전가능 총알 개수 <span class="red"></span></td>
+                        <td class="tit">환전가능 당근 개수 <span class="red"></span></td>
                         <td colspan="2" class="pdL10"><span class="highlight b">0</span>개</td>
                     </tr>
                     <tr>
-                        <td class="tit">환전할 총알 개수 <span class="red"></span></td>
+                        <td class="tit">환전할 당근 개수 <span class="red"></span></td>
                         <td colspan="2"><input type="text" name="bullet" class="input" style="width:50px;ime-mode:disabled;"  onkeyup="calPrice();" required min="100"> 개</td>
                     </tr>
                     <tr>
@@ -132,7 +132,7 @@
 
                 <div style="border:1px solid #ddd;margin-top:5px;padding:10px;background-color:#EFEFEF;">
                     <div style="font-weight:bold;">제 1조 회원정보의 보호 및 이용</div>
-                    ① 회사는 총알 환전의 목적으로 회원의 동의 하에 관계 법령에서 정하는 바에 따라 개인정보를 수집할 수 있습니다.<br>
+                    ① 회사는 당근 환전의 목적으로 회원의 동의 하에 관계 법령에서 정하는 바에 따라 개인정보를 수집할 수 있습니다.<br>
                     (수집된 개인정보는 담당자 확인 후 폐기처리 됩니다.)<br>
                     ② 회사는 법률에 특별한 규정이 있는 경우를 제외하고는 회원의 별도 동의 없이 회원의 계정정보를 포함한 일체의 개인정보를 제 3자에게 공개하거나 제공하지 아니합니다.
 
@@ -201,7 +201,7 @@
             <tbody><tr class="title">
                 <th>번호</th>
                 <th>상태</th>
-                <th>총알 개수</th>
+                <th>당근 개수</th>
                 <th>환전금액</th>
                 <th>일시</th>
             </tr>
@@ -218,8 +218,7 @@
 
                 </td>
                 <td>
-                    <?php echo e($ex["money"]); ?>
-
+                    <?php echo e(number_format($ex["money"])); ?>원
                 </td>
                 <td>
                     <?php echo e($ex["updated_at"]); ?>

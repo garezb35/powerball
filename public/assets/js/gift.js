@@ -28,17 +28,17 @@ function giftBullet()
 
     if(!bulletCnt || bulletCnt <= 0)
     {
-        alert('선물할 총알을 입력하세요.');
+        alertifyByCommon('선물할 당근을 입력하세요.');
         $('#inputCnt').focus();
     }
     else if(numRegexp.test(bulletCnt))
     {
-        alert('선물할 총알을 숫자로 입력하세요.');
+        alertifyByCommon('선물할 당근을 숫자로 입력하세요.');
         $('#inputCnt').focus();
     }
     else if(bulletCnt > parseInt(userBulletCnt))
     {
-        if(confirm('보유한 총알이 부족합니다. 총알을 구매하시겠습니까?'))
+        if(confirm('보유한 당근이 부족합니다. 당근을 구매하시겠습니까?'))
         {
             opener.top.mainFrame.location.href = '/market';
         }
@@ -52,7 +52,7 @@ function giftBullet()
         $('.btn .gift').addClass('stop').text('선물중');
 
         opener.giftManager('bullet',useridKey,bulletCnt);
-
+        opener.updateBullet(parseInt(userBulletCnt) - bulletCnt)
         setTimeout(function(){
             self.close()
         },1000);
@@ -103,7 +103,7 @@ function countChk(obj)
     }
     else if(Number(limitCnt) < Number(countVal))
     {
-        alert('해당 상품의 1회 최대구매 수량은 ['+limitCnt+'개] 입니다.');
+        alertifyByCommon('해당 상품의 1회 최대구매 수량은 ['+limitCnt+'개] 입니다.');
         $(obj).attr('rel',limitCnt);
     }
     else
@@ -118,13 +118,13 @@ function giftItem()
 {
     if(!$('#targetNick').val())
     {
-        alert('받는 회원 닉네임을 입력하세요.');
+        alertifyByCommon('받는 회원 닉네임을 입력하세요.');
         $('#targetNick').focus();
         return false;
     }
     else if(userNick == $('#targetNick').val())
     {
-        alert('자신에게는 선물할 수 없습니다.');
+        alertifyByCommon('자신에게는 선물할 수 없습니다.');
         return false;
     }
     else
@@ -149,7 +149,7 @@ function giftItem()
             success:function (data,textStatus){
                 if(data.status == 1)
                 {
-                    alert(data.msg);
+                    alertifyByCommon(data.msg);
                     self.close();
                 }
                 else
@@ -157,15 +157,15 @@ function giftItem()
                     switch(data.code)
                     {
                         case 'NOTLOGIN':
-                            alert(data.msg);
+                            alertifyByCommon(data.msg);
                             break;
 
                         case 'PERMISSION':
-                            alert(data.msg);
+                            alertifyByCommon(data.msg);
                             break;
 
                         case 'NEEDBISCUIT':
-                            alert('도토리가 부족합니다.\n\n도토리 획득 후 이용하시기 바랍니다.');
+                            alertifyByCommon('도토리가 부족합니다.\n\n도토리 획득 후 이용하시기 바랍니다.');
                             break;
 
                         case 'CHARGE':
@@ -176,7 +176,7 @@ function giftItem()
                             break;
 
                         default:
-                            alert(data.msg);
+                            alertifyByCommon(data.msg);
                             break;
                     }
                 }

@@ -4,6 +4,10 @@
     <?php echo $__env->make('member/member-menu', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection("content"); ?>
+<script>
+var family = "<?php echo e($family); ?>".trim();
+var userIdKey = "<?php echo e($userIdKey); ?>";
+</script>
     <div class="content">
         <input type="hidden" id="api_token" value="<?php echo e($api_token); ?>">
         <ul class="itemList">
@@ -14,7 +18,7 @@
                         continue;
                     ?>
 
-                <li>
+                <li id="<?php echo e($item->items->code); ?>">
                     <img src="<?php echo e($item->items->image); ?>" width="115" height="115">
                     <div class="name"><?php echo e($item->items->name); ?></div>
                     <div class="amountSet">

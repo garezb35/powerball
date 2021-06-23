@@ -45,12 +45,12 @@ $(document).ready(function() {
 
         if(userIdToken == "")
         {
-            alert('로그인 후 이용 가능합니다.');
+            alertifyByCommon('로그인 후 이용 가능합니다')
             return;
         }
         else if(!is_connect)
         {
-            alert('채팅서버에 접속되지 않았습니다.');
+            alertifyByCommon('채팅서버에 접속되지 않았습니다.')
             return;
         }
 
@@ -68,7 +68,7 @@ $(document).ready(function() {
                 {
                     if(typeof data.required_id != "undefined" && data.required_id !="")
                         sendProcess("refreshChat",data.required_id)
-                    alert(data.msg);
+                    alertifyByCommon(data.msg)
                 }
             }
         });
@@ -78,12 +78,12 @@ $(document).ready(function() {
     $(".enterBtn").click(function(){
         if(userIdToken == "")
         {
-            alert('로그인 후 이용 가능합니다.');
+            alertifyByCommon("로그인 후 이용 가능합니다.")
             return;
         }
         else if(!is_connect)
         {
-            alert('채팅서버에 접속되지 않았습니다.');
+            alertifyByCommon("채팅서버에 접속되지 않았습니다.")
             return;
         }
         $r = $(this).attr("rel");
@@ -104,7 +104,8 @@ $(document).ready(function() {
                         $("#security_dialog").modal("show");
                         return;
                     }
-                    alert(data.msg);
+                    alertifyByCommon(data.msg)
+
                 }
             }
         });
@@ -113,7 +114,7 @@ $(document).ready(function() {
     $(".create_room").click(function(){
         if($("#roomTitle").val().trim() == "")
         {
-            alert("제목을 입력해주세요");
+            alertifyByCommon("제목을 입력해주세요")
             $("#roomTitle").focus();
         }
         else{
@@ -125,10 +126,10 @@ $(document).ready(function() {
                 dataType:"json",
                 success: function ( data ) {
                     if(data.status ==0){
-                        alert(data.msg);
+                        alertifyByCommon(data.msg)
                         return;
                     }
-                    alert(data.msg);
+                    alertifyByCommon(data.msg)
                     sendProcess('CREATE',data.list);
                     $('#creatingWindow').modal('hide');
                     location.href = '/discussion?token='+data.list.roomIdx;
@@ -146,7 +147,7 @@ $(document).ready(function() {
 
         if(chkVal == 'private' && level < "09")
         {
-            alert('비공개 채팅방 개설은 소위 계급 부터 가능합니다.');
+            alertifyByCommon("비공개 채팅방 개설은 소위 계급 부터 가능합니다.")
             $(this).val('public');
             return false;
         }
@@ -167,7 +168,7 @@ $(document).ready(function() {
 
         if(inputPasswd.length != 4)
         {
-            alert('4글자의 비밀번호를 입력하세요.');
+            alertifyByCommon("4글자의 비밀번호를 입력하세요.")
             $('#roomPasswd').focus();
             return false;
         }
@@ -191,7 +192,7 @@ $(document).ready(function() {
                 }
                 else
                 {
-                    alert(data.msg);
+                    alertifyByCommon(data.msg)
                 }
             }
         }).done(function(){
@@ -212,7 +213,7 @@ function connect()
         sendProcess('login');
     }
     catch(e){
-        alert(e);
+        alertifyByCommon(e.message)
     }
 }
 
@@ -294,7 +295,7 @@ function receiveProcess(data)
                     case 'DUPLICATE':
                         //printSystemMsg('guide','중복 로그인으로 인해 이전 접속을 종료합니다.');
                         socket.disconnect();
-                        document.location.href = '/chat?state=doubled_display';
+                        document.location.href = '/chat?state=doubled_display&logout='+bPacket.logout;
                         break;
 
                     case 'IPDUPLICATE':

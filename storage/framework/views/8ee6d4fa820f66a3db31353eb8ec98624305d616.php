@@ -12,6 +12,7 @@
         var level_images = JSON.parse(levels.replace(/&quot;/g,'"'));
         <?php endif; ?>
         var total_num = 0;
+        var bullet = <?php echo e($bullet); ?>;
         var is_repeatChat = false;
         var lastMsgTime = new Date().getTime();
         var sumMsgTerm = 0;
@@ -136,9 +137,9 @@
                 <?php else: ?>
 
                     <?php if($room["frozen"] == "off"): ?>
-                        <li><a href="#" onclick="return false;" id="btn_freezeOn">얼리기</a></li>
+                        <li ><a href="#" onclick="return false;" id="btn_freezeOn" >얼리기</a></li>
                     <?php else: ?>
-                        <li><a href="#" onclick="return false;" id="btn_freezeOff">녹이기</a></li>
+                        <li style="background:url(/assets/images/pick/present.png);background-size:100%;background-repeat:no-repeat"><a href="#" onclick="return false;" id="btn_freezeOff">녹이기</a></li>
                     <?php endif; ?>
 
                     <li><a href="#" onclick="chatManager('clearChat');return false;">방청소</a></li>
@@ -221,7 +222,7 @@
     </div>
 </div>
 <div id="callSound"></div>
-<div id="pickSound"></div>
+
 <div class="modal"  id="modify-chatroom" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

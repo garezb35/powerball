@@ -5,6 +5,7 @@
 ?>
 
 <?php $__env->startSection("content"); ?>
+
 <div class="marketBox">
     <input type="hidden" id="api_token" value="<?php echo e(AUth::user()->api_token); ?>">
     <div class="title">

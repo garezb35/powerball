@@ -4,6 +4,10 @@
     @include('member/member-menu')
 @endsection
 @section("content")
+<script>
+var family = "{{$family}}".trim();
+var userIdKey = "{{$userIdKey}}";
+</script>
     <div class="content">
         <input type="hidden" id="api_token" value="{{$api_token}}">
         <ul class="itemList">
@@ -14,7 +18,7 @@
                         continue;
                     @endphp
 
-                <li>
+                <li id="{{$item->items->code}}">
                     <img src="{{$item->items->image}}" width="115" height="115">
                     <div class="name">{{$item->items->name}}</div>
                     <div class="amountSet">

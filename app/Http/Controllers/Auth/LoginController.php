@@ -49,7 +49,7 @@ class LoginController extends Controller
     public function authenticate(Request $request){
         // Retrive Input
         $credentials = $request->only('loginId', 'password');
-
+        $credentials["user_type"] = "01";
         if (Auth::attempt($credentials)) {
             // if success login
 
@@ -86,6 +86,7 @@ class LoginController extends Controller
             $desktop = 0;
         $credentials = $request->except(['_token']);
         $user = User::with("blocked")->where('loginId',$request->loginId)->first();
+        $credentials["user_type"] = "01";
         if (auth()->attempt($credentials)) {
 
             $ip_blocked_list = PbIpBlocked::where("ip",$request->ip())->first();
@@ -170,6 +171,11 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
+        if(Auth::check()){
+          $user = Auth::user();
+          $user->api_token = "";
+          $user->save();
+        }
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

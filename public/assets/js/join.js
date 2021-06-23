@@ -53,7 +53,7 @@ function inputCheck()
                     $('#resultBox').html(data.msg);
                 }
                 else
-                    alert(data.msg)
+                    alertifyByCommon(data.msg)
             }
         });
     }
@@ -95,7 +95,7 @@ function inputCheckPw()
                     $('#resultBox').html(data.msg);
                 }
                 else
-                    alert(data.msg)
+                    alertifyByCommon(data.msg)
             }
         }).fail(function(xhr){
             console.log(xhr)

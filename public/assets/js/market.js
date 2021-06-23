@@ -1,4 +1,16 @@
+var socketOption = {};
+socketOption['reconnect'] = true;
+socketOption['force new connection'] = true;
+socketOption['sync disconnect on unload'] = true;
+if('WebSocket' in window)
+{
+    socketOption['transports'] = ['websocket'];
+}
+var socket =  null;
+
+
 $(document).ready(function(){
+    connect();
     var isClick = false;
     $('.amountSet > span').click(function(){
         var type = $(this).attr('class');
@@ -11,7 +23,7 @@ $(document).ready(function(){
                 var message = "해당 상품의 보유 수량은 ["+limitCnt+"개] 입니다.";
             else
                 var message = '해당 상품의 1회 최대구매 수량은 ['+limitCnt+'개] 입니다.';
-            alert(message);
+            alertifyByCommon(message);
         }
         else if(cnt == 1 && type == 'down')
         {
@@ -41,22 +53,22 @@ $(document).ready(function(){
 
         if(itemCode == 'NOTE_ITEM_100')
         {
-            alert('쪽지 아이템은 쪽지 발송시 사용 가능합니다.\n쪽지 메뉴를 이용하세요.');
+            alertifyByCommon('쪽지 아이템은 쪽지 발송시 사용 가능합니다.\n쪽지 메뉴를 이용하세요.');
             return false;
         }
         else if(itemCode == 'RANDOM_NOTE')
         {
-            alert('랜덤 쪽지는 랜덤 쪽지 발송시 사용 가능합니다.\n쪽지 메뉴를 이용하세요.');
+            alertifyByCommon('랜덤 쪽지는 랜덤 쪽지 발송시 사용 가능합니다.\n쪽지 메뉴를 이용하세요.');
             return false;
         }
         else if(itemCode == 'CHATROOM' || itemCode == "CHATROOM_20")
         {
-            alert('채팅방 개설권은 채팅방 개설시 사용 가능합니다.');
+            alertifyByCommon('채팅방 개설권은 채팅방 개설시 사용 가능합니다.');
             return false;
         }
         else if(itemCode == 'PREMIUM_CHATROOM' || itemCode == "PREMIUM_CHATROOM_20")
         {
-            alert('프리미엄 채팅방 개설권은 프리미엄 채팅방 개설시 사용 가능합니다.');
+            alertifyByCommon('프리미엄 채팅방 개설권은 프리미엄 채팅방 개설시 사용 가능합니다.');
             return false;
         }
         else if(period == 0){
@@ -85,7 +97,7 @@ $(document).ready(function(){
         }
         if(itemCnt > 1)
         {
-            alert(itemName + '은(는) 1개씩만 사용 가능합니다.');
+            alertifyByCommon(itemName + '은(는) 1개씩만 사용 가능합니다.');
             return false;
         }
 
@@ -102,32 +114,41 @@ $(document).ready(function(){
                 dataType:'json',
                 success:function (data){
                     if(data.status ==1){
-                        if(data.code == "msg"){
-                            alert(data.msg)
-                        }
-                        else
-                            {
-                              $(top.document).find("#item-count").text(data.item_count)
-                              $(top.document).find("#item-count").text(data.item_count)
+                      if(itemCode == "FAMILY_NICKNAME_LICENSE" || itemCode == "FAMILY_NICKNAME_LICENSE_BREAD"){
+                        socket.emit('send',{type:"family",content:family,userIdKey:userIdKey});
+                      }
+                      if(itemCode == "SUPER_CHAT_LICENSE" || itemCode == "SUPER_CHAT_LICENSE_BREAD"){
+                        socket.emit('send',{type:"super",userIdKey:userIdKey});
+                      }
+                      if(data.code == "msg"){
+                            alertifyByCommon(data.msg)
+                      }
+                      else
+                          {
+                            if(data.current_count == 0){
+                              $("#"+itemCode).remove()
                             }
+                            $(top.document).find("#item-count").text(data.item_count)
+                            $(top.document).find("#item-count").text(data.item_count)
+                          }
                         return;
                     }
                     if(data.status ==0){
                         switch (data.code){
                             case 20:
-                                alert(itemName + '은(는) 1개씩만 사용 가능합니다.');
+                                alertifyByCommon(itemName + '은(는) 1개씩만 사용 가능합니다.');
                                 break;
                             case 19:
-                                alert("구매하신 아이템이 존재하지 않습니다.");
+                                alertifyByCommon("구매하신 아이템이 존재하지 않습니다.");
                                 break;
                             case 18:
-                                alert("이미 사용중인 아이템이 존재합니다.");
+                                alertifyByCommon("이미 사용중인 아이템이 존재합니다.");
                                 break;
                             case 17:
-                                alert("해당 아이템은 사용하려는 페지에서 직접 이용해주시기 바랍니다.")
+                                alertifyByCommon("해당 아이템은 사용하려는 페지에서 직접 이용해주시기 바랍니다.")
                                 break;
                             case 16:
-                                alert("보유한 아이템 수량이 부족합니다.");
+                                alertifyByCommon("보유한 아이템 수량이 부족합니다.");
                                 break;
                             default:
                                 break;
@@ -160,8 +181,12 @@ $(document).ready(function(){
                 }).done(function(data) {
                     isClick = false;
                     if(data.status ==1){
-                        alert("성공적으로 구매하였습니다.");
+                        alertifyByCommon("성공적으로 구매하였습니다.");
                         $(top.document).find("#item-count").text(data.item_count)
+                        if(itemCode == "BULLET_100" || itemCode == "BULLET_10"){
+                          updateBullet(data.bullet)
+                        }
+                        updateBullet(data.coin,"#coin_cnt")
                     }
                     if(data.status ==0 && data.code== 0){
                         if(confirm('코인이 부족합니다.\n코인 충전 페이지로 이동하시겠습니까?'))
@@ -171,7 +196,7 @@ $(document).ready(function(){
                         return false;
                     }
                     else if(data.code > 0){
-                        alert(data.message);
+                        alertifyByCommon(data.message);
                     }
 
                 }).fail(function(xhr){
@@ -211,7 +236,7 @@ function countChk(obj)
     }
     else if(Number(limitCnt) < Number(countVal))
     {
-        alert('해당 상품의 1회 최대구매 수량은 ['+limitCnt+'개] 입니다.');
+        alertifyByCommon('해당 상품의 1회 최대구매 수량은 ['+limitCnt+'개] 입니다.');
         $(obj).attr('rel',limitCnt);
     }
     else
@@ -220,4 +245,19 @@ function countChk(obj)
     }
 
     $(obj).val($(obj).attr('rel')+'개');
+}
+
+
+function connect()
+{
+    try{
+
+        if(socket == null)
+        {
+            socket = io.connect('http://203.109.14.130:3000/item',socketOption);
+        }
+    }
+    catch(e){
+
+    }
 }

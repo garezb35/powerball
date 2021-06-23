@@ -23,6 +23,8 @@ class MarketController extends SecondController
             echo "<script>alert('로그인 후 이용가능합니다.');window.history.go(-1);</script>";
             return;
         }
+
+
         $item = array();
         $type = "";
         $item_type = $request->type;
@@ -41,7 +43,7 @@ class MarketController extends SecondController
                     $item[$value["price_type"]] = array();
                 array_push($item[$value["price_type"]],$value);
             }
-        return view('market',["js"=>"market.js","css"=>"market.css","pick_visible"=>"none","item"=>$item]);
+        return view('market',["js"=>"market.js","css"=>"market.css","pick_visible"=>"none","item"=>$item,"user"=>$this->user]);
     }
 
     public function buyItem(Request $request){
@@ -123,7 +125,9 @@ class MarketController extends SecondController
                 "ip"=>$request->ip()
             ]);
 
-        echo json_encode(array("status"=>1,"item_count"=>PbPurItem::where("userId",$user->userId)->where("active",1)->sum("count")));
+        echo json_encode(array("status"=>1,"coin"=>number_format($user->coin),"bullet"=>$user->bullet,"item_count"=>PbPurItem::leftJoin('pb_market', function($join) {
+          $join->on('pb_pur_item.market_id', '=', 'pb_market.code');
+        })->where("pb_pur_item.userId",$user->userId)->where("pb_market.state",1)->where("pb_pur_item.active",1)->sum("pb_pur_item.count")));
     }
 
     public function useItem(Request $request){
@@ -155,8 +159,11 @@ class MarketController extends SecondController
                 $search_code = "%HIGH_LEVEL_UP%";
                 $used_item = $pbitem->where("market_id","LIKE",$search_code);
             }
+            else if(str_contains($code,"SUPER_CHAT_LICENSE")){
+              $used_item = $pbitem->where("market_id","LIKE",$code."%");
+            }
             else
-                $used_item = $pbitem->where("market_id",$search_code);
+              $used_item = $pbitem->where("market_id",$search_code);
 
             $used_item = $used_item->where("userId",$user->userId)
                 ->where("terms_type",2)
@@ -180,22 +187,29 @@ class MarketController extends SecondController
             ]);
 
             PbPurItem::where("id",$pur_item["id"])->update(["count"=>$pur_item["count"]-1]);
+            $cur_item = $pur_item["count"]-1;
             PbLog::create([
                 "type"=>2,
                 "content"=>json_encode(array("class"=>"use","use"=>"사용","name"=>$pur_item->items->name,"count"=>1,"price"=>$pur_item->items->price)),
                 "userId"=>$user->userId,
                 "ip"=>$request->ip()
             ]);
-            echo json_encode(array("status"=>1,"code"=>-100,"item_count"=>PbPurItem::where("userId",$user->userId)->where("active",1)->sum("count")));
+            echo json_encode(array("status"=>1,"code"=>-100,"current_count"=>$cur_item,"item_count"=>PbPurItem::leftJoin('pb_market', function($join) {
+              $join->on('pb_pur_item.market_id', '=', 'pb_market.code');
+            })->where("pb_pur_item.userId",$user->userId)->where("pb_market.state",1)->where("pb_pur_item.active",1)->sum("pb_pur_item.count")));
             return;
         }
         else if($code == "SUPER_NICKNAME_RIGHT"){
+            $cur_item = $pur_item["count"]-1;
             PbPurItem::where("id",$pur_item["id"])->update(["count"=>$pur_item["count"]-1]);
             $user->nickname = $user->old_nickname;
             $user->save();
-            echo json_encode(array("status"=>1,"code"=>-3,"item_count"=>PbPurItem::where("userId",$user->userId)->where("active",1)->sum("count")));
+            echo json_encode(array("status"=>1,"code"=>-3,"current_count"=>$cur_item,"item_count"=>PbPurItem::leftJoin('pb_market', function($join) {
+              $join->on('pb_pur_item.market_id', '=', 'pb_market.code');
+            })->where("pb_pur_item.userId",$user->userId)->where("pb_market.state",1)->where("pb_pur_item.active",1)->sum("pb_pur_item.count")));
         }
         else if($code =="RANDOM_EXP_BOX_20"){
+            $cur_item = $pur_item["count"]-1;
             PbPurItem::where("id",$pur_item["id"])->update(["count"=>$pur_item["count"]-1]);
             $exps = [10,10,40,30,20,10,10,30,60,30,10,10,10,10,60,200,10,10,80,10];
             $index = rand(0,sizeof($exps));
@@ -211,10 +225,13 @@ class MarketController extends SecondController
                 "userId"=>$user->userId,
                 "ip"=>$request->ip()
             ]);
-            echo json_encode(array("status"=>1,"code"=>"msg","msg"=>"{$rand_exp}의 경험치가 추가되였습니다.","item_count"=>PbPurItem::where("userId",$user->userId)->where("active",1)->sum("count")));
+            echo json_encode(array("status"=>1,"code"=>"msg","msg"=>"{$rand_exp}의 경험치가 추가되였습니다.","current_count"=>$cur_item,"item_count"=>PbPurItem::leftJoin('pb_market', function($join) {
+              $join->on('pb_pur_item.market_id', '=', 'pb_market.code');
+            })->where("pb_pur_item.userId",$user->userId)->where("pb_market.state",1)->where("pb_pur_item.active",1)->sum("pb_pur_item.count")));
 
         }
         else if($code == "PICK_INIT"){
+            $cur_item = $pur_item["count"]-1;
             PbPurItem::where("id",$pur_item["id"])->update(["count"=>$pur_item["count"]-1]);
             $win_h = new \stdClass();
             $win_h->current_win = new \stdClass();
@@ -241,10 +258,13 @@ class MarketController extends SecondController
             $win_h->nb_size->lose = 0;
             $user->winning_history = json_encode($win_h);
             $user->save();
-            echo json_encode(array("status"=>1,"code"=>-1,"item_count"=>PbPurItem::where("userId",$user->userId)->where("active",1)->sum("count")));
+            echo json_encode(array("status"=>1,"code"=>-1,"current_count"=>$cur_item,"item_count"=>PbPurItem::leftJoin('pb_market', function($join) {
+              $join->on('pb_pur_item.market_id', '=', 'pb_market.code');
+            })->where("pb_pur_item.userId",$user->userId)->where("pb_market.state",1)->where("pb_pur_item.active",1)->sum("pb_pur_item.count")));
         }
 
         else if($code == "RANDOM_ITEM"){
+            $cur_item = $pur_item["count"]-1;
             PbPurItem::where("id",$pur_item["id"])->update(["count"=>$pur_item["count"]-1]);
             $items = array("PICK_INIT","CHATROOM");
             $items_indexes = array(0,0,0,0,1,1,0);
@@ -255,7 +275,7 @@ class MarketController extends SecondController
                 PbPurItem::insert(["userId"=>$user->userId,"market_id"=>$items[$items_indexes[$rand_index]],"count"=>1]);
             else
                PbPurItem::where("id",$puredd_item["id"])->update(["count"=>$puredd_item["count"]+1]);
-            echo json_encode(array("status"=>1,"code"=>"msg","msg"=>"[{$market_item["name"]}] 아이템이 지급되였습니다."));
+            echo json_encode(array("status"=>1,"code"=>"msg","current_count"=>$cur_item,"msg"=>"[{$market_item["name"]}] 아이템이 지급되였습니다."));
         }
 
         PbLog::create([

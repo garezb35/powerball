@@ -9,6 +9,9 @@
 
 @endphp
 @section("content")
+<script>
+var viewed_count = {{$viewed_count}}
+</script>
     <div class="memoBox">
         @include("member.memo-memu")
         <div class="content">

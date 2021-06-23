@@ -145,7 +145,7 @@
                         </div>
                         <div class="userCntBox">
                             <div class="userCnt"><span class="curCnt"><?php echo e($value["members"]); ?></span> / <span class="maxCnt"><?php echo e($value["max_connect"]); ?></span></div>
-                            <div class="date"><?php echo e(getDiffTimes($best["created_at"])); ?>전</div>
+                            <div class="date"><?php echo e(getDiffTimes($value["created_at"])); ?>전</div>
                         </div>
                         <div class="line">&nbsp;</div>
                         <div class="userInfo">

@@ -4,6 +4,16 @@
     <?php echo $__env->make('member/member-menu', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php $__env->stopSection(); ?>
 
+<?php
+$fanick = 0;
+if(!empty($item_count["FAMILY_NICKNAME_LICENSE"])){
+  $fanick += $item_count["FAMILY_NICKNAME_LICENSE"];
+}
+if(!empty($item_count["FAMILY_NICKNAME_LICENSE_BREAD"])){
+  $fanick += $item_count["FAMILY_NICKNAME_LICENSE_BREAD"];
+}
+?>
+
 <?php $__env->startSection("content"); ?>
     <script>
         var api_token = "<?php echo e($api_token); ?>";
@@ -97,12 +107,12 @@
                         <td>닉네임</td>
                         <td class="position-relative" colspan="2">
                             <img src="<?php echo e($avata); ?>" width="30" height="30" style="position:absolute;top:16px;">
-                            <span style="margin-left:28px;"><?php echo e($user["nickname"]); ?></span>
+                            <span style="margin-left:28px;" class="nickname-msg"><?php echo e($user["nickname"]); ?></span>
                         </td>
                         <td>
                             <div>
                                 <span class="haveBox btn-outline-dark btn btn-sm disabled">보유
-                                    <strong class="number"><?php echo e($item_count["NICKNAME_RIGHT"] ?? 0); ?></strong>개
+                                    <strong class="number nickname-item"><?php echo e($item_count["NICKNAME_RIGHT"] ?? 0); ?></strong>개
                                 </span>
                                 <a href="<?php echo e(route("market")); ?>" class="btn_buy btn btn-sm">구매</a>
                                 <a href="#" onclick="window.open('<?php echo e(route('modify')); ?>?type=nickname','_blank','width=600,height=600');return false;" class="btn_set btn btn_buyoutline btn-sm">변경</a>
@@ -112,12 +122,12 @@
                     <tr>
                         <td>패밀리닉네임</td>
                         <td class="position-relative" colspan="2">
-                            <span class="noneMsg"><?php echo e($user["familynickname"] ?? "ⓘ 패밀리닉네임을 등록 해주시기 바랍니다."); ?></span>
+                            <span class="noneMsg family-msg"><?php echo e($user["familynickname"] ?? "ⓘ 패밀리닉네임을 등록 해주시기 바랍니다."); ?></span>
                         </td>
                         <td>
                             <div>
                                 <span class="haveBox btn-outline-dark btn btn-sm disabled">보유
-                                    <strong class="number"><?php echo e($item_count["FAMILY_NICKNAME_LICENSE_BREAD"] ?? 0); ?></strong>개
+                                    <strong class="number family-item"><?php echo e($fanick); ?></strong>개
                                 </span>
                                 <a href="<?php echo e(route("market")); ?>" class="btn_buy btn btn-sm">구매</a>
                                 <a href="#" onclick="window.open('<?php echo e(route('modify')); ?>?type=family','_blank','width=600,height=600');return false;" class="btn_set btn btn_buyoutline btn-sm">변경</a>
@@ -127,12 +137,12 @@
                     <tr>
                         <td>오늘의한마디</td>
                         <td class="position-relative" colspan="2">
-                            <span class="noneMsg"><?php echo e($user["today_word"] ?? "ⓘ 오늘의한마디를 등록 해주시기 바랍니다."); ?></span>
+                            <span class="noneMsg today-msg"><?php echo e($user["today_word"] ?? "ⓘ 오늘의한마디를 등록 해주시기 바랍니다."); ?></span>
                         </td>
                         <td>
                             <div>
                                 <span class="haveBox btn-outline-dark btn btn-sm disabled">보유
-                                    <strong class="number"><?php echo e($item_count["WORD_TODAY"] ?? 0); ?></strong>개
+                                    <strong class="number today-item"><?php echo e($item_count["WORD_TODAY"] ?? 0); ?></strong>개
                                 </span>
                                 <a href="<?php echo e(route("market")); ?>" class="btn_buy btn btn-sm">구매</a>
                                 <a href="#" onclick="window.open('<?php echo e(route('modify')); ?>?type=today','_blank','width=600,height=600');return false;" class="btn_set btn btn_buyoutline btn-sm">변경</a>
@@ -154,7 +164,7 @@
                         <td class="align-top">
                             <div>
                                 <span class="haveBox btn btn-outline-dark btn-sm disabled">보유
-                                    <strong class="number"><?php echo e($item_count["PROFILE_IMAGE_RIGHT"] ?? 0); ?></strong>개
+                                    <strong class="number profile-item"><?php echo e($item_count["PROFILE_IMAGE_RIGHT"] ?? 0); ?></strong>개
                                 </span>
                                 <a href="<?php echo e(route("market")); ?>" class="btn_buy btn btn-sm">구매</a>
                                 <a href="#" onclick="window.open('<?php echo e(route('modify')); ?>?type=profile-img','_blank','width=600,height=600');return false;" class="btn_set btn btn_buyoutline btn-sm">변경</a>
@@ -264,6 +274,5 @@
         min-height: 10px !important;
     }
 </style>
-
 
 <?php echo $__env->make('includes.empty_header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\xampp1\htdocs\powerball\resources\views/member/powerball-mypage.blade.php ENDPATH**/ ?>

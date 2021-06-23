@@ -6,30 +6,33 @@
     <link rel="stylesheet" href="/assets/css/font.css">
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/handlebars.js"></script>
+    <script src="/assets/jplayer/jquery.jplayer.min.js"></script>
+    <script src="/assets/js/common.js"></script>
     <script src="/assets/js/pick/power_execute.js"></script>
     <script src="/assets/js/all.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenMax.min.js"></script>
-    <script src="/assets/js/common.js"></script>
+
 </head>
-<audio id="init_sound" class="iru-tiny-player">
-    <source src="/assets/music/powerball/start_before5.m4a" type="audio/x-m4a">
-</audio>
-<audio id="sadari_3_sound" class="iru-tiny-player">
-    <source src="/assets/music/psadari/sadari-3.m4a" type="audio/x-m4a">
-</audio>
-<audio id="sadari_4_sound" class="iru-tiny-player">
-    <source src="/assets/music/psadari/sadari-4.m4a" type="audio/x-m4a">
-</audio>
-<audio id="oddeven_sound" class="iru-tiny-player">
-    <source src="/assets/music/psadari/oddeven.m4a" type="audio/x-m4a">
-</audio>
-<audio id="sadari_started_sound" class="iru-tiny-player">
-    <source src="/assets/music/psadari/sadari_started.m4a" type="audio/x-m4a">
-</audio>
-<audio id="leftright_sound" class="iru-tiny-player">
-    <source src="/assets/music/psadari/leftright.m4a" type="audio/x-m4a">
-</audio>
+
 <body style="margin: 0;">
+  <div id="init_sound">
+
+  </div>
+  <div id="sadari_3_sound" >
+
+  </div>
+  <div id="sadari_4_sound" >
+
+  </div>
+  <div id="oddeven_sound" >
+
+  </div>
+  <div id="sadari_started_sound" >
+
+  </div>
+  <div id="leftright_sound" >
+
+  </div>
 <div class="gmContent" data-type="POWERLADDER" data-round="<?php echo e($last + 1); ?>" data-unique=<?php echo e($last_unique_round+1); ?>  data-game="nlotto_power"></div>
 <div class="lottery_wrap powerball dark" style="height:361px">
     <div class="header_wrap">
@@ -43,7 +46,7 @@
         <div id="ly_share" class="ly_share" style="display:none;">
             <h1 class="tit">몬스터 파워사다리 중계화면 퍼가기</h1>
             <div class="source">
-                <textarea>&lt;iframe src="<?php echo e(Request::getHost()); ?>/pick/powerball/live" width="830" height="641" scrolling="no" frameborder="0"&gt;&lt;/iframe&gt;</textarea>
+                <textarea>&lt;iframe src="http://<?php echo e(Request::getHost()); ?>/pick/psadari/live" width="830" height="641" scrolling="no" frameborder="0"&gt;&lt;/iframe&gt;</textarea>
             </div>
             <p>위의 HTML의 코드를 복사하여 원하시는 페이지에 아이프레임으로 추가하시면 파워볼 게임 영역만 중계화면으로 이용 가능합니다.</p>
         </div>

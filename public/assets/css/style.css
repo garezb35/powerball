@@ -79,7 +79,7 @@ ul, ol {
 .grades{
     font-size: 13px;
     color: #000;
-    max-width: 43px;
+    max-width: 34px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1526,4 +1526,9 @@ td.simu-head{
 .hover-none:hover{
   text-decoration: none;
   color: #fff
+}
+
+
+.ajs-error{
+  color: white
 }

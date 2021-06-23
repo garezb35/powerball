@@ -38,7 +38,7 @@
                                    <span class="list-item"><img src="/assets/images/powerball/coin.png" height="15"/><span class="list-item coin-label"> 코인 </span>
                                     <a href="/member?type=charge" target="mainFrame" class="charge">충전</a>
                                </td>
-                               <td class="pt-1 pb-1 pl-0   align-middle text-right" style="padding-right: 4px"><span class="text-blo font-weight-bold">{{number_format(Auth::user()->coin)}}</span></td>
+                               <td class="pt-1 pb-1 pl-0   align-middle text-right" style="padding-right: 4px"><span class="text-blo font-weight-bold" id="coin_cnt">{{number_format(Auth::user()->coin)}}</span></td>
                            </tr>
                            <tr >
                                <td class="pt-0 pb-1 pl-1 pr-1 align-middle"><img src="/assets/images/powerball/dangun.png" height="15"/><span class="list-item dangun-label"> 당근 </span></td>
@@ -107,14 +107,26 @@
             </tr>
             <tr>
                 <td colspan="4" class="back-blue simu-head">
-                    <span class="text-gold font-weight-bold align-middle ll-he23">파워모의배팅</span>
-                    @if(!empty($using_sim) && !empty($using_sim->format("%a")))
-                    <span class="font-weight-bold text-white align-middle ll-he23">남은 기간</span>  <span class="text-gold font-weight-bold align-middle ll-he23">{{$using_sim->format("%a")}}일</span>
-                    <button class="btn btn-sm btn-jin-blue gopur_btn">사용중</button>
-                    @else
-                        <span class="font-weight-bold text-white align-middle ll-he23">남은 기간</span></span>
-                        <button class="btn btn-sm btn-jin-blue gopur_btn" onclick="gomarket()">구매하러 가기</button>
-                    @endif
+                    <div class="machine1">
+                      <span class="text-gold font-weight-bold align-middle ll-he23">파워시뮬레이션</span>
+                      @if(!empty($using_sim[0]) && !empty($using_sim[0]->format("%a")))
+                      <span class="font-weight-bold text-white align-middle ll-he23">남은 기간</span>  <span class="text-gold font-weight-bold align-middle ll-he23">{{$using_sim[0]->format("%a")}}일</span>
+                      <button class="btn btn-sm btn-jin-blue gopur_btn">사용중</button>
+                      @else
+                          <span class="font-weight-bold text-white align-middle ll-he23">남은 기간</span></span>
+                          <button class="btn btn-sm btn-jin-blue gopur_btn" onclick="gomarket()">구매하러 가기</button>
+                      @endif
+                    </div>
+                    <div class="machine2 d-none">
+                      <span class="text-gold font-weight-bold align-middle ll-he23">연승제조기</span>
+                      @if(!empty($using_sim[1]) && !empty($using_sim[1]->format("%a")))
+                      <span class="font-weight-bold text-white align-middle ll-he23">남은 기간</span>  <span class="text-gold font-weight-bold align-middle ll-he23">{{$using_sim[1]->format("%a")}}일</span>
+                      <button class="btn btn-sm btn-jin-blue gopur_btn">사용중</button>
+                      @else
+                          <span class="font-weight-bold text-white align-middle ll-he23">남은 기간</span></span>
+                          <button class="btn btn-sm btn-jin-blue gopur_btn" onclick="gomarket()">구매하러 가기</button>
+                      @endif
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -140,7 +152,7 @@
     @endauth
     @guest
     <div class="pt-2 pb-0">
-        {!! Form::open(['action' =>'App\Http\Controllers\Auth\LoginController@process_login', 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+        {!! Form::open(['action' =>'App\Http\Controllers\Auth\LoginController@process_login', 'method' => 'post', 'enctype' => 'multipart/form-data','id'=>'login_form']) !!}
         <table class="ml-3">
             <colgroup>
                 <col width="210px">
@@ -163,7 +175,7 @@
                     </div>
                     @endif
                     <label class="container-radio">
-                        <input type="checkbox" checked="checked">
+                        <input type="checkbox" checked="checked" id="keep_login">
                         <span class="checkmark"></span>
                     </label>
                     <a style="color: #000 !important;margin-left: -11px;" class="mr-2" href="{{ route('register') }}">로그인상태유지</a>

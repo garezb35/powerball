@@ -23,7 +23,7 @@ $(document).ready(function(){
             {
                 if (numberArr.length >= 8)
                 {
-                    alert('2차비밀번호는 숫자 8자만 가능합니다.');
+                    alertifyByCommon('2차비밀번호는 숫자 8자만 가능합니다.');
                     return false;
                 }
 
@@ -40,7 +40,7 @@ $(document).ready(function(){
             {
                 if(numberArr_re.length >= 8)
                 {
-                    alert('2차비밀번호는 숫자 8자만 가능합니다.');
+                    alertifyByCommon('2차비밀번호는 숫자 8자만 가능합니다.');
                     return false;
                 }
 
@@ -126,15 +126,15 @@ function setSecurityPasswd()
 
     if($("#securityPasswdUseYN").is(":checked") && securityPasswdLength < 8)
     {
-        alert('2차비밀번호를 입력해주세요.');
+        alertifyByCommon('2차비밀번호를 입력해주세요.');
     }
     else if($("#securityPasswdUseYN").is(":checked") && fn.securityPasswd_re.value.length < 8)
     {
-        alert('2차비밀번호 확인을 입력해주세요.');
+        alertifyByCommon('2차비밀번호 확인을 입력해주세요.');
     }
     else if($("#securityPasswdUseYN").is(":checked") && fn.securityPasswd.value != fn.securityPasswd_re.value)
     {
-        alert('2차비밀번호 확인이 일치하지 않습니다.');
+        alertifyByCommon('2차비밀번호 확인이 일치하지 않습니다.');
     }
     else
     {
@@ -151,12 +151,12 @@ function setSecurityPasswd()
             success:function (data,textStatus){
                 if(data.status == 1)
                 {
-                    alert(data.msg);
+                    alertifyByCommon(data.msg);
                     location.reload();
                 }
                 else
                 {
-                    alert(data.msg);
+                    alertifyByCommon(data.msg);
                 }
             }
         });
@@ -169,7 +169,7 @@ function securityConfirm()
 
     if(!fn.securityPasswd.value || fn.securityPasswd.value.length != 8)
     {
-        alert('2차비밀번호를 입력해 주세요.');
+        alertifyByCommon('2차비밀번호를 입력해 주세요.');
         setPasswordFocus(1);
     }
     else

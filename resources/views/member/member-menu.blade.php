@@ -7,7 +7,7 @@
         <li><a href="{{route("member")}}?type=nicknameLog" target="mainFrame" @if(Request::get("type") == "nicknameLog") class="on" @endif>닉네임 변경</a></li>
         <li><a href="{{route("member")}}?type=giftLog" target="mainFrame" @if(Request::get("type") == "giftLog") class="on" @endif>선물내역</a></li>
         <li><a href="{{route("member")}}?type=chargeLog" target="mainFrame" @if(Request::get("type") == "chargeLog") class="on" @endif>충전내역</a></li>
-        <li><a href="{{route("member")}}?type=exchange" target="mainFrame" @if(Request::get("type") == "exchange") class="on" @endif>총알환전</a></li>
+        <li><a href="{{route("member")}}?type=exchange" target="mainFrame" @if(Request::get("type") == "exchange") class="on" @endif>당근환전</a></li>
         <li><a href="{{route("member")}}?type=level" target="mainFrame" @if(Request::get("type") == "level") class="on" @endif>경험치</a></li>
         <li><a href="{{route("member")}}?type=loginLog" target="mainFrame" @if(Request::get("type") == "loginLog") class="on" @endif>접속기록</a></li>
         <li><a href="{{route("member")}}?type=withdraw" target="mainFrame" @if(Request::get("type") == "withdraw") class="on" @endif>회원탈퇴</a></li>

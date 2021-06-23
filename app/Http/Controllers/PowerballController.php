@@ -23,6 +23,7 @@ use DateTime;
 use Prophecy\Doubler\Generator\Node\ReturnTypeNode;
 use Ramsey\Uuid\Type\Time;
 
+
 class PowerballController extends SecondController
 {
 
@@ -33,6 +34,8 @@ class PowerballController extends SecondController
 
     public function view(Request $request)
     {
+
+
         if (!$request->has("terms"))
             $key = "date";
         else
@@ -1821,7 +1824,9 @@ class PowerballController extends SecondController
             return;
         }
         $round = $roomIdx["round"];
-        $result = Pb_Result_Powerball::with("bettingData")->orderBy("pb_result_powerball.day_round","DESC")->skip(0)->limit(288)->get()->toArray();
+        $result = Pb_Result_Powerball::with(["bettingData" => function($q) use($request){
+    $q->where('pb_betting_ctl.roomIdx', $request->roomIdx);
+}])->orderBy("pb_result_powerball.day_round","DESC")->skip(0)->limit(288)->get()->toArray();
         echo json_encode(array("status"=>1,"result"=>array("list"=>$result,"round"=>$round)));
     }
 
@@ -1990,6 +1995,8 @@ class PowerballController extends SecondController
         $name = Route::input("name");
         $split_data = explode("x",$name);
         if(sizeof($split_data) == 16){
+          $cur = Pb_Result_Powerball::where("day_round",$split_data[0])->first();
+          if(!empty($cur)) return;
           $nb_size = 3;
           $pb_terms = "A";
           $nb_terms = "A";
@@ -2177,4 +2184,6 @@ class PowerballController extends SecondController
         echo json_encode(array("status"=>1,"result"=>$result));
       }
     }
+
+    
 }

@@ -159,7 +159,7 @@ function hideType(type,obj){
 function saveAutoSetting(){
     if(started > 0)
     {
-        alert("게임중지후 이용해주세요");
+        alertifyByCommon("게임중지후 이용해주세요");
         return;
     }
     var start = $("#test-start-round").val();
@@ -173,7 +173,7 @@ function saveAutoSetting(){
         success:function(data,textStatus){
           if(data.status == "1")
           {
-              alert("성공적으로 저장되였습니다.");
+              alertifyByCommon("성공적으로 저장되였습니다.");
               if(amount > 0){
                   $(".start-amount").text(number_format(amount)+"원");
                   $(".saved-amount").text(number_format(amount)+"원");
@@ -183,7 +183,7 @@ function saveAutoSetting(){
               $(".end-round").text(end.substr(end.length-3,3));
           }
           else
-              alert("처리중 오류가 발생하였습니다.");
+              alertifyByCommon("처리중 오류가 발생하였습니다.");
         }
     }).done(function(){
         $('#settingWindow').modal('toggle')
@@ -228,7 +228,7 @@ $(document).ready(function(){
         });
         if(steps.length ==0)
         {
-            alert("금액이 비였습니다.")
+            alertifyByCommon("금액이 비였습니다.")
             return;
         }
         var notivalue = $("#noti-input").val();
@@ -243,10 +243,10 @@ $(document).ready(function(){
 
                 if(data.status == "1")
                 {
-                    alert("성공적으로 저장되였습니다.");
+                    alertifyByCommon("성공적으로 저장되였습니다.");
                 }
                 else
-                    alert("처리중 오류가 발생하였습니다.");
+                    alertifyByCommon("처리중 오류가 발생하였습니다.");
             }
         });
     });
@@ -255,7 +255,7 @@ $(document).ready(function(){
         var init = 0;
         $(".first-martin").each(function(index,value){
             if(index ==0 && ($(value).val().trim() == "" || $(value).val().trim() <=0) ){
-                alert("금액이 설정되여 있지 않습니다.")
+                alertifyByCommon("금액이 설정되여 있지 않습니다.")
                 return false;
             }
             if(index ==0)
@@ -306,7 +306,7 @@ function processAutoStart(code,type){
 function savePattern(tt,var_type,callback){
 
     if(started >0){
-        alert("배팅중지후 설정해주세요");
+        alertifyByCommon("배팅중지후 설정해주세요");
         return false;
     }
 
@@ -382,7 +382,7 @@ function savePatt(tt=type,alert=true,callback){
             savePattern(tt,2,function(){
                 savePattern(tt,3,function(){
                     check_save  = true;
-                    if(alert == true) window.alert("저장되였습니다.");
+                    if(alert == true) alertifyByCommon("저장되였습니다.");
                     callback();
                 })
             })
@@ -398,7 +398,7 @@ function savePattAll(){
                 savePatt(3,false,function(){
                     savePatt(4,false,function(){
                         check_save_all  = true;
-                        alert("저장되였습니다.");
+                        alertifyByCommon("저장되였습니다.");
                     })
                 })
             })
@@ -450,10 +450,10 @@ function save(){
         console.log(data)
         if(data.status == "1")
         {
-            alert("성공적으로 저장되였습니다.");
+            alertifyByCommon("성공적으로 저장되였습니다.");
         }
         else
-            alert(data.msg);
+            alertifyByCommon(data.msg);
       }
   })
 }
@@ -473,10 +473,10 @@ function saveGameSettings(){
         console.log(data)
         if(data.status == "1")
         {
-            alert("성공적으로 저장되였습니다.");
+            alertifyByCommon("성공적으로 저장되였습니다.");
         }
         else
-            alert(data.msg);
+            alertifyByCommon(data.msg);
       }
   }).fail(function(xhr){
     console.log(xhr)
@@ -684,7 +684,7 @@ function doRest(id,obj){
               else $(obj).text("휴식")
           }
           else {
-            alert(data.msg)
+            alertifyByCommon(data.msg)
           }
         }
     }).done(function(){
@@ -703,10 +703,10 @@ function doInit(id){
         },
         success:function(data,textStatus){
           if(data.status ==1){
-              alert("초기화되였습니다.")
+              alertifyByCommon("초기화되였습니다.")
           }
           else {
-            alert(data.msg)
+            alertifyByCommon(data.msg)
           }
         }
     }).done(function(){

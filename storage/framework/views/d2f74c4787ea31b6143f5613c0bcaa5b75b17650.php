@@ -17,32 +17,11 @@
         Copyright © <a href="https://www.powerballgame.co.kr" target="_blank"><strong>powerballgame.co.kr</strong></a> All rights reserved.
     </p>
 </div>
-<script src="/assets/js/jquery.min.js"></script>
+
 <script src="/assets/js/handlebars.js"></script>
 <script src="/assets/popper/popper.min.js"></script>
 <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="/assets/js/common.js"></script>
 <script src="/assets/js/style.js"></script>
 <script src="/assets/js/all.js"></script>
-
-<script>
-$(document).ready(function(){
-    setInterval("rollingNotice()",1000);
-})
-
-function rollingNotice()
-{
-  var date_diff = new Date();
-  if(date_diff.getSeconds() % 10 == 0){
-    $('#scrollNotice').animate({'top':'-=20'},{
-        duration:500,
-        easing: "linear",
-        complete:function(){
-            $('#scrollNotice > ul').children('li:last').after($('#scrollNotice > ul li:eq(0)'));
-            $('#scrollNotice').css({'top':0});
-        }
-    });
-  }
-}
-</script>
 <?php /**PATH D:\xampp1\htdocs\powerball\resources\views/includes/footer.blade.php ENDPATH**/ ?>

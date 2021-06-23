@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Auth::routes();
+
 Route::get('/', [App\Http\Controllers\HomeController::class, 'first'])->name('default');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 //Route::get('/register', [App\Http\Controllers\HomeController::class, 'register'])->name('register');
@@ -89,7 +90,3 @@ Route::get("/findIdPw",[App\Http\Controllers\MemberController::class,'findIdPw']
 Route::post("/requestExchange",[App\Http\Controllers\MemberController::class,'requestExchange'])->name("request-exchange");
 
 Route::get("/prison",[App\Http\Controllers\MemberController::class,'prison'])->name("prison");
-
-Route::group(['prefix' => 'admin'], function () {
-    Voyager::routes();
-});

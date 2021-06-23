@@ -4,6 +4,16 @@
     @include('member/member-menu')
 @endsection
 
+@php
+$fanick = 0;
+if(!empty($item_count["FAMILY_NICKNAME_LICENSE"])){
+  $fanick += $item_count["FAMILY_NICKNAME_LICENSE"];
+}
+if(!empty($item_count["FAMILY_NICKNAME_LICENSE_BREAD"])){
+  $fanick += $item_count["FAMILY_NICKNAME_LICENSE_BREAD"];
+}
+@endphp
+
 @section("content")
     <script>
         var api_token = "{{$api_token}}";
@@ -97,12 +107,12 @@
                         <td>닉네임</td>
                         <td class="position-relative" colspan="2">
                             <img src="{{$avata}}" width="30" height="30" style="position:absolute;top:16px;">
-                            <span style="margin-left:28px;">{{$user["nickname"]}}</span>
+                            <span style="margin-left:28px;" class="nickname-msg">{{$user["nickname"]}}</span>
                         </td>
                         <td>
                             <div>
                                 <span class="haveBox btn-outline-dark btn btn-sm disabled">보유
-                                    <strong class="number">{{$item_count["NICKNAME_RIGHT"] ?? 0}}</strong>개
+                                    <strong class="number nickname-item">{{$item_count["NICKNAME_RIGHT"] ?? 0}}</strong>개
                                 </span>
                                 <a href="{{route("market")}}" class="btn_buy btn btn-sm">구매</a>
                                 <a href="#" onclick="window.open('{{route('modify')}}?type=nickname','_blank','width=600,height=600');return false;" class="btn_set btn btn_buyoutline btn-sm">변경</a>
@@ -112,12 +122,12 @@
                     <tr>
                         <td>패밀리닉네임</td>
                         <td class="position-relative" colspan="2">
-                            <span class="noneMsg">{{$user["familynickname"] ?? "ⓘ 패밀리닉네임을 등록 해주시기 바랍니다."}}</span>
+                            <span class="noneMsg family-msg">{{$user["familynickname"] ?? "ⓘ 패밀리닉네임을 등록 해주시기 바랍니다."}}</span>
                         </td>
                         <td>
                             <div>
                                 <span class="haveBox btn-outline-dark btn btn-sm disabled">보유
-                                    <strong class="number">{{$item_count["FAMILY_NICKNAME_LICENSE_BREAD"] ?? 0}}</strong>개
+                                    <strong class="number family-item">{{$fanick}}</strong>개
                                 </span>
                                 <a href="{{route("market")}}" class="btn_buy btn btn-sm">구매</a>
                                 <a href="#" onclick="window.open('{{route('modify')}}?type=family','_blank','width=600,height=600');return false;" class="btn_set btn btn_buyoutline btn-sm">변경</a>
@@ -127,12 +137,12 @@
                     <tr>
                         <td>오늘의한마디</td>
                         <td class="position-relative" colspan="2">
-                            <span class="noneMsg">{{$user["today_word"] ?? "ⓘ 오늘의한마디를 등록 해주시기 바랍니다."}}</span>
+                            <span class="noneMsg today-msg">{{$user["today_word"] ?? "ⓘ 오늘의한마디를 등록 해주시기 바랍니다."}}</span>
                         </td>
                         <td>
                             <div>
                                 <span class="haveBox btn-outline-dark btn btn-sm disabled">보유
-                                    <strong class="number">{{$item_count["WORD_TODAY"] ?? 0}}</strong>개
+                                    <strong class="number today-item">{{$item_count["WORD_TODAY"] ?? 0}}</strong>개
                                 </span>
                                 <a href="{{route("market")}}" class="btn_buy btn btn-sm">구매</a>
                                 <a href="#" onclick="window.open('{{route('modify')}}?type=today','_blank','width=600,height=600');return false;" class="btn_set btn btn_buyoutline btn-sm">변경</a>
@@ -154,7 +164,7 @@
                         <td class="align-top">
                             <div>
                                 <span class="haveBox btn btn-outline-dark btn-sm disabled">보유
-                                    <strong class="number">{{$item_count["PROFILE_IMAGE_RIGHT"] ?? 0}}</strong>개
+                                    <strong class="number profile-item">{{$item_count["PROFILE_IMAGE_RIGHT"] ?? 0}}</strong>개
                                 </span>
                                 <a href="{{route("market")}}" class="btn_buy btn btn-sm">구매</a>
                                 <a href="#" onclick="window.open('{{route('modify')}}?type=profile-img','_blank','width=600,height=600');return false;" class="btn_set btn btn_buyoutline btn-sm">변경</a>
@@ -264,4 +274,3 @@
         min-height: 10px !important;
     }
 </style>
-

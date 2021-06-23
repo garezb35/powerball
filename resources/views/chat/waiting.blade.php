@@ -144,7 +144,7 @@
                         </div>
                         <div class="userCntBox">
                             <div class="userCnt"><span class="curCnt">{{$value["members"]}}</span> / <span class="maxCnt">{{$value["max_connect"]}}</span></div>
-                            <div class="date">{{getDiffTimes($best["created_at"])}}전</div>
+                            <div class="date">{{getDiffTimes($value["created_at"])}}전</div>
                         </div>
                         <div class="line">&nbsp;</div>
                         <div class="userInfo">

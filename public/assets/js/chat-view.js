@@ -12,6 +12,7 @@ socketOption['force new connection'] = true;
 socketOption['sync disconnect on unload'] = true;
 var powerball_result = new Array();
 var next_result= new Array();
+var pick_click = 0;
 if('WebSocket' in window)
 {
     socketOption['transports'] = ['websocket'];
@@ -139,12 +140,22 @@ $(document).ready(function() {
         $('#layer-bulletBox').slideUp();
         $('#layer-emoticonBox').slideUp();
         $('#betBox').slideToggle('fast');
+        if(pick_click % 2 == 0){
+          $(this).text("픽 닫기")
+          $(this).parent().css("background","url(/assets/images/pick/present.png)")
+          $(this).parent().css("background-size","100%")
+        }
+        else{
+          $(this).text("픽 열기")
+          $(this).parent().css("background","#00b4b4")
+        }
+        pick_click++;
     });
 
     $('#btn_giftBullet').click(function() {
         $('#layer-bulletBox').slideToggle('fast');
         $('#betBox').slideUp();
-        // 총알 reload
+        // 당근 reload
         $.ajax({
             type:'POST',
             dataType:'json',
@@ -160,7 +171,7 @@ $(document).ready(function() {
                 }
                 else
                 {
-                    alert(data.msg);
+                    alertifyByCommon(data.msg)
                 }
             }
         });
@@ -214,11 +225,11 @@ $(document).ready(function() {
                     sendProcess('USERCMD', {cmd:"recommendChatRoom",roomIdx:roomIdx});
                 }
                 else if(data.status == -1){
-                    alert(data.msg);
+                    alertifyByCommon(data.msg)
                     location.href = "/chatRoom";
                 }
                 else
-                    alert(data.msg);
+                    alertifyByCommon(data.msg)
             }
         });
     });
@@ -233,7 +244,7 @@ $(document).ready(function() {
 
         if(is_super == false && emoticonTicket == false)
         {
-            alert('[이모티콘 사용권] 아이템 보유시 사용 가능합니다.');
+            alertifyByCommon('[이모티콘 사용권] 아이템 보유시 사용 가능합니다.')
             return false;
         }
 
@@ -257,7 +268,7 @@ $(document).ready(function() {
                     roomIdx:roomIdx
                 },
                 success:function(data,textStatus){
-                    alert(data.msg);
+                    alertifyByCommon(data.msg);
                 }
             });
         }
@@ -275,26 +286,16 @@ $(document).ready(function() {
         }
     });
 
-    $('#pickSound').jPlayer({
-        ready: function (){
-            $(this).jPlayer('setMedia',{
-                wav:'/assets/call/pick.wav',
-                mp3:'/assets/call/pick.mp3'
-            });
-        },
-        swfPath:'/assets/jplayer/',
-        supplied:'wav,mp3'
-    });
+
 
     $('#callSound').jPlayer({
         ready: function (){
             $(this).jPlayer('setMedia',{
-                wav:'/assets/call/call.wav',
-                mp3:'/assets/call/call.mp3'
+                mp3:'/assets/call/warning_short.mp3'
             });
         },
         swfPath:'/assets/jplayer/',
-        supplied:'wav,mp3'
+        supplied:'mp3'
     });
 
     $('#msgBox').scroll(function(){
@@ -318,10 +319,14 @@ $(document).ready(function() {
             setCookie('chatRoomSoundOnOff','off');
             $('#callSound').jPlayer('mute');
             $('#pickSound').jPlayer('mute');
+
+            $(this).parent().css("background","url(/assets/images/pick/present.png)")
+            $(this).parent().css("background-size","100%")
         }
         else
         {
             $(this).text('사운드 끄기');
+            $(this).parent().css("background","#00b4b4")
             setCookie('chatRoomSoundOnOff','on');
             $('#callSound').jPlayer('unmute');
             $('#pickSound').jPlayer('unmute');
@@ -330,7 +335,9 @@ $(document).ready(function() {
 
     if(getCookie('chatRoomSoundOnOff') == 'off')
     {
-        $('#btn_sound').text('사운드 켜기');
+        $('#btn_sound').parent().css("background","url(/assets/images/pick/present.png)");
+        $("#btn_sound").parent().css("background-size","100%")
+        $("#btn_sound").text("사운드 켜기")
     }
     $('#btn_help').click(function(){
         $('#pointBetFrame').slideUp();
@@ -346,6 +353,10 @@ $(document).ready(function() {
 
             $('#btn_freezeOn').text('녹이기');
             $('#btn_freezeOn').attr('id','btn_freezeOff');
+
+            $(this).parent().css("background","url(/assets/images/pick/present.png)")
+            $(this).parent().css("background-size","100%")
+            $(this).parent().css("background-repeat","no-repeat")
         }
     });
 
@@ -359,6 +370,7 @@ $(document).ready(function() {
 
             $('#btn_freezeOff').text('얼리기');
             $('#btn_freezeOff').attr('id','btn_freezeOn');
+            $(this).parent().css("background","#00b4b4")
         }
     });
 
@@ -373,7 +385,7 @@ $(document).ready(function() {
         }
         else
         {
-            alert('권한이 없습니다.');
+            alertifyByCommon("권한이 없습니다.")
         }
 
         return false;
@@ -384,7 +396,7 @@ $(document).ready(function() {
 
         if(chkVal == '2' && level < "09")
         {
-            alert('비공개 채팅방 개설은 소위 계급 부터 가능합니다.');
+            alertifyByCommon("비공개 채팅방 개설은 소위 계급 부터 가능합니다.")
             $(this).val('1');
             return false;
         }
@@ -416,7 +428,7 @@ $(document).ready(function() {
         }
         else
         {
-            alert('권한이 없습니다.');
+            alertifyByCommon('권한이 없습니다.');
         }
 
         return false;
@@ -446,11 +458,11 @@ $(document).ready(function() {
 
         if(giftCnt == 0)
         {
-            alert('선물할 총알 수량을 선택하세요.');
+            alertifyByCommon("선물할 당근 수량을 선택하세요.")
         }
         else if(myBulletCnt < giftCnt)
         {
-            if(confirm('보유한 총알이 부족합니다. 총알을 구매하시겠습니까?'))
+            if(confirm('보유한 당근이 부족합니다. 당근을 구매하시겠습니까?'))
             {
                 /*
                 if(typeof(opener) != 'undefined')
@@ -465,7 +477,7 @@ $(document).ready(function() {
                 window.open('/#http%3A%2F%2Fwww.powerballgame.co.kr%2F%3Fview%3Dmarket','_blank','');
             }
         }
-        else if(confirm('방장에게 '+giftCnt+'개의 총알을 선물하시겠습니까?'))
+        else if(confirm('방장에게 '+giftCnt+'개의 당근을 선물하시겠습니까?'))
         {
             $('#layer-bulletBox').find('.btnBox .gift span').addClass('stop').text('선물중');
 
@@ -485,11 +497,12 @@ $(document).ready(function() {
 
                         $('#bullet').attr('rel',data.bullet);
                         $('#bullet').html(data.bullet);
+                        opener.updateBullet(data.bullet)
                         giftManager('bullet',JSON.parse(roomInfo).useridKey,giftCnt);
                     }
                     else
                     {
-                        alert(data.msg);
+                        alertifyByCommon(data.msg)
                     }
 
                     setTimeout(function(){
@@ -573,7 +586,7 @@ function receiveProcess(data)
                     case 'DUPLICATE':
                         printSystemMsg('guide','중복 로그인으로 인해 이전 접속을 종료합니다.');
                         socket.disconnect();
-                        document.location.href = '/?view=chatStateMsg&type=duplicate';
+                        document.location.href = '/?view=chatStateMsg&type=duplicate&logout='+bPacket.logout;
                         break;
 
                     case 'IPDUPLICATE':
@@ -638,7 +651,7 @@ function receiveProcess(data)
     }
     else if(hPacket.type == "INIT"){
         if(is_super == false && is_admin == false && bPacket.users.length > JSON.parse(roomInfo).maxUser){
-            alert("최대인원을 초과하였습니다.");
+            alertifyByCommon("최대인원을 초과하였습니다.");
             socket.disconnect();
             window.history.go(-1);
         }
@@ -819,7 +832,7 @@ function receiveProcess(data)
                 var new_pick = {};
                 new_pick =  {list:[{day_round : bPacket.round,today:bPacket.date,nnn:-1,betting_data:{content:cur_bet}}]};
                 compileJson("#chat-pick-list-cur","#pick-"+bPacket.round,new_pick,1,false);
-                $("#msgBox").append("<li><div class='pick-room-manager'>"+$("#pick-"+bPacket.round).find(".pick").html()+"</div></li>")
+                $("#msgBox").append("<li><div class='pick-room-manager pick nnonn'>"+$("#pick-"+bPacket.round).find(".pick").html()+"</div></li>")
                 for(var p  in bPacket.result){
                     var o_result = bPacket.result
                     if(p == "pb_oe" || p == "pb_uo")
@@ -918,6 +931,10 @@ function receiveProcess(data)
                     printItemMsg(bPacket.type,bPacket.cnt,bPacket.nickname,bPacket.tnickname);
                     var totalBulletCnt = parseInt($('#totalBulletCnt').attr('rel')) + parseInt(bPacket.cnt);
                     $('#totalBulletCnt').attr('rel',totalBulletCnt).html(totalBulletCnt);
+                    if(JSON.parse(roomInfo).useridKey == userIdKey){
+                      bullet +=parseInt(bPacket.cnt);
+                      opener.updateBullet(bullet)
+                    }
                 }
                 break;
 
@@ -1066,7 +1083,7 @@ function receiveProcess(data)
                 break;
 
             case 'BULLET_NEED':
-                printSystemMsg('guide','총알이 부족합니다.');
+                printSystemMsg('guide','당근이 부족합니다.');
                 break;
 
             case 'BISCUIT_NEED':
@@ -1170,7 +1187,7 @@ function printItemMsg(type,cnt,nickname,tnickname)
         var itemMsg = '<div class="bulletBox"><div class="cnt">'+cnt+'</div></div>';
 
         $('#msgBox').append('<li>'+itemMsg+'</li>');
-        $('#msgBox').append('<li><p class="msg-gift"><span>'+nickname+'</span> 님이 <span>'+tnickname+'</span> 님에게 <span>총알 '+cnt+'개</span>를 선물하셨습니다.</p></li>');
+        $('#msgBox').append('<li><p class="msg-gift"><span>'+nickname+'</span> 님이 <span>'+tnickname+'</span> 님에게 <span>당근 '+cnt+'개</span>를 선물하셨습니다.</p></li>');
     }
     else if(type == 'biscuit')
     {
@@ -1250,7 +1267,7 @@ function printChatMsg(userType,level,sex,mark,useridKey,nickname,msg,item)
     if(userType == 1)
     {
         addClass = ' class="opener"';
-        addMark = '<img src="/assets/images/powerball/mark_opener.gif" width="16" height="16"> ';
+        addMark = '<img src="/assets/images/powerball/mark_opener.gif" width="20" height="20"> ';
     }
     else if(userType == 2)
     {
@@ -1452,7 +1469,7 @@ function adminCmd(cmd,tuseridKey,tnickname)
                     }
                     else
                     {
-                        alert(data.msg);
+                        alertifyByCommon(data.msg);
                     }
                 }
             });
@@ -1475,7 +1492,7 @@ function adminCmd(cmd,tuseridKey,tnickname)
                         };
                         sendProcess('ADMINCMD', data);
                     } else {
-                        alert(data.msg);
+                        alertifyByCommon(data.msg)
                     }
                 }
             });
@@ -1509,10 +1526,8 @@ function adminCmd(cmd,tuseridKey,tnickname)
                         };
                         sendProcess('ADMINCMD', data);
                     } else {
-                        alert(data.msg);
+                        alertifyByCommon(data.msg)
                     }
-                },error:function(xhr){
-                    console.log(xhr)
                 }
             });
         }
@@ -1586,11 +1601,8 @@ function refreshPasswd()
             }
             else
             {
-                alert(data.msg);
+                alertifyByCommon(data.msg)
             }
-        },
-        error:function (xhr,textStatus,errorThrown){
-            //alert('error'+(errorThrown?errorThrown:xhr.status));
         }
     });
 }
@@ -1919,7 +1931,8 @@ function sendMsg()
             {
                 if($('#msg').val().indexOf(' ') == -1 || ($('#msg').val().indexOf(' ') != -1 && !$('#msg').val().substring($('#msg').val().indexOf(' ')+1)))
                 {
-                    alert('내용을 입력하세요.');
+
+                    alertifyByCommon("내용을 입력하세요.")
                     $('#msg').focus();
                     return false;
                 }
@@ -2159,15 +2172,15 @@ function chatManager(type,nick)
                 success:function(data,textStatus){
                     if(data.state == 'success')
                     {
-                        alert('['+data.friendNickname+']님을 친구 추가했습니다.');
+                        alertifyByCommon('['+data.friendNickname+']님을 친구 추가했습니다.')
                     }
                     else
                     {
-                        alert(data.msg);
+                        alertifyByCommon(data.msg);
                     }
                 },
                 error:function (xhr,textStatus,errorThrown){
-                    alert('error'+(errorThrown?errorThrown:xhr.status));
+                    alertifyByCommon('error'+(errorThrown?errorThrown:xhr.status));
                 }
             });
         }
@@ -2190,15 +2203,12 @@ function chatManager(type,nick)
                     if(data.state == 'success')
                     {
                         blackListArr.push(data.blackUseridKey);
-                        alert('['+data.blackNickname+']님을 블랙리스트에 추가했습니다.');
+                        alertifyByCommon('['+data.blackNickname+']님을 블랙리스트에 추가했습니다.');
                     }
                     else
                     {
-                        alert(data.msg);
+                        alertifyByCommon(data.msg);
                     }
-                },
-                error:function (xhr,textStatus,errorThrown){
-                    alert('error'+(errorThrown?errorThrown:xhr.status));
                 }
             });
         }
@@ -2213,7 +2223,7 @@ function modifyRoom()
 
     if(!roomTitle.trim().length)
     {
-        alert('채팅방 제목을 입력하세요.');
+        alertifyByCommon('채팅방 제목을 입력하세요.');
         $("#current_roomTitle").focus();
         return false;
     }
@@ -2224,7 +2234,7 @@ function modifyRoom()
     {
         if(roomTitle.toLowerCase().indexOf(filterWordArr[i]) != -1)
         {
-            alert('방제목에 금지어 ['+ filterWordArr[i] +'] 가 포함되어 있습니다.');
+            alertifyByCommon('방제목에 금지어 ['+ filterWordArr[i] +'] 가 포함되어 있습니다.');
             return false;
         }
     }
@@ -2233,7 +2243,7 @@ function modifyRoom()
     {
         if(roomDesc.toLowerCase().indexOf(filterWordArr[i]) != -1)
         {
-            alert('설명에 금지어 ['+ filterWordArr[i] +'] 가 포함되어 있습니다.');
+            alertifyByCommon('설명에 금지어 ['+ filterWordArr[i] +'] 가 포함되어 있습니다.');
             return false;
         }
     }
@@ -2260,7 +2270,7 @@ function modifyRoom()
                 sendProcess('ADMINCMD',data);
             }
             else
-                alert(data.msg)
+                alertifyByCommon(data.msg)
         }
     });
 

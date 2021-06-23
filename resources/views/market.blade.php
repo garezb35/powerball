@@ -5,6 +5,7 @@
 @endphp
 @extends('includes.empty_header')
 @section("content")
+
 <div class="marketBox">
     <input type="hidden" id="api_token" value="{{AUth::user()->api_token}}">
     <div class="title">

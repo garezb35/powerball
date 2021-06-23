@@ -147,18 +147,24 @@
 <div class="categoryTit">
     <ul>
         <?php if($result["type"] == "community"): ?>
-        <li><a href="<?php echo e("board"); ?>?board_type=community&board_category=offten" <?php if(Request::get("board_category") == "offten"): ?> class="on" <?php endif; ?>>자주 하시는 질문</a></li>
-        <li><a href="<?php echo e("board"); ?>?board_type=community&board_category=private" <?php if(Request::get("board_category") == "private"): ?> class="on" <?php endif; ?>>1:1문의</a></li>
-        <li><a href="<?php echo e("board"); ?>?board_type=community&board_category=advanced" <?php if(Request::get("board_category") == "advanced"): ?> class="on" <?php endif; ?>>기능개선요청</a></li>
+        <?php if(!empty($result["b1"])): ?>
+        <?php $__currentLoopData = $result["b1"]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $v): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <li><a href="<?php echo e("board"); ?>?board_type=community&board_category=<?php echo e($v["name"]); ?>" <?php if(Request::get("board_category") == $v["name"]): ?> class="on" <?php endif; ?>><?php echo e($v["content"]); ?></a></li>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php endif; ?>
         <?php elseif($result["type"] == "customer"): ?>
-        <li><a href="<?php echo e("board"); ?>?board_type=customer&board_category=notice" <?php if(Request::get("board_category") == "notice"): ?> class="on" <?php endif; ?>>공지사항</a></li>
-        <li><a href="<?php echo e("board"); ?>?board_type=customer&board_category=event" <?php if(Request::get("board_category") == "event"): ?> class="on" <?php endif; ?>>이벤트</a></li>
+        <?php if(!empty($result["b2"])): ?>
+        <?php $__currentLoopData = $result["b2"]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $v): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <li><a href="<?php echo e("board"); ?>?board_type=customer&board_category=<?php echo e($v["name"]); ?>" <?php if(Request::get("board_category") == $v["name"]): ?> class="on" <?php endif; ?>><?php echo e($v["content"]); ?></a></li>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php endif; ?>
         <li><a href="<?php echo e(route("prison")); ?>?page_type=prison" <?php if(Request::get("page_type") == "prison"): ?> class="on" <?php endif; ?>>정지</a></li>
         <?php else: ?>
-        <li><a href="<?php echo e("board"); ?>?board_type=none&board_category=humor" <?php if(Request::get("board_category") == "humor"): ?> class="on" <?php endif; ?>>유머</a></li>
-        <li><a href="<?php echo e("board"); ?>?board_type=none&board_category=photo" <?php if(Request::get("board_category") == "photo"): ?> class="on" <?php endif; ?>>포토</a></li>
-        <li><a href="<?php echo e("board"); ?>?board_type=none&board_category=pick" <?php if(Request::get("board_category") == "pick"): ?> class="on" <?php endif; ?>>분석픽공유</a></li>
-        <li><a href="<?php echo e("board"); ?>?board_type=none&board_category=free" <?php if(Request::get("board_category") == "free"): ?> class="on" <?php endif; ?>>자유</a></li>
+        <?php if(!empty($result["b3"])): ?>
+        <?php $__currentLoopData = $result["b3"]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $v): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <li><a href="<?php echo e("board"); ?>?board_type=none&board_category=<?php echo e($v["name"]); ?>" <?php if(Request::get("board_category") == $v["name"]): ?> class="on" <?php endif; ?>><?php echo e($v["content"]); ?></a></li>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php endif; ?>
         <?php endif; ?>
     </ul>
 </div>
@@ -213,7 +219,10 @@
                                     <img src="/assets/images/powerball/icon_reply.png" style="margin-left:10px;" alt="답변글">
                                 <?php endif; ?>
                                 <?php if($result["board"]["security"] == 1 && (($mail["fromId"] != 0 && $mail["fromId"] != $result["userId"]) || ($mail["toId"] != 0 && $mail["toId"] != $result["userId"]))): ?>
-                                    <a href="/bbs/board.php?bo_table=humor&amp;wr_id=1" onclick="alert('비밀글은 작성자와 운영진만 열람 가능합니다.');return false;">
+                                    <a href="/bbs/board.php?bo_table=humor&amp;wr_id=1" onclick="
+                                                                                                alertify.set('notifier','delay', 1);
+                                                                                                alertify.set('notifier','position', 'top-center');
+                                                                                                alertify.error('비밀글은 작성자와 운영진만 열람 가능합니다.');return false;">
                                         <span class="gray">비밀글로 작성된 글입니다.</span>
                                         <img src="/assets/images/powerball/icon_secret.png" alt="비밀글"><img src="/assets/images/powerball/icon_new.gif" alt="새글">
                                     </a>

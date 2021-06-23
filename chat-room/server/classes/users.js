@@ -4,15 +4,26 @@ class User {
         this.users = []
     }
 
-    addUser(id, name,level,nickname,sex,winFixCnt,clientId = "",roomIdx="",time=0,mark="",item="",lobby="",image="",today="",userType=0,mute="muteOff",mute1="muteOff",bytime=""){
-        this.users.push({id, name,level,nickname,sex,winFixCnt,clientId,roomIdx,time,mark,item,lobby,image,today,userType,mute,mute1,bytime})
+    addUser(id, name,level,nickname,sex,winFixCnt,clientId = "",roomIdx="",time=0,mark="",item="",lobby="",image="",today="",userType=0,mute="muteOff",mute1="muteOff",bytime="",ip){
+        this.users.push({id, name,level,nickname,sex,winFixCnt,clientId,roomIdx,time,mark,item,lobby,image,today,userType,mute,mute1,bytime,ip})
         return this.users
     }
     getUser(id){
         return this.users.filter(user => user.id === id)[0]
     }
-    getUserFromIdAndRoomIdx(id,lobby){
-        return this.users.filter(user => user.id === id && user.lobby === lobby)[0]
+    getUserFromIdAndRoomIdx(id,lobby,ip= ""){
+        if(ip == "")
+          return this.users.filter(user => user.id === id && user.lobby === lobby)[0]
+        if(ip != ""){
+          return this.users.filter(user =>{
+            if( (user.id === id && user.lobby === lobby) ||
+                (user.ip !== ip && user.id === id) ||
+                (user.id !== id && user.ip ===ip))
+            {
+                  return user;
+            }
+          })
+        }
     }
 
     getUserByIdAndRoomIdx(id,roomIdx){
@@ -73,6 +84,32 @@ class User {
            return user.nickname;
         }
         return "";
+    }
+
+     setUserItem(data){
+      var user = this.users.filter(user => user.id === data.userIdKey)[0];
+      console.log(data.userIdKey)
+      if(typeof user !="undefined"){
+        this.users = this.users.filter((item) => {
+            if(item.id === data.userIdKey){
+                if(data.type == "family"){
+                  if(item.item.trim() == "")
+                    item.item = "familyNick_"+data.content
+                  else {
+                    item.item += "#::#" + "familyNick_"+data.content;
+                  }
+                }
+                if(data.type == "super"){
+                  if(item.item.trim() == "")
+                    item.item = "superChat"
+                  else {
+                    item.item += "#::#" + "superChat";
+                  }
+                }
+            }
+            return item;
+        });
+      }
     }
 
     setUserManageById(state,id,roomIdx){

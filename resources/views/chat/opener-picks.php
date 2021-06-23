@@ -3,7 +3,7 @@
     {{#each this.list}}
     <li id="pick-{{this.day_round}}" regdate="{{this.created_date}}">
         <div class="num">
-            02월08일<br>
+            {{#formatDate this.created_date}}{{/formatDate}}<br>
             {{this.day_round}}회
         </div>
         {{#ifEquals this.nnn -1}}

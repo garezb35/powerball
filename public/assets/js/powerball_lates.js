@@ -195,11 +195,11 @@ function getPowerball(data){
   var power_under = data.powerballUnderOverMsg == "언더" ? "under":"over";
   var number_under = data.numberUnderOverMsg == "언더" ? "under":"over";
   var numPer = "";
-  if(data.numberPeriodMsg == "소")
+  if(data.numberSum >= 15 && data.numberSum<=64)
     numPer = "소 (15~64)";
-  if(data.numberPeriodMsg == "중")
+  if(data.numberSum >= 65 && data.numberSum<=80)
       numPer = "중 (65~80)	";
-  if(data.numberPeriodMsg == "대")
+  if(data.numberSum >= 81 && data.numberSum<=130)
       numPer = "대 (81~130)";
   var pb_term="",nb_term ="";
   if(data.pb_term == "A")

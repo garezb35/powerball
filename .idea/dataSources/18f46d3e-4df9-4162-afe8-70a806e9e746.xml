@@ -2644,7 +2644,7 @@ day_round</ColNames>
     </column>
     <column id="678" parent="375" name="bullet">
       <Position>10</Position>
-      <Comment>총알</Comment>
+      <Comment>당근</Comment>
       <DataType>int(11)|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
     </column>
