@@ -83,6 +83,7 @@
                 <tbody>
                 @if(!empty($presents))
                     @foreach($presents as $present)
+                    @php if(!isset($present["user"]["nickname"]) || empty($present["user"]["nickname"])) continue; @endphp
                     <tr class="">
                         <td class="number">{{$first}}</td>
                         <td class="result">@if($present["result"] == "win")<span class="text-danger">{{"당첨"}}</span>@else<span class="text-primary">{{"꽝"}}</span>@endif</td>

@@ -24,7 +24,7 @@ class Error extends CI_Controller
     {
         $this->isLoggedIn();
     }
-    
+
     /**
      * This function used to check the user is logged in or not
      */
@@ -41,6 +41,8 @@ class Error extends CI_Controller
             redirect('pageNotFound');
         }
     }
+
+    
 }
 
 ?>

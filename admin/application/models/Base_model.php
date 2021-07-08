@@ -24,6 +24,29 @@ class Base_model extends CI_Model
         return $this->db->affected_rows();
     }
 
+    function addLog($added,$userId,$reason,$type){
+      if($added == 1){
+        $this->db->select("id");
+        $this->db->from("tbl_block_reason");
+        $this->db->where("userId",$userId);
+        $this->db->where("type",$type);
+        $query = $this->db->get();
+        $id = $query->result();
+        if(sizeof($id) > 0){
+          $this->db->where("id",$id[0]->id);
+          $this->db->update("tbl_block_reason",array("reason"=>$reason));
+        }
+        else{
+          $this->db->insert("tbl_block_reason",array("userId"=>$userId,"reason"=>$reason,"type"=>$type));
+        }
+      }
+      else{
+        $this->db->where("userId",$userId);
+        $this->db->where("type",$type);
+        $this->db->delete("tbl_block_reason");
+      }
+    }
+
     function deleteRecordCustom($database,$record,$id,$type = false,$or_where = false){
         if(!$or_where){
           if($type ==false)
@@ -37,6 +60,12 @@ class Base_model extends CI_Model
           }
         }
         $this->db->delete($database);
+    }
+
+    function deleteMiss($round,$date){
+      $this->db->where("day_round",$round);
+      $this->db->LIKE("date",$date,"both");
+      $this->db->delete("pb_error_round");
     }
 
     function getSelect($database,$array1=null,$array2=null,$array3=null,$array4=null,$array5=null,$array6=null){
@@ -117,7 +146,9 @@ class Base_model extends CI_Model
             else
                 $this->db->like('BaseTbl.'.$item,$content,"both");
         }
-        $this->db->order_by('BaseTbl.updated_at','DESC');
+
+        $this->db->order_by('BaseTbl.keys','DESC');
+        $this->db->order_by('BaseTbl.reply','ASC');
         if($limit1 ==null)  $this->db->limit(20,0);
         else $this->db->limit($limit1,$limit2);
         $this->db->group_by("BaseTbl.id");
@@ -163,6 +194,8 @@ class Base_model extends CI_Model
                             Board.category as bcategory,
                             Board.content as btitle,
                             Board.id as bid,
+                            Board.name as bname,
+                            Board.security as bsecurity,
                             COUNT(View.id) as view_count');
         $this->db->from('pb_message as BaseTbl');
         $this->db->join("pb_users as User","User.userId=BaseTbl.fromId","left");
@@ -226,6 +259,11 @@ class Base_model extends CI_Model
         $this->db->where('userId',$results[0]->userId);
         $this->db->set('coin', 'coin+'.$results[0]->coin, FALSE);
         $this->db->update('pb_users');
+        $user = $this->getSelect("pb_users",array(array("record"=>"userId","value"=>$results[0]->userId)));
+        if(!empty($user)){
+          return array($user[0]->userIdKey,number_format($user[0]->coin));
+        }
+        return array("",0);
     }
 
     public function getReturnDeposits($limit1=10,$limit2=0,$v1=null,$v2=null,$v3=null,$v4=null,$v5=null){
@@ -243,6 +281,176 @@ class Base_model extends CI_Model
         $query = $this->db->get();
         $results = $query->result();
         return $results;
+    }
+
+    public function getPurchasedUser($limit1=20,$limit2=0){
+      $this->db->select('BaseTbl.*,Market.name as mname,Market.image as mimage,User.nickname');
+      $this->db->from("pb_item_use as BaseTbl");
+      $this->db->join("pb_market as Market","Market.code=BaseTbl.market_id");
+      $this->db->join("pb_users as User","User.userId=BaseTbl.userId");
+      $this->db->where("User.isDeleted",0);
+      $this->db->where("User.user_type","01");
+      $this->db->order_by('BaseTbl.created_date','DESC');
+      if($limit1 ==null)  $this->db->limit(20,0);
+      else $this->db->limit($limit1,$limit2);
+      $query = $this->db->get();
+      $results = $query->result();
+      return  $results;
+    }
+
+    public function getWinGift(){
+      $this->db->select('BaseTbl.*,Market.name as mname');
+      $this->db->from("pb_win_gift as BaseTbl");
+      $this->db->join("pb_market as Market","Market.code=BaseTbl.market_id");
+      $this->db->order_by('BaseTbl.order','ASC');
+      $query = $this->db->get();
+      $results = $query->result();
+      return  $results;
+    }
+
+    public function getChatRooms($limit1=20,$limit2=0){
+      $this->db->select('BaseTbl.*,User.nickname,User.bullet');
+      $this->db->from("pb_room as BaseTbl");
+      $this->db->join("pb_users as User","User.userId=BaseTbl.userId");
+      $this->db->order_by('BaseTbl.updated_at','DESC');
+      if($limit1 ==null)  $this->db->limit(20,0);
+      else $this->db->limit($limit1,$limit2);
+      $query = $this->db->get();
+      $results = $query->result();
+      return  $results;
+    }
+
+    public function runSP($data){
+      $stored_procedure = "CALL ProcessPowerball(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+      $a_result = $this->db->query( $stored_procedure, $data);
+    }
+
+    public function getItem($type,$limit1=20,$limit2=0,$use = null,$shType = null,$content = null){
+      $this->db->select('BaseTbl.*,User.nickname');
+      $this->db->from("pb_log as BaseTbl");
+      $this->db->join("pb_users as User","User.userId=BaseTbl.userId");
+      $this->db->where('BaseTbl.type','2');
+      $this->db->where('User.isDeleted','0');
+      $this->db->where('User.user_type','01');
+      if(!empty($use)){
+        $this->db->LIKE('BaseTbl.content',$use,"both");
+      }
+      if(!empty($shType) && !empty(trim($content))){
+        if($shType == "A")
+          $this->db->LIKE("User.loginId",trim($content),"both");
+        if($shType == "B")
+          $this->db->LIKE("User.name",trim($content),"both");
+        if($shType == "F")
+          $this->db->LIKE("User.email",trim($content),"both");
+        if($shType == "D")
+          $this->db->LIKE("User.nickname",trim($content),"both");
+      }
+      $this->db->order_by('Basetbl.created_at','DESC');
+      if($limit1 ==null) {}
+      else $this->db->limit($limit1,$limit2);
+      $query = $this->db->get();
+      $results = $query->result();
+      return  $results;
+    }
+
+    public function missItem($limit1=20,$limit2=0){
+      $this->db->select('BaseTbl.*');
+      $this->db->from("pb_error_round as BaseTbl");
+      $this->db->order_by('Basetbl.created_at','DESC');
+      if($limit1 ==null) {}
+      else $this->db->limit($limit1,$limit2);
+      $query = $this->db->get();
+      $results = $query->result();
+      return  $results;
+    }
+
+    function getPbResult($round,$date){
+      $this->db->select('BaseTbl.*');
+      $this->db->from("pb_result_powerball as BaseTbl");
+      $this->db->where('BaseTbl.round',$round);
+      $this->db->LIKE('BaseTbl.created_date',$date,"both");
+      $query = $this->db->get();
+      $results = $query->result();
+      return  $results;
+    }
+
+    public function processMiss($data)
+    {
+        $query = $this->db->query("SELECT game_code,pick,userId,id,TYPE FROM pb_betting WHERE pb_betting.`round` = ".$data["round"]." AND pb_betting.`changed` = 0 AND pb_betting.`is_win` = - 1 AND pb_betting.game_type = 1");
+        $bet_list =  $query->result();
+        if(!empty($bet_list)){
+            foreach ($bet_list as $key => $value) {
+              $isWin = 2;
+              if($value->game_code == "pb_oe" && $value->pick == $data["pb_oe"])
+              {
+                $isWin = 1;
+              }
+              if($value->game_code == "pb_uo" && $value->pick == $data["pb_uo"])
+              {
+                $isWin = 1;
+              }
+              if($value->game_code == "nb_uo" && $value->pick == $data["nb_uo"])
+              {
+                $isWin = 1;
+              }
+              if($value->game_code == "nb_oe" && $value->pick == $data["nb_oe"])
+              {
+                $isWin = 1;
+              }
+              if($value->game_code == "nb_size" && $value->pick == $data["nb_size"])
+              {
+                $isWin = 1;
+              }
+              $this->db->query("UPDATE
+                                 pb_users
+                               SET
+                                 pb_users.`exp` = pb_users.`exp` + 1
+                               WHERE pb_users.`userId` = ".$value->userId." ");
+              if($isWin == 1){
+
+              }
+              $this->db->query("UPDATE
+                pb_betting
+              SET
+                pb_betting.`is_win` = ".$isWin."
+              WHERE pb_betting.id = ".$value->id." ");
+            }
+
+            $qq = "SELECT CONCAT('{',GROUP_CONCAT(CONCAT('\"',game_code,'\"',':','{','\"pick\":',pick,',','\"is_win\":',is_win,'}') SEPARATOR ','),'}') AS result,
+                      pb_betting.`userId`,
+                      pb_betting.`round`,
+                      pb_betting.`game_type`,
+                      pb_betting.`type`,
+                      pb_betting.`created_date`,
+                      pb_betting.`roomIdx`
+                    FROM
+                      pb_betting
+                    WHERE pb_betting.`round` = '{$data["round"]}'
+                      AND pb_betting.`changed` = 0 AND pb_betting.`game_type`=1 AND pb_betting.`is_win` > -1
+                    GROUP BY pb_betting.`userId`,pb_betting.`type`,pb_betting.`game_type` ORDER BY created_date ASC";
+
+            $query  = $this->db->query($qq);
+            $betted_list = $query->result();
+            if(!empty($betted_list)){
+              foreach($betted_list as $value){
+                $this->db->query("INSERT pb_betting_ctl (
+                                  content,
+                                  userId,
+                                  ROUND,
+                                  game_type,
+                                  TYPE,
+                                  pick_date,
+                                  roomIdx
+                                )
+                                VALUES
+                                  ( '{$value->result}' , {$value->userId}, {$value->round}, 1, '{$value->type}','{$value->created_at}','{$value->roomIdx}')");
+              }
+            }
+            $this->db->query("UPDATE pb_betting SET pb_betting.`changed`=1 WHERE pb_betting.`round`=".$data["round"]." AND pb_betting.`game_type`=1");
+            $d = date("Y-m-d",strtotime($data["date"]));
+            $this->db->query("DELETE FROM pb_error_round where round ={$data["round"]} and date LIKE '%{$d}%'");
+            return 1;
+        }
     }
 }
 ?>

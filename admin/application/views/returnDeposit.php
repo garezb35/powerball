@@ -153,7 +153,24 @@ if($pf!=null) $ss = $uc-$pf; ?>
   if (confirm('선택된 예치금 내역을 변경하시겠습니까?')) {
     $("#sKind").val("M");
     $("#frmSearch").attr("method", "post").attr("action", "/updateReturnDeposit");
-    $("#frmSearch").submit();
+    var formData = new FormData($("#frmSearch")[0]);
+    $.ajax({
+             type: "POST",
+             url: "/updateReturnDeposit",
+             data: formData,
+             processData: false,
+             contentType: false,
+             dataType: "json",
+             success: function(data) {
+                if(data.result.length > 0){
+                  data.result.forEach((item)=>{
+                    socket.emit("touser",{type:"bullet_cnt","userIdKey":item[0],"amount":item[1]})
+                  })
+                }
+             }
+      }).fail(function(xhr){
+        console.log(xhr)
+      });
   }
 }
 

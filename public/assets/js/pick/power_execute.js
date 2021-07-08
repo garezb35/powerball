@@ -7,7 +7,6 @@ var page_activated = true;
 $(document).ready(function(){
   $(window).focus(function() {
       page_activated++;
-      console.log(page_activated)
   });
     if(sound_checked == true){
       $("#btn_sound").find("i").addClass("fa-volume-up")
@@ -195,13 +194,19 @@ $(document).ready(function(){
                 core.timer();
             },
             timer: function () {
+                nextTime = powerballDiff();
+                if(nextTime == null){
+                  $("#game_caution_closed_state").css("display","block")
+                  return;
+                }
+                $("#game_caution_closed_state").css("display","none")
                 var ii = Math.floor((nextTime) / 60);
                 var ss = Math.floor(((nextTime) % 60));
                 ii = ii < 10 ? '0' + ii : ii;
                 ss = ss < 10 ? '0' + ss : ss;
                 // var HTML = ii + ":" + ss + " 후 " + gameRound + "회차 추첨 시작";
                 var HTML = ii + ":" + ss
-                nextTime = powerballDiff();
+
                 // $('#timer_gauge').css('width', (nextTime / gameTime) * 100 + '%');
                 $('#countdown_clock').html(HTML);
                 $("#ready-round").text(gameRound)
@@ -668,8 +673,6 @@ $(document).ready(function(){
         }
     })();
 
-    nextTime = powerballDiff();
-    // $("#timer_gauge").css("width",(100*nextTime/300)+"%");
     core.init();
 
     $('#btn_tip').click(function () {

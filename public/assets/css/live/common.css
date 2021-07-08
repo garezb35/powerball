@@ -841,3 +841,26 @@ div.iru-tiny-player{
   width: 0px;
   height: 0px
 }
+
+#game_caution_closed_state {
+    position: absolute;
+    top: 150px;
+    left: 50%;
+    margin-left: -251px;
+    padding: 40px;
+    width: 418px;
+    height: 100px;
+    z-index: 110;
+    color: #f1f1f1;
+    background: #333;
+    border-radius: 10px;
+}
+
+#game_caution_closed_state .sub_title {
+    margin-bottom: 30px;
+    text-align: center;
+    font-family: Swagger TTF,sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+}

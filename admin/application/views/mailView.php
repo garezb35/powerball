@@ -73,6 +73,9 @@
                         <tr>
                           <td><?=$tt?></td>
                           <td>
+                            <?php if($value->reply==1): ?>
+                                <img src="<?=base_url_source()?>assets/images/powerball/icon_reply.png" style="margin-left:10px;" alt="답변글">
+                            <?php endif; ?>
                             <?php if($value->security==1): ?>
                               <img src="<?=base_url()?>assets/images/icon_secret.gif">
                             <?php endif; ?>
@@ -113,23 +116,3 @@
         </div>
     </section>
 </div>
-<script>
-  $('.hastip').tooltipsy({
-     content: function ($el, $tip) {
-        return '<table width="130" cellspacing="5" style="margin-left:10px;"><tbody><tr><td><span class="bold">'+$el.data("uname")+'</span> ('+$el.data("deposit")+'원)</td></tr><tr>      <td>· <a href="/admin/editOld/'+$el.data("userid")+'" target="_blank" class="popMem">회원정보보기</a></td></tr><tr>      <td>· <a href="javascript:fnPopWinCT(\'/admin/sendMail?userid='+$el.data("userid")+'\', \'MemNote\', 700, 510, \'N\');" class="popMem">쪽지보내기</a></td> </tr> <tr>      <td>· <a href="#" class="popMem">SMS 발송</a></td>    </tr>    <tr>      <td>· <a href="javascript:fnPopWinCT(\'/admin/payhistory?member_part=userId&search_txt='+$el.data("userid")+'\', \'ActingMem\', 1200, 700, \'Y\');" class="popMem">주문내역</a></td>    </tr>    <tr>      <td>· <a href="/admin/deposithistory?mem=name&seach_input='+$el.data("uname")+'" target="_blank" class="popMem">예치금 사용내역</a></td>    </tr>    <tr>      <td>· <a href="/admin/paying/?member_part=userId&search_txt='+$el.data("userid")+'" target="_blank" class="popMem">결제내역</a></td>    </tr>    <tr>      <td>· <a href="/admin/couponList/?shType=name&seach_input='+$el.data("uname")+'" target="_blank" class="popMem">쿠폰발급내역</a></td>    </tr>    <tr>      <td>· <a href="/admin/coupon_register?type=name&content='+$el.data("uname")+'" target="_blank" class="popMem">쿠폰발급</a></td>    </tr>    </tbody></table>';
-    },
-    offset: [0, 1],
-    css: {
-        'padding': '10px',
-        'max-width': '200px',
-        'color': '#303030',
-        'background-color': '#f5f5b5',
-        'border': '1px solid #deca7e',
-        '-moz-box-shadow': '0 0 10px rgba(0, 0, 0, .5)',
-        '-webkit-box-shadow': '0 0 10px rgba(0, 0, 0, .5)',
-        'box-shadow': '0 0 10px rgba(0, 0, 0, .5)',
-        'text-shadow': 'none',
-        'cursor':'pointer'
-    }
-});
-</script>

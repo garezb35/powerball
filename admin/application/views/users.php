@@ -78,7 +78,7 @@
                       ?>
                    <tr>
                       <td><input type="checkbox" name="chkMemCode[]" class="chkMemCode" value="<?=$record->userId ?>"><?=$ss ?></td>
-                      <td><a data-toggle="tooltip" class="hastip"  data-uname="<?=$record->name?>"
+                      <td><a data-toggle="tooltip" class="hastip"  data-uname="<?=$record->nickname?>" data-bullet = "<?=$record->bullet?>"
                          data-userid="<?=$record->userId?>"><?=$record->name?>(<?=$record->loginId?>)</a>
                       </td>
                       <td><?=$record->nickname ?>[<?=$record->codename?>]</td>
@@ -138,7 +138,7 @@
 <script type="text/javascript">
    $('.hastip').tooltipsy({
     content: function ($el, $tip) {
-       return '<table width="130" cellspacing="5" style="margin-left:10px;"><tbody><tr><td><span class="bold">'+$el.data("uname")+'</span> ('+$el.data("deposit")+'원)</td></tr><tr>      <td>· <a href="/editOld/'+$el.data("userid")+'" target="_blank" class="popMem">회원정보보기</a></td></tr><tr>      <td>· <a href="javascript:fnPopWinCT(\'/admin/sendMail?userid='+$el.data("userid")+'\', \'MemNote\', 700, 510, \'N\');" class="popMem">쪽지보내기</a></td> </tr> <tr>      <td>· <a href="#" class="popMem">SMS 발송</a></td>    </tr>    <tr>      <td>· <a href="javascript:fnPopWinCT(\'/admin/payhistory?member_part=userId&search_txt='+$el.data("userid")+'\', \'ActingMem\', 1200, 700, \'Y\');" class="popMem">주문내역</a></td>    </tr>    <tr>      <td>· <a href="/admin/deposithistory?mem=name&seach_input='+$el.data("uname")+'" target="_blank" class="popMem">예치금 사용내역</a></td>    </tr>    <tr>      <td>· <a href="/admin/paying/?member_part=userId&search_txt='+$el.data("userid")+'" target="_blank" class="popMem">결제내역</a></td>    </tr>    <tr>      <td>· <a href="/admin/couponList/?shType=name&seach_input='+$el.data("uname")+'" target="_blank" class="popMem">쿠폰발급내역</a></td>    </tr>    <tr>      <td>· <a href="/admin/coupon_register?type=name&content='+$el.data("uname")+'" target="_blank" class="popMem">쿠폰발급</a></td></tr></tbody></table>';
+       return '<table width="130" cellspacing="5" style="margin-left:10px;"><tbody><tr><td><span class="bold">'+$el.data("uname")+'</span> ('+$el.data("bullet")+')</td></tr><tr>      <td>· <a href="/editOld/'+$el.data("userid")+'" target="_blank" class="popMem">회원정보보기</a></td></tr> <tr> <td>· <a href="javascript:fnPopWinCT(\'/pickHistory?userid='+$el.data("userid")+'\', \'MemNote\', 500, 300, \'N\');"  class="popMem">픽 전적 보기</a></td></tr></tbody></table>';
    },
    show: function (e, $el) {
        var cur_top = parseInt($el[0].style.top.replace(/[a-z]/g, ''))-20;

@@ -406,6 +406,13 @@ Handlebars.registerHelper('compareBig', function(arg1,arg2,options) {
         return options.inverse(this);
 });
 
+Handlebars.registerHelper('compareBigEqual', function(arg1,arg2,options) {
+    if(parseInt(arg1) >= parseInt(arg2))
+        return options.fn(this);
+    else
+        return options.inverse(this);
+});
+
 Handlebars.registerHelper('removeMinus', function(arg1) {
     return -1*arg1
 });
@@ -834,6 +841,10 @@ function calcTime(offset) {
 
 function powerballDiff(){
     var current = calcTime("+9");
+    var hour = current.getHours()
+    if(hour >= 0 && hour <=5){
+      return null;
+    }
     var second = current.getSeconds();
     var minute = current.getMinutes()
     var g_nMinute = 4 - (minute) % 5;

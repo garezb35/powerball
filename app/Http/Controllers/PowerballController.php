@@ -674,8 +674,7 @@ class PowerballController extends SecondController
                     ->groupBy("dates")
                     ->groupBy("pb_oe")
                     ->orderByRaw('counts ASC');
-
-                $m_4 = DB::connection("comm" . $i)->table( DB::raw("({$m_4->toSql()}) as sub") )
+                    $m_4 = DB::connection("comm" . $i)->table( DB::raw("({$m_4->toSql()}) as sub") )
                     ->selectRaw("sub.*")
                     ->mergeBindings($i == date('Y') ? $m_4->getQuery() : $m_4)
                     ->groupBy(array("sub.ptype"))
@@ -1178,8 +1177,9 @@ class PowerballController extends SecondController
                     return;
                 }
             }
+
             $patternByDate = $pattern_model->select(
-                DB::raw("GROUP_CONCAT(pb_result_powerball.".$type." ORDER BY day_round ASC SEPARATOR '') as `plist`"),
+                DB::raw("GROUP_CONCAT(".$type." ORDER BY day_round ASC SEPARATOR '') as `plist`"),
                 DB::raw("created_date")
             )
                 ->whereDate("created_date","<=",$from)
@@ -1188,9 +1188,9 @@ class PowerballController extends SecondController
                 ->orderBy("day_round","ASC")
                 ->get()
                 ->toArray();
+
             if(!empty($patternByDate))
             {
-
                 $patternByDate = json_decode(json_encode($patternByDate));
                 foreach ($patternByDate as $value){
                     $pat = $this->getPatternPosition($value->plist,$pattern);
@@ -1480,6 +1480,7 @@ class PowerballController extends SecondController
             ->where("terms2",">=",date("Y-m-d H:i:s"))
             ->where("market_id","WINNING_MACHINE")
             ->first();
+        $pb_last = Pb_Result_Powerball::orderBy("day_round","DESC")->first();
         if(empty($item_use)){
             echo "<script>alert(\"[{$ana_title['name']}] 아이템 구매 후 이용 가능합니다. 구매하신 분은 [아이템]에서  [사용] 눌러주세요\");
                             window.parent.document.getElementById('mainFrame').height = '500px';</script>";
@@ -1491,7 +1492,8 @@ class PowerballController extends SecondController
             "js"=>"winning.js",
             "p_remain"=>TimeController::getTimer(2),
             "api_token"=>$this->user->api_token,
-            "winning"=>1
+            "winning"=>1,
+            "last"=>$pb_last
         ]);
     }
 
@@ -2184,6 +2186,4 @@ class PowerballController extends SecondController
         echo json_encode(array("status"=>1,"result"=>$result));
       }
     }
-
-    
 }

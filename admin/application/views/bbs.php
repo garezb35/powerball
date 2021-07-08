@@ -32,17 +32,26 @@
                                         <input type="text" class="form-control required" id="title" name="title" required>
                                     </div>
                                 </div>
-
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        &nbsp;
-                                        <div>
-                                            <label for="notice">공지글</label>
-                                            <input type="checkbox" class="form-check-input" name="notice" value="1">
-                                        </div>
-                                    </div>
-                                </div>
-
+                                <?php if($this->input->get("id") > 0): ?>
+                                  <input type="hidden"  name="keys" value="<?=$this->input->get("id")?>">
+                                  <input type="hidden"  name="reply" value="1">
+                                <?php endif; ?>
+                                <?php if($this->input->get("to") > 0): ?>
+                                    <input type="hidden" class="form-check-input" name="notice" value="0">
+                                    <input type="hidden"  name="toId" value="<?=$this->input->get("to")?>">
+                                    <input type="hidden"  name="fromId" value="0">
+                                <?php endif; ?>
+                                <?php if(empty($this->input->get("to"))): ?>
+                                  <div class="col-md-2">
+                                      <div class="form-group">
+                                          &nbsp;
+                                          <div>
+                                              <label for="notice">공지글</label>
+                                              <input type="checkbox" class="form-check-input" name="notice" value="1">
+                                          </div>
+                                      </div>
+                                  </div>
+                                <?php endif; ?>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
@@ -70,16 +79,6 @@
 
 <script>
 
-    function fnBbsFileDel(val) {
-        var frmObj = document.frmBbs;
-        if (!confirm('해당 첨부파일을 삭제하시겠습니까?')) {
-            return;
-        }
-        frmObj.sKind.value = 'D';
-        frmObj.sFL_SEQ.value = val;
-        frmObj.action = '/admin/bbs_fl_D';
-        frmObj.submit();
-    }
     $(document).ready(function(){
       $("#frmSearch").submit(function(){
         oEditors.getById["wr_content"].exec("UPDATE_CONTENTS_FIELD", []);

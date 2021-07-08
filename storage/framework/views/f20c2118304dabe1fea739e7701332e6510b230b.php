@@ -83,6 +83,7 @@
                 <tbody>
                 <?php if(!empty($presents)): ?>
                     <?php $__currentLoopData = $presents; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $present): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php if(!isset($present["user"]["nickname"]) || empty($present["user"]["nickname"])) continue; ?>
                     <tr class="">
                         <td class="number"><?php echo e($first); ?></td>
                         <td class="result"><?php if($present["result"] == "win"): ?><span class="text-danger"><?php echo e("당첨"); ?></span><?php else: ?><span class="text-primary"><?php echo e("꽝"); ?></span><?php endif; ?></td>

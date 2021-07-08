@@ -6,7 +6,8 @@ const strtotime = require('strtotime');
 const { v4: uuidv4 } = require('uuid');
 let listUsers = new User();
 let listMsg = new Msg();
-function createMessage(id, nickname,item,level,mark,msg,sex,winFixCnt,userType){
+var clientid = "",serverid = "",adminroomid = ""
+function createMessage(id, nickname,item,level,mark,msg,sex,winFixCnt,userType,roomIdx=""){
     return {
         id,
         nickname,
@@ -16,9 +17,21 @@ function createMessage(id, nickname,item,level,mark,msg,sex,winFixCnt,userType){
         msg,
         sex,
         winFixCnt,
-        userType
+        userType,
+        roomIdx
     }
 }
+
+function setAdminConfig(clientid,serverid,adminroomid){
+  this.clientid = clientid
+  this.serverid = serverid
+  this.adminroomid = adminroomid
+}
+
+function adminRealtime(data,obj,io){
+  obj.emit("receive",{header:{type:"INIT"},body:{users:listUsers.getUsersByRoomIdx(data),msgList:listMsg.getMsgRoomIdx(data)}})
+}
+
 function checkInPacket(data,obj,io){
     let return_obj= {};
     let duplicated = 0;
@@ -53,16 +66,7 @@ function checkInPacket(data,obj,io){
                       }
                       listUsers.deleteUserByClientId(individual.clientId)
                     });
-                    // console.log("ss")
-                    // if(data.body.roomIdx == u.roomIdx
-                    //     && ( (token == u.id && u.id !="NULL" && u.id.trim() != "" ) || u.ip == obj.handshake.address)){
-                    //       if (typeof io.sockets.get(individual.clientId) != 'undefined') {
-                    //           io.sockets.get(individual.clientId).emit("receive",{header:{type:"LOGIN"},body:{cmd:"ERROR",type:"DUPLICATE"}});
-                    //           io.sockets.get(individual.clientId).disconnect();
-                    //       }
-                    //     listUsers.deleteUserByClientId(u.clientId)
-                    //     duplicated = 1;
-                    // }
+
                 }
 
                if(data.body.roomIdx == "channel1"){
@@ -145,9 +149,6 @@ function checkInPacket(data,obj,io){
                            let any_token = uuidv4();
                            if(user.length ==0 || token == null || token == "" || typeof user[0]["userId"] == "undefined" || user[0]["userId"] == null ||  typeof  user == 'undefined') {
                                listUsers.addUser("null-"+any_token, '', '00', any_token.substring(0,4)+"..훈련병", '', 0, obj.id, data.body.roomIdx,date.getTime(),"","","lobby",profile_img,"",0,"muteOff","muteOff","",obj.handshake.address)
-                               console.log(listUsers.getUsersByRoomIdx(data.body.roomIdx))
-                               // return_obj = {header: {type: "ERROR"}, body: {type: "NOT_LOGIN"}};
-                               // obj.emit("receive",return_obj);
                                obj.to(data.body.roomIdx).emit("receive",{header:{type:"ListUser"},body:{users:listUsers.getUserByClientId(obj.id)}})
                                obj.emit("receive",{header:{type:"INITMSG"},body:{users:listUsers.getUsersByRoomIdx(data.body.roomIdx),connector:getCountRoom()}})
                            }
@@ -182,7 +183,6 @@ function checkInPacket(data,obj,io){
                                     .leftJoin("pb_users","pb_room.super","pb_users.userIdKey");
                                 let userType = 5;
                                 if(await room != 'undefined'){
-
                                     if( room[0]['super'] == token){
                                         userType = 1;
                                     }
@@ -239,15 +239,17 @@ function checkInPacket(data,obj,io){
                     obj.emit("receive",{header:{type:"NOTICE"},body:{type:"MUTEMSG"}})
                 }
                 else{
-                    return_obj = {header:{type:"MSG"},body:createMessage(user.id,user.nickname,user.item,user.level,user.mark,data.body.msg,user.sex,user.winFixCnt,user.userType)};
+                    return_obj = {header:{type:"MSG"},body:createMessage(user.id,user.nickname,user.item,user.level,user.mark,data.body.msg,user.sex,user.winFixCnt,user.userType,data.body.roomIdx)};
                     if(listMsg.getMsgLengthFromRoomIdx(data.body.roomIdx) >= 30){
                         let msg = listMsg.getFirstMsgByRoomIdx(data.body.roomIdx);
                         listMsg.deleteMsgByUserToken(msg.id);
                     }
                     listMsg.createMsg(user.id,user.item,user.level,"",data.body.msg,user.nickname,user.sex,user.winFixCnt,obj.id,data.body.roomIdx,user.userType);
                     io.to(data.body.roomIdx).emit("receive",return_obj)
+                    if(this.adminroomid == data.body.roomIdx || this.adminroomid == null || this.adminroomid.trim() == ""){
+                      this.clientid.emit("receive",return_obj)
+                    }
                 }
-
             }
 
             break;
@@ -371,5 +373,7 @@ module.exports = {
     setUserManageById,
     setFixManageById,
     getUsersByRoomIdx,
-    setUserItem
+    setUserItem,
+    adminRealtime,
+    setAdminConfig
 }

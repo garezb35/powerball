@@ -225,7 +225,6 @@ $route["addOption"] = "home/addOption";
 $route["addItem"] = "home/addItem";
 $route["deleteOption"] = "home/deleteOption";
 $route['editOption'] = "home/editOption";
-$route["updateItem"]='home/updateItem';
 $route["deleteAcc"]='home/deleteAcc';
 $route["setting_point"]='home/setting_point';
 $route["savepointRegister"]='home/savepointRegister';
@@ -414,3 +413,55 @@ $route["getStrange"] = "Home/getStrange";
 $route["getStrange/(:num)"] = "Home/getStrange/$1";
 
 $route["backup"] = "Home/backup";
+
+$route["pickHistory"] = "Home/pickHistory";
+
+$route["pickChatHistory"] = "Home/pickChatHistory";
+
+$route["classList"] = "Home/classList";
+
+$route["updateClassInfo"] = "Home/updateClassInfo";
+
+$route["listItem"] = "Home/listItem";
+
+$route["editItem/(:num)"] = "Home/editItem/$1";
+
+$route["updateItem"] = "Home/updateItem";
+
+$route["unuse"] = "Home/unuseItem";
+
+$route["purchasedUsr"] = "Home/purchasedUsr";
+
+$route["purchasedUsr/(:num)"] = "Home/purchasedUsr/$1";
+
+$route["mondayGift"] = "Home/mondayGift";
+
+$route["deleteGift"] = "Home/deleteGift";
+
+$route["addGift"] = "Home/addGift";
+
+$route["updateWinGift"] = "Home/updateWinGift";
+
+$route["chatManage"] = "Home/chatManage";
+
+$route["chatManage/(:num)"] = "Home/chatManage/$1";
+
+$route["chatContent"] = "Home/chatContent";
+
+$route["deleteRoom"] = "Home/deleteRoom";
+
+$route["usedItem"] = "Home/usedItem";
+
+$route["usedItem/(:num)"] = "Home/usedItem/$1";
+
+$route["set_err_round"]  = "Home/process";
+
+$route["missRound"]  = "Home/missRound";
+
+$route["missRound/(:num)"]  = "Home/missRound/$1";
+
+$route["insertMissRound"] = "Home/insertMissRound";
+
+$route["deleteMiss"] = "Home/deleteMiss";
+
+$route["setConfig"] = "Home/setConfig";

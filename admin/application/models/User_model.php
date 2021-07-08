@@ -7,12 +7,36 @@ class User_model extends CI_Model
      * @param string $searchText : This is optional search text
      * @return number $count : This is row count
      */
+
+     function addLog($added,$userId,$reason,$type){
+       if($added == 1){
+         $this->db->select("id");
+         $this->db->from("tbl_block_reason");
+         $this->db->where("userId",$userId);
+         $this->db->where("type",$type);
+         $query = $this->db->get();
+         $id = $query->result();
+         if(sizeof($id) > 0){
+           $this->db->where("id",$id[0]->id);
+           $this->db->update("tbl_block_reason",array("reason"=>$reason));
+         }
+         else{
+           $this->db->insert("tbl_block_reason",array("userId"=>$userId,"reason"=>$reason,"type"=>$type));
+         }
+       }
+       else{
+         $this->db->where("userId",$userId);
+         $this->db->where("type",$type);
+         $this->db->delete("tbl_block_reason");
+       }
+     }
     function userListingCount($searchText= '',$isDeleted=0,$st=null,$et=null,$level=null,$item=null,$content=null)
     {
         $this->db->select('BaseTbl.userId');
         $this->db->from('pb_users as BaseTbl');
         $this->db->where('BaseTbl.isDeleted', $isDeleted);
         $this->db->where('BaseTbl.user_type', "01");
+        $this->db->where('BaseTbl.userId !=', "3");
         if($st !=null) $this->db->where("BaseTbl.created_at >=",$st);
         if($et !=null) $this->db->where("BaseTbl.created_at <=",$et);
         if($content !=null) {
@@ -63,6 +87,7 @@ class User_model extends CI_Model
         $this->db->join("pb_ip_blocked as IpBlocked","IpBlocked.ip=BaseTbl.ip","left");
         $this->db->where("CodeDetail.class","0020");
         $this->db->where('BaseTbl.user_type', "01");
+        $this->db->where('BaseTbl.userId !=', "3");
         if(!empty($searchText)) {
             $likeCriteria = "(BaseTbl.email  LIKE '%".$searchText."%'
                             OR  BaseTbl.nickname  LIKE '%".$searchText."%'

@@ -1,3 +1,4 @@
+let admin_roomIdx = ""
 const {io} = require('../server')
 const {knex} = require('../server')
 const {
@@ -11,14 +12,14 @@ const {
     setUserManageById,
     setFixManageById,
     getUsersByRoomIdx,
-    setUserItem
+    setUserItem,
+    adminRealtime,
+    setAdminConfig
 
 } = require('../utils/utils')
 
 let public_msg = new Array();
 let private_msg = new Array();
-
-
 
 let presult = io.of('/result');
 presult.on("connection",(client) => {
@@ -39,6 +40,16 @@ public.on("connection",(client) => {
             public.to(deleted_user.roomIdx).emit("receive",{header:{type:"LeaveUserId"},body:{userIdKey:deleted_user.id}})
             client.leave(deleted_user.roomIdx)
         }
+    })
+    client.on("touser",(data,callback)=>{
+      let t_user = getUserFromIdAndRoomIdx(data.userIdKey,"channel1")
+      if(typeof  t_user !="undefined"){
+        public.to(t_user.clientId).emit("touser",data)
+      }
+    })
+
+    client.on("miss",(data,callback)=>{
+      public.emit("tomiss",data)
     })
     client.on("send",(data,callback) => {
         if(data.header.type == "GIFT"){
@@ -163,6 +174,7 @@ roomio.on("connection",(client) => {
     })
     client.on("receive",(data,callback) =>{
         client.to(data.body.roomIdx).emit("receive",data);
+
     })
 });
 
@@ -187,6 +199,25 @@ item_socket.on("connection",(client) => {
     })
     client.on("send",(data,callback) => {
       setUserItem(data)
+    })
+});
+
+let prefix_socket = io.of('/prefix');
+prefix_socket.on("connection",(client) => {
+    client.on('disconnect', () => {
+      setAdminConfig("","","")
+    })
+    client.on("send",(data,callback) => {
+      prefix_socket.emit("receive",data);
+    })
+    client.on("init",(data,callback)=>{
+      adminRealtime(data,client,prefix_socket);
+      setAdminConfig(client,prefix_socket,data)
+    })
+
+    client.on("closeroom",(data,callback)=>{
+      refreshChatByRoomIdx(data)
+      roomio.to(data).emit("receive",{header:{type:"NOTICE"},body:{type:"CLOSEROOM"}});
     })
 });
 

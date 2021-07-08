@@ -94,81 +94,76 @@ function setGameTimer(count, betLeft) {
 
 function ladderTimer(remain,divId,w)
 {
-  console.log(window.location.pathname)
-  var ca = calcTime("+9");
-  var hour = ca.getHours()
-  if(hour >= 0 && hour <=5){
-
+  remainTime = powerballDiff();
+  if(remainTime == null){
+    return;
   }
-  else{
-    remainTime = powerballDiff();
-      if(remainTime == 0)
-    {
-      remainTime = remain;
-      if(divId != ""){
-          var roundNum = parseInt($('#timeRound').text())+1;
-          var dayRound  = parseInt($('#timedayRound').text())+1;
-          if(dayRound > 288) dayRound = 1;
-          $('#timeRound').text(roundNum);
-          $('#timedayRound').text(dayRound);
-          roundNum = null;
-          dayRound = null;
-          if($('#powerballPointBetGraph').length)
-          {
-              setTimeout(function(){
-                  $('#powerballPointBetGraph .oddChart .oddBar').animate({width:'0px'},1000,function(){
-                      $(this).next().text('0%');
-                  });
+  if(remainTime == 0)
+  {
+    remainTime = remain;
+    if(divId != ""){
+        var roundNum = parseInt($('#timeRound').text())+1;
+        var dayRound  = parseInt($('#timedayRound').text())+1;
+        if(dayRound > 288) dayRound = 1;
+        $('#timeRound').text(roundNum);
+        $('#timedayRound').text(dayRound);
+        roundNum = null;
+        dayRound = null;
+        if($('#powerballPointBetGraph').length)
+        {
+            setTimeout(function(){
+                $('#powerballPointBetGraph .oddChart .oddBar').animate({width:'0px'},1000,function(){
+                    $(this).next().text('0%');
+                });
 
-                  $('#powerballPointBetGraph .evenChart .evenBar').animate({width:'0px'},1000,function(){
-                      $(this).next().text('0%');
-                  });
-              },3000);
-          }
-      }
+                $('#powerballPointBetGraph .evenChart .evenBar').animate({width:'0px'},1000,function(){
+                    $(this).next().text('0%');
+                });
+            },3000);
+        }
     }
-    if(remainTime == 5){
-      if(window.location.pathname == "/" ||
-        window.location.pathname.includes("/pick/powerball/live") ||
-        (window.location.pathname.includes("/p_analyse") && window.location.search.includes("?terms=lates&pageType=display")) ||
-        (window.location.pathname.includes("/psadari_analyse") && window.location.search.includes("?terms=lates&pageType=display")) ||
-        window.location.pathname.includes("/chat") ||
-        window.location.pathname.includes("/discussion") ||
-        window.location.pathname.includes("/pick/psadari/live")){
-      }
-      else{
-        $("#pickSound").jPlayer("play")
-      }
-    }
-
-    if(w == 1){
-      if(remainTime <=300 && remainTime >=260 ){
-        $(".bet-part").removeClass("d-none")
-        $(".time-part").addClass("d-none")
-        $("#bettingPart").text(remainTime-260)
-        if(remainTime == 300) {$("tbody").html("");heightResize()}
-        if(remainTime == 260) {getWiningMachine();}
-      }
-      else{
-        $(".bet-part").addClass("d-none")
-        $(".time-part").removeClass("d-none")
-      }
-    }
-
-    // remainTime--;
-      if(divId != ""){
-          var remain_i = Math.floor(remainTime / 60);
-          var remain_s = Math.floor(remainTime % 60);
-          if(remain_i < 10) remain_i = '0' + remain_i;
-          if(remain_s < 10) remain_s = '0' + remain_s;
-
-          $('#'+divId).find('.minute').text(remain_i);
-          $('#'+divId).find('.second').text(remain_s);
-
-          remain_i = null;
-          remain_s = null;
-      }
   }
+  if(remainTime == 5){
+    if(window.location.pathname == "/" ||
+      window.location.pathname.includes("/pick/powerball/live") ||
+      (window.location.pathname.includes("/p_analyse") && window.location.search.includes("?terms=lates&pageType=display")) ||
+      (window.location.pathname.includes("/psadari_analyse") && window.location.search.includes("?terms=lates&pageType=display")) ||
+      window.location.pathname.includes("/chat") ||
+      window.location.pathname.includes("/discussion") ||
+      window.location.pathname.includes("/pick/psadari/live")){
+    }
+    else{
+      $("#pickSound").jPlayer("play")
+    }
+  }
+
+  if(w == 1){
+    if(remainTime <=300 && remainTime >=260 ){
+      $(".bet-part").removeClass("d-none")
+      $(".time-part").addClass("d-none")
+      $("#bettingPart").text(remainTime-260)
+      if(remainTime == 300) {$("tbody").html("");heightResize()}
+      if(remainTime == 260) {getWiningMachine();}
+    }
+    else{
+      $(".bet-part").addClass("d-none")
+      $(".time-part").removeClass("d-none")
+    }
+  }
+
+  // remainTime--;
+    if(divId != ""){
+        var remain_i = Math.floor(remainTime / 60);
+        var remain_s = Math.floor(remainTime % 60);
+        if(remain_i < 10) remain_i = '0' + remain_i;
+        if(remain_s < 10) remain_s = '0' + remain_s;
+
+        $('#'+divId).find('.minute').text(remain_i);
+        $('#'+divId).find('.second').text(remain_s);
+
+        remain_i = null;
+        remain_s = null;
+    }
 }
 
 function powerTimer(remain){

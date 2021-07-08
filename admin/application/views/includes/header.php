@@ -18,8 +18,10 @@
     <link href="<?php echo base_url(); ?>assets/dist/css/sscss/bootstrap-notify.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url(); ?>assets/dist/css/sscss/styles/alert-bangtidy.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url(); ?>assets/dist/css/sscss/styles/alert-blackgloss.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="<?=base_url_source()?>/assets/css/alertify.min.css">
     <script type="text/javascript">
         var baseURL = "<?php echo base_url(); ?>";
+        var missed = <?=isset($misses) && !empty($misses) ? sizeof($misses) : 0; ?>;
     </script>
     <style>
       .error{
@@ -38,16 +40,21 @@
     <script src="<?php echo base_url(); ?>assets/js/ckeditor/sample.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/tooltipsy.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/bootstrap-notify.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.2/socket.io.js" ></script>
     <script src="<?php echo base_url(); ?>assets/select2/js/select2.min.js"></script>
+    <script src="<?=base_url_source()?>assets/js/alertify.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/init.js?<?=time()?>"></script>
   </head>
 
   <body class="skin-blue sidebar-mini">
+    
+    <audio  id="war_sound">
+      <source src="/assets/warning_short.mp3" type="audio/mp3">
+    </audio>
     <div class="wrapper">
       <header class="main-header">
         <!-- Logo -->
-        <a href="<?php echo base_url(); ?>index" class="logo">
+        <a href="<?php echo base_url(); ?>dashboard" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini">관리자 패널</span>
           <!-- logo for regular state and mobile devices -->
@@ -72,7 +79,7 @@
               <a href="<?=base_url()?>returnDeposit">환전관리&nbsp;&nbsp;(<?=getMoneyState()?>)<span class="badge badge-danger badge-pill pur"></span></a>
             </li>
             <li>
-              <a href="<?=base_url()?>dashboard?order_part=3">1:1문의관리&nbsp;&nbsp;(<?=getPrivateState()?>)<span class="badge badge-danger badge-pill shopping"></span></a>
+              <a href="<?=base_url()?>panel?id=private">1:1문의관리&nbsp;&nbsp;(<?=getPrivateState()?>)<span class="badge badge-danger badge-pill shopping"></span></a>
             </li>
 
           </ul>
@@ -81,7 +88,6 @@
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <img src="<?php echo base_url(); ?>assets/dist/img/avatar.png" class="user-image" alt="User Image"/>
-
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
@@ -113,6 +119,45 @@
         <section class="sidebar">
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
+            <li class="treeview <?php echo activate_menu("/addNew/registerDepoit/userListing/exitMember/memberLevel/registerDeposit/returnDeposit/deposithistory/editOld/editmemberL/charge/exchange/classList/");?>">
+              <a href="<?php echo base_url(); ?>">
+                <i class="fa fa-users"></i>
+                <span>회원관리</span>
+              </a>
+              <ul class="treeview-menu">
+                <li class="<?=activate_menu("/addNew/userListing/editOld/");?>"><a href="<?php echo base_url()."userListing"  ?>">
+                  <i class="fa fa-circle-o"></i>회원리스트</a>
+                </li>
+                <li class="<?=activate_menu("/registerDeposit/");?>"><a href="<?php echo base_url()."registerDeposit"  ?>">
+                  <i class="fa fa-circle-o"></i>충전관리</a>
+                </li>
+                <li class="<?=activate_menu("/returnDeposit/");?>"><a href="<?php echo base_url()."returnDeposit"  ?>">
+                  <i class="fa fa-circle-o"></i>환전관리</a>
+                </li>
+                <li class="<?=activate_menu("/classList/");?>"><a href="<?php echo base_url()."classList"  ?>">
+                  <i class="fa fa-circle-o"></i>계급관리</a>
+                </li>
+                <li><a href="<?php echo base_url()."exitMember"  ?>"><i class="fa fa-circle-o"></i>탈퇴회원</a></li>
+              </ul>
+            </li>
+            <li class="treeview <?php echo activate_menu("/listItem/purchasedUsr/mondayGift/usedItem/");?>">
+              <a href="">
+                <i class="fa fa-shopping-cart"></i> <span>마켓팅관리</span></i>
+              </a>
+              <ul class="treeview-menu">
+                <li class="<?=activate_menu("/listItem/");?>"><a href="/listItem"><i class="fa fa-circle-o"></i>아이템목록</a></li>
+                <li class="<?=activate_menu("/purchasedUsr/");?>"><a href="/purchasedUsr"><i class="fa fa-circle-o"></i>구입한 사용자 목록</a></li>
+                <li class="<?=activate_menu("/usedItem/");?>"><a href="/usedItem"><i class="fa fa-circle-o"></i>아이톔 사용 목록</a></li>
+                <li class="<?=activate_menu("/mondayGift/");?>"><a href="/mondayGift"><i class="fa fa-circle-o"></i>월요일 시상식상품</a></li>
+              </ul>
+            </li>
+
+            <li>
+              <a href="<?=base_url()?>chatManage">
+                <i class="fa fa-comment"></i> <span>채팅방관리</span></i>
+              </a>
+            </li>
+
             <?php $board = get_board(); ?>
             <?php
             $m = "/board_settings/Bbs_SetUp_W/editboards/viewmessage/editboard/panel/bbs/viewreq/";
@@ -138,35 +183,11 @@
               <?php endif; ?>
               </ul>
             </li>
-            <li class="treeview <?php echo activate_menu("/addNew/registerDepoit/userListing/exitMember/memberLevel/registerDeposit/returnDeposit/deposithistory/editOld/editmemberL/charge/exchange/");?>">
-              <a href="<?php echo base_url(); ?>">
-                <i class="fa fa-users"></i>
-                <span>회원관리</span>
+            <li>
+              <a href="<?=base_url()?>missRound">
+                <i class="fa fa-comment"></i> <span>빠진 결과 처리</span></i>
               </a>
-              <ul class="treeview-menu">
-                <li class="<?=activate_menu("/addNew/userListing/editOld/");?>"><a href="<?php echo base_url()."userListing"  ?>">
-                  <i class="fa fa-circle-o"></i>회원리스트</a>
-                </li>
-                <li class="<?=activate_menu("/registerDeposit/");?>"><a href="<?php echo base_url()."registerDeposit"  ?>">
-                  <i class="fa fa-circle-o"></i>충전관리</a>
-                </li>
-                <li class="<?=activate_menu("/returnDeposit/");?>"><a href="<?php echo base_url()."returnDeposit"  ?>">
-                  <i class="fa fa-circle-o"></i>환전관리</a>
-                </li>
-                <li><a href="<?php echo base_url()."exitMember"  ?>"><i class="fa fa-circle-o"></i>탈퇴회원</a></li>
-              </ul>
             </li>
-            <li class="treeview">
-              <a href="">
-                <i class="fa fa-envelope"></i> <span>SMS관리</span></i>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="javascript:alert('SMS 서비스추가필요')"><i class="fa fa-circle-o"></i>SMS 전송</a></li>
-                <li><a href="<?php echo base_url()."sms_history"  ?>"><i class="fa fa-circle-o"></i>SMS 전송내역</a></li>
-                <li><a href="#"><i class="fa fa-circle-o"></i>SMS 알림문자</a></li>
-              </ul>
-            </li>
-
           </ul>
         </section>
         <!-- /.sidebar -->

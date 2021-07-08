@@ -58,6 +58,8 @@ class ChatController extends SecondController
     }
 
     public function roomWait(Request $request){
+        $days_ago = date('Y-m-d H:i:s', strtotime('-26  hours', strtotime("now")));
+
         if(!$this->isLogged){
             $user = User::with("getLevel")->where("userId",3)->first();
         }
@@ -84,7 +86,7 @@ class ChatController extends SecondController
 
         $best = $list= $pb_rooms =   array();
         $p = new PbRoom();
-        $p = $p->with(["roomandpicture.getUserClass"])->where("pb_room.active",1);
+        $p = $p->with(["roomandpicture.getUserClass"])->where("pb_room.active",1)->where("pb_room.created_at",">",$days_ago);
         if($rtype == "winRate"){
             $pb_rooms = $p->get()->toArray();
         }
@@ -288,9 +290,11 @@ class ChatController extends SecondController
             echo json_encode(array("status"=>0,"msg"=>"파워볼 결과가 존재하지 않습니다."));
             return;
         }
+        $days_ago = date('Y-m-d H:i:s', strtotime('-26  hours', strtotime("now")));
+        PbRoom::where("userId",$user->userId)->where("created_at","<=",$days_ago)->delete();
         $round = $powerball_raw["day_round"] + 1;
         PbRoom::create([
-           "room_connect"=>$title,
+            "room_connect"=>$title,
             "max_connect"=>$max,
             "type"=>$type == "normal" ? 1 : 2,
             "active"=>0,

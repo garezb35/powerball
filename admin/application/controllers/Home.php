@@ -18,6 +18,7 @@
         parent::__construct();
         $this->global['pageTitle'] = '몬스터파워볼 관리자';
         $this->load->model('base_model');
+        $this->global['misses'] = $this->base_model->getSelect("pb_error_round");
         $this->load->helper('form');
       }
 
@@ -822,6 +823,9 @@
         return;
       $data['comment'] = $this->base_model->getCommentsByPostId(5,0,$id);
       $data['size'] = sizeof($this->base_model->getSelect("pb_comment",array(array("record"=>"messageId","value"=>$id))));
+      $reply_check = $this->base_model->getSelect("pb_message",array(array("record"=>"keys","value"=>$id),array("record"=>"reply","value"=>1)));
+      $reply_check = sizeof($reply_check);
+      $data["reply_check"] = $reply_check;
       $this->loadViews("viewMessage",$this->global,$data,NULL);
     }
 
@@ -829,9 +833,8 @@
 
       $comment = $this->input->post("sCONT");
       $postId= $this->input->post("postId");
-      echo $this->base_model->insertArrayData("tbl_comment",array(  "postId"=>$postId,
+      echo $this->base_model->insertArrayData("pb_comment",array(  "messageId"=>$postId,
                                                                     "userId"=>$this->session->userdata('userId'),
-                                                                    "created_date"=>date("Y-m-d H:i"),
                                                                     "content"=>$comment));
     }
 
@@ -1338,17 +1341,21 @@
       $sStat = $this->input->post("sStat");
       $userids = explode(",", $this->input->post("userids"));
       $chkReqSeq = $this->input->post("chkReqSeq");
+      $js_result = array();
       foreach ($chkReqSeq as $key => $value) {
         if($sStat ==1){
           $this->base_model->updateDeposit($value,$sStat);
           $results  =$this->base_model->getAmountD($value);
-          $this->base_model->increaseAmount($results);
+          $temp = $this->base_model->increaseAmount($results);
+          if(empty($temp[0]))
+            continue;
+          array_push($js_result,$temp);
         }
         else{
           $this->base_model->updateDeposit($value,$sStat);
         }
      }
-     redirect("registerDeposit");
+     echo json_encode(array("status"=>1,"type"=>"request","result"=>$js_result));
     }
 
     public function ActDelivery(){
@@ -2721,6 +2728,7 @@
   public function updateReturnDeposit(){
     $chkReqSeq =  $this->input->post("chkReqSeq");
     $sStat = $this->input->post("sStat");
+    $js_result = array();
     foreach ($chkReqSeq as $value) {
       $details = $this->base_model->getSelect("pb_money_return",array(array("record"=>"id","value"=>$value)))[0];
       $userId = $details->userId;
@@ -2728,10 +2736,14 @@
       $pending = 0;
       if($sStat == 1){
        $this->base_model->plusValue("pb_users","bullet",$amount,array(array("userId",$userId)),"-");
+       $user = $this->base_model->getSelect("pb_users",array(array("record"=>"userId","value"=>$userId)));
+       if(empty($user))
+        continue;
+        array_push($js_result,array($user[0]->userIdKey,number_format($user[0]->bullet)));
       }
       $this->base_model->updateDataById($value,array("status"=>$sStat,'money'=>$amount * 70),"pb_money_return","id");
     }
-    redirect("returnDeposit");
+    echo json_encode(array("status"=>1,"type"=>"request","result"=>$js_result));
   }
 
   public function Comment_W(){
@@ -2895,7 +2907,7 @@
 
   public function sendMail(){
     $userId = $this->input->get("userid");
-    $user = $this->base_model->getSelect("tbl_users",array(array("record"=>"userId","value"=>$userId)));
+    $user = $this->base_model->getSelect("pb_users",array(array("record"=>"userId","value"=>$userId)));
     if(sizeof($user) ==0 ) return;
     $data['user'] = $user[0];
     $this->load->view("sendMail",$data);
@@ -2903,13 +2915,7 @@
   }
 
   function PopNote_I(){
-    $this->base_model->insertArrayData("tbl_mail",array("toId"=>$this->input->post("chkMemCode"),
-                                            "fromId"=>1,
-                                            "title"=>$this->input->post("sTit"),
-                                            "content"=>$this->input->post("description",false),
-                                            "type"=>0,
-                                            "view"=>0,
-                                            "updated_date"=>date("Y-m-d H:i:s")));
+    $this->base_model->insertArrayData("pb_inbox",$this->input->post());
     echo "<script>alert('발송되였습니다');self.close();</script>";
   }
 
@@ -3460,6 +3466,7 @@
     if($sKind =="C"){
       foreach($chkMemCode as $value){
         $this->base_model->updateDataById($value,array("isDeleted"=>0),"pb_users","userId");
+        $this->base_model->addLog(2,$value,"",1);
       }
       redirect("exitMember");
     }
@@ -3702,7 +3709,7 @@
   }
 
   public function deleteComment(){
-    $this->base_model->deleteRecordCustom("tbl_comment","id",$this->input->post("id"));
+    $this->base_model->deleteRecordCustom("pb_comment","id",$this->input->post("id"));
     echo 1;
   }
 
@@ -3802,14 +3809,7 @@
     echo 0;
   }
 
-  public function updateItem(){
-    $data= $this->input->post();
-    $id = $data['id'];
-    if(empty($id)) {echo 0;return;}
-    unset($data["id"]);
-    $this->base_model->updateDataById($id,$data,"tbl_options","id");
-    echo 1;
-  }
+
 
   public function deleteAcc(){
     $data = $this->input->post();
@@ -5135,5 +5135,393 @@
     force_download($db_name, $backup);
   }
 
+  public function pickHistory(){
+        $history = array();
+        $history["totalWinClass"] = "";
+        $history["totalWinFix"] = 0;
+        $history["powerballOddEvenWinClass"] = "";
+        $history["powerballOddEvenWinFix"] = 0;
+        $history["powerballOddEvenWin"] = 0;
+        $history["powerballOddEvenLose"] = 0;
+        $history["powerballOddEvenRate"] = 0;
+
+        $history["powerballUnderOverWinClass"] = "";
+        $history["powerballUnderOverWinFix"] = 0;
+        $history["powerballUnderOverWin"] = 0;
+        $history["powerballUnderOverLose"] = 0;
+        $history["powerballUnderOverRate"] = 0;
+
+        $history["numberOddEvenWinClass"] = "";
+        $history["numberOddEvenWinFix"] = 0;
+        $history["numberOddEvenWin"] = 0;
+        $history["numberOddEvenLose"] = 0;
+        $history["numberOddEvenRate"] = 0;
+
+        $history["numberUnderOverWinClass"] = "";
+        $history["numberUnderOverWinFix"] = 0;
+        $history["numberUnderOverWin"] = 0;
+        $history["numberUnderOverLose"] = 0;
+        $history["numberUnderOverRate"] = 0;
+
+        $history["numberPeriodWinClass"] = "";
+        $history["numberPeriodWinFix"] = 0;
+        $history["numberPeriodWin"] = 0;
+        $history["numberPeriodLose"] = 0;
+        $history["numberPeriodRate"] = 0;
+
+    $userid = $this->input->get("userid");
+    $current_user = $this->base_model->getSelect("pb_users",array(array("record"=>"userId","value"=>$userid)))[0];
+    $user_win_history = $user_room = $room_history =  array();
+    if(!empty($current_user->winning_history)){
+      $data = json_decode($current_user->winning_history);
+      $history["totalWinFix"] = $data->current_win->p;
+            $history["powerballOddEvenWinFix"] = $data->pb_oe->current_win;
+            $history["powerballOddEvenWin"] = $data->pb_oe->win;
+            $history["powerballOddEvenLose"] = $data->pb_oe->lose;
+
+            if($data->pb_oe->win ==0 && $data->pb_oe->lose ==0){
+                $history["powerballOddEvenRate"] = 0;
+            }
+            else{
+                $history["powerballOddEvenRate"] = number_format(100* ($data->pb_oe->win / ($data->pb_oe->win + $data->pb_oe->lose)))."%";
+            }
+
+            $history["powerballUnderOverWinFix"] = $data->pb_uo->current_win;
+            $history["powerballUnderOverWin"] = $data->pb_uo->win;
+            $history["powerballUnderOverLose"] = $data->pb_uo->lose;
+
+            if($data->pb_uo->win ==0 && $data->pb_uo->lose ==0){
+                $history["powerballUnderOverRate"] = 0;
+            }
+            else{
+                $history["powerballUnderOverRate"] = number_format(100* ($data->pb_uo->win / ($data->pb_uo->win + $data->pb_uo->lose)))."%";
+            }
+
+            $history["numberOddEvenWinFix"] = $data->nb_oe->current_win;
+            $history["numberOddEvenWin"] = $data->nb_oe->win;
+            $history["numberOddEvenLose"] = $data->nb_oe->lose;
+
+            if($data->nb_oe->win ==0 && $data->nb_oe->lose ==0){
+                $history["numberOddEvenRate"] = 0;
+            }
+            else{
+                $history["numberOddEvenRate"] = number_format(100* ($data->nb_oe->win / ($data->nb_oe->win + $data->nb_oe->lose)))."%";
+            }
+
+            $history["numberUnderOverWinFix"] = $data->nb_uo->current_win;
+            $history["numberUnderOverWin"] = $data->nb_uo->win;
+            $history["numberUnderOverLose"] = $data->nb_uo->lose;
+
+            if($data->nb_uo->win ==0 && $data->nb_uo->lose ==0){
+                $history["numberUnderOverRate"] = 0;
+            }
+            else{
+                $history["numberUnderOverRate"] = number_format(100* ($data->nb_uo->win / ($data->nb_uo->win + $data->nb_uo->lose)))."%";
+            }
+
+            $history["numberPeriodWinFix"] = $data->nb_size->current_win;
+            $history["numberPeriodWin"] = $data->nb_size->win;
+            $history["numberPeriodLose"] = $data->nb_size->lose;
+
+            if($data->nb_size->win ==0 && $data->nb_size->lose ==0){
+                $history["numberPeriodRate"] = 0;
+            }
+            else{
+                $history["numberPeriodRate"] = number_format(100* ($data->nb_size->win / ($data->nb_size->win + $data->nb_size->lose)))."%";
+            }
+    }
+
+    $data = array("pick"=>$history,"user"=>$current_user);
+    $this->load->view("pickHistory",$data);
+  }
+
+  public function pickChatHistory(){
+    $roomIdx = $this->input->get("roomIdx");
+    $room = $this->base_model->getSelect("pb_room",array(array("record"=>"roomIdx","value"=>$roomIdx)));
+    $win_room = array();
+    if(!empty($room[0]->winning_history))
+        $win_room = json_decode($room[0]->winning_history);
+    $data["win_room"] = $win_room;
+    $data["cur_win"] = $room[0]->cur_win;
+    $data["recommend"] = $room[0]->recommend;
+    $data["bullet"] = $room[0]->bullet;
+    $this->load->view("pickChatHistory",$data);
+  }
+
+
+  public function classList(){
+    $classes = $this->base_model->getSelect("pb_codedetail",array(array("record"=>"class","value"=>"0020"),array("record"=>"code !=","value"=>"00")),array(array("record"=>"code","value"=>"ASC")));
+    $data["classes"] = $classes;
+    $this->loadViews("classList",$this->global,$data,NULL);
+  }
+
+  public function updateClassInfo(){
+    $id = $this->input->post("id");
+    $item = $this->input->post("item");
+    $value = $this->input->post("value");
+    $this->base_model->updateDataById($id,array($item=>$value),"pb_codedetail","id");
+    echo 1;
+  }
+
+  public function listItem(){
+    $item = $this->base_model->getSelect("pb_market",null,array(array("record"=>"order","value"=>"ASC")));
+    $data["items"]  = $item;
+    $this->loadViews("listItem",$this->global,$data,NULL);
+  }
+
+  public function editItem($id){
+    $data["item"] = $this->base_model->getSelect("pb_market",array(array("record"=>"id","value"=>$id)));
+    $this->loadViews("additem",$this->global,$data,NULL);
+  }
+
+  public function updateItem(){
+    $data = $this->input->post();
+    $id = $data["id"];
+    unset($data["id"]);
+    $this->base_model->updateDataById($id,$data,"pb_market","id");
+    redirect("/listItem");
+  }
+
+  public function unuseItem(){
+      $id = $this->input->post("id");
+      $state = $this->input->post("state");
+      $update_data = array("state"=>0);
+      if($state == 0 )
+        $update_data = array("state"=>1);
+      $this->base_model->updateDataById($id,$update_data,"pb_market","id");
+      echo 1;
+  }
+
+  public function purchasedUsr(){
+    $this->load->library('pagination');
+    $records_count = sizeof( $this->base_model->getPurchasedUser(10000,0));
+    $returns = $this->paginationCompress ( "purchasedUsr/", $records_count, 20);
+    $data["item"] = $this->base_model->getPurchasedUser($returns["page"], $returns["segment"]);
+    $this->loadViews("purchasedUsr",$this->global,$data,NULL);
+  }
+
+  public function mondayGift(){
+    $data["item"] = $this->base_model->getWinGift();
+    $this->loadViews("mondayGift",$this->global,$data,NULL);
+  }
+
+  public function deleteGift(){
+    $id = $this->input->post("id");
+    $this->base_model->deleteRecordCustom("pb_win_gift","id",$id);
+    echo 1;
+  }
+
+  public function addGift(){
+    $data["item"] = $this->base_model->getSelect("pb_market",array(array("record"=>"state","value"=>1)),array(array("record"=>"order","value"=>"ASC")));
+    $this->loadViews("addGift",$this->global,$data,NULL);
+  }
+
+  public function updateWinGift(){
+    $this->base_model->insertArrayData("pb_win_gift",$this->input->post());
+    redirect("/mondayGift");
+  }
+
+
+  public function chatManage(){
+    $this->load->library('pagination');
+    $records_count = sizeof($this->base_model->getChatRooms(10000,0));
+    $returns = $this->paginationCompress ( "chatManage/", $records_count, 20);
+    $data['item'] = $this->base_model->getChatRooms($returns["page"], $returns["segment"]);
+    $data["uc"] = $records_count;
+    $data["pf"] = $returns["segment"];
+    $this->loadViews("chatlist",$this->global,$data,NULL);
+  }
+
+  public function chatContent(){
+    $data["roomIdx"] = $this->input->get("roomIdx");
+    $profile = array();
+    $levels = $this->base_model->getSelect("pb_codedetail",array(array("record"=>"class","value"=>"0020"),array("record"=>"status","value"=>"Y")),array(array("record"=>"code","value"=>"ASC")));
+    if(!empty($levels)){
+        foreach($levels as $value){
+          $profile[$value->code] = $value->value3;
+        }
+    }
+    $data["profile"] = json_encode($profile);
+    $this->load->view("chatContent",$data);
+  }
+
+  public function deleteRoom(){
+    $roomIdx = $this->input->post("roomIdx");
+    $this->base_model->deleteRecordCustom("pb_room","roomIdx",$roomIdx);
+    echo 1;
+  }
+
+  public function usedItem(){
+    $this->load->library('pagination');
+    $config['reuse_query_string'] = true;
+    $this->pagination->initialize($config);
+    $use = $this->input->get("use");
+    $shType = $this->input->get("shType");
+    $content = $this->input->get("content");
+    $records_count = sizeof($this->base_model->getItem(2,10000,0,$use,$shType,$content));
+    $returns = $this->paginationCompress ( "usedItem/", $records_count, 20);
+    $data['item'] = $this->base_model->getItem(2,$returns["page"], $returns["segment"],$use,$shType,$content);
+    $data["uc"] = $records_count;
+    $data["pf"] = $returns["segment"];
+    $this->loadViews("usedItem",$this->global,$data,NULL);
+  }
+
+  function process(){
+    $in_par = $this->input->get();
+    $this->base_model->insertArrayData("pb_error_round",array("day_round"=>$in_par["round"],"date"=>$in_par["date"]));
+    echo 1;
+  }
+
+  function missRound(){
+    $this->load->library('pagination');
+    $records_count = sizeof($this->base_model->missItem(10000,0));
+    $returns = $this->paginationCompress ( "missRound/", $records_count, 20);
+    $data['item'] = $this->base_model->missItem($returns["page"], $returns["segment"]);
+    $this->loadViews("missRound",$this->global,$data,NULL);
+  }
+
+  function insertMissRound(){
+    $uniroun = $this->input->post("uniround");
+    $pb=$this->input->post("pb");
+    $nb=str_replace(" ","",$this->input->post("nb"));
+    $round=$this->input->post("round");
+    $date=$this->input->post("date");
+
+    if(empty($pb) || empty($nb) || empty($round) || empty($date) || sizeof(explode(",",$nb)) !=5 || empty($uniroun)){
+      echo 0;
+      return;
+    }
+    $checked_result = $this->base_model->getPbResult($round,$date);
+    if(sizeof($checked_result) > 0){
+      echo -1;
+      return;
+    }
+
+    $arr_five = explode(",",$nb);
+    $arr_five[0] = intval($arr_five[0]);
+    $arr_five[1] = intval($arr_five[1]);
+    $arr_five[2] = intval($arr_five[2]);
+    $arr_five[3] = intval($arr_five[3]);
+    $arr_five[4] = intval($arr_five[4]);
+    $pb = intval($pb);
+
+    $pb_odd = $pb % 2;
+    $sum = $arr_five[0] + $arr_five[1] + $arr_five[2] + $arr_five[3] + $arr_five[4];
+    $nb_odd = $sum % 2;
+    $pb_period = "A";
+    $nb_period = "A";
+    $pb_uo = 1;
+    $nb_uo = 1;
+    $nb_size = 1;
+    if($pb >2 && $pb < 5)
+      $pb_period = "B";
+    if($pb ==5 && $pb == 6)
+      $pb_period = "C";
+    if($pb ==7 && $pb == 8 && $pb == 9)
+      $pb_period = "D";
+
+    if($sum >= 36 && $sum <= 49)
+      $nb_period = "B";
+    if($sum >= 50 && $sum <= 57)
+      $nb_period = "C";
+    if($sum >= 58 && $sum <= 65)
+      $nb_period = "D";
+    if($sum >= 66 && $sum <= 78)
+      $nb_period = "E";
+    if($sum > 78)
+      $nb_period = "F";
+
+    if($sum  >=65 && $sum <=80)
+      $nb_size = 2;
+    if($sum  >= 81)
+      $nb_size = 3;
+    if($pb >= 5)
+      $pb_uo = 0;
+    if($sum >= 73)
+      $nb_uo = 0;
+    $insert_id = $this->base_model->insertArrayData("pb_result_powerball",array(
+      "round"=>$round,
+      "day_round"=>$uniroun,
+      "nb1"=>$arr_five[0],
+      "nb2"=>$arr_five[1],
+      "nb3"=>$arr_five[2],
+      "nb4"=>$arr_five[3],
+      "nb5"=>$arr_five[4],
+      "pb"=>$pb,
+      "pb_terms"=>$pb_period,
+      "pb_oe"=>$pb_odd,
+      "pb_uo"=>$pb_uo,
+      "nb_terms"=>$nb_period,
+      "nb_size"=>$nb_size,
+      "nb_oe"=>$nb_odd,
+      "nb_uo"=>$nb_uo,
+      "nb"=>$sum,
+    ));
+    if($insert_id > 0){
+      $this->base_model->runSP(array(
+        "pb_round"=>$round,
+        "day_round"=>$uniroun,
+        "nb1"=>$arr_five[0],
+        "nb2"=>$arr_five[1],
+        "nb5"=>$arr_five[4],
+        "pb"=>$pb,
+        "nb3"=>$arr_five[2],
+        "nb4"=>$arr_five[3],
+        "pb_terms"=>$pb_period,
+        "pb_oe"=>$pb_odd,
+        "pb_uo"=>$pb_uo,
+        "nb_terms"=>$nb_period,
+        "nb_size"=>$nb_size,
+        "nb_oe"=>$nb_odd,
+        "nb_uo"=>$nb_uo,
+        "nb"=>$sum,
+      ));
+    }
+    $this->base_model->deleteMiss($round,date("Y-m-d",strtotime($date)));
+    echo 1 ;
+
+  }
+
+  function deleteMiss(){
+    $id = $this->input->post("id");
+    $this->base_model->deleteRecordCustom("pb_error_round","id",$id);
+    echo json_encode(array("status"=>1));
+  }
+
+  function setConfig(){
+    $cmd = $this->input->post("cmd");
+    $roomIdx = $this->input->post("roomIdx");
+    $tuseridKey = $this->input->post("tuseridKey");
+
+    $pb_user = $this->base_model->getSelect("pb_users",array(array("record"=>"userIdKey","value"=>$tuseridKey)));
+
+    if($roomIdx == "channel1"){
+      $bytime = 0;
+      if($cmd == "muteOn")
+        $bytime =  strtotime("+5 minutes");
+      if($cmd == "muteOnTime1")
+        $bytime =  strtotime("+1 hour");
+      if($cmd == "muteOnTime")
+        $bytime =  strtotime("+10000 hours");
+      if($cmd == "muteOff")
+        $bytime =  0;
+      $this->base_model->updateDataById($tuseridKey,array("mutedTime"=>$bytime,"mutedType"=>1),"pb_users","userIdKey");
+
+      if($cmd == "banipOn"){
+        $this->base_model->deleteRecordCustom("pb_ip_blocked","ip",$pb_user[0]->ip);
+        $this->base_model->insertArrayData("pb_ip_blocked",array("ip"=>$pb_user[0]->ip));
+        $this->load->model('user_model');
+        $this->user_model->addLog(1,$pb_user[0]->userId,"불법활동",2);
+      }
+
+      if($cmd == "banipOff"){
+        $this->base_model->deleteRecordCustom("pb_ip_blocked","ip",$pb_user[0]->ip);
+      }
+      echo json_encode(array("status"=>1,"bytime"=>$bytime));
+    }
+    else{
+
+    }
+  }
 }
 ?>

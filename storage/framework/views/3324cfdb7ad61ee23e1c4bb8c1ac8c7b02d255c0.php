@@ -7,6 +7,10 @@ $po = $pu = array();
   <script>
     var winning = <?php echo e($winning); ?>;
     var api_token = "<?php echo e($api_token); ?>";
+    var last = new Array();
+    <?php if(!empty($last)): ?>
+    last = <?php echo e(json_encode($last,JSON_PRETTY_PRINT)); ?>;
+    <?php endif; ?>
   </script>
   <ul class="nav mb-2" id="powerball-category" role="tablist">
       <li class="nav-item">

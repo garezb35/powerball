@@ -20,7 +20,11 @@ class Msg {
     }
 
     getMsgRoomIdx(roomIdx){
-        return  this.msgs.filter(x => x.roomIdx == roomIdx);
+        if(roomIdx.trim() !="")
+          return  this.msgs.filter(x => x.roomIdx == roomIdx);
+        else {
+          return this.msgs
+        }
     }
     deleteFirstMsgByIndex(index){
         this.msgs = this.msgs.splice(index, 1);

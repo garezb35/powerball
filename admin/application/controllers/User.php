@@ -298,6 +298,7 @@ class User extends BaseController
       else{
           $userInfo = array('isDeleted'=>1, 'updated_at'=>date('Y-m-d H:i:s'));
           $result = $this->user_model->deleteUser($userId, $userInfo);
+          $this->user_model->addLog(1,$userId,$this->input->post("reason"),1);
           if ($result > 0) { echo(json_encode(array('status'=>TRUE))); }
           else { echo(json_encode(array('status'=>FALSE))); }
       }
@@ -314,6 +315,7 @@ class User extends BaseController
       $result["status"] = true;
       if($mode == "enable"){
         $this->user_model->deleteRecordCustom("pb_ip_blocked","ip",$ip);
+        $this->user_model->addLog(2,$userId,"",1);
         $result["txt"] = "아이피차단";
         $result["mode"] = "disable";
       }
@@ -321,6 +323,7 @@ class User extends BaseController
         $checked_ip = $this->user_model->getSelect("pb_ip_blocked",array(array("record"=>"ip","value"=>$ip)));
         if(sizeof($checked_ip) == 0){
           $this->user_model->insertArrayData("pb_ip_blocked",array("ip"=>$ip));
+          $this->user_model->addLog(1,$userId,$this->input->post("reason"),2);
         }
       }
       echo json_encode($result);

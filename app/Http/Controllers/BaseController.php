@@ -9,6 +9,7 @@ use App\Models\PbView;
 use App\Models\User;
 use App\Models\CodeDetail;
 use App\Models\PbPurItem;
+use App\Models\PbIpBlocked;
 use Illuminate\Support\Facades\Auth;
 use View;
 use Redirect;
@@ -28,6 +29,11 @@ class BaseController  extends Controller
     public function  __construct(){
         $this->isLogged = false;
         $this->middleware(function ($request, $next) {
+          $ip_blocked_list = PbIpBlocked::where("ip",$request->ip())->first();
+          if(!empty($ip_blocked_list)){
+            Redirect::to('protectedip')->send();
+          }
+          else{
             if (Auth::check()) {
                 $this->isLogged = true;
                 $this->user = Auth::user();
@@ -90,6 +96,7 @@ class BaseController  extends Controller
             View::share('userIdToken', $userIdToken);
             View::share('using_sim', $this->simulate);
             return $next($request);
+          }
         });
     }
 }

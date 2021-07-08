@@ -35,6 +35,10 @@
   </div>
 <div class="gmContent" data-type="POWERLADDER" data-round="<?php echo e($last + 1); ?>" data-unique=<?php echo e($last_unique_round+1); ?>  data-game="nlotto_power"></div>
 <div class="lottery_wrap powerball dark" style="height:361px">
+  <div id="game_caution_closed_state" style="top:87px">
+      <p class="sub_title">- 휴장 안내 -</p>
+      <p class="sub_title" style="margin-top: -20px">00시~ 06시 추첨 휴장 시간입니다.</p>
+  </div>
     <div class="header_wrap">
         <div id="ly_game_tip" class="ly_game_tip" style="display: none">
             <h1 class="tit">몬스터 파워사다리 게임 설명</h1>

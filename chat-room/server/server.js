@@ -9,8 +9,8 @@ const port = process.env.PORT
 const server = http.createServer(app)
 module.exports.io = socketIO(server, {
     cors: {
-        origin: "cake6978.com",
-        methods: ["GET", "POST"]
+        origin: ["203.109.14.130:8087","203.109.14.130"],
+        credentials: true
     }
 });
 module.exports.knex = knex;

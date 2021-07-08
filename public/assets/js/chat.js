@@ -8,8 +8,6 @@ if('WebSocket' in window)
 {
     socketOption['transports'] = ['websocket'];
 }
-
-
 var socket =  null;
 $(document).on('click','a.uname',userLayerHandler);
 
@@ -27,6 +25,17 @@ $(document).ready(function(){
         connect();
         socket.on('receive',function(data){
             receiveProcess(data);
+        });
+        socket.on('touser',function(data){
+            updateBullet(data.amount,"#"+data.type)
+            if(opener != null)
+              opener.updateBullet(data.amount,"#"+data.type)
+            var msg = "코인충전이 완료되었습니다."
+            if(data.type != "coin_cnt")
+              msg= "당근환전이 완료되었습니다"
+            alertify.set('notifier','delay', 3);
+            alertify.set('notifier','position', 'top-center');
+            alertify.error(msg)
         });
 
         socket.on('reconnect',function(){

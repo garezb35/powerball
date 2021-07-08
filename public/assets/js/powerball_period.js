@@ -70,6 +70,8 @@ $(document).ready(function(){
                 compileJson("#minmaxday-data",".minmaxday-t",data.result);
             }
         })
+    }).fail(function(xhr){
+      console.log(xhr)
     })
 
 });

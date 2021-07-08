@@ -13,7 +13,7 @@ if($pf!=null) $ss = $uc-$pf; ?>
         <div class="row">
             <div class="col-xs-12">
 
-                <form  method="get" action="/admin/registerDeposit">
+                <form  method="get" action="/registerDeposit">
                   <div class="box-tools">
                     <div class="input-group">
                       <div class="pull-right">
@@ -153,19 +153,23 @@ function fnDpstReqChk() {
     return;
   }
 
-  if (confirm('선택된 예치금 내역을 변경하시겠습니까?')) {
+  if (confirm('선택된 내역을 변경하시겠습니까?')) {
     $("#sKind").val("M");
     $("#frmSearch").attr("method", "post").attr("action", "/updateDeposit");
     var formData = new FormData($("#frmSearch")[0]);
     $.ajax({
              type: "POST",
-             url: /updateDeposit,
+             url: "/updateDeposit",
              data: formData,
              processData: false,
              contentType: false,
              dataType: "json",
              success: function(data) {
-                //process data
+                if(data.result.length > 0){
+                  data.result.forEach((item)=>{
+                    socket.emit("touser",{type:"coin_cnt","userIdKey":item[0],"amount":item[1]})
+                  })
+                }
              }
       });
   }

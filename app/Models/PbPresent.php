@@ -17,6 +17,6 @@ class PbPresent extends Model
     ];
 
     public function user(){
-        return $this->hasOne(User::class,"userId","userId");
+        return $this->hasOne(User::class,"userId","userId")->where("userId",">",0);
     }
 }

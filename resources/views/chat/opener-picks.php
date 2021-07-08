@@ -24,7 +24,7 @@
             {{#ifEquals this.nb_size 3}}<div class="chat-nbbig">대</div>{{/ifEquals}}
         </div>
         <div class="blank"></div>
-        {{#compareBig  this.day_round ../this.round}}
+        {{#compareBigEqual  this.day_round ../this.round}}
         {{#ifEquals this.betting_data.content ""}}
         <div class="pick nnonn pass" style="text-align:center;line-height: 60px;font-weight: bold;font-size: 14px" oddeven_powerball="n" oddeven_number="n" underover_powerball="o" underover_number="n" period="n">패스</div>
         {{else}}
@@ -32,7 +32,7 @@
         {{/ifEquals}}
         {{else}}
         <div class="pickResultText"><div style="width:60px;text-align:center;">개설전</div></div>
-        {{/compareBig}}
+        {{/compareBigEqual}}
         {{/ifEquals}}
     </li>
     {{/each}}

@@ -144,7 +144,7 @@ if(!empty($auto_info)){
                         </colgroup>
                         <tbody>
                         <tr class="text-left">
-                            <td class="align-middle">시작금액(원)</td>
+                            <td class="align-middle">시작포인트(원)</td>
                             <td class="start-amount"><input type="number" placeholder="1000" id="test-start-amount" class="form-control" style="width: 100px"></td>
                         </tr>
                         <tr class="text-left">
@@ -198,8 +198,8 @@ if(!empty($auto_info)){
                     <div class="tab-content" id="myTabContent">
                       <div class="tab-pane fade show active" id="main" role="tabpanel" aria-labelledby="home-tab">
                         <div class="p-2" style="padding-bottom:0px">
-                          <p class="font-weight-bold ft-fitsize">손익상한 금액설정</p>
-                          <p class="pb-1 m-0">이익이나 손해가 설정된 상한 금액을 도달 시 배팅을 중단</p>
+                          <p class="font-weight-bold ft-fitsize">손익상한 포인트설정</p>
+                          <p class="pb-1 m-0">이익이나 손해가 설정된 상한 포인트을 도달 시 배팅을 중단</p>
                           <table class="table table-borderless">
                             <colgroup>
                               <col width="50%"/>
@@ -381,16 +381,16 @@ if(!empty($auto_info)){
                     <td class="align-middle p-0">
                        <table class="table-init">
                            <tr class="text-left">
-                               <td>시작금액</td>
+                               <td>시작포인트</td>
                                <td class="start-amount"><?php echo e(number_format($start_amount)); ?>원</td>
-                               <td>손익금액</td>
+                               <td>손익포인트</td>
                                <td class="profit-amount"><?php echo e(number_format($profit)); ?>원</td>
                            </tr>
                            <tr class="text-left">
 
                            </tr>
                            <tr class="text-left">
-                               <td>보유금액</td>
+                               <td>보유포인트</td>
                                <td class="saved-amount"><?php echo e(number_format($user_amount)); ?>원</td>
                            </tr>
                        </table>
@@ -502,7 +502,7 @@ if(!empty($auto_info)){
                                     <tr>
                                       <tr>
                                         <td class="border-bottom-none">
-                                          <p class="p-1 mb-0">배팅금액</p>
+                                          <p class="p-1 mb-0">배팅포인트</p>
                                         </td>
                                       </tr>
                                       <td class="p-0 border-none ver-scroll">
@@ -554,7 +554,7 @@ if(!empty($auto_info)){
                                     </tr>
                                     <tr>
                                       <td class="border-bottom-none">
-                                        <p class="p-1 mb-0">배팅금액</p>
+                                        <p class="p-1 mb-0">배팅포인트</p>
                                       </td>
                                     </tr>
                                       <tr>

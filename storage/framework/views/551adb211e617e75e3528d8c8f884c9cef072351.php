@@ -4,13 +4,15 @@
         <link rel="stylesheet" href="/assets/css/live/power.css">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
         <link rel="stylesheet" href="/assets/css/font.css">
+        <link rel="stylesheet" href="/assets/css/alertify.min.css">
         <script src="/assets/js/jquery.min.js"></script>
         <script src="/assets/js/handlebars.js"></script>
         <script src="/assets/jplayer/jquery.jplayer.min.js"></script>
+        <script src="/assets/js/alertify.min.js"></script>
         <script src="/assets/js/sprite/sprite.js"></script>
         <script src="/assets/js/common.js"></script>
-        <script src="/assets/js/pick/power_execute.js"></script>
         <script src="/assets/js/all.js"></script>
+        <script src="/assets/js/pick/power_execute.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenMax.min.js"></script>
 
     </head>
@@ -32,6 +34,10 @@
       </div>
     <div class="gmContent" data-type="POWERBALL" data-round="<?php echo e($last + 1); ?>" data-unique=<?php echo e($last_unique_round+1); ?>  data-game="nlotto_power"></div>
         <div class="lottery_wrap powerball dark">
+            <div id="game_caution_closed_state" style="">
+                <p class="sub_title">- 휴장 안내 -</p>
+                <p class="sub_title" style="margin-top: -20px">00시~ 06시 추첨 휴장 시간입니다.</p>
+            </div>
             <div class="header_wrap">
                 <div id="ly_game_tip" class="ly_game_tip" style="display:none;">
                     <h1 class="tit">몬스터 파워볼 게임 설명</h1>

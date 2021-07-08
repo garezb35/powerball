@@ -77,3 +77,48 @@
 //         url: url
 //       });
 //   });
+var war_sound = null;
+function alertifyByCommon(msg,type="error"){
+  alertify.set('notifier','delay', 3);
+  alertify.set('notifier','position', 'top-center');
+  if(type == "error"){
+    alertify.error(msg)
+  }
+  if(type == "warning"){
+    alertify.warning(msg)
+  }
+}
+var socketOption = {};
+socketOption['reconnect'] = true;
+socketOption['force new connection'] = true;
+socketOption['sync disconnect on unload'] = true;
+var is_manager = false;
+if('WebSocket' in window)
+{
+    socketOption['transports'] = ['websocket'];
+}
+var socket =  null;
+var socket = io("http://203.109.14.130:3000/public",socketOption);
+
+
+socket.on("tomiss",function(){
+  missed++;
+  if(war_sound !=null)
+    war_sound.play()
+  alertify.set('notifier','delay', 6);
+  alertify.set('notifier','position', 'top-center');
+  alertify.error("동행복권 결과 오류")
+})
+$(document).ready(function(){
+  war_sound = document.getElementById("war_sound")
+  setInterval(function(){
+    if(missed > 0 && !location.href.includes("missRound"))
+    {
+      if(war_sound !=null)
+        war_sound.play()
+      alertify.set('notifier','delay', 6);
+      alertify.set('notifier','position', 'top-center');
+      alertify.error("동행복권 결과 오류")
+    }
+  },10000)
+})

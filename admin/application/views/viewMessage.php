@@ -55,6 +55,9 @@
                    <div class="row my-4">
                        <div class="col-xs-4 my-3">
                             <a href="/editBoard/<?=$content[0]->id?>?board_type=<?=$this->input->get("board_type")?>" class="btn btn-primary">수정</a>
+                            <?php if($content[0]->fromId > 0 && $content[0]->security == 1 && $reply_check == 0): ?>
+                            <a href="<?=base_url()?>bbs?id=<?=$content[0]->id?>&board_type=<?=$this->input->get("board_type")?>&to=<?=$content[0]->fromId?>&btype=<?=$content[0]->bname?>" class="btn btn-primary">답변</a>
+                            <?php endif; ?>
                             <a href="javascript:deleteBoard(<?=$content[0]->id?>,'<?=$content[0]->type?>')" class="btn btn-danger">삭제</a>
                             <a href="<?=base_url()?>panel?id=<?=$content[0]->type?>" class="btn btn-primary">목록</a>
                        </div>
