@@ -18,6 +18,7 @@
     <link href="<?php echo base_url(); ?>assets/dist/css/sscss/bootstrap-notify.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url(); ?>assets/dist/css/sscss/styles/alert-bangtidy.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url(); ?>assets/dist/css/sscss/styles/alert-blackgloss.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo base_url(); ?>assets/plugins/tagsinput/bootstrap-tagsinput.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="<?=base_url_source()?>/assets/css/alertify.min.css">
     <script type="text/javascript">
         var baseURL = "<?php echo base_url(); ?>";
@@ -43,11 +44,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.2/socket.io.js" ></script>
     <script src="<?php echo base_url(); ?>assets/select2/js/select2.min.js"></script>
     <script src="<?=base_url_source()?>assets/js/alertify.min.js"></script>
+    <script src="<?=base_url()?>assets/plugins/tagsinput/bootstrap-tagsinput.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/init.js?<?=time()?>"></script>
   </head>
 
   <body class="skin-blue sidebar-mini">
-    
+
     <audio  id="war_sound">
       <source src="/assets/warning_short.mp3" type="audio/mp3">
     </audio>
@@ -183,9 +185,14 @@
               <?php endif; ?>
               </ul>
             </li>
-            <li>
+            <li class="<?php echo activate_menu("missRound");?>">
               <a href="<?=base_url()?>missRound">
                 <i class="fa fa-comment"></i> <span>빠진 결과 처리</span></i>
+              </a>
+            </li>
+            <li class="<?php echo activate_menu("settings");?>">
+              <a href="<?=base_url()?>settings">
+                <i class="fa fa-cogs"></i> <span>환경설정</span></i>
               </a>
             </li>
           </ul>

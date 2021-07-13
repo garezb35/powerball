@@ -21,6 +21,7 @@ use App\Models\PbWinner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\PbBlockReason;
 use DB;
 use Illuminate\Support\Facades\Hash;
 use Image;
@@ -1009,6 +1010,7 @@ class MemberController extends SecondController
         $content  = $request->post("content");
         $randomMemo = $request->post("randomMemo");
         $item = array();
+
         if($randomMemo == "Y"){
             $inserts = array();
             $item =  PbPurItem::with("items")->where("userId",$user->userId)->where("market_id","RANDOM_NOTE")->where("count",">",0)->first();
@@ -1022,6 +1024,17 @@ class MemberController extends SecondController
                 echo json_encode(array("status"=>0,"msg"=>"유저가 비였습니다."));
                 return;
             }
+
+            if(checkProhited($content)){
+              $this->user->user_type = "00";
+              $this->user->save();
+              PbBlockReason::updateorCreate(
+                  ["userId"=>$this->user->userId,"type"=>1],array("reason"=>"개인정보노출")
+              );
+              Redirect::to('accessProtected')->send();
+              return;
+            }
+
             foreach($insert_users as $ulist){
                 array_push($inserts,array("fromId"=>$user->userId,'toId'=>$ulist["userId"],"content"=>$content));
                 array_push($insert_id,$ulist["userIdKey"]);
@@ -1053,6 +1066,15 @@ class MemberController extends SecondController
                 echo json_encode(array("status"=>0,"msg"=>"쪽지 아이템이 필요합니다."));
                 return;
             }
+            if(checkProhited($content)){
+              $this->user->user_type = "00";
+              $this->user->save();
+              PbBlockReason::updateorCreate(
+                  ["userId"=>$this->user->userId,"type"=>1],array("reason"=>"개인정보노출")
+              );
+              Redirect::to('accessProtected')->send();
+              return;
+            }
             PbPurItem::find($item["id"])->update(["count"=>$item["count"]-1]);
             PbInbox::insert(["fromId"=>$user->userId,"toId"=>$received_userId["userId"],"content"=>$content,"mail_type"=>2]);
             $insert_id[0] = $received_userId["userIdKey"];
@@ -1064,136 +1086,136 @@ class MemberController extends SecondController
     }
 
     public function deleteMemo(Request $request){
-        if(!$this->isLogged){
-            echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.close()</script>";
-        }
-        $mtype = $request->post("mtype");
-        $userId = $this->user->userId;
-        $list_memo  = $request->post("check");
-        PbInbox::whereIn("id",$list_memo)
-            ->where(function($query) use ($userId){
-            $query->where("fromId",$userId);
-            $query->orwhere("toId",$userId);
-        })->delete();
-        echo "<script>location.href='/memo?type={$mtype}';</script>";
+      if(!$this->isLogged){
+          echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.close()</script>";
+      }
+      $mtype = $request->post("mtype");
+      $userId = $this->user->userId;
+      $list_memo  = $request->post("check");
+      PbInbox::whereIn("id",$list_memo)
+          ->where(function($query) use ($userId){
+          $query->where("fromId",$userId);
+          $query->orwhere("toId",$userId);
+      })->delete();
+      echo "<script>location.href='/memo?type={$mtype}';</script>";
     }
     public function memoSave(Request $request){
-        if(!$this->isLogged){
-            echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.close()</script>";
-        }
+      if(!$this->isLogged){
+          echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.close()</script>";
+      }
 
-        $userId = $this->user->userId;
-        $list_memo  = $request->post("check");
-        PbInbox::whereIn("id",$list_memo)
-            ->where(function($query) use ($userId){
-                $query->where("fromId",$userId);
-                $query->orwhere("toId",$userId);
-            })->update(["state"=>1]);
-        echo "<script>location.href='/memo?type=save';</script>";
+      $userId = $this->user->userId;
+      $list_memo  = $request->post("check");
+      PbInbox::whereIn("id",$list_memo)
+          ->where(function($query) use ($userId){
+              $query->where("fromId",$userId);
+              $query->orwhere("toId",$userId);
+          })->update(["state"=>1]);
+      echo "<script>location.href='/memo?type=save';</script>";
     }
     public function memoReport(Request $request){
-        if(!$this->isLogged){
-            echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.close()</script>";
-        }
+      if(!$this->isLogged){
+          echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.close()</script>";
+      }
 
-        $userId = $this->user->userId;
-        $list_memo  = $request->post("check");
-        PbInbox::whereIn("id",$list_memo)
-            ->where(function($query) use ($userId){
-                $query->where("fromId",$userId);
-                $query->orwhere("toId",$userId);
-            })->update(["report"=>2]);
-        echo "<script>alert('정확히 신고되었습니다.');window.history.back(1);</script>";
+      $userId = $this->user->userId;
+      $list_memo  = $request->post("check");
+      PbInbox::whereIn("id",$list_memo)
+          ->where(function($query) use ($userId){
+              $query->where("fromId",$userId);
+              $query->orwhere("toId",$userId);
+          })->update(["report"=>2]);
+      echo "<script>alert('정확히 신고되었습니다.');window.history.back(1);</script>";
     }
 
     public function processFrd(Request  $request){
-        if(!$this->isLogged){
-            echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.close()</script>";
-        }
-        $user = $this->user;
-        $checked_usr = $request->post("check");
-        if($request->post("friendType") == "friend"){
-            $frd_list = explode(",",$user->frd_list);
-            foreach($checked_usr as $usr_item){
-                if (($key = array_search($usr_item,$frd_list)) !== false) {
-                    unset($frd_list[$key]);
-                }
-            }
-            User::where('userId',$user->userId)->update(["frd_list"=>implode(",",$frd_list)]);
-        }
-        if($request->post("friendType") == "fixed"){
-            $fixed_list = explode(",",$user->fixed);
-            foreach($checked_usr as $usr_item){
-                if (($key = array_search($usr_item,$fixed_list)) !== false) {
-                    unset($fixed_list[$key]);
-                }
-            }
-            User::where('userId',$user->userId)->update(["fixed"=>implode(",",$fixed_list)]);
-        }
-        if($request->post("friendType") == "block"){
-            $block_list = explode(",",$user->block_list);
-            foreach($checked_usr as $usr_item){
-                if (($key = array_search($usr_item,$block_list)) !== false) {
-                    unset($block_list[$key]);
-                }
-            }
-            User::where('userId',$user->userId)->update(["block_list"=>implode(",",$block_list)]);
-        }
-        echo "<script>location.href='{$request->post("rtnUrl")}';</script>";
+      if(!$this->isLogged){
+          echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.close()</script>";
+      }
+      $user = $this->user;
+      $checked_usr = $request->post("check");
+      if($request->post("friendType") == "friend"){
+          $frd_list = explode(",",$user->frd_list);
+          foreach($checked_usr as $usr_item){
+              if (($key = array_search($usr_item,$frd_list)) !== false) {
+                  unset($frd_list[$key]);
+              }
+          }
+          User::where('userId',$user->userId)->update(["frd_list"=>implode(",",$frd_list)]);
+      }
+      if($request->post("friendType") == "fixed"){
+          $fixed_list = explode(",",$user->fixed);
+          foreach($checked_usr as $usr_item){
+              if (($key = array_search($usr_item,$fixed_list)) !== false) {
+                  unset($fixed_list[$key]);
+              }
+          }
+          User::where('userId',$user->userId)->update(["fixed"=>implode(",",$fixed_list)]);
+      }
+      if($request->post("friendType") == "block"){
+          $block_list = explode(",",$user->block_list);
+          foreach($checked_usr as $usr_item){
+              if (($key = array_search($usr_item,$block_list)) !== false) {
+                  unset($block_list[$key]);
+              }
+          }
+          User::where('userId',$user->userId)->update(["block_list"=>implode(",",$block_list)]);
+      }
+      echo "<script>location.href='{$request->post("rtnUrl")}';</script>";
     }
 
     public function addFriend(Request $request){
-        $user = $this->user;
-        $nickname = $request->post("nickname");
-        $other = User::where("nickname",$nickname)->first();
-        $type = $request->post("type");
-        if(empty($other)){
-            echo json_encode(array("status"=>0,"msg"=>"존재하지 않는 유저입니다."));
-            return;
-        }
+      $user = $this->user;
+      $nickname = $request->post("nickname");
+      $other = User::where("nickname",$nickname)->first();
+      $type = $request->post("type");
+      if(empty($other)){
+          echo json_encode(array("status"=>0,"msg"=>"존재하지 않는 유저입니다."));
+          return;
+      }
 
-        if($type == "friend"){
-            $frd_list = explode(",",$user->frd_list);
-            if(in_array($other["userIdKey"],$frd_list)){
-                echo json_encode(array("status"=>0,"msg"=>"친구리스트에 있는 회원입니다."));
-                return;
-            }
-            array_push($frd_list,$other["userIdKey"]);
-            User::where("userId",$user->userId)->update(["frd_list"=>implode(",",$frd_list)]);
-            echo json_encode(array("status"=>1,"msg"=>"추가하었습니다.","friendNickname"=>$nickname));
-        }
-        else{
-            $block_list = explode(",",$user->block_list);
-            if(in_array($other["userIdKey"],$block_list)){
-                echo json_encode(array("status"=>0,"msg"=>"블랙리스트에 있는 회원입니다."));
-                return;
-            }
-            array_push($block_list,$other["userIdKey"]);
-            User::where("userId",$user->userId)->update(["block_list"=>implode(",",$block_list)]);
-            echo json_encode(array("status"=>1,"msg"=>"추가하었습니다.","blackUseridKey"=>$other["userIdKey"],"blackNickname"=>$nickname));
-        }
+      if($type == "friend"){
+          $frd_list = explode(",",$user->frd_list);
+          if(in_array($other["userIdKey"],$frd_list)){
+              echo json_encode(array("status"=>0,"msg"=>"친구리스트에 있는 회원입니다."));
+              return;
+          }
+          array_push($frd_list,$other["userIdKey"]);
+          User::where("userId",$user->userId)->update(["frd_list"=>implode(",",$frd_list)]);
+          echo json_encode(array("status"=>1,"msg"=>"추가하었습니다.","friendNickname"=>$nickname));
+      }
+      else{
+          $block_list = explode(",",$user->block_list);
+          if(in_array($other["userIdKey"],$block_list)){
+              echo json_encode(array("status"=>0,"msg"=>"블랙리스트에 있는 회원입니다."));
+              return;
+          }
+          array_push($block_list,$other["userIdKey"]);
+          User::where("userId",$user->userId)->update(["block_list"=>implode(",",$block_list)]);
+          echo json_encode(array("status"=>1,"msg"=>"추가하었습니다.","blackUseridKey"=>$other["userIdKey"],"blackNickname"=>$nickname));
+      }
     }
 
     public function giftBox(Request $request){
-        if(!$this->isLogged){
-            echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.close()</script>";
-            return;
-        }
-        $user = $this->user;
-        $other = User::where("userIdKey",$request->get("useridKey"))->where("isDeleted",0)->where("user_type","01")->first();
-        if(empty($other)){
-            echo "<script>alert('존재하지 않는 회원입니다.');window.close()</script>";
-            return;
-        }
-        if($user->userIdKey == $request->get("useridKey")){
-            echo "<script>alert('자신에게는 선물할수 없습니다.');window.close()</script>";
-            return;
-        }
-        return view('member/giftBox', [    "js" => "gift.js",
-            "css" => "gift.css",
-            "user"=>$user,
-            "other_nick"=>$other["nickname"]
-            ]);
+      if(!$this->isLogged){
+          echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.close()</script>";
+          return;
+      }
+      $user = $this->user;
+      $other = User::where("userIdKey",$request->get("useridKey"))->where("isDeleted",0)->where("user_type","01")->first();
+      if(empty($other)){
+          echo "<script>alert('존재하지 않는 회원입니다.');window.close()</script>";
+          return;
+      }
+      if($user->userIdKey == $request->get("useridKey")){
+          echo "<script>alert('자신에게는 선물할수 없습니다.');window.close()</script>";
+          return;
+      }
+      return view('member/giftBox', [    "js" => "gift.js",
+          "css" => "gift.css",
+          "user"=>$user,
+          "other_nick"=>$other["nickname"]
+          ]);
     }
 
     public function sendGift(Request $request){
@@ -1229,27 +1251,27 @@ class MemberController extends SecondController
         return;
     }
 
-    public function giftPop(Request  $request){
-        if(!$this->isLogged){
-            echo json_encode(array("status"=>0,"msg"=>"로그아웃상태이므로 요청을 수락할수 없습니다."));
-            return;
-        }
-        $user = $this->user;
-        $itemCode = $request->get("itemCode");
-        $itemCnt = $request->get("itemCnt") ?? 1;
-        $item = PbMarket::where("code",$itemCode)->where("state",1)->first();
-        if(empty($item)){
-            echo "<script>alert('해당 아이템이 존재하지 않습니다.');self.close();</script>";
-            return;
-        }
-        return view('member/giftPop', [
-            "js" => "gift.js",
-            "css" => "gift.css",
-            "item"=>$item,
-            "nickname"=>$user->nickname,
-            "itemCode"=>$itemCode,
-            "api_token"=>$user->api_token
-        ]);
+    public function giftPop(Request $request){
+      if(!$this->isLogged){
+          echo json_encode(array("status"=>0,"msg"=>"로그아웃상태이므로 요청을 수락할수 없습니다."));
+          return;
+      }
+      $user = $this->user;
+      $itemCode = $request->get("itemCode");
+      $itemCnt = $request->get("itemCnt") ?? 1;
+      $item = PbMarket::where("code",$itemCode)->where("state",1)->first();
+      if(empty($item)){
+          echo "<script>alert('해당 아이템이 존재하지 않습니다.');self.close();</script>";
+          return;
+      }
+      return view('member/giftPop', [
+          "js" => "gift.js",
+          "css" => "gift.css",
+          "item"=>$item,
+          "nickname"=>$user->nickname,
+          "itemCode"=>$itemCode,
+          "api_token"=>$user->api_token
+      ]);
     }
 
     public function sendItem(Request  $request){
@@ -1378,7 +1400,6 @@ class MemberController extends SecondController
 
     public function setPresent(Request $request){
         $user = $this->user;
-
         $current_present = PbPresent::where("userId",$user->userId)->whereDate("created_at","=",date("Y-m-d"))->first();
         if(!empty($current_present)){
             echo json_encode(array("status"=>0,"msg"=>"출석체크는 하루에 한번만 가능합니다."));
@@ -1421,7 +1442,6 @@ class MemberController extends SecondController
             "perfectatt"=>$seq_present++,
             "comment"=>$comment,
         ]);
-
         echo json_encode(array("ran"=>$randoms,"status"=>1,"selectNumber"=>$selectNumber,"number"=>$number,"ladderResult"=>$ladderResult));
     }
 
@@ -1729,9 +1749,15 @@ class MemberController extends SecondController
           echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.history.back(1)</script>";
           return;
       }
+      $prison = PbBlockReason::with(["suser"=>function($q){
+        $q->where('userId', '>', 0);
+      }])
+      ->orderBy("created_at","DESC")
+      ->paginate(20);
       return view('member/prison', [
           "js" => "",
           "css" => "board.css",
+          "prison"=>$prison
       ]);
     }
 }

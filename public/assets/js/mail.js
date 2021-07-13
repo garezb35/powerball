@@ -159,6 +159,19 @@ function inputCheck()
                     return false;
                 }
             }
+
+            var chkReg = /[0-9]{4}/g;
+            var subjectChk = fn.content.value.replace(/\s/gi,'');
+            var subjectMatchArr = subjectChk.match(chkReg);
+            var subjectMatchLength = (subjectMatchArr || []).length;
+            var contentChk = fn.content.value.replace(/<img[^>]*>/gi,'').replace(/\s/gi,'');
+            var contentMatchArr = contentChk.match(chkReg);
+            var contentMatchLength = (contentMatchArr || []).length;
+
+            if((subjectMatchLength >= 2 || contentMatchLength >= 2) && !confirm('전화번호 등 개인정보 등록시 경고없이 차단조치 됩니다. 작성하시겠습니까?'))
+            {
+                return false;
+            }
         }
 
         if(fn.randomMemo.checked == true && !confirm('랜덤 쪽지 아이템을 사용하시겠습니까?'))

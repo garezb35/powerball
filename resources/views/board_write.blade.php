@@ -2,6 +2,7 @@
 <script>
     var api_token = "{{$result["api_token"]}}";
     var board_category = "{{Request::get("board_category")}}";
+    var filterWordArr = "{{$prohited}}".split(",")
 </script>
 @section("header")
     <script src="/assets/js/wrest.js"></script>
@@ -65,8 +66,15 @@
     {
         if(!f.wr_subject.value)
         {
-            alert('제목을 입력하세요.');
+            alertifyByCommon('제목을 입력하세요.');
             f.wr_subject.focus();
+            return false;
+        }
+
+        if(!f.wr_content.value)
+        {
+            alertifyByCommon('내용을 입력하세요.');
+            f.wr_content.focus();
             return false;
         }
 
@@ -77,64 +85,34 @@
 
         var subject = "";
         var content = "";
-        // $.ajax({
-        //     url: g5_bbs_url+"/ajax.filter.php",
-        //     type: "POST",
-        //     data: {
-        //         "subject": f.wr_subject.value,
-        //         "content": f.wr_content.value
-        //     },
-        //     dataType: "json",
-        //     async: false,
-        //     cache: false,
-        //     success: function(data, textStatus) {
-        //         subject = data.subject;
-        //         content = data.content;
-        //     }
-        // });
-        //
-        // if (subject) {
-        //     alert("제목에 금지단어('"+subject+"')가 포함되어있습니다");
-        //     f.wr_subject.focus();
-        //     return false;
-        // }
 
-        if (content) {
-            alert("내용에 금지단어('"+content+"')가 포함되어있습니다");
-            if (typeof(ed_wr_content) != "undefined")
-                ed_wr_content.returnFalse();
-            else
+        for(i=0;i<filterWordArr.length;i++)
+        {
+            if(f.wr_subject.value.trim().toLowerCase().indexOf(filterWordArr[i]) != -1)
+            {
+                alertifyByCommon('제목에 금지어 ['+ filterWordArr[i] +'] 가 포함되어 있습니다.');
+                f.wr_subject.focus();
+                return false;
+            }
+            if(f.wr_content.value.trim().toLowerCase().indexOf(filterWordArr[i]) != -1)
+            {
+                alertifyByCommon('내용에 금지어 ['+ filterWordArr[i] +'] 가 포함되어 있습니다.');
                 f.wr_content.focus();
-            return false;
+                return false;
+            }
         }
-
-        // if (document.getElementById("char_count")) {
-        //     if (char_min > 0 || char_max > 0) {
-        //         var cnt = parseInt(check_byte("wr_content", "char_count"));
-        //         if (char_min > 0 && char_min > cnt) {
-        //             alert("내용은 "+char_min+"글자 이상 쓰셔야 합니다.");
-        //             return false;
-        //         }
-        //         else if (char_max > 0 && char_max < cnt) {
-        //             alert("내용은 "+char_max+"글자 이하로 쓰셔야 합니다.");
-        //             return false;
-        //         }
-        //     }
-        // }
 
         // (개인정보 등록 경고 문구)
         var chkReg = /[0-9]{4}/g;
         var subjectChk = f.wr_subject.value.replace(/\s/gi,'');
         var subjectMatchArr = subjectChk.match(chkReg);
         var subjectMatchLength = (subjectMatchArr || []).length;
-
         var contentChk = f.wr_content.value.replace(/<img[^>]*>/gi,'').replace(/\s/gi,'');
         var contentMatchArr = contentChk.match(chkReg);
         var contentMatchLength = (contentMatchArr || []).length;
-
         var bo_table = board_category;
 
-        if(bo_table != 'qna' && (subjectMatchLength >= 2 || contentMatchLength >= 2) && !confirm('전화번호 등 개인정보 등록시 경고없이 차단조치 됩니다. 작성하시겠습니까?'))
+        if(bo_table != 'private' && (subjectMatchLength >= 2 || contentMatchLength >= 2) && !confirm('전화번호 등 개인정보 등록시 경고없이 차단조치 됩니다. 작성하시겠습니까?'))
         {
             return false;
         }
@@ -143,4 +121,3 @@
         return true;
     }
 </script>
-

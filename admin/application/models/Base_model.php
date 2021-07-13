@@ -309,9 +309,11 @@ class Base_model extends CI_Model
     }
 
     public function getChatRooms($limit1=20,$limit2=0){
-      $this->db->select('BaseTbl.*,User.nickname,User.bullet');
+      $days_ago = date('Y-m-d H:i:s', strtotime('-26  hours', strtotime("now")));
+      $this->db->select('BaseTbl.*,User.nickname');
       $this->db->from("pb_room as BaseTbl");
       $this->db->join("pb_users as User","User.userId=BaseTbl.userId");
+      $this->db->where('BaseTbl.created_at >',$days_ago);
       $this->db->order_by('BaseTbl.updated_at','DESC');
       if($limit1 ==null)  $this->db->limit(20,0);
       else $this->db->limit($limit1,$limit2);
@@ -321,7 +323,7 @@ class Base_model extends CI_Model
     }
 
     public function runSP($data){
-      $stored_procedure = "CALL ProcessPowerball(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+      $stored_procedure = "CALL ProcessPowerball(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
       $a_result = $this->db->query( $stored_procedure, $data);
     }
 
@@ -372,85 +374,6 @@ class Base_model extends CI_Model
       $query = $this->db->get();
       $results = $query->result();
       return  $results;
-    }
-
-    public function processMiss($data)
-    {
-        $query = $this->db->query("SELECT game_code,pick,userId,id,TYPE FROM pb_betting WHERE pb_betting.`round` = ".$data["round"]." AND pb_betting.`changed` = 0 AND pb_betting.`is_win` = - 1 AND pb_betting.game_type = 1");
-        $bet_list =  $query->result();
-        if(!empty($bet_list)){
-            foreach ($bet_list as $key => $value) {
-              $isWin = 2;
-              if($value->game_code == "pb_oe" && $value->pick == $data["pb_oe"])
-              {
-                $isWin = 1;
-              }
-              if($value->game_code == "pb_uo" && $value->pick == $data["pb_uo"])
-              {
-                $isWin = 1;
-              }
-              if($value->game_code == "nb_uo" && $value->pick == $data["nb_uo"])
-              {
-                $isWin = 1;
-              }
-              if($value->game_code == "nb_oe" && $value->pick == $data["nb_oe"])
-              {
-                $isWin = 1;
-              }
-              if($value->game_code == "nb_size" && $value->pick == $data["nb_size"])
-              {
-                $isWin = 1;
-              }
-              $this->db->query("UPDATE
-                                 pb_users
-                               SET
-                                 pb_users.`exp` = pb_users.`exp` + 1
-                               WHERE pb_users.`userId` = ".$value->userId." ");
-              if($isWin == 1){
-
-              }
-              $this->db->query("UPDATE
-                pb_betting
-              SET
-                pb_betting.`is_win` = ".$isWin."
-              WHERE pb_betting.id = ".$value->id." ");
-            }
-
-            $qq = "SELECT CONCAT('{',GROUP_CONCAT(CONCAT('\"',game_code,'\"',':','{','\"pick\":',pick,',','\"is_win\":',is_win,'}') SEPARATOR ','),'}') AS result,
-                      pb_betting.`userId`,
-                      pb_betting.`round`,
-                      pb_betting.`game_type`,
-                      pb_betting.`type`,
-                      pb_betting.`created_date`,
-                      pb_betting.`roomIdx`
-                    FROM
-                      pb_betting
-                    WHERE pb_betting.`round` = '{$data["round"]}'
-                      AND pb_betting.`changed` = 0 AND pb_betting.`game_type`=1 AND pb_betting.`is_win` > -1
-                    GROUP BY pb_betting.`userId`,pb_betting.`type`,pb_betting.`game_type` ORDER BY created_date ASC";
-
-            $query  = $this->db->query($qq);
-            $betted_list = $query->result();
-            if(!empty($betted_list)){
-              foreach($betted_list as $value){
-                $this->db->query("INSERT pb_betting_ctl (
-                                  content,
-                                  userId,
-                                  ROUND,
-                                  game_type,
-                                  TYPE,
-                                  pick_date,
-                                  roomIdx
-                                )
-                                VALUES
-                                  ( '{$value->result}' , {$value->userId}, {$value->round}, 1, '{$value->type}','{$value->created_at}','{$value->roomIdx}')");
-              }
-            }
-            $this->db->query("UPDATE pb_betting SET pb_betting.`changed`=1 WHERE pb_betting.`round`=".$data["round"]." AND pb_betting.`game_type`=1");
-            $d = date("Y-m-d",strtotime($data["date"]));
-            $this->db->query("DELETE FROM pb_error_round where round ={$data["round"]} and date LIKE '%{$d}%'");
-            return 1;
-        }
     }
 }
 ?>

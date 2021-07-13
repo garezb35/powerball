@@ -14,7 +14,8 @@ const {
     getUsersByRoomIdx,
     setUserItem,
     adminRealtime,
-    setAdminConfig
+    setAdminConfig,
+    getUser
 
 } = require('../utils/utils')
 
@@ -121,18 +122,19 @@ roomio.on("connection",(client) => {
             }
             else if(data.body.cmd == "muteOn" || data.body.cmd == "muteOff"){
                 let result = setUserMuteById(data.body.cmd,data.body.tuseridKey,data.body.roomIdx)
-                if(result != "")
+                if( typeof result !="undefined" && result !=null && result != "")
                     roomio.to(data.body.roomIdx).emit("receive",{header:{type:"CMDMSG"},body:{cmd:data.body.cmd,tuseridKey:data.body.tuseridKey,tnickname:result}});
             }
             else if(data.body.cmd == "kickOn"){
-                let user = getUserFromIdAndRoomIdx(data.body.tuseridKey)
+                let user = getUser(data.body.tuseridKey)
                 if(typeof  user !="undefined")
                     roomio.to(data.body.roomIdx).emit("receive",{header:{type:"CMDMSG"},body:{cmd:"kickOn",tuseridKey:data.body.tuseridKey,tnickname:user.nickname}});
             }
 
             else if(data.body.cmd == "managerOn" || data.body.cmd == "managerOff"){
                 let result = setUserManageById(data.body.cmd,data.body.tuseridKey,data.body.roomIdx)
-                roomio.to(data.body.roomIdx).emit("receive",{header:{type:"CMDMSG"},body:{cmd:data.body.cmd,tuseridKey:data.body.tuseridKey,tnickname:result}});
+                if( typeof result !="undefined" && result !=null && result != "")
+                  roomio.to(data.body.roomIdx).emit("receive",{header:{type:"CMDMSG"},body:{cmd:data.body.cmd,tuseridKey:data.body.tuseridKey,tnickname:result}});
             }
 
             else if(data.body.cmd == "fixMemberOn" || data.body.cmd == "fixMemberOff"){
@@ -159,7 +161,7 @@ roomio.on("connection",(client) => {
             }
         }
         else if(data.header.type == "GIFT"){
-            let t_user = getUserFromIdAndRoomIdx(data.body.tuseridKey)
+            let t_user = getUser(data.body.tuseridKey)
 
             if(typeof  t_user !="undefined"){
                 let user = getUserByRoomIdxAndClientId(client.id,data.body.roomIdx);
@@ -213,8 +215,49 @@ prefix_socket.on("connection",(client) => {
     client.on("init",(data,callback)=>{
       adminRealtime(data,client,prefix_socket);
       setAdminConfig(client,prefix_socket,data)
+      console.log("ddf")
     })
+    client.on("adminsend",(data,callback)=>{
+      if(data.header.type == "ADMINCMD"){
+          if(data.body.roomIdx == "channel1"){
+            if(data.body.cmd == "muteOn" || data.body.cmd == "muteOnTime1" || data.body.cmd == "muteOnTime" || data.body.cmd == "muteOff"){
+              let result = setUserMuteById(data.body.bytime,data.body.tuseridKey,data.body.roomIdx)
+              if( typeof result !="undefined" && result !=null && result != "")
+                  public.to(data.body.roomIdx).emit("receive",{header:{type:"CMDMSG"},body:{cmd:data.body.cmd,tuseridKey:data.body.tuseridKey,tnickname:result,msg:result+" "+data.body.cmd}});
+            }
+            if(data.body.cmd == "banipOn" || data.body.cmd == "banipOff"){
+              let user = getUserFromIdAndRoomIdx(data.body.tuseridKey,"channel1")
+              if(typeof  user !="undefined")
+                public.to(data.body.roomIdx).emit("receive",{header:{type:"CMDMSG"},body:{cmd:data.body.cmd,tuseridKey:data.body.tuseridKey,tnickname:user.nickname}});
+            }
 
+            if(data.body.cmd == "foreverstop"){
+              let user = getUser(data.body.tuseridKey)
+              if(typeof  user !="undefined" && user !=null)
+                public.to(data.body.roomIdx).emit("receive",{header:{type:"CMDMSG"},body:{cmd:data.body.cmd,tuseridKey:data.body.tuseridKey,tnickname:user.nickname}});
+            }
+          }
+          if(data.body.roomIdx.length == 50){
+            if(data.body.cmd == "muteOn" || data.body.cmd == "muteOff"){
+              let result = setUserMuteById(data.body.cmd,data.body.tuseridKey,data.body.roomIdx)
+              if( typeof result !="undefined" && result !=null && result != "")
+                  roomio.to(data.body.roomIdx).emit("receive",{header:{type:"CMDMSG"},body:{cmd:data.body.cmd,tuseridKey:data.body.tuseridKey,tnickname:result}});
+            }
+            if(data.body.cmd == "closeRoom"){
+                refreshChatByRoomIdx(data.body.roomIdx)
+                roomio.to(data.body.roomIdx).emit("receive",{header:{type:"NOTICE"},body:{type:"CLOSEROOM"}});
+            }
+            if(data.body.cmd == "kickOn"){
+              let user = getUser(data.body.tuseridKey)
+              if(typeof  user !="undefined")
+                  roomio.to(data.body.roomIdx).emit("receive",{header:{type:"CMDMSG"},body:{cmd:"kickOn",tuseridKey:data.body.tuseridKey,tnickname:user.nickname}});
+            }
+            if(data.body.cmd == "foreverstop"){
+              public.to("channel1").emit("receive",{header:{type:"CMDMSG"},body:{cmd:data.body.cmd,tuseridKey:data.body.tuseridKey}});
+            }
+          }
+      }
+    })
     client.on("closeroom",(data,callback)=>{
       refreshChatByRoomIdx(data)
       roomio.to(data).emit("receive",{header:{type:"NOTICE"},body:{type:"CLOSEROOM"}});

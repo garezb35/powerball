@@ -116,28 +116,42 @@ $(document).ready(function() {
         {
             alertifyByCommon("제목을 입력해주세요")
             $("#roomTitle").focus();
+            return false;
         }
-        else{
-            $.ajax({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                url: '/api/createRoom',
-                data: $("#form-room").serialize(),
-                type: 'POST',
-                dataType:"json",
-                success: function ( data ) {
-                    if(data.status ==0){
-                        alertifyByCommon(data.msg)
-                        return;
-                    }
+
+        for(i=0;i<filterWordArr.length;i++)
+        {
+            if($("#roomTitle").val().trim().toLowerCase().indexOf(filterWordArr[i]) != -1)
+            {
+                alertifyByCommon('방제목에 금지어 ['+ filterWordArr[i] +'] 가 포함되어 있습니다.');
+                return false;
+            }
+            if($("#roomDesc").val().trim().toLowerCase().indexOf(filterWordArr[i]) != -1)
+            {
+                alertifyByCommon('설명에 금지어 ['+ filterWordArr[i] +'] 가 포함되어 있습니다.');
+                return false;
+            }
+
+        }
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: '/api/createRoom',
+            data: $("#form-room").serialize(),
+            type: 'POST',
+            dataType:"json",
+            success: function ( data ) {
+                if(data.status ==0){
                     alertifyByCommon(data.msg)
-                    sendProcess('CREATE',data.list);
-                    $('#creatingWindow').modal('hide');
-                    location.href = '/discussion?token='+data.list.roomIdx;
-                },error:function(xhr){
-                    console.log(xhr)
+                    return;
                 }
-            });
-        }
+                alertifyByCommon(data.msg)
+                sendProcess('CREATE',data.list);
+                $('#creatingWindow').modal('hide');
+                location.href = '/discussion?token='+data.list.roomIdx;
+            },error:function(xhr){
+                console.log(xhr)
+            }
+        });
         return false;
     })
 

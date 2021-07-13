@@ -20,6 +20,7 @@
         $this->load->model('base_model');
         $this->global['misses'] = $this->base_model->getSelect("pb_error_round");
         $this->load->helper('form');
+        $this->isLoggedIn();
       }
 
 
@@ -546,7 +547,7 @@
     }
 
     public function OrderProduct(){
-      $this->isLoggedIn();
+
       $data['trackheader'] = $this->base_model->getSelect('tracking_header');
       $this->global['pageTitle'] = '주문상품관리';
       $this->load->library('pagination');
@@ -5492,11 +5493,19 @@
     $cmd = $this->input->post("cmd");
     $roomIdx = $this->input->post("roomIdx");
     $tuseridKey = $this->input->post("tuseridKey");
-
     $pb_user = $this->base_model->getSelect("pb_users",array(array("record"=>"userIdKey","value"=>$tuseridKey)));
+    $bytime = 0;
 
+    if($cmd == "foreverstop"){
+      $userInfo = array('isDeleted'=>1, 'updated_at'=>date('Y-m-d H:i:s'));
+      $this->load->model('user_model');
+      $result = $this->user_model->deleteUser($pb_user[0]->userId, $userInfo);
+      $this->user_model->addLog(1,$pb_user[0]->userId,"불법활동",1);
+      if ($result > 0) { echo(json_encode(array('status'=>1,"bytime"=>0))); }
+      else { echo(json_encode(array('status'=>0))); }
+      return;
+    }
     if($roomIdx == "channel1"){
-      $bytime = 0;
       if($cmd == "muteOn")
         $bytime =  strtotime("+5 minutes");
       if($cmd == "muteOnTime1")
@@ -5520,8 +5529,51 @@
       echo json_encode(array("status"=>1,"bytime"=>$bytime));
     }
     else{
-
+      $room = $this->base_model->getSelect("pb_room",array(array("record"=>"roomIdx","value"=>$roomIdx)));
+      if(!empty($room)){
+        $muted = explode(",",$room[0]->mute);
+        if($cmd == "muteOn"){
+          if(!in_array($tuseridKey,$muted))
+          {
+            array_push($muted,$tuseridKey);
+            $this->base_model->updateDataById($room[0]->id,array("mute"=>implode(",",$muted)),"pb_room","id");
+          }
+        }
+        if($cmd == "muteOff"){
+          if (($key = array_search($tuseridKey,$muted)) !== false) {
+              unset($muted[$key]);
+          }
+          $this->base_model->updateDataById($room[0]->id,array("mute"=>implode(",",$muted)),"pb_room","id");
+        }
+        if($cmd == "closeRoom"){
+          $this->base_model->deleteRecordCustom("pb_room","id",$room[0]->id);
+        }
+        if($cmd == "kickOn"){
+          if($tuseridKey == $room[0]->super){
+            echo json_encode(array("status"=>0,"msg"=>"방장은 블록할수 없습니다"));
+            return;
+          }
+          $blocked = explode(",",$room[0]->blocked);
+          if(!in_array($tuseridKey,$blocked))
+          {
+            array_push($blocked,$tuseridKey);
+            $this->base_model->updateDataById($room[0]->id,array("blocked"=>implode(",",$blocked)),"pb_room","id");
+          }
+        }
+      }
+      echo json_encode(array("status"=>1,"bytime"=>0));
     }
+  }
+
+  public function settings(){
+    $data["data"] = $this->base_model->getSelect("pb_site_settings")[0];
+    $this->loadViews("settings",$this->global,$data,NULL);
+  }
+
+  public function updateSet(){
+    $updated_data = $this->input->post();
+    $this->base_model->updateDataById(1,$updated_data,"pb_site_settings","id");
+    redirect("/settings");
   }
 }
 ?>

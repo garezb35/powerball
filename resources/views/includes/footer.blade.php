@@ -10,11 +10,11 @@
         </dd>
     </dl>
     <p class="small">
-        상호 : (주)엠커넥트 <span class="bar">|</span> 대표 : 강효신 <span class="bar">|</span> 사업자등록번호 : 218-86-01356 <span class="bar">|</span> 통신판매업신고 : 제 2019-인천부평-1516호<br>
-        주소: 인천광역시 부평구 부평대로 283, 6층 에이-610호(청천동, 부평우림라이온스밸리) <span class="bar">|</span> 이메일 : <a href="mailto:help@powerballgame.co.kr" class="mail">help@powerballgame.co.kr</a> <span class="bar">|</span> FAX : 0303-3447-3737
+        상호 : {{$prohited["company_alias"]}} <span class="bar">|</span> 대표 : {{$prohited["represent"]}} <span class="bar">|</span> 사업자등록번호 : {{$prohited["business"]}} <span class="bar"><br>
+        주소: {{$prohited["company_address"]}} <span class="bar">|</span> 이메일 : <a href="mailto:{{$prohited["email"]}}" class="mail">{{$prohited["email"]}}</a> <span class="bar">|</span> 전화번호 : {{$prohited["company_phone"]}}
     </p>
     <p class="copyright">
-        Copyright © <a href="https://www.powerballgame.co.kr" target="_blank"><strong>powerballgame.co.kr</strong></a> All rights reserved.
+        Copyright © <a href="{{$prohited["site_address"]}}" target="_blank"><strong>{{$prohited["site_address"]}}</strong></a> All rights reserved.
     </p>
 </div>
 

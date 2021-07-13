@@ -6,8 +6,10 @@
   <link href="<?php echo base_url(); ?>assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
   <link href="<?php echo base_url(); ?>assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="<?=base_url_source()?>assets/css/chat-room.css">
+  <link rel="stylesheet" href="<?=base_url_source()?>/assets/css/alertify.min.css">
   <script src="<?php echo base_url(); ?>assets/js/jQuery-2.1.4.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.2/socket.io.js" ></script>
+  <script src="<?=base_url_source()?>assets/js/alertify.min.js"></script>
 </head>
 <body>
   <div id="userLayer" style="display: none">
@@ -164,15 +166,17 @@ function setUserLayer(useridKey,nickname,e,left,roomIdx)
         str += '<li><a href="#" onclick="adminCmd(\'muteOff\',\''+useridKey+'\',\''+nickname+'\',\''+roomIdx+'\');return false;"><em class="ico"></em><span class="txt">벙어리 해제</span></a></li>';
         str += '<li><a href="#" onclick="adminCmd(\'kickOn\',\''+useridKey+'\',\''+nickname+'\',\''+roomIdx+'\');return false;"><em class="ico"></em><span class="txt">강퇴</span></a></li>';
         str += '<li><a href="#" onclick="adminCmd(\'closeRoom\',\''+useridKey+'\',\''+nickname+'\',\''+roomIdx+'\');return false;"><em class="ico"></em><span class="txt">채팅방 삭제하기</span></a></li>';
+        str += '<li><a href="#" onclick="adminCmd(\'foreverstop\',\''+useridKey+'\',\''+nickname+'\',\''+roomIdx+'\');return false;"><em class="ico"></em><span class="txt">영구정지</span></a></li>';
     }
 
     if(roomIdx == "channel1"){
-      str += '<li><a href="#" onclick="chatManager(\'muteOn\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">벙어리(5분)</span></a></li>';
-      str += '<li><a href="#" onclick="chatManager(\'muteOnTime1\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">벙어리(1시간)</span></a></li>';
-      str += '<li><a href="#" onclick="chatManager(\'muteOnTime\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">벙어리(영구)</span></a></li>';
-      str += '<li><a href="#" onclick="chatManager(\'muteOff\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">벙어리해제</span></a></li>';
-      str += '<li><a href="#" onclick="chatManager(\'banipOn\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">아이피차단</span></a></li>';
-      str += '<li><a href="#" onclick="chatManager(\'banipOff\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">아이피차단해제</span></a></li>';
+      str += '<li><a href="#" onclick="chatManager(\'muteOn\',\''+useridKey+'\',\''+nickname+'\',\''+roomIdx+'\');return false;"><em class="ico"></em><span class="txt">벙어리(5분)</span></a></li>';
+      str += '<li><a href="#" onclick="chatManager(\'muteOnTime1\',\''+useridKey+'\',\''+nickname+'\',\''+roomIdx+'\');return false;"><em class="ico"></em><span class="txt">벙어리(1시간)</span></a></li>';
+      str += '<li><a href="#" onclick="chatManager(\'muteOnTime\',\''+useridKey+'\',\''+nickname+'\',\''+roomIdx+'\');return false;"><em class="ico"></em><span class="txt">벙어리(영구)</span></a></li>';
+      str += '<li><a href="#" onclick="chatManager(\'muteOff\',\''+useridKey+'\',\''+nickname+'\',\''+roomIdx+'\');return false;"><em class="ico"></em><span class="txt">벙어리해제</span></a></li>';
+      str += '<li><a href="#" onclick="chatManager(\'banipOn\',\''+useridKey+'\',\''+nickname+'\',\''+roomIdx+'\');return false;"><em class="ico"></em><span class="txt">아이피차단</span></a></li>';
+      str += '<li><a href="#" onclick="chatManager(\'banipOff\',\''+useridKey+'\',\''+nickname+'\',\''+roomIdx+'\');return false;"><em class="ico"></em><span class="txt">아이피차단해제</span></a></li>';
+      str += '<li><a href="#" onclick="adminCmd(\'foreverstop\',\''+useridKey+'\',\''+nickname+'\',\''+roomIdx+'\');return false;"><em class="ico"></em><span class="txt">영구정지</span></a></li>';
     }
 
     str += '</ul>';
@@ -207,6 +211,36 @@ function userLayerHandler(e)
 }
 
 function adminCmd(cmd,tuseridKey,tnickname,roomIdx){
+    url = "<?=base_url()?>/setConfig"
+    var chats = $("."+roomIdx)
+    $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url: url,
+        data: {
+            cmd: cmd,
+            roomIdx: roomIdx,
+            tuseridKey : tuseridKey
+        },
+        success: function (data, textStatus) {
+            if (data.status == 1) {
+                var socket_data = {
+                    cmd: cmd,
+                    roomIdx: roomIdx,
+                    tuseridKey:tuseridKey
+                };
+                sendProcess('ADMINCMD', socket_data);
+                if(cmd == "closeRoom"){
+                    chats.remove()
+                }
+            } else {
+                alertify.error(data.msg)
+            }
+        }
+    });
+}
+
+function chatManager(cmd,tuseridKey,tnickname,roomIdx){
   url = "<?=base_url()?>/setConfig"
   $.ajax({
       type: 'POST',
@@ -219,17 +253,33 @@ function adminCmd(cmd,tuseridKey,tnickname,roomIdx){
       },
       success: function (data, textStatus) {
           if (data.status == 1) {
-              // var data = {
-              //     cmd: cmd,
-              //     roomIdx: roomIdx,
-              //     tuseridKey:tuseridKey
-              // };
-              // sendProcess('ADMINCMD', data);
+              var socket_data = {
+                  cmd: cmd,
+                  roomIdx: roomIdx,
+                  tuseridKey:tuseridKey,
+                  bytime:data.bytime
+              };
+              sendProcess('ADMINCMD', socket_data);
           } else {
-              alertifyByCommon(data.msg)
+              alertify.error(data.msg)
           }
       }
   });
+}
+
+
+function sendProcess(type,data)
+{
+  var packet = {
+      'header' : {
+          'version' : '1.0',
+          'type' : type
+      },
+
+      'body' : data
+  };
+
+  socket.emit('adminsend',packet);
 }
 
 </script>

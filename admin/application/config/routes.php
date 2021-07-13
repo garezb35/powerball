@@ -465,3 +465,7 @@ $route["insertMissRound"] = "Home/insertMissRound";
 $route["deleteMiss"] = "Home/deleteMiss";
 
 $route["setConfig"] = "Home/setConfig";
+
+$route["settings"]=  "Home/settings";
+
+$route["updateSet"] = "Home/updateSet";

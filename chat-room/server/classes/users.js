@@ -4,7 +4,7 @@ class User {
         this.users = []
     }
 
-    addUser(id, name,level,nickname,sex,winFixCnt,clientId = "",roomIdx="",time=0,mark="",item="",lobby="",image="",today="",userType=0,mute="muteOff",mute1="muteOff",bytime="",ip){
+    addUser(id, name,level,nickname,sex,winFixCnt,clientId = "",roomIdx="",time=0,mark="",item="",lobby="",image="",today="",userType=0,mute="muteOff",mute1="muteOff",bytime="0",ip){
         this.users.push({id, name,level,nickname,sex,winFixCnt,clientId,roomIdx,time,mark,item,lobby,image,today,userType,mute,mute1,bytime,ip})
         return this.users
     }
@@ -72,12 +72,11 @@ class User {
             var user = this.users.filter(user => user.id === id)[0]
         if(typeof user !="undefined"){
            this.users = this.users.filter((item) => {
-               if(roomIdx != "" && item.roomIdx === roomIdx && item.id === id){
+               if(roomIdx != "" && roomIdx!="channel1" && item.roomIdx === roomIdx && item.id === id){
                    item.mute = state;
                }
-               if(roomIdx == "" && item.id === id){
-                    item.mute1 = state.mute1
-                    item.bytime = state.bytime
+               if((roomIdx == "" || roomIdx == "channel1")  && item.id === id){
+                    item.bytime = state
                }
                return item;
            });

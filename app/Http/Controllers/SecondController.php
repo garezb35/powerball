@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Redirect;
 use App\Models\PbIpBlocked;
+use App\Models\PbSiteSettings;
 class SecondController  extends Controller
 {
     public $user;
     public $isLogged;
+    public $prohited;
     public function  __construct(){
         $this->isLogged = false;
+        $this->prohited  = PbSiteSettings::first();
         $this->middleware(function ($request, $next) {
             $ip_blocked_list = PbIpBlocked::where("ip",$request->ip())->first();
             if(!empty($ip_blocked_list)){
@@ -27,7 +30,6 @@ class SecondController  extends Controller
                   return $next($request);
               }
             }
-
         });
     }
 }

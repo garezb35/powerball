@@ -90,3 +90,7 @@ Route::get("/findIdPw",[App\Http\Controllers\MemberController::class,'findIdPw']
 Route::post("/requestExchange",[App\Http\Controllers\MemberController::class,'requestExchange'])->name("request-exchange");
 
 Route::get("/prison",[App\Http\Controllers\MemberController::class,'prison'])->name("prison");
+
+Route::get("/accessProtected",[App\Http\Controllers\BlockController::class,'accessProtected'])->name("accessProtected");
+
+Route::get("/protectedip",[App\Http\Controllers\BlockController::class,'protectedip'])->name("protectedip");

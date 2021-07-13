@@ -606,49 +606,71 @@ function receiveProcess(data)
                 break;
 
             case 'muteOn':
-                printSystemMsg('system','<span>'+bPacket.msg+'</span> 님이 <span>5분</span> 동안 벙어리 되었습니다.');
-                if(bPacket.tuseridKey == this.useridKey)
+                var bPacketArr = bPacket.msg.split(' ');
+                var tnickname = bPacketArr[0];
+                printSystemMsg('system','<span>'+tnickname+'</span> 님이 <span>5분</span> 동안 벙어리 되었습니다.');
+                if(bPacket.tuseridKey == this.userIdKey)
                 {
                     updateState(bPacket.cmd);
                 }
                 break;
 
             case 'muteOnTime':
+
+            var bPacketArr = bPacket.msg.split(' ');
+            var tnickname = bPacketArr[0];
+            var muteTime = bPacketArr[1];
+            if(!muteTime) muteTime = 1;
+                printSystemMsg('system','<span>'+tnickname+'</span> 님이 <span>영구</span> 벙어리 되었습니다.');
+                if(bPacket.tuseridKey == this.userIdKey)
+                {
+                    updateState(bPacket.cmd);
+                }
+                break;
+
+            case 'muteOnTime1':
                 var bPacketArr = bPacket.msg.split(' ');
                 var tnickname = bPacketArr[0];
                 var muteTime = bPacketArr[1];
                 if(!muteTime) muteTime = 1;
-                printSystemMsg('system','<span>'+tnickname+'</span> 님이 <span>'+muteTime+'시간</span> 동안 벙어리 되었습니다.');
-                if(bPacket.tuseridKey == this.useridKey)
+                printSystemMsg('system','<span>'+bPacket.tnickname+'</span> 님이 <span>1시간</span> 동안 벙어리 되었습니다.');
+                if(bPacket.tuseridKey == this.userIdKey)
                 {
                     updateState(bPacket.cmd);
                 }
                 break;
 
             case 'muteOff':
-                printSystemMsg('system','<span>'+bPacket.msg+'</span> 님이 벙어리 해제 되었습니다.');
-                if(bPacket.tuseridKey == this.useridKey)
+                printSystemMsg('system','<span>'+bPacket.tnickname+'</span> 님이 벙어리 해제 되었습니다.');
+                if(bPacket.tuseridKey == this.userIdKey)
                 {
                     updateState(bPacket.cmd);
                 }
                 break;
 
             case 'banipOn':
-                printSystemMsg('system','<span>'+bPacket.msg+'</span> 님이 접속 차단 되었습니다.');
-                if(bPacket.tuseridKey == this.useridKey)
+                printSystemMsg('system','<span>'+bPacket.tnickname+'</span> 님이 접속 차단 되었습니다.');
+                if(bPacket.tuseridKey == this.userIdKey)
                 {
                     updateState(bPacket.cmd);
                 }
                 break;
 
             case 'banipOff':
-                printSystemMsg('system','<span>'+bPacket.msg+'</span> 님이 접속 차단이 해제 되었습니다.');
-                if(bPacket.tuseridKey == this.useridKey)
+                printSystemMsg('system','<span>'+bPacket.tnickname+'</span> 님이 접속 차단이 해제 되었습니다.');
+                if(bPacket.tuseridKey == this.userIdKey)
                 {
                     updateState(bPacket.cmd);
                 }
                 break;
 
+            case 'foreverstop':
+                printSystemMsg('system','<span>'+bPacket.tnickname+'</span> 님이 영구 정지 되었습니다.');
+                if(bPacket.tuseridKey == this.userIdKey)
+                {
+                    location.reload()
+                }
+                break;
             case 'freezeOn':
                 chatManager('freezeOn');
                 break;
@@ -761,7 +783,7 @@ function receiveProcess(data)
 
                     for(var i=0;i<useridKeyListArr.length;i++)
                     {
-                        if(useridKeyListArr[i] == this.useridKey)
+                        if(useridKeyListArr[i] == this.userIdKey)
                         {
                             updateState('muteOff');
                             break;
@@ -839,7 +861,7 @@ function receiveProcess(data)
                 break;
 
             case 'MUTEMSG':
-                printSystemMsg('guide','회원님은 벙어리 상태입니다.<span> ['+getDiff(bPacket.diff)+' 후 채팅 가능]</span>');
+                printSystemMsg('guide','회원님은 벙어리 상태입니다.<span> ['+bPacket.diff+' 후 채팅 가능]</span>');
                 break;
 
             case 'BAN':

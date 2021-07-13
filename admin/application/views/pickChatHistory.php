@@ -23,22 +23,22 @@
                <tr>
                   <td class="text-center">전체</td>
                   <td class="text-center">
-                    <span class="win"><?=$win_room->total->win?></span>승
-                    <span class="lose"><?=$win_room->total->lose?></span>패
+                    <span class="win"><?=empty($win_room->total->win) ? 0 : $win_room->total->win?></span>승
+                    <span class="lose"><?=empty($win_room->total->lose) ? 0 : $win_room->total->lose?></span>패
                   </td>
                </tr>
                <tr>
                   <td class="text-center">파워볼</td>
                   <td class="text-center">
-                    <span class="win"><?=$win_room->pb->win?></span>승
-                    <span class="lose"><?=$win_room->pb->lose?></span>패
+                    <span class="win"><?=empty($win_room->pb->win) ? 0 : $win_room->pb->win?></span>승
+                    <span class="lose"><?=empty($win_room->pb->lose) ? 0 : $win_room->pb->lose?></span>패
                   </td>
                </tr>
                <tr>
                   <td class="text-center">숫자합</td>
                   <td class="text-center">
-                    <span class="win"><?=$win_room->nb->win?></span>승
-                    <span class="lose"><?=$win_room->nb->lose?></span>패
+                    <span class="win"><?=empty($win_room->nb->win) ? 0: $win_room->nb->win?></span>승
+                    <span class="lose"><?=empty($win_room->nb->lose) ? 0 : $win_room->nb->lose?></span>패
                   </td>
                </tr>
                <tr>

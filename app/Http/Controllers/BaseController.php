@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\CodeDetail;
 use App\Models\PbPurItem;
 use App\Models\PbIpBlocked;
+use App\Models\PbSiteSettings;
 use Illuminate\Support\Facades\Auth;
 use View;
 use Redirect;
@@ -37,6 +38,10 @@ class BaseController  extends Controller
             if (Auth::check()) {
                 $this->isLogged = true;
                 $this->user = Auth::user();
+                if($this->user->user_type == "00"){
+                  Redirect::to('accessProtected')->send();
+                  return;
+                }
                 if(!empty($this->user->second_password) && $this->user->second_use == 1){
                     Redirect::to('veriPass')->send();
                     return;
@@ -81,7 +86,7 @@ class BaseController  extends Controller
             $rooms = PbRoom::with(["roomandpicture.getLevel","roomandpicture.item_use"])->where("created_at",">",$days_ago)->orderBy("cur_win","DESC")->orderBy("cur_win","DESC")->limit(6)->get()->toArray();
             $this->rooms = $rooms;
             $userIdToken = !Auth::check() ? "" : $this->user->api_token;
-
+            $prohited = PbSiteSettings::first();
             View::share('user_level', $this->user_level);
             View::share('next_level', $this->next);
             View::share('normal_level', $this->normal_exp);
@@ -95,6 +100,7 @@ class BaseController  extends Controller
             View::share('rooms', $this->rooms);
             View::share('userIdToken', $userIdToken);
             View::share('using_sim', $this->simulate);
+            View::share('prohited', $prohited);
             return $next($request);
           }
         });

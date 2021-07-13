@@ -4,9 +4,11 @@ const {Msg} = require('../classes/msg')
 const moment = require('moment');
 const strtotime = require('strtotime');
 const { v4: uuidv4 } = require('uuid');
+require('moment-timezone');
 let listUsers = new User();
 let listMsg = new Msg();
 var clientid = "",serverid = "",adminroomid = ""
+moment.tz.setDefault("Asia/Seoul");
 function createMessage(id, nickname,item,level,mark,msg,sex,winFixCnt,userType,roomIdx=""){
     return {
         id,
@@ -83,7 +85,7 @@ function checkInPacket(data,obj,io){
 
                            if(typeof user[0]["userId"] == "undefined" || user[0]["userId"] == null || user.length ==0 || typeof  user == 'undefined') {
                                let date  = new Date();
-                               listUsers.addUser("null-"+uuidv4(), '', '', '', '', 0, obj.id, data.body.roomIdx,date.getTime(),"","","channel1","/assets/images/mine/profile.png","",0,"muteOff","muteOff","",obj.handshake.address)
+                               listUsers.addUser("null-"+uuidv4(), '', '', '', '', 0, obj.id, data.body.roomIdx,date.getTime(),"","","channel1","/assets/images/mine/profile.png","",0,"muteOff","muteOff",0,obj.handshake.address)
                                return_obj = {header: {type: "ERROR"}, body: {type: "NOT_LOGIN",connectList:listUsers.getUsersByRoomIdx(data.body.roomIdx),msgList:listMsg.getMsgRoomIdx(data.body.roomIdx)}};
                            }
                            else {
@@ -125,7 +127,7 @@ function checkInPacket(data,obj,io){
                                    }
                                }
 
-                               listUsers.addUser(token, user[0]["name"], user[0]["level"], user[0]["nickname"], user[0]["sex"], current_win, obj.id, data.body.roomIdx,date.getTime(),"",item.join("#::#"),"channel1","","",0,"muteOff","muteOff","",obj.handshake.address)
+                               listUsers.addUser(token, user[0]["name"], user[0]["level"], user[0]["nickname"], user[0]["sex"], current_win, obj.id, data.body.roomIdx,date.getTime(),"",item.join("#::#"),"channel1","","",0,"muteOff","muteOff",user[0]["mutedTime"],obj.handshake.address)
                                return_obj = {header:{type:"INITMSG"},body:{roomIdx:data.body.roomIdx,freezeOnOff:"off",fixNoticeOnOff:"off",fixNoticeMsg:"",connectList:listUsers.getUsersByRoomIdx(data.body.roomIdx),msgList:listMsg.getMsgRoomIdx(data.body.roomIdx)}};
 
                            }
@@ -144,11 +146,10 @@ function checkInPacket(data,obj,io){
                            obj.join(data.body.roomIdx)
 
                            let user = await knex("pb_users").where("pb_users.userIdKey",token);
-                           console.log(user)
                            let profile_img = "/assets/images/mine/profile.png"
                            let any_token = uuidv4();
                            if(user.length ==0 || token == null || token == "" || typeof user[0]["userId"] == "undefined" || user[0]["userId"] == null ||  typeof  user == 'undefined') {
-                               listUsers.addUser("null-"+any_token, '', '00', any_token.substring(0,4)+"..훈련병", '', 0, obj.id, data.body.roomIdx,date.getTime(),"","","lobby",profile_img,"",0,"muteOff","muteOff","",obj.handshake.address)
+                               listUsers.addUser("null-"+any_token, '', '00', any_token.substring(0,4)+"..훈련병", '', 0, obj.id, data.body.roomIdx,date.getTime(),"","","lobby",profile_img,"",0,"muteOff","muteOff",0,obj.handshake.address)
                                obj.to(data.body.roomIdx).emit("receive",{header:{type:"ListUser"},body:{users:listUsers.getUserByClientId(obj.id)}})
                                obj.emit("receive",{header:{type:"INITMSG"},body:{users:listUsers.getUsersByRoomIdx(data.body.roomIdx),connector:getCountRoom()}})
                            }
@@ -156,7 +157,7 @@ function checkInPacket(data,obj,io){
 
                                if(user[0]["image"] != "" && user[0]["image"] !==null)
                                    profile_img = user[0]["image"]
-                               listUsers.addUser(token, user[0]["name"], user[0]["level"], user[0]["nickname"], user[0]["sex"], 0, obj.id, data.body.roomIdx,date.getTime(),"","","lobby",profile_img,user[0]["today_word"],0,"muteOff","muteOff","",obj.handshake.address)
+                               listUsers.addUser(token, user[0]["name"], user[0]["level"], user[0]["nickname"], user[0]["sex"], 0, obj.id, data.body.roomIdx,date.getTime(),"","","lobby",profile_img,user[0]["today_word"],0,"muteOff","muteOff",user[0]["mutedTime"],obj.handshake.address)
                                obj.to(data.body.roomIdx).emit("receive",{header:{type:"ListUser"},body:{users:listUsers.getUserByClientId(obj.id)}})
                                obj.emit("receive",{header:{type:"INITMSG"},body:{users:listUsers.getUsersByRoomIdx(data.body.roomIdx),connector:getCountRoom()}})
                            }
@@ -173,7 +174,7 @@ function checkInPacket(data,obj,io){
                            obj.join(data.body.roomIdx)
                            let user = await knex("pb_users").where("pb_users.userIdKey",token);
                            if(typeof user[0]["userId"] == "undefined" || user[0]["userId"] == null || user.length ==0 || typeof  user == 'undefined') {
-                               listUsers.addUser("null-"+uuidv4(), '', '', '', '', 0, obj.id, data.body.roomIdx,date.getTime(),"","","lobby","",0,"muteOff","muteOff","",obj.handshake.address)
+                               listUsers.addUser("null-"+uuidv4(), '', '', '', '', 0, obj.id, data.body.roomIdx,date.getTime(),"","","lobby","",0,"muteOff","muteOff",0,obj.handshake.address)
                                return_obj = {header: {type: "ERROR"}, body: {type: "NOT_LOGIN"}};
                                obj.emit("receive",return_obj);
                            }
@@ -204,7 +205,7 @@ function checkInPacket(data,obj,io){
                                     let profile_img = "/assets/images/mine/profile.png"
                                     if(user[0]["image"] != "" && user[0]["image"] !==null)
                                         profile_img = user[0]["image"];
-                                    listUsers.addUser(token, user[0]["name"], user[0]["level"], user[0]["nickname"], user[0]["sex"], 0, obj.id, data.body.roomIdx,date.getTime(),"","","lobby",profile_img,user[0]["today_word"],userType,mute,"muteOff","",obj.handshake.address)
+                                    listUsers.addUser(token, user[0]["name"], user[0]["level"], user[0]["nickname"], user[0]["sex"], 0, obj.id, data.body.roomIdx,date.getTime(),"","","lobby",profile_img,user[0]["today_word"],userType,mute,"muteOff",user[0]["mutedTime"],obj.handshake.address)
                                     obj.to(data.body.roomIdx).emit("receive",{header:{type:"ListUser"},body:{users:listUsers.getUserByClientId(obj.id)}})
                                     obj.emit("receive",{header:{type:"INIT"},body:{freezeOnOff:room[0]['frozen'],users:listUsers.getUsersByRoomIdx(data.body.roomIdx),msgList:listMsg.getMsgRoomIdx(data.body.roomIdx)}})
                                     await knex('pb_room')
@@ -235,8 +236,13 @@ function checkInPacket(data,obj,io){
                 obj.emit("receive",return_obj)
             }
             else{
-                if(user.mute == "muteOn"){
+                var cur_diff = diffStrtotime(user.bytime);
+                if(data.body.roomIdx.length == 50 && user.mute == "muteOn"){
                     obj.emit("receive",{header:{type:"NOTICE"},body:{type:"MUTEMSG"}})
+                }
+
+                else if(data.body.roomIdx == "channel1" && user.bytime!=0 && cur_diff!= true){
+                  obj.emit("receive",{header:{type:"NOTICE"},body:{type:"MUTEMSG",diff:cur_diff}})
                 }
                 else{
                     return_obj = {header:{type:"MSG"},body:createMessage(user.id,user.nickname,user.item,user.level,user.mark,data.body.msg,user.sex,user.winFixCnt,user.userType,data.body.roomIdx)};
@@ -246,7 +252,7 @@ function checkInPacket(data,obj,io){
                     }
                     listMsg.createMsg(user.id,user.item,user.level,"",data.body.msg,user.nickname,user.sex,user.winFixCnt,obj.id,data.body.roomIdx,user.userType);
                     io.to(data.body.roomIdx).emit("receive",return_obj)
-                    if(this.adminroomid == data.body.roomIdx || this.adminroomid == null || this.adminroomid.trim() == ""){
+                    if((this.clientid !=null && this.clientid !="") && (this.adminroomid == data.body.roomIdx || this.adminroomid == null || this.adminroomid.trim() == "")){
                       this.clientid.emit("receive",return_obj)
                     }
                 }
@@ -254,7 +260,6 @@ function checkInPacket(data,obj,io){
 
             break;
         case "MEMO":
-            console.log(data.body.tuseridKey.length)
             if(data.body.tuseridKey.length > 0)
                 for(let i =0; i < data.body.tuseridKey.length; i++){
                     let user = listUsers.getUser(data.body.tuseridKey[i]);
@@ -290,6 +295,10 @@ function deleteUserByClientId(id){
 
 function getUsersByRoomIdx(roomIdx){
     return listUsers.getUsersByRoomIdx(roomIdx).length
+}
+
+function getUser(id){
+  return listUsers.getUser(id)
 }
 
 function refreshChatByRoomIdx(roomIdx){
@@ -344,6 +353,16 @@ function setUserItem(data){
 }
 
 
+function diffStrtotime(bytime){
+    var curr = strtotime(moment().format('yyyy-MM-DD hh:mm:ss'));
+    var dif = parseInt(bytime) - curr;
+    if(dif <=0 || bytime == 0) return true;
+    else{
+      if(dif <= 60) return Math.floor(dif)+"초";
+      else if(dif <3600) return Math.floor(dif / 60) + "분";
+      else return Math.ceil(dif / 3600) + "시간";
+  }
+}
 function date_diff(date){
     if(date != null && typeof date !="undefined"){
         var date1 = new Date(date);
@@ -375,5 +394,6 @@ module.exports = {
     getUsersByRoomIdx,
     setUserItem,
     adminRealtime,
-    setAdminConfig
+    setAdminConfig,
+    getUser
 }

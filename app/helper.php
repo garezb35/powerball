@@ -375,4 +375,19 @@ function powerballBetMnyKind($date,$mnyKind){
   }
   return $r;
 }
+
+
+function checkProhited($content){
+  $subjectChk = str_replace('/\s/','',$content);
+  $subjectMatchArr = preg_match_all('/[0-9]{4}/',$subjectChk,$match);
+  $subjectMatchLength = sizeof($match[0]);
+  $contentChk = str_replace('/<img[^>]*>/','',$content);
+  $contentChk = str_replace('/\s/','',$contentChk);
+  $contentMatchArr = preg_match_all('/[0-9]{4}/',$contentChk,$match);
+  $contentMatchLength = sizeof($match[0]);
+  if($subjectMatchLength >= 2 || $contentMatchLength >= 2){
+    return true;
+  }
+  return false;
+}
 ?>

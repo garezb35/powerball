@@ -8,8 +8,10 @@ use App\Models\PbMessage;
 use App\Models\PbRecommend;
 use App\Models\PbView;
 use App\Models\User;
+use App\Models\PbBlockReason;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Redirect;
 
 class BoardController extends SecondController
 {
@@ -222,7 +224,7 @@ class BoardController extends SecondController
             echo "<script>alert('존재하지 않는 게시판입니다.');window.history.back(1)</script>";
             return;
         }
-        return view('board_write',["css"=>"board.css","js"=>"board.js","result"=>$result]);
+        return view('board_write',["css"=>"board.css","js"=>"board.js","result"=>$result,"prohited"=>$this->prohited["prohited"]]);
     }
 
     public function writePost(Request $request){
@@ -241,6 +243,16 @@ class BoardController extends SecondController
         if(empty($board)){
             echo "<script>alert('게시판이 존재하지 않습니다.');window.history.back(1)</script>";
             return;
+        }
+
+        if(checkProhited($wr_content) || checkProhited($wr_subject)){
+          $this->user->user_type = "00";
+          $this->user->save();
+          PbBlockReason::updateorCreate(
+              ["userId"=>$this->user->userId,"type"=>1],array("reason"=>"개인정보노출")
+          );
+          Redirect::to('accessProtected')->send();
+          return;
         }
 
         if($board["security"] == 1)

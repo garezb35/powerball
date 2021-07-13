@@ -13,6 +13,7 @@ socketOption['sync disconnect on unload'] = true;
 var powerball_result = new Array();
 var next_result= new Array();
 var pick_click = 0;
+var filterWordArr = prohited.split(',');
 if('WebSocket' in window)
 {
     socketOption['transports'] = ['websocket'];
@@ -2227,8 +2228,6 @@ function modifyRoom()
         $("#current_roomTitle").focus();
         return false;
     }
-
-    var filterWordArr = '스코어게임,scoregame,abcgame,abc게임,에이비씨게임,자지,보지,스게,개새,개세,개자식,뉘미럴,니귀미,니기미,개년,18놈,새끼,니미,뉘미,씨댕,씨바,씨발,씨뱅,씨봉알,씨부랄,씨부럴,씨부렁,씨부리,씨불,씨브랄,씨빠,씨빨,씨뽀랄,씨팍,씨팔,씨펄,씹,아가리,아갈이,엄창,접년,잡놈,좀물,좁년,지랄,지롤,지럴,퍽큐,뻑큐,빠큐,.com,.co.kr,.kr,토크온,슈어맨,엔트리'.split(',');
 
     for(i=0;i<filterWordArr.length;i++)
     {

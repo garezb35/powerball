@@ -54,7 +54,8 @@ class ChatController extends SecondController
             $nickname = $this->user->nickname;
             $bullet = $this->user->bullet;
         }
-        return view('chat/home',["cur_nickname"=>$nickname,"bullet"=>$bullet,"p_remain"=>TimeController::getTimer(2),"item_count"=>$item_count,"api_token"=>$api_token,"userIdKey"=>$userIdKey,"profile"=>json_encode($this->profile)]);
+        $prohited = $this->prohited["prohited"];
+        return view('chat/home',["prohited"=>$prohited,"cur_nickname"=>$nickname,"bullet"=>$bullet,"p_remain"=>TimeController::getTimer(2),"item_count"=>$item_count,"api_token"=>$api_token,"userIdKey"=>$userIdKey,"profile"=>json_encode($this->profile)]);
     }
 
     public function roomWait(Request $request){
@@ -137,9 +138,11 @@ class ChatController extends SecondController
             }
             array_shift($pb_rooms);
         }
+        $prohited =  $this->prohited["prohited"];
         return view('chat/waiting',[   "js"=>"chat-room.js",
                                             "css"=>"chat-room.css",
                                             "pick_visible"=>"none",
+                                            "prohited"=>$prohited,
                                             "p_remain"=>TimeController::getTimer(0),
                                             "premium_count"=>$premium_count,
                                             "normal_count"=>$normal_count,
@@ -200,8 +203,11 @@ class ChatController extends SecondController
             ->first();
 
         $cur_bet = empty($cur_bet["content"]) ? "" : $cur_bet["content"];
+
+        $prohited =  $this->prohited["prohited"];
         return view('chat/view',[   "js"=>"chat-view.js",
                                          "css"=>"chat-room.css",
+                                         "prohited"=>$prohited,
                                          "pick_visible"=>"none",
                                          "token"=>$user->api_token,
                                          "win_room"=>$win_room,

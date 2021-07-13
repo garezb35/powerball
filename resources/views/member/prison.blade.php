@@ -8,7 +8,7 @@
       <li><a href="{{route("prison")}}?page_type=prison" @if(Request::get("page_type") == "prison") class="on" @endif>정지</a></li>
     </ul>
 </div>
-<div class="prisonBox">
+<div class="prisonBox" style="width:99%">
 		<div class="content tbl_head01 tbl_wrap">
 			<table class="table table-bordered mb-0">
 				<colgroup>
@@ -61,8 +61,18 @@
 				</tr>
         </thead>
 				<tbody>
-
+        @if(!empty($prison))
+        @foreach($prison as $key=>$value)
+        <tr>
+          <th>{{$key+1}}</th>
+          <th>{{$value["suser"]["nickname"]}}</th>
+          <th>{{$value["reason"]}}</th>
+          <th>{{$value["created_at"]}}</th>
+        </tr>
+        @endforeach
+        @endif
 			</tbody>
     </table>
+    {{ $prison->links() }}
 	</div>
 @endsection
