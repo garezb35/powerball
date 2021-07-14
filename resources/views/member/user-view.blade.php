@@ -10,7 +10,7 @@
     <li style="width:150px"><a href="/user-view?type=rejectemail" <?=Request::get("type") == "rejectemail" ? 'class="on"':''?>>이메일주소무단수집거부</a></li>
   </ul>
 </div>
-<div class="tbl_head01 tbl_wrap">
+<div class="tbl_head01 tbl_wrap border p-3" style="margin-top:10px;">
   {!!$page["content"] !!}
 </div>
 @endsection
