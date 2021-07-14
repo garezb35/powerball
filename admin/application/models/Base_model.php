@@ -375,5 +375,17 @@ class Base_model extends CI_Model
       $results = $query->result();
       return  $results;
     }
+
+    function getMails($id = "all"){
+      $this->db->select('BaseTbl.*,Fuser.nickname as fnickname,Tuser.nickname as tnickname,Fuser.user_type,Fuser.userId as fuserId');
+      $this->db->from("pb_inbox as BaseTbl");
+      $this->db->join("pb_users as Fuser","Fuser.userId=BaseTbl.fromId");
+      $this->db->join("pb_users as Tuser","Tuser.userId=BaseTbl.toId");
+      if($id != "all")
+        $this->db->where("BaseTbl.id",$id);
+      $query = $this->db->get();
+      $results = $query->result();
+      return  $results;
+    }
 }
 ?>

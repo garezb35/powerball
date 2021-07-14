@@ -18,8 +18,8 @@ jQuery(document).ready(function(){
 								 			data : { userId : userId,reason:value }
 								 			}).done(function(data){
 								 				currentRow.parents('tr').remove();
-								 				if(data.status = true) { alertify.success("성공적으로 중지되었습니다."); }
-								 				else if(data.status = false) { alertify.error("요청이 실패되었습니다.");  }
+								 				if(data.status == true) { alertify.success("성공적으로 중지되었습니다."); }
+								 				else if(data.status == false) { alertify.error("요청이 실패되었습니다.");  }
 								 				else { alertify.error("접근거절.");  }
 						 			});
 								  }
@@ -43,8 +43,8 @@ jQuery(document).ready(function(){
 			}).done(function(data){
 				console.log(data);
 				currentRow.parents('tr').remove();
-				if(data.status = true) { alert("User successfully deleted"); }
-				else if(data.status = false) { alert("User deletion failed"); }
+				if(data.status == true) { alert("User successfully deleted"); }
+				else if(data.status == false) { alert("User deletion failed"); }
 				else { alert("Access denied..!"); }
 			});
 		}
@@ -67,8 +67,8 @@ jQuery(document).ready(function(){
 												 url : hitURL,
 												 data : { userId : userId,mode:mode,ip:ip,reason:value }
 												 }).done(function(data){
-													 if(data.status = true) { this_btn.text(data.txt) ;this_btn.data("mode",data.mode)}
-													 else if(data.status = false) { alert("처리 오류"); }
+													 if(data.status == true) { this_btn.text(data.txt) ;this_btn.data("mode",data.mode)}
+													 else if(data.status == false) { alert("처리 오류"); }
 													 else { alert("Access denied..!"); }
 												 }).fail(function(xhr){
 													 console.log(xhr)
@@ -84,8 +84,8 @@ jQuery(document).ready(function(){
 					url : hitURL,
 					data : { userId : userId,mode:mode,ip:ip }
 					}).done(function(data){
-						if(data.status = true) { this_btn.text(data.txt) ;this_btn.data("mode",data.mode)}
-						else if(data.status = false) { alert("처리 오류"); }
+						if(data.status == true) { this_btn.text(data.txt) ;this_btn.data("mode",data.mode)}
+						else if(data.status == false) { alert("처리 오류"); }
 						else { alert("Access denied..!"); }
 					}).fail(function(xhr){
 						console.log(xhr)

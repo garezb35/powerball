@@ -468,3 +468,9 @@ $route["settings"]=  "Home/settings";
 $route["updateSet"] = "Home/updateSet";
 
 $route["mailList"] = "Home/mailList";
+
+$route["mails"] = "Home/mails";
+
+$route["contentMail"] = "Home/contentMail";
+
+$route["deleteMail"] = "Home/deleteMail";

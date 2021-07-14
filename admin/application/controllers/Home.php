@@ -5562,5 +5562,61 @@
   public function mailList(){
     $this->loadViews("mailList",$this->global,NULL,NULL);
   }
+
+  public function mails(){
+    $mail_list = array();
+    $mails = $this->base_model->getMails();
+    if(!empty($mails)){
+      foreach($mails as $record){
+        $temp = array();
+        array_push($temp,$record->id);
+        array_push($temp,$record->fnickname);
+        array_push($temp,$record->tnickname);
+        $report = "정상";
+        if($record->report == 2){
+          $report  = "신고됨";
+        }
+        if($record->report == 3){
+          $report  = "신고수락";
+        }
+        if($record->report == 4){
+          $report  = "신고신청거절";
+        }
+        $mail_type = "랜덤";
+        if($record->mail_type == 2)
+          $mail_type = "1:1";
+        $state = "";
+        if($record->state == 1)
+          $state = "보관됨";
+        array_push($temp,$report);
+        array_push($temp,$mail_type);
+        array_push($temp,$state);
+        array_push($temp,$record->created_at);
+        $view_date = "읽지 않음";
+        if($record->view_date !="")
+          $view_date = $record->view_date;
+        array_push($temp,$view_date);
+        array_push($mail_list,$temp);
+      }
+    }
+    echo json_encode(array("data"=>$mail_list));
+  }
+
+  function contentMail(){
+    $id = $this->input->post("id");
+    $mails = $this->base_model->getMails($id);
+    if(sizeof($mails) == 0)
+    {
+      echo json_decode(array("status"=>"false"));
+      return;
+    }
+    echo json_encode(array("status"=>true,"data"=>$mails[0]));
+  }
+
+  function deleteMail(){
+    $id = $this->input->post("id");
+    $this->base_model->deleteRecordCustom("pb_inbox","id",$id);
+    echo json_encode(array("status"=>true));
+  }
 }
 ?>

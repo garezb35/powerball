@@ -19,6 +19,7 @@
     <link href="<?php echo base_url(); ?>assets/dist/css/sscss/styles/alert-bangtidy.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url(); ?>assets/dist/css/sscss/styles/alert-blackgloss.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url(); ?>assets/plugins/tagsinput/bootstrap-tagsinput.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo base_url(); ?>assets/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="<?=base_url_source()?>/assets/css/alertify.min.css">
     <script type="text/javascript">
         var baseURL = "<?php echo base_url(); ?>";
@@ -44,8 +45,9 @@
     <script src="<?php echo base_url(); ?>assets/js/bootstrap-notify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.2/socket.io.js" ></script>
     <script src="<?php echo base_url(); ?>assets/select2/js/select2.min.js"></script>
-    <script src="<?=base_url_source()?>assets/js/alertify.min.js"></script>
+    <script src="<?=base_url_source()?>/assets/js/alertify.min.js"></script>
     <script src="<?=base_url()?>assets/plugins/tagsinput/bootstrap-tagsinput.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/plugins/datatables/jquery.dataTables.min.js?>"></script>
     <script src="<?php echo base_url(); ?>assets/js/init.js?<?=time()?>"></script>
   </head>
 
