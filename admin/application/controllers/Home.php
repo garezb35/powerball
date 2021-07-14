@@ -5597,7 +5597,6 @@
           $view_date = $record->view_date;
         array_push($temp,$view_date);
         array_push($mail_list,$temp);
-        array_push($mail_list,$record->content);
       }
     }
     echo json_encode(array("data"=>$mail_list));

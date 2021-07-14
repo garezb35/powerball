@@ -18,7 +18,6 @@
                         <th>쪽지보관</th>
                         <th>창조일</th>
                         <th>읽은 시간</th>
-                        <th style="display:none"></th>
                      </tr>
                    </thead>
                 </table>
@@ -57,9 +56,7 @@ td,th{
 td{
   cursor: pointer
 }
-tr td:last-child{
-  display: none;
-}
+
 </style>
 <script>
 $(document).ready(function() {
