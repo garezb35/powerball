@@ -143,7 +143,7 @@ function connect()
     try{
         if(socket == null)
         {
-            socket = io.connect('http://203.109.14.130:3000/result',socketOption);
+            socket = io.connect(node+'/result',socketOption);
         }
     }
     catch(e){

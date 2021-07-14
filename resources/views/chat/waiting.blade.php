@@ -21,6 +21,7 @@
         var msgStopTime = 10;
         var blackListArr = ''.split(',');
         var level = "{{$u_level}}";
+        var node = "{{$node}}";
     </script>
 @endsection
 @section("header")

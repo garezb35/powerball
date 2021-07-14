@@ -55,7 +55,7 @@ class ChatController extends SecondController
             $bullet = $this->user->bullet;
         }
         $prohited = $this->prohited["prohited"];
-        return view('chat/home',["prohited"=>$prohited,"cur_nickname"=>$nickname,"bullet"=>$bullet,"p_remain"=>TimeController::getTimer(2),"item_count"=>$item_count,"api_token"=>$api_token,"userIdKey"=>$userIdKey,"profile"=>json_encode($this->profile)]);
+        return view('chat/home',["node"=>$this->prohited["node_address"],"prohited"=>$prohited,"cur_nickname"=>$nickname,"bullet"=>$bullet,"p_remain"=>TimeController::getTimer(2),"item_count"=>$item_count,"api_token"=>$api_token,"userIdKey"=>$userIdKey,"profile"=>json_encode($this->profile)]);
     }
 
     public function roomWait(Request $request){
@@ -143,6 +143,7 @@ class ChatController extends SecondController
                                             "css"=>"chat-room.css",
                                             "pick_visible"=>"none",
                                             "prohited"=>$prohited,
+                                            "node"=>$this->prohited["node_address"],
                                             "p_remain"=>TimeController::getTimer(0),
                                             "premium_count"=>$premium_count,
                                             "normal_count"=>$normal_count,
@@ -208,6 +209,7 @@ class ChatController extends SecondController
         return view('chat/view',[   "js"=>"chat-view.js",
                                          "css"=>"chat-room.css",
                                          "prohited"=>$prohited,
+                                         "node"=>$this->prohited["node_address"],
                                          "pick_visible"=>"none",
                                          "token"=>$user->api_token,
                                          "win_room"=>$win_room,

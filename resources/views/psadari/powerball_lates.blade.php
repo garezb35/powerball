@@ -3,6 +3,7 @@
     @include('Analyse/psadari/analyse-menu')
     <script>
         var limit = {{$limit}};
+        var node = "{{$node}}";
     </script>
     @if(Request::get("pageType") =="display")
     <div id="powerballMiniViewDiv" class="mb-1">
@@ -12,9 +13,7 @@
     @if(Request::get("pageType") =="late")
     <div class="mt-2"></div>
     @include("Time.timebox")
-    <div class="round_area" style="height: 63px;
-    margin-top: 8px;
-    margin-bottom: 10px;">
+    <div class="round_area" style="height: 63px;margin-top: 8px;margin-bottom: 10px;">
         <div class="view_se1">
             <div id="single_search" class="se1">
                 <a style="height: 61px;line-height: 61px;" class="sp-date_prev prev rollover" href="{{route("p_analyse")}}?terms=lates&pageType=late&limit={{$prev}}" rel="down"><i class="fa fa-angle-left" style="/* font-size:24px */"></i></a>

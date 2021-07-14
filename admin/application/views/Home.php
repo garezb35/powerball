@@ -1009,10 +1009,7 @@
       redirect("incomingBank");
     }
 
-    public function company(){
-      $data['company'] = get_site_info();
-      $this->loadViews("company",$this->global,$data,NULL);
-    }
+
     public function saveCompany(){
       $data = $this->input->post();
       $count=$this->base_model->getCompany();
@@ -4708,10 +4705,7 @@
     echo json_encode(array("status"=>"fail"));
   }
 
-  public function config_delivery(){
-    $data['config_delivery'] = get_site_info();
-    $this->loadViews("config_delivery",$this->global,$data,null);
-  }
+
 
   public function product_option(){
     $second = array();

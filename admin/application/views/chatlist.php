@@ -80,7 +80,7 @@
       socketOption['transports'] = ['websocket'];
   }
   var socket =  null;
-  var socket = io("http://203.109.14.130:3000/prefix",socketOption);
+  var socket = io(node+"/prefix",socketOption);
    $(document).ready(function(){
      $('.hastip').tooltipsy({
       content: function ($el, $tip) {

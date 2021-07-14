@@ -19,6 +19,7 @@
         @else
         var bulllet = 0;
         @endif
+        
     </script>
     @include('chat.countdown')
     <div class="mb-2"></div>

@@ -5,7 +5,9 @@
 @endphp
 @extends('includes.empty_header')
 @section("content")
-
+<script>
+var node = "{{$node}}";
+</script>
 <div class="marketBox">
     <input type="hidden" id="api_token" value="{{AUth::user()->api_token}}">
     <div class="title">

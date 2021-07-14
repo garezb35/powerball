@@ -23,6 +23,7 @@
     <script type="text/javascript">
         var baseURL = "<?php echo base_url(); ?>";
         var missed = <?=isset($misses) && !empty($misses) ? sizeof($misses) : 0; ?>;
+        var node = "<?=get_site_info()[0]->node_address?>";
     </script>
     <style>
       .error{
@@ -190,9 +191,10 @@
                 <i class="fa fa-comment"></i> <span>빠진 결과 처리</span></i>
               </a>
             </li>
-            <li class="<?php echo activate_menu("settings");?>">
-              <a href="<?=base_url()?>settings">
-                <i class="fa fa-cogs"></i> <span>환경설정</span></i>
+
+            <li class="<?php echo activate_menu("mailList");?>">
+              <a href="<?=base_url()?>mailList">
+                <i class="fa fa-envelope"></i> <span>쪽지관리</span></i>
               </a>
             </li>
           </ul>

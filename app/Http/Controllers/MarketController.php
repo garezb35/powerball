@@ -43,7 +43,7 @@ class MarketController extends SecondController
                     $item[$value["price_type"]] = array();
                 array_push($item[$value["price_type"]],$value);
             }
-        return view('market',["js"=>"market.js","css"=>"market.css","pick_visible"=>"none","item"=>$item,"user"=>$this->user]);
+        return view('market',["js"=>"market.js","css"=>"market.css","node"=>$this->prohited["node_address"],"pick_visible"=>"none","item"=>$item,"user"=>$this->user]);
     }
 
     public function buyItem(Request $request){

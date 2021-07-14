@@ -529,7 +529,7 @@ function connect()
 
         if(socket == null)
         {
-            socket = io.connect('http://203.109.14.130:3000/room',socketOption);
+            socket = io.connect(node+'/room',socketOption);
         }
         sendProcess('login');
     }

@@ -46,6 +46,7 @@ class PowerSadariController extends SecondController
                 return view('psadari/powerball_lates', [   "js" => "psadari/powerball_lates.js",
                                                         "css" => "powerball_date.css",
                                                         "pick_visible" => "none",
+                                                        "node"=>$this->prohited["node_address"],
                                                         "p_remain"=>TimeController::getTimer(2),
                                                         "from"=>"",
                                                         "next"=>$next,

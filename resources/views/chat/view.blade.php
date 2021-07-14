@@ -36,6 +36,7 @@
         var chatRoom_recomCnt = {{$room["recommend"]}};
         var level = "{{$room["roomandpicture"]["level"]}}";
         var prohited = "{{$prohited}}";
+        var node = "{{$node}}";
     </script>
 @endsection
 @section("header")

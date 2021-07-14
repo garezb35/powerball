@@ -295,7 +295,10 @@ if(!function_exists('base_url_source'))
 {
     function base_url_source()
     {
-        return "http://203.109.14.130/";
+      $CI = &get_instance();
+      $CI->load->model('base_model');
+      $r = $CI->base_model->getSelect("pb_site_settings",array(array("record"=>"id","value"=>1)));
+      return $r[0]->site_address;
     }
 }
 
@@ -304,7 +307,7 @@ if(!function_exists('get_site_info')){
     function get_site_info() {
         $CI = &get_instance();
         $CI->load->model('base_model');
-        $r = $CI->base_model->getSelect("tbl_smart_setup",array(array("record"=>"id","value"=>1)));
+        $r = $CI->base_model->getSelect("pb_site_settings",array(array("record"=>"id","value"=>1)));
         return $r;
     }
 }

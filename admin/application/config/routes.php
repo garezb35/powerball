@@ -70,7 +70,6 @@ $route['deleteDt'] = 'home/deleteDt';
 $route['getDelA'] = 'home/getDelA';
 $route['incomingBank'] = 'home/incomingBank';
 $route['saveBank'] ='home/saveBank';
-$route['company'] ='home/company';
 $route['saveCompany'] = 'home/saveCompany';
 $route['accuringRate'] = 'home/accuringRate';
 $route['saveAccurRate'] = 'home/saveAccurRate';
@@ -299,8 +298,6 @@ $route['shop_banner'] = "Home/shop_banner";
 
 $route['setCategoryShop'] = "Home/setCategoryShop";
 
-$route['config_delivery'] = "Home/config_delivery";
-
 $route['product_option'] = "Home/product_option";
 
 $route["product_option_save"] = "Home/product_option_save";
@@ -469,3 +466,5 @@ $route["setConfig"] = "Home/setConfig";
 $route["settings"]=  "Home/settings";
 
 $route["updateSet"] = "Home/updateSet";
+
+$route["mailList"] = "Home/mailList";

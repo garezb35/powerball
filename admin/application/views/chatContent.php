@@ -140,7 +140,7 @@ if('WebSocket' in window)
     socketOption['transports'] = ['websocket'];
 }
 var socket =  null;
-var socket = io("http://203.109.14.130:3000/prefix",socketOption);
+var socket = io("<?=get_site_info()[0]->node_address?>/prefix",socketOption);
 
 $(document).ready(function(){
   socket.on('receive',function(data){

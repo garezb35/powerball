@@ -23,7 +23,6 @@
         $this->isLoggedIn();
       }
 
-
       public function index(){
         // $data['panel'] = $this->base_model->getSelect("tbl_board",array(array("record"=>"title","value"=>"1:1맞춤문의")));
         // if(empty($data['panel'])){
@@ -48,8 +47,6 @@
         $data["returnMoney"] = $this->base_model->getReturnMoney(5,0);
         $this->loadViews("dashboard", $this->global, $data , NULL);
       }
-
-
 
       public function productListing(){
 
@@ -91,9 +88,6 @@
              $content.="</select><br>
              <input type='text' name='sFRG_IVC_NO_".$value->id."_1' id='sFRG_IVC_NO_".$value->id."_1' value='".$value->trackingNumber."'>
                         <button type='button' class='txt btn btn-sm btn-primary' onclick=\"fnChgFrgIvc('$value->id','1');\">변경</button><br>";
-             // $content.='<span class="whGraBtn ty2">';
-             // $content.='<button type="button" class="txt" onclick="fnFrgImgView2("'.$value->id.'","0");">실사보기</button>';
-             // $content.='</span>';
              $content.="<br><input type='text' name='sSHOP_ORD_NO_".$value->id."_1' id='sSHOP_ORD_NO_".$value->id."_1' value='".$value->order_number."'>
                             <button type='button' class='txt btn btn-sm btn-primary' onclick=\"fnChgFrgOrd('".$value->id."','1');\">변경</button> ";
              $content.="</td>";
@@ -180,7 +174,6 @@
           }
           redirect('/dashboard');
         }
-
       }
 
       public function changeOrder(){
@@ -909,10 +902,6 @@
       redirect("incomingBank");
     }
 
-    public function company(){
-      $data['company'] = get_site_info();
-      $this->loadViews("company",$this->global,$data,NULL);
-    }
     public function saveCompany(){
       $data = $this->input->post();
       $count=$this->base_model->getCompany();
@@ -3429,7 +3418,6 @@
     $this->loadViews("board_settings",$this->global,$data,NULL);
   }
   public function editboards($id){
-    // $data['role'] = $this->base_model->getSelect("tbl_roles");
     $data['board'] = $this->base_model->getSelect("pb_board",array(array("record"=>"id","value"=>$id)));
     $this->loadViews("Bbs_SetUp_W",$this->global,$data,NULL);
   }
@@ -4559,11 +4547,6 @@
     echo json_encode(array("status"=>"fail"));
   }
 
-  public function config_delivery(){
-    $data['config_delivery'] = get_site_info();
-    $this->loadViews("config_delivery",$this->global,$data,null);
-  }
-
   public function product_option(){
     $second = array();
     $pass_mode = $this->input->get("pass_mode");
@@ -5574,6 +5557,10 @@
     $updated_data = $this->input->post();
     $this->base_model->updateDataById(1,$updated_data,"pb_site_settings","id");
     redirect("/settings");
+  }
+
+  public function mailList(){
+    $this->loadViews("mailList",$this->global,NULL,NULL);
   }
 }
 ?>

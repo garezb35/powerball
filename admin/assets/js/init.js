@@ -98,7 +98,7 @@ if('WebSocket' in window)
     socketOption['transports'] = ['websocket'];
 }
 var socket =  null;
-var socket = io("http://203.109.14.130:3000/public",socketOption);
+var socket = io(node+"/public",socketOption);
 
 
 socket.on("tomiss",function(){

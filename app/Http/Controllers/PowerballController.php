@@ -73,6 +73,7 @@ class PowerballController extends SecondController
                 return view('powerball_lates', [   "js" => "powerball_lates.js",
                                                         "css" => "powerball_date.css",
                                                         "pick_visible" => "block",
+                                                        "node"=>$this->prohited["node_address"],
                                                         "p_remain"=>TimeController::getTimer(2),
                                                         "from"=>"",
                                                         "next"=>$next,

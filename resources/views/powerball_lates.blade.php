@@ -5,6 +5,7 @@
 @section("content")
     <script>
         var limit = {{$limit}};
+        var node = "{{$node}}";
     </script>
     @if(Request::get("pageType") =="display")
     <div id="powerballMiniViewDivpowerballMiniViewDiv" class="mb-1">

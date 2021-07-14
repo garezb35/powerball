@@ -254,7 +254,7 @@ function connect()
 
         if(socket == null)
         {
-            socket = io.connect('http://203.109.14.130:3000/item',socketOption);
+            socket = io.connect(node+'/item',socketOption);
         }
     }
     catch(e){
