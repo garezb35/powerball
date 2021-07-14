@@ -94,3 +94,5 @@ Route::get("/prison",[App\Http\Controllers\MemberController::class,'prison'])->n
 Route::get("/accessProtected",[App\Http\Controllers\BlockController::class,'accessProtected'])->name("accessProtected");
 
 Route::get("/protectedip",[App\Http\Controllers\BlockController::class,'accessProtected'])->name("protectedip");
+
+Route::get("/user-view",[App\Http\Controllers\MemberController::class,'userView'])->name("userView");

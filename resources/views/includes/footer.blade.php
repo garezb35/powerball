@@ -1,11 +1,10 @@
 <div id="footer">
     <dl>
         <dd>
-            <a href="?view=agree" target="mainFrame">이용약관</a><span>|</span>
-            <a href="?view=agree&amp;type=privacy" target="mainFrame"><strong>개인정보처리방침</strong></a><span>|</span>
-            <a href="?view=agree&amp;type=youth" target="mainFrame"><strong>청소년보호정책</strong></a><span>|</span>
-            <a href="?view=agree&amp;type=rejectemail" target="mainFrame">이메일주소무단수집거부</a><span>|</span>
-            <a href="mailto:{{$prohited["email"]}}">광고 및 제휴문의</a><span>|</span>
+            <a href="/user-view?type=agree" target="mainFrame">이용약관</a><span>|</span>
+            <a href="/user-view?type=privacy" target="mainFrame"><strong>개인정보처리방침</strong></a><span>|</span>
+            <a href="/user-view?type=youth" target="mainFrame"><strong>청소년보호정책</strong></a><span>|</span>
+            <a href="/user-view?type=rejectemail" target="mainFrame">이메일주소무단수집거부</a><span>|</span>
             <a href="board?board_type=community&amp;board_category=offten" target="mainFrame" class="hiddenBorard">고객센터</a>
         </dd>
     </dl>

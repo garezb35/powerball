@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\PbBlockReason;
+use App\Models\PbPages;
 use DB;
 use Illuminate\Support\Facades\Hash;
 use Image;
@@ -1758,6 +1759,20 @@ class MemberController extends SecondController
           "js" => "",
           "css" => "board.css",
           "prison"=>$prison
+      ]);
+    }
+
+    public function userView(Request $request){
+      $type = $request->type;
+      $page =  PbPages::where("type",$type)->where("use",1)->first();
+      if(empty($page)){
+        Redirect::to('default')->send();
+        return;
+      }
+      return view('member/user-view', [
+          "js" => "",
+          "css" => "board.css",
+          "page"=>$page
       ]);
     }
 }

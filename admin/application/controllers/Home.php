@@ -5618,5 +5618,21 @@
     $this->base_model->deleteRecordCustom("pb_inbox","id",$id);
     echo json_encode(array("status"=>true));
   }
+
+  function views(){
+    $data["page"] = $this->base_model->getSelect("pb_pages",array(array("record"=>"type","value"=>$this->input->get("type"))));
+    $this->loadViews("views",$this->global,$data,NULL);
+  }
+
+  function updateViews(){
+    $data = $this->input->post();
+    $id = $data["id"];
+    unset($data["id"]);
+    if($id > 0)
+      $this->base_model->updateDataById($id,$data,"pb_pages","id");
+    else
+      $this->base_model->insertArrayData("pb_pages",$data);
+    redirect("views?type={$data["type"]}");
+  }
 }
 ?>

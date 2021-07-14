@@ -203,6 +203,11 @@
                 <i class="fa fa-envelope"></i> <span>쪽지관리</span></i>
               </a>
             </li>
+            <li class="<?php echo activate_menu("/views?type=agree/views?type=privacy/views?type=youth/views?type=rejectemail");?>">
+              <a href="<?=base_url()?>views?type=agree">
+                <i class="fa fa-book"></i> <span>페지관리</span></i>
+              </a>
+            </li>
           </ul>
         </section>
         <!-- /.sidebar -->

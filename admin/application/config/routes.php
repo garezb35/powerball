@@ -474,3 +474,7 @@ $route["mails"] = "Home/mails";
 $route["contentMail"] = "Home/contentMail";
 
 $route["deleteMail"] = "Home/deleteMail";
+
+$route["views"] = "Home/views";
+
+$route["updateViews"] = "Home/updateViews";
