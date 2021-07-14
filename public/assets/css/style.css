@@ -515,11 +515,6 @@ img, fieldset, iframe {
   height: 100px;
 }
 
-
-#footer dl {
-    padding: 15px 0 10px 0;
-}
-
 #box-ct .inner-left:after, #box-ct .inner-right:after {
     content: '';
     display: block;
