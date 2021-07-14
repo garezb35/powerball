@@ -9,7 +9,7 @@
             <a href="bbs/board.php?bo_table=custom" target="mainFrame">고객센터</a>
         </dd>
     </dl>
-    <p class="small">
+    <p>
         상호 : {{$prohited["company_alias"]}} <span class="bar">|</span> 대표 : {{$prohited["represent"]}} <span class="bar">|</span> 사업자등록번호 : {{$prohited["business"]}} <span class="bar"><br>
         주소: {{$prohited["company_address"]}} <span class="bar">|</span> 이메일 : <a href="mailto:{{$prohited["email"]}}" class="mail">{{$prohited["email"]}}</a> <span class="bar">|</span> 전화번호 : {{$prohited["company_phone"]}}
     </p>
