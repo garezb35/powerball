@@ -9,7 +9,7 @@ const port = process.env.PORT
 const server = http.createServer(app)
 module.exports.io = socketIO(server, {
     cors: {
-        origin: ["203.109.14.130:8087","203.109.14.130"],
+        origin: ["mstball.com:8087","mstball.com"],
         credentials: true
     }
 });
