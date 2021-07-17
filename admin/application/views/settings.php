@@ -70,7 +70,7 @@
                   </tr>
                   <tr>
                     <th class="align-middle text-center">
-                      전화번호
+                      통신판매업신고
                     </th>
                     <td class="align-middle">
                       <input type="text" name="company_phone" value="<?=$data->company_phone?>"/>

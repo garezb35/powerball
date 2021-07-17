@@ -10,7 +10,7 @@
     </dl>
     <p>
         상호 : {{$prohited["company_alias"]}} <span class="bar">|</span> 대표 : {{$prohited["represent"]}} <span class="bar">|</span> 사업자등록번호 : {{$prohited["business"]}} <span class="bar"><br><br>
-        주소: {{$prohited["company_address"]}} <span class="bar">|</span> 이메일 : <a href="mailto:{{$prohited["email"]}}" class="mail">{{$prohited["email"]}}</a> <span class="bar">|</span> 전화번호 : {{$prohited["company_phone"]}}
+        주소: {{$prohited["company_address"]}} <span class="bar">|</span> 이메일 : <a href="mailto:{{$prohited["email"]}}" class="mail">{{$prohited["email"]}}</a> <span class="bar">|</span> 통신판매업신고 : {{$prohited["company_phone"]}}
     </p>
     <p class="copyright">
         Copyright © <a href="{{$prohited["site_address"]}}" target="_blank"><strong>{{$prohited["site_address"]}}</strong></a> All rights reserved.

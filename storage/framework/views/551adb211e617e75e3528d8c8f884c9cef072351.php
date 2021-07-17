@@ -101,7 +101,7 @@
                             <li style="display: list-item;">
                                 <div class="round">
                                     <p><?php echo e($p_result["round"]); ?>회차</p>
-                                    <span>(<?php echo e($p_result["day_round"]); ?>)</span>
+                                    <span><span class="text-primary">(</span><?php echo e($p_result["day_round"]); ?><span class="text-primary">)</span></span>
                                 </div>
                                 <div class="balls_wrap">
                                     <div class="flex_row">

@@ -14,3 +14,4 @@
   {!!$page["content"] !!}
 </div>
 @endsection
+``
