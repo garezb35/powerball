@@ -4,6 +4,7 @@ const colors = require('colors')
 const path = require('path')
 const socketIO = require('socket.io')
 const https = require('https')
+var fs = require('fs');    
 const app = express()
 const port = process.env.PORT
 var options = {
