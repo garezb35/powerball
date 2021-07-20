@@ -3,10 +3,10 @@ const {knex} = require('./config/config')
 const colors = require('colors')
 const path = require('path')
 const socketIO = require('socket.io')
-const http = require('http')
+const https = require('https')
 const app = express()
 const port = process.env.PORT
-const server = http.createServer(app)
+const server = https.createServer(app)
 module.exports.io = socketIO(server, {
     cors: {
         origin: ["mstball.com:8087","mstball.com"],
