@@ -4,13 +4,13 @@ const colors = require('colors')
 const path = require('path')
 const socketIO = require('socket.io')
 const https = require('https')
-var fs = require('fs');    
+var fs = require('fs');
 const app = express()
 const port = process.env.PORT
 var options = {
-    key: fs.readFileSync('..ssl/mstball_com.key'),
-    cert: fs.readFileSync('..ssl/mstball_com.crt'),
-    ca: fs.readFileSync('..ssl/mstball_com.ca')
+    key: fs.readFileSync('.ssl/mstball_com.key'),
+    cert: fs.readFileSync('.ssl/mstball_com.crt'),
+    ca: fs.readFileSync('.ssl/mstball_com.ca')
 };
 const server = https.createServer(options,app)
 module.exports.io = socketIO(server, {
