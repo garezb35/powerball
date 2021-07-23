@@ -96,5 +96,7 @@ Route::group(array('middleware' => 'forceSSL'), function() {
   Route::get("/protectedip",[App\Http\Controllers\BlockController::class,'accessProtected'])->name("protectedip");
 
   Route::get("/user-view",[App\Http\Controllers\MemberController::class,'userView'])->name("userView");
+  
+  Route::get("/live",[App\Http\Controllers\MemberController::class,'live'])->name("live");
 
 });

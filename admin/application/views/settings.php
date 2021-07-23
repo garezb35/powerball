@@ -92,6 +92,14 @@
                       <input type="text" name="authen_key" value="<?=$data->authen_key?>" required/>
                     </td>
                   </tr>
+				  <tr>
+                    <th class="align-middle text-center">
+                      실명인증 패스워드
+                    </th>
+                    <td class="align-middle">
+                      <input type="text" name="authen_password" value="<?=$data->authen_password?>" required/>
+                    </td>
+                  </tr>
                   <tr>
                     <th class="text-center">
                       금지어

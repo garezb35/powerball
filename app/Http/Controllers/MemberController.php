@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\PbBlockReason;
 use App\Models\PbPages;
+use App\Models\PbSiteSettings;
 use DB;
 use Illuminate\Support\Facades\Hash;
 use Image;
@@ -55,12 +56,90 @@ class MemberController extends SecondController
         }
         switch ($type){
             case "mine";
+				$settings = PbSiteSettings::first();
+				$sitecode = $settings['authen_key'];			// NICE로부터 부여받은 사이트 코드
+				$sitepasswd = $settings['authen_password'];	// NICE로부터 부여받은 사이트 패스워드
+				
+				// Linux = /절대경로/ , Window = D:\\절대경로\\ , D:\절대경로\
+				$cb_encode_path = "D:\\CPClient\\";
+				/*
+				┌ cb_encode_path 변수에 대한 설명  ──────────────────────────────────
+					모듈 경로설정은, '/절대경로/모듈명' 으로 정의해 주셔야 합니다.
+					
+					+ FTP 로 모듈 업로드시 전송형태를 'binary' 로 지정해 주시고, 권한은 755 로 설정해 주세요.
+					
+					+ 절대경로 확인방법
+					  1. Telnet 또는 SSH 접속 후, cd 명령어를 이용하여 모듈이 존재하는 곳까지 이동합니다.
+					  2. pwd 명령어을 이용하면 절대경로를 확인하실 수 있습니다.
+					  3. 확인된 절대경로에 '/모듈명'을 추가로 정의해 주세요.
+				└────────────────────────────────────────────────────────────────────
+				*/
+				
+				$authtype = "";      		// 없으면 기본 선택화면, X: 공인인증서, M: 핸드폰, C: 카드 (1가지만 사용 가능)
+					
+				$popgubun 	= "N";		//Y : 취소버튼 있음 / N : 취소버튼 없음
+				$customize 	= "";		//없으면 기본 웹페이지 / Mobile : 모바일페이지 (default값은 빈값, 환경에 맞는 화면 제공)
+				
+				$gender = "";      		// 없으면 기본 선택화면, 0: 여자, 1: 남자
+				
+				$reqseq = "REQ_0123456789";     // 요청 번호, 이는 성공/실패후에 같은 값으로 되돌려주게 되므로
+												// 업체에서 적절하게 변경하여 쓰거나, 아래와 같이 생성한다.
+												
+				// 실행방법은 싱글쿼터(`) 외에도, 'exec(), system(), shell_exec()' 등등 귀사 정책에 맞게 처리하시기 바랍니다.
+				$reqseq = `$cb_encode_path SEQ $sitecode`;
+				
+				// CheckPlus(본인인증) 처리 후, 결과 데이타를 리턴 받기위해 다음예제와 같이 http부터 입력합니다.
+				// 리턴url은 인증 전 인증페이지를 호출하기 전 url과 동일해야 합니다. ex) 인증 전 url : http://www.~ 리턴 url : http://www.~
+				$returnurl = "http://localhost:81/php/scheckplus/php/checkplus_success.php";	// 성공시 이동될 URL
+				$errorurl = "http://localhost:81/php/scheckplus/php/checkplus_fail.php";		// 실패시 이동될 URL
+				
+				// reqseq값은 성공페이지로 갈 경우 검증을 위하여 세션에 담아둔다.
+				
+				$_SESSION["REQ_SEQ"] = $reqseq;
+
+				// 입력될 plain 데이타를 만든다.
+				$plaindata = "7:REQ_SEQ" . strlen($reqseq) . ":" . $reqseq .
+							 "8:SITECODE" . strlen($sitecode) . ":" . $sitecode .
+							 "9:AUTH_TYPE" . strlen($authtype) . ":". $authtype .
+							 "7:RTN_URL" . strlen($returnurl) . ":" . $returnurl .
+							 "7:ERR_URL" . strlen($errorurl) . ":" . $errorurl .
+							 "11:POPUP_GUBUN" . strlen($popgubun) . ":" . $popgubun .
+							 "9:CUSTOMIZE" . strlen($customize) . ":" . $customize .
+							 "6:GENDER" . strlen($gender) . ":" . $gender ;
+				
+				$enc_data = `$cb_encode_path ENC $sitecode $sitepasswd $plaindata`;
+
+				$returnMsg = "";
+
+				if( $enc_data == -1 )
+				{
+					$returnMsg = "암/복호화 시스템 오류입니다.";
+					$enc_data = "";
+				}
+				else if( $enc_data== -2 )
+				{
+					$returnMsg = "암호화 처리 오류입니다.";
+					$enc_data = "";
+				}
+				else if( $enc_data== -3 )
+				{
+					$returnMsg = "암호화 데이터 오류 입니다.";
+					$enc_data = "";
+				}
+				else if( $enc_data== -9 )
+				{
+					$returnMsg = "입력값 오류 입니다.";
+					$enc_data = "";
+				}
+				
+				echo $enc_data;
                 return view('member/powerball-mypage', [   "js" => "mine.js",
                                                                 "css" => "member.css",
                                                                 "user" => $user,
                                                                 "avata"=>$avata,
                                                                 "item_count" => $item_count,
-                                                                "api_token"=>$user["api_token"]
+                                                                "api_token"=>$user["api_token"],
+																"enc_data"=>$enc_data
                     ]
                 );
                 break;
@@ -697,7 +776,7 @@ class MemberController extends SecondController
             echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.')</script>";
             return;
         }
-        $user = $this->user->userId;
+        $user = $this->user;
         $item_count = array();
         foreach($user->item->toArray() as $index){
             if($index["count"] <=0) continue;
@@ -717,12 +796,10 @@ class MemberController extends SecondController
         $image = $request->file('profileImg');
         $input['imagename'] = $user->userIdKey.'.'.$image->extension();
         $filePath  = public_path('/assets/images/mine/profile');
-        $img = Image::make($image->path());
-        $img->resize(150, 150, function ($const) {
-            $const->aspectRatio();
-        })->save($filePath.'/'.$input['imagename']);
+		$path = $image->storeAs('uploads', $input['imagename'], 'public');
 
-        User::where("userId",$user->userId)->update(["image"=>'/assets/images/mine/profile/'.$input['imagename']]);
+
+        User::where("userId",$user->userId)->update(["image"=>'/storage/'.$path]);
         PbPurItem::where("userId",$user->userId)->where("market_id","PROFILE_IMAGE_RIGHT")->update(["count"=>$item_count["PROFILE_IMAGE_RIGHT"]-1]);
         PbLog::create([
             "type"=>2,
@@ -1775,4 +1852,11 @@ class MemberController extends SecondController
           "page"=>$page
       ]);
     }
+	
+	public function live(Request $request){
+		return view('member/live', [
+          "js" => "",
+          "css" => ""
+      ]);
+	}			
 }
