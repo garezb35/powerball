@@ -330,15 +330,15 @@ class ChatController extends SecondController
     public function checkActiveRoom(Request $request){
         $user = $this->user;
         $days_ago = date('Y-m-d H:i:s', strtotime('-26  hours', strtotime("now")));
-        $checkd = PbRoom::where("roomIdx",$request->room)->where("created_at","<=",$days_ago)->first();
+        $checkd = PbRoom::where("roomIdx",$request->room)->where("created_at","<",$days_ago)->first();
         if(!empty($checkd)){
-            PbRoom::find($checkd["id"])->delete();
+            PbRoom::where("created_at","<",$days_ago)->delete();
             PbFavorRoom::where("roomIdx",$checkd["roomIdx"])->delete();
             RoomRecommend::where("roomIdx",$checkd["roomIdx"])->delete();
             echo json_encode(array("status"=>0,"required_id"=>$checkd["roomIdx"],"msg"=>"개설한 채팅방이 존재하지 않습니다."));
         }
         else{
-            $active_room = PbRoom::where("active",1);
+            $active_room = PbRoom::where("active",1)->where("created_at",">",$days_ago);
             if(empty($request->room))
                 $active_room = $active_room->where("super",$user->userIdKey)->first();
             else

@@ -387,5 +387,24 @@ class Base_model extends CI_Model
       $results = $query->result();
       return  $results;
     }
+
+    public function getLogs($limit1=20,$limit2=0,$type = 1,$search=''){
+        $this->db->select('BaseTbl.*,User.nickname');
+        $this->db->from("pb_log as BaseTbl");
+        $this->db->join("pb_users as User","User.userId=BaseTbl.userId");
+        $this->db->where('BaseTbl.type',$type);
+        $this->db->group_start();
+            $this->db->like('User.nickname', $search,'both');
+            $this->db->or_like('BaseTbl.created_at', $search,"both");
+            $this->db->or_like('BaseTbl.content', $search,"both");
+        $this->db->group_end();
+        $this->db->order_by('BaseTbl.updated_at','DESC');
+        if($limit1 ==null)  $this->db->limit(20,0);
+        else $this->db->limit($limit1,$limit2);
+        $query = $this->db->get();
+        $results = $query->result();
+        return  $results;
+    }
+
 }
 ?>

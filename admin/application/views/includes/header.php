@@ -156,7 +156,7 @@
                 <li class="<?=activate_menu("/mondayGift/");?>"><a href="/mondayGift"><i class="fa fa-circle-o"></i>월요일 시상식상품</a></li>
               </ul>
             </li>
-
+            
             <li>
               <a href="<?=base_url()?>chatManage">
                 <i class="fa fa-comment"></i> <span>채팅방관리</span></i>
@@ -205,7 +205,17 @@
             </li>
             <li class="<?php echo activate_menu("/views?type=agree/views?type=privacy/views?type=youth/views?type=rejectemail");?>">
               <a href="<?=base_url()?>views?type=agree">
-                <i class="fa fa-book"></i> <span>페지관리</span></i>
+                <i class="fa fa-book"></i> <span>페이지관리</span></i>
+              </a>
+            </li>
+            <li class="<?php echo activate_menu("/bannerList/");?>">
+              <a href="<?=base_url()?>bannerList">
+                <i class="fa fa-book"></i> <span>배너관리</span></i>
+              </a>
+            </li>
+            <li class="<?php echo activate_menu("/purchasedUsr/");?>">
+              <a href="<?=base_url()?>logList">
+                <i class="fa fa-book"></i> <span>로그관리</span></i>
               </a>
             </li>
           </ul>

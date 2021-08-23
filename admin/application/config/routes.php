@@ -478,3 +478,13 @@ $route["deleteMail"] = "Home/deleteMail";
 $route["views"] = "Home/views";
 
 $route["updateViews"] = "Home/updateViews";
+
+$route["getInvidual"] = "Home/getInvidual";
+
+$route["DelMessage"] = "Home/DelMessage";
+
+$route["bannerList"] = "Home/bannerList";
+
+$route['logList'] = 'Home/logList';
+
+$route["logList/(:num)"]  = "Home/logList/$1";

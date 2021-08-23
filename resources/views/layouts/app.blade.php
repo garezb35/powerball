@@ -32,7 +32,7 @@
     <div id="app">
         <div id="header">
 			<h1>
-				<a href="/" class="logo"><img src="/assets/images/logo.svg" alt="POWERBALLGAME" width="247px"></a>
+				<a href="/" class="logo"><img src="/assets/images/logo.png" alt="POWERBALLGAME" width="247px"></a>
 			</h1>
 		</div>
 

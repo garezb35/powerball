@@ -85,7 +85,7 @@ if($pf!=null) $ss = $uc-$pf; ?>
                         foreach($deposit as $record)
                         {
                       ?>
-                      <tr <?=$record->cbullet < $record->bullet ? "bg-danger":"bg-white"?>>
+                      <tr  class="<?=$record->cbullet < $record->bullet ? "item-ex bg-danger":"bg-white item-ex"?>" data-id="<?=$record->id?>">
                         <td>
                           <?php if($record->status !=1): ?>
                              <input type="checkbox" name="chkReqSeq[]"  value="<?=$record->id?>" class="chkReqSeq">
@@ -135,7 +135,34 @@ if($pf!=null) $ss = $uc-$pf; ?>
         </div>
     </section>
 </div>
-
+<div class="modal" tabindex="-1" role="dialog" id="attached">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">첨부파일 확인</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		<p class="text-primary font-weight-bold">신분중 사본</p>
+        <img id="idc" class="w-100">
+		<a target="_blink" id="idc-label" class="text-primary"></a>
+		<p class="text-primary font-weight-bold">통장 사본</p>
+		<img id="bank" class="w-100">
+		<a target="_blink" id="bank-label" class="text-primary"></a>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+.item-ex{
+	cursor:pointer
+}
+</style>
 <script>
   function fnDpstReqChk() {
   var frmObj = "#frmSearch";
@@ -174,6 +201,25 @@ if($pf!=null) $ss = $uc-$pf; ?>
   }
 }
 
-
+$(".item-ex").click(function(){
+	var id = $(this).data("id")
+	 $.ajax({
+             type: "POST",
+             url: "/getInvidual",
+             data: {id:id},
+             dataType: "json",
+             success: function(data) {
+                if(data.status == 1){
+					$("#attached").modal("show");
+					$("#idc").attr("src","<?=base_url_home()?>storage/assets/images/exch/"+data.idc)
+					$("#idc-label").attr("href","<?=base_url_home()?>storage/assets/images/exch/"+data.idc)
+					$("#idc-label").text("<?=base_url_home()?>storage/assets/images/exch/"+data.idc)
+					$("#bank").attr("src","<?=base_url_home()?>storage/assets/images/exch/"+data.book)
+					$("#bank-label").attr("href","<?=base_url_home()?>storage/assets/images/exch/"+data.book)
+					$("#bank-label").text("<?=base_url_home()?>storage/assets/images/exch/"+data.book)
+				}
+             }
+      });
+});
 
 </script>

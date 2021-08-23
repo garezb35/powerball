@@ -286,7 +286,7 @@ if(!function_exists('base_url_home'))
 {
     function base_url_home()
     {
-        return "http://m.taodalin.com/";
+        return "https://mstball.com/";
     }
 }
 

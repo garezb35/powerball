@@ -98,5 +98,11 @@ Route::group(array('middleware' => 'forceSSL'), function() {
   Route::get("/user-view",[App\Http\Controllers\MemberController::class,'userView'])->name("userView");
   
   Route::get("/live",[App\Http\Controllers\MemberController::class,'live'])->name("live");
+  
+  Route::get("/checkplus_success",[App\Http\Controllers\MemberController::class,'checkplus_success'])->name("checkplus_success");
+  
+  Route::get("/checkplus_fail",[App\Http\Controllers\MemberController::class,'checkplus_fail'])->name("checkplus_fail");
+  
+  Route::get("/exchange_suc",[App\Http\Controllers\MemberController::class,'exchange_suc'])->name("exchange_suc");
 
 });

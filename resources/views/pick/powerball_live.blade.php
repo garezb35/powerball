@@ -34,9 +34,8 @@
       </div>
     <div class="gmContent" data-type="POWERBALL" data-round="{{$last + 1}}" data-unique={{$last_unique_round+1}}  data-game="nlotto_power"></div>
         <div class="lottery_wrap powerball dark">
-            <div id="game_caution_closed_state" style="">
-                <p class="sub_title">- 휴장 안내 -</p>
-                <p class="sub_title" style="margin-top: -20px">00시~ 06시 추첨 휴장 시간입니다.</p>
+            <div id="game_caution_closed_state" class="d-none">
+                <img src="/assets/images/stopping.png" />
             </div>
             <div class="header_wrap">
                 <div id="ly_game_tip" class="ly_game_tip" style="display:none;">

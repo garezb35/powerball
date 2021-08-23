@@ -33,7 +33,7 @@ $(document).ready(function(){
     $.ajax({
         type: "POST",
         url: "/api/get_more/analyseDate",
-        data:{"from" : date,to : date},
+        data:{from : date,to : date},
         dataType:"json"
     }).done(function(data) {
         if(data.status ==1){

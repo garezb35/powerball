@@ -81,9 +81,10 @@ a, abbr, acronym, address, applet, article, aside, audio, b, bdi, bdo, big, bloc
 
 #header {
     position: relative;
-    height: 146px;
+    height: 86px;
     overflow: hidden;
     text-align: center;
+    margin-top: 30px;
 }
 
 img {

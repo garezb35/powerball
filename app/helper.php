@@ -181,11 +181,11 @@ function recursive_child_display($comments, $lookup_table, $root = 0, $deep = 0,
         }
     }
 }
- function extractImage($html)
+ function extractImage($html,$title="")
 {
     preg_match_all('/<img[^>]+>/i',$html, $result);
     if(!empty($result[0][0]))
-        return $result[0][0];
+        return str_replace("<img","<img alt='".$title."'",$result[0][0]);
     else
         return "";
 }
@@ -389,5 +389,33 @@ function checkProhited($content){
     return true;
   }
   return false;
+}
+
+function GetValue($str , $name) 
+{
+	$pos1 = 0;  //length의 시작 위치
+	$pos2 = 0;  //:의 위치
+
+	while( $pos1 <= strlen($str) )
+	{
+		$pos2 = strpos( $str , ":" , $pos1);
+		$len = substr($str , $pos1 , $pos2 - $pos1);
+		$key = substr($str , $pos2 + 1 , $len);
+		$pos1 = $pos2 + $len + 1;
+		if( $key == $name )
+		{
+			$pos2 = strpos( $str , ":" , $pos1);
+			$len = substr($str , $pos1 , $pos2 - $pos1);
+			$value = substr($str , $pos2 + 1 , $len);
+			return $value;
+		}
+		else
+		{
+			// 다르면 스킵한다.
+			$pos2 = strpos( $str , ":" , $pos1);
+			$len = substr($str , $pos1 , $pos2 - $pos1);
+			$pos1 = $pos2 + $len + 1;
+		}            
+	}
 }
 ?>

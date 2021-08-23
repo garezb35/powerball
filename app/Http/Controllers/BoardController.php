@@ -74,8 +74,11 @@ class BoardController extends SecondController
                 $query->orwhere("pb_message.content","like","%".$request->get("stx")."%");
             });
         }
+		
+		$pag_num = 20;
+		
 
-        $board_mails = $board_mails->paginate(20);
+        $board_mails = $board_mails->paginate($pag_num)->appends(request()->query());
         $board_count = PbMessage::where("type",$board_category)->orderBy("keys","DESC")->orderBy('reply', 'ASC')->get()->count();
         $result["list"] = $board_mails;
         $result["board"] = $board;
@@ -253,7 +256,8 @@ class BoardController extends SecondController
           );
           Redirect::to('accessProtected')->send();
           return;
-        }
+        } 
+		
 
         if($board["security"] == 1)
             $toId = 0;

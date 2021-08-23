@@ -108,6 +108,22 @@
                       <input class="form-control" type="text" name="prohited" value="<?=$data->prohited?>" data-role="tagsinput"/>
                     </td>
                   </tr>
+                  <tr>
+                    <th class="text-center">
+                      META KEYWORD
+                    </th>
+                    <td class="align-middle">
+                      <textarea class="form-control" name="meta_key"><?=$data->meta_key?></textarea>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="text-center">
+                      META DESCRIPTION
+                    </th>
+                    <td class="align-middle">
+                      <textarea class="form-control" name="meta_desc"><?=$data->meta_desc?></textarea>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
               <a href="javascript:$('#frmList').submit()" class="btn btn-primary">확인</a>

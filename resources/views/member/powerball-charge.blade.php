@@ -95,7 +95,7 @@
                                 </tr>
                                 <tr>
                                     <th>계좌번호</th>
-                                    <td>기업은행 <strong class="red" style="font-family:tahoma;">483-062658-04-025</strong> 주식회사엠커넥트</td>
+                                   <!--  <td>기업은행 <strong class="red" style="font-family:tahoma;">483-062658-04-025</strong> 주식회사엠커넥트</td> -->
                                 </tr>
                                 <tr>
                                     <th>입금자 이름</th>

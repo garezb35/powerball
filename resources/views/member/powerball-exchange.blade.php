@@ -80,7 +80,10 @@
                     </tr>
                     <tr>
                         <td class="tit">실명인증 <span class="red"></span></td>
-                        <td colspan="2" class="pdL10"><a href="#" class="btn2" style="width:350px;display:inline-block;" onclick="oknamePop();return false;">실명인증하기 [인증 후 5분 내 환전 미신청시 재인증 필요]</a></td>
+                        <td colspan="2" class="pdL10">
+							<!-- 위에서 업체정보를 암호화 한 데이타입니다. -->
+							<a href="#" class="btn2 text-primary font-weight-bold" style="width:350px;display:inline-block;" onclick="fnPopup()">실명인증하기 [인증 후 5분 내 환전 미신청시 재인증 필요]</a>
+						</td>
                     </tr>
                     <tr>
                         <td class="tit">주민등록번호 <span class="red"></span></td>
@@ -228,4 +231,8 @@
         </table>
         {{$exchs->links()}}
     </div>
+	<form name="form_chk" method="post">
+		<input type="hidden" name="m" value="checkplusService">				<!-- 필수 데이타로, 누락하시면 안됩니다. -->
+		<input type="hidden" name="EncodeData" value="<?= $enc_data ?>">
+	</form>
 @endsection

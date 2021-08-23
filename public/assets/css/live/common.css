@@ -842,19 +842,7 @@ div.iru-tiny-player{
   height: 0px
 }
 
-#game_caution_closed_state {
-    position: absolute;
-    top: 150px;
-    left: 50%;
-    margin-left: -251px;
-    padding: 40px;
-    width: 418px;
-    height: 100px;
-    z-index: 110;
-    color: #f1f1f1;
-    background: #333;
-    border-radius: 10px;
-}
+
 
 #game_caution_closed_state .sub_title {
     margin-bottom: 30px;
@@ -868,4 +856,15 @@ div.iru-tiny-player{
 
 .text-primary{
   color: #007bff!important
+}
+
+
+#game_caution_closed_state {
+    top: calc(50% - 109px);
+    position: absolute;
+    z-index: 200;
+    left: calc(50% - 330px);	
+}
+.d-none{
+	display:none
 }

@@ -12,6 +12,13 @@ if(!empty($item_count["FAMILY_NICKNAME_LICENSE"])){
 if(!empty($item_count["FAMILY_NICKNAME_LICENSE_BREAD"])){
   $fanick += $item_count["FAMILY_NICKNAME_LICENSE_BREAD"];
 }
+
+$sex = "";
+
+if($user["sex"] == 1)
+	$sex=  "남";
+if($user["sex"] == 0)
+	$sex=  "녀";
 @endphp
 
 @section("content")
@@ -53,7 +60,7 @@ if(!empty($item_count["FAMILY_NICKNAME_LICENSE_BREAD"])){
                     </tr>
                     <tr>
                         <td>성별</td>
-                        <td colspan="2">{{$user["sex"]}}</td>
+                        <td colspan="2">{{$sex}}</td>
                     </tr>
                     <tr>
                         <td>휴대폰번호</td>
@@ -81,7 +88,14 @@ if(!empty($item_count["FAMILY_NICKNAME_LICENSE_BREAD"])){
                         <th class="tit">인증 정보</th>
                         <td>실명인증</td>
                         <td>
-                            <span class="noneMsg">ⓘ 실명인증을 해주시기 바랍니다.</span>
+                            <span class="noneMsg">
+							@if($user->activate == 1)
+							<span class="text-danger">실명인증됨</span>
+							@else
+							ⓘ 실명인증을 해주시기 바랍니다.
+							@endif
+								
+							</span>
                         </td>
                         <td class="position-relative">
                     <span>

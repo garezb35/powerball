@@ -196,10 +196,14 @@ $(document).ready(function(){
             timer: function () {
                 nextTime = powerballDiff();
                 if(nextTime == null){
-                  $("#game_caution_closed_state").css("display","block")
+                  //$("#game_caution_closed_state").css("display","block")
+				  if($("#game_caution_closed_state").hasClass("d-none"))
+					$("#game_caution_closed_state").removeClass("d-none")
                   return;
                 }
-                $("#game_caution_closed_state").css("display","none")
+
+                if(!$("#game_caution_closed_state").hasClass("d-none"))
+					$("#game_caution_closed_state").addClass("d-none")
                 var ii = Math.floor((nextTime) / 60);
                 var ss = Math.floor(((nextTime) % 60));
                 ii = ii < 10 ? '0' + ii : ii;
@@ -208,12 +212,12 @@ $(document).ready(function(){
                 var HTML = ii + ":" + ss
 
                 // $('#timer_gauge').css('width', (nextTime / gameTime) * 100 + '%');
-                $('#countdown_clock').html(HTML);
+                $('#countdown_clock').html(HTML);     
                 $("#ready-round").text(gameRound)
                 $("#ready-unique").text(unique)
                 setTimeout(function () {
                     core.timer();
-                }, 1000);
+                }, 1000)       ;
                 if(nextTime == 5){
                   $("#ready-screen").hide()
                   $("#div_machine_glass").hide()
@@ -714,7 +718,7 @@ function showNumber(num,ii)
         ballColor = ballColorSel(num,ii);
         $('#lotteryBall').show();
         $('#lotteryBall').html('<span class="result_ball '+ballColor+'">'+num+'</span>');
-        TweenMax.to(document.getElementById('lotteryBall'),0.5,{bezier:{curviness:1.25,type:'cubic',values:[{x:207,y:10},{x:119,y:28},{x:72,y:77},{x:61,y:153},{x:92,y:221},{x:184,y:266},{x:366,y:279}],autoRotate:false},ease:Power1.easeInOut,
+        TweenMax.to(document.getElementById('lotteryBall'),1,{bezier:{curviness:1.25,type:'cubic',values:[{x:207,y:10},{x:119,y:28},{x:72,y:77},{x:61,y:153},{x:92,y:221},{x:184,y:266},{x:366,y:279}],autoRotate:false},ease:Power1.easeInOut,
             onStart:function(){
                 if(sound_checked){
                   $("#driving_sound").jPlayer("play")
@@ -741,7 +745,7 @@ function showNumber(num,ii)
 
             }
         });
-    },1000*i);
+    },1500*i);
 
     i++;
 
@@ -792,7 +796,7 @@ function updateResult(data)
                     $('#ladderReady').show();
                     window.location.reload(true);
 
-                },6300);
+                },10000);
             }
             else
             {

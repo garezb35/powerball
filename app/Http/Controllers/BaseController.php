@@ -11,6 +11,7 @@ use App\Models\CodeDetail;
 use App\Models\PbPurItem;
 use App\Models\PbIpBlocked;
 use App\Models\PbSiteSettings;
+use App\Models\PbBanner;
 use Illuminate\Support\Facades\Auth;
 use View;
 use Redirect;
@@ -87,6 +88,7 @@ class BaseController  extends Controller
             $this->rooms = $rooms;
             $userIdToken = !Auth::check() ? "" : $this->user->api_token;
             $prohited = PbSiteSettings::first();
+            $banner = PbBanner::orderBy("updated_date","DESC")->first();
             View::share('user_level', $this->user_level);
             View::share('next_level', $this->next);
             View::share('normal_level', $this->normal_exp);
@@ -101,6 +103,7 @@ class BaseController  extends Controller
             View::share('userIdToken', $userIdToken);
             View::share('using_sim', $this->simulate);
             View::share('prohited', $prohited);
+            View::share('banner', $banner);
             return $next($request);
           }
         });

@@ -68,6 +68,7 @@
                       <th>Email</th>
                       <th>가입일</th>
                       <th>아이피주소</th>
+                      <th>인증상태</th>
                       <th class="text-center"></th>
                    </tr>
                    <?php
@@ -88,6 +89,7 @@
                       <td><?=$record->email ?></td>
                       <td><?=$record->created_at?></td>
                       <td><?=$record->ip?></td>
+                      <td><?=$record->activate == 1 ? "인증됨":""?></td>
                       <td class="text-center">
                          <a class="btn btn-sm btn-info" href="<?php echo base_url().'editOld/'.$record->userId; ?>">
                            <i class="fa fa-pencil"></i>
@@ -106,6 +108,7 @@
                            </a>
                          <?php endif;?>
                       </td>
+
                    </tr>
                    <?php
                       $ss=$ss-1;

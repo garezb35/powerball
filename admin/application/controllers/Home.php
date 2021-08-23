@@ -1664,43 +1664,30 @@
       $id = $data['id'];
       unset($data['id']);
       if(!empty($id) && $id > 0 ){
-        $this->base_model->updateDataById($id,$data,"banner","id");
+        $this->base_model->updateDataById($id,$data,"pb_banner","id");
         $return = $id;
       }
       if(empty($id) || $id <=0){
-        $return  =  $this->base_model->insertArrayData("banner",$data);
+        $return  =  $this->base_model->insertArrayData("pb_banner",$data);
       }
       if($return > 0){
         if($_FILES['image']['name'] !=""){
-          $this->load->library('upload',$this->set_upload_options("../upload/homepage/banner_r"));
-          $this->upload->initialize($this->set_upload_options("../upload/homepage/banner_r"));
+          $this->load->library('upload',$this->set_upload_options("D:/xampp/htdocs/powerball/public/assets/upload/banner"));
+          $this->upload->initialize($this->set_upload_options("D:/xampp/htdocs/powerball/public/assets/upload/banner"));
           if ( ! $this->upload->do_upload('image'))
           {
             $error = array('error' => $this->upload->display_errors());
-
+            var_dump($_SERVER['DOCUMENT_ROOT']);
+            return;
           }
           else
           {
             $img_data = $this->upload->data();
-            $this->base_model->updateDataById($return,array("image"=>$img_data["file_name"]),"banner","id");
-          }
-        }
-        if($_FILES['image1']['name'] !=""){
-          $this->load->library('upload',$this->set_upload_options("../upload/homepage/banner_r"));
-          $this->upload->initialize($this->set_upload_options("../upload/homepage/banner_r"));
-          if ( ! $this->upload->do_upload('image1'))
-          {
-            $error = array('error' => $this->upload->display_errors());
-
-          }
-          else
-          {
-            $img_data = $this->upload->data();
-            $this->base_model->updateDataById($return,array("image1"=>$img_data["file_name"]),"banner","id");
+            $this->base_model->updateDataById($return,array("image"=>$img_data["file_name"]),"pb_banner","id");
           }
         }
       }
-      redirect("/banner_s?type=".$data['type']);
+      redirect("bannerList");
     }
 
     public function saveHeader(){
@@ -2154,7 +2141,7 @@
 
   public function getBanner(){
     $banner = $this->input->post("banner");
-    $dt = $this->base_model->getSelect("banner",array(array("record"=>"id","value"=>$banner)));
+    $dt = $this->base_model->getSelect("pb_banner",array(array("record"=>"id","value"=>$banner)));
     echo json_encode($dt);
   }
 
@@ -2162,7 +2149,7 @@
     $banner = $this->input->post("banner");
     $this->isLoggedIn();
     if(!empty($banner)):
-      $this->base_model->deleteRecordCustom("banner","id",$banner);
+      $this->base_model->deleteRecordCustom("pb_banner","id",$banner);
       echo json_encode(array("status"=>true));
     endif;
     if(empty($banner)):
@@ -3927,7 +3914,7 @@
     $stack = array();
     $ids= $this->input->post("ids");
     foreach($ids as $key=>$value){
-      $sql = "UPDATE banner SET banner.order = ".$key."  WHERE id =".$value.";";
+      $sql = "UPDATE pb_banner SET pb_banner.order = ".$key."  WHERE id =".$value.";";
       $stack[] = $sql;
     }
     $this->db->trans_start();
@@ -5634,5 +5621,43 @@
       $this->base_model->insertArrayData("pb_pages",$data);
     redirect("views?type={$data["type"]}");
   }
+  
+  function getInvidual(){
+  	$id = $this->input->post("id");
+  	$data = $this->base_model->getSelect("pb_money_return",array(array("record"=>"id","value"=>$id)));
+  	if(!empty($data)){
+  		echo json_encode(array("status"=>1,"idc"=>$data[0]->idcard,"book"=>$data[0]->bankbook));
+  	}  
+  	else{
+  		echo json_encode(array("status"=>0));
+  	}
+  }
+
+  function DelMessage(){
+    $chkMemCode = $this->input->post("chkMemCode");
+    $sKind = $this->input->post("sKind");
+    $this->db->where_in('id', $chkMemCode);
+    $this->db->delete('pb_message');
+    redirect($sKind);
+  }
+
+  function bannerList(){
+    $data["banner"] = $this->base_model->getSelect("pb_banner",null,array(array("record"=>"updated_date","value"=>"DESC")));
+    $this->loadViews("banner",$this->global,$data,NULL);
+  }
+
+  function logList(){
+    $this->load->library('pagination');
+    $config['reuse_query_string'] = true;
+    $this->pagination->initialize($config);
+    $type = empty($this->input->get('type')) ? 1 : $this->input->get('type');
+    $search = $this->input->get('search');
+    $log_size = sizeof($this->base_model->getLogs(10000,0,$type,$search));
+    $returns = $this->paginationCompress ( "logList/", $log_size, 15);
+    $log = $this->base_model->getLogs($returns["page"], $returns["segment"],$type,$search);
+    $data['log'] = $log;
+    $this->loadViews("logs",$this->global,$data,NULL);
+  }
+
 }
 ?>

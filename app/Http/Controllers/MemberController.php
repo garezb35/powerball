@@ -24,12 +24,15 @@ use App\Models\User;
 use App\Models\PbBlockReason;
 use App\Models\PbPages;
 use App\Models\PbSiteSettings;
+use App\Models\PbActivate;
 use DB;
 use Illuminate\Support\Facades\Hash;
 use Image;
 use Symfony\Component\HttpKernel\EventListener\ValidateRequestListener;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use Session;
+use DateTime;
 
 class MemberController extends SecondController
 {
@@ -61,7 +64,7 @@ class MemberController extends SecondController
 				$sitepasswd = $settings['authen_password'];	// NICE로부터 부여받은 사이트 패스워드
 				
 				// Linux = /절대경로/ , Window = D:\\절대경로\\ , D:\절대경로\
-				$cb_encode_path = "D:\\CPClient\\";
+				$cb_encode_path = "D:\\CPClient.exe";
 				/*
 				┌ cb_encode_path 변수에 대한 설명  ──────────────────────────────────
 					모듈 경로설정은, '/절대경로/모듈명' 으로 정의해 주셔야 합니다.
@@ -90,12 +93,13 @@ class MemberController extends SecondController
 				
 				// CheckPlus(본인인증) 처리 후, 결과 데이타를 리턴 받기위해 다음예제와 같이 http부터 입력합니다.
 				// 리턴url은 인증 전 인증페이지를 호출하기 전 url과 동일해야 합니다. ex) 인증 전 url : http://www.~ 리턴 url : http://www.~
-				$returnurl = "http://localhost:81/php/scheckplus/php/checkplus_success.php";	// 성공시 이동될 URL
-				$errorurl = "http://localhost:81/php/scheckplus/php/checkplus_fail.php";		// 실패시 이동될 URL
+				$returnurl = "https://mstball.com/checkplus_success";	// 성공시 이동될 URL
+				$errorurl = "https://mstball.com/checkplus_fail";		// 실패시 이동될 URL
 				
 				// reqseq값은 성공페이지로 갈 경우 검증을 위하여 세션에 담아둔다.
 				
-				$_SESSION["REQ_SEQ"] = $reqseq;
+				//$_SESSION["REQ_SEQ"] = $reqseq;
+				Session::put('REQ_SEQ', $reqseq);
 
 				// 입력될 plain 데이타를 만든다.
 				$plaindata = "7:REQ_SEQ" . strlen($reqseq) . ":" . $reqseq .
@@ -132,7 +136,6 @@ class MemberController extends SecondController
 					$enc_data = "";
 				}
 				
-				echo $enc_data;
                 return view('member/powerball-mypage', [   "js" => "mine.js",
                                                                 "css" => "member.css",
                                                                 "user" => $user,
@@ -237,13 +240,94 @@ class MemberController extends SecondController
                 );
                 break;
             case "exchange";
+				if($this->user->activate != 1){
+					echo "<script>alert('실명인증후 가능한 서비스입니다.');window.history.go(-1);</script>";
+					return;
+				}
+				$settings = PbSiteSettings::first();
+				$sitecode = $settings['authen_key'];			// NICE로부터 부여받은 사이트 코드
+				$sitepasswd = $settings['authen_password'];	// NICE로부터 부여받은 사이트 패스워드
+				
+				// Linux = /절대경로/ , Window = D:\\절대경로\\ , D:\절대경로\
+				$cb_encode_path = "D:\\CPClient.exe";
+				/*
+				┌ cb_encode_path 변수에 대한 설명  ──────────────────────────────────
+					모듈 경로설정은, '/절대경로/모듈명' 으로 정의해 주셔야 합니다.
+					
+					+ FTP 로 모듈 업로드시 전송형태를 'binary' 로 지정해 주시고, 권한은 755 로 설정해 주세요.
+					
+					+ 절대경로 확인방법
+					  1. Telnet 또는 SSH 접속 후, cd 명령어를 이용하여 모듈이 존재하는 곳까지 이동합니다.
+					  2. pwd 명령어을 이용하면 절대경로를 확인하실 수 있습니다.
+					  3. 확인된 절대경로에 '/모듈명'을 추가로 정의해 주세요.
+				└────────────────────────────────────────────────────────────────────
+				*/
+				
+				$authtype = "";      		// 없으면 기본 선택화면, X: 공인인증서, M: 핸드폰, C: 카드 (1가지만 사용 가능)
+					
+				$popgubun 	= "N";		//Y : 취소버튼 있음 / N : 취소버튼 없음
+				$customize 	= "";		//없으면 기본 웹페이지 / Mobile : 모바일페이지 (default값은 빈값, 환경에 맞는 화면 제공)
+				
+				$gender = "";      		// 없으면 기본 선택화면, 0: 여자, 1: 남자
+				
+				$reqseq = "REQ_0123456789";     // 요청 번호, 이는 성공/실패후에 같은 값으로 되돌려주게 되므로
+												// 업체에서 적절하게 변경하여 쓰거나, 아래와 같이 생성한다.
+												
+				// 실행방법은 싱글쿼터(`) 외에도, 'exec(), system(), shell_exec()' 등등 귀사 정책에 맞게 처리하시기 바랍니다.
+				$reqseq = `$cb_encode_path SEQ $sitecode`;
+				
+				// CheckPlus(본인인증) 처리 후, 결과 데이타를 리턴 받기위해 다음예제와 같이 http부터 입력합니다.
+				// 리턴url은 인증 전 인증페이지를 호출하기 전 url과 동일해야 합니다. ex) 인증 전 url : http://www.~ 리턴 url : http://www.~
+				$returnurl = "https://mstball.com/exchange_suc";	// 성공시 이동될 URL
+				$errorurl = "https://mstball.com/checkplus_fail";		// 실패시 이동될 URL
+				
+				// reqseq값은 성공페이지로 갈 경우 검증을 위하여 세션에 담아둔다.
+				
+				//$_SESSION["REQ_SEQ"] = $reqseq;
+				Session::put('REQ_SEQ', $reqseq);
+
+				// 입력될 plain 데이타를 만든다.
+				$plaindata = "7:REQ_SEQ" . strlen($reqseq) . ":" . $reqseq .
+							 "8:SITECODE" . strlen($sitecode) . ":" . $sitecode .
+							 "9:AUTH_TYPE" . strlen($authtype) . ":". $authtype .
+							 "7:RTN_URL" . strlen($returnurl) . ":" . $returnurl .
+							 "7:ERR_URL" . strlen($errorurl) . ":" . $errorurl .
+							 "11:POPUP_GUBUN" . strlen($popgubun) . ":" . $popgubun .
+							 "9:CUSTOMIZE" . strlen($customize) . ":" . $customize .
+							 "6:GENDER" . strlen($gender) . ":" . $gender ;
+				
+				$enc_data = `$cb_encode_path ENC $sitecode $sitepasswd $plaindata`;
+
+				$returnMsg = "";
+
+				if( $enc_data == -1 )
+				{
+					$returnMsg = "암/복호화 시스템 오류입니다.";
+					$enc_data = "";
+				}
+				else if( $enc_data== -2 )
+				{
+					$returnMsg = "암호화 처리 오류입니다.";
+					$enc_data = "";
+				}
+				else if( $enc_data== -3 )
+				{
+					$returnMsg = "암호화 데이터 오류 입니다.";
+					$enc_data = "";
+				}
+				else if( $enc_data== -9 )
+				{
+					$returnMsg = "입력값 오류 입니다.";
+					$enc_data = "";
+				}
                 $pb_bank = PbBank::where("status",1)->get()->toArray();
                 $exchs = PbMoneyReturn::with("user")->where("userId",$this->user->userId)->orderBy("created_at","DESC")->paginate(10)->appends(request()->query());
                 return view('member/powerball-exchange', [
                         "js" => "member.js",
                         "css" => "member.css",
                         "bank"=>$pb_bank,
-                        "exchs"=>$exchs
+                        "exchs"=>$exchs,
+						"enc_data"=>$enc_data
                     ]
                 );
                 break;
@@ -1754,12 +1838,35 @@ class MemberController extends SecondController
             echo "<script>alert('로그아웃상태이므로 요청을 수락할수 없습니다.');window.history.back(1)</script>";
             return;
         }
-
+		$check = 0;
+		$data_authen = PbActivate::where("userId",$this->user->userId)->first();
+		if(empty($data_authen)){
+			
+		}
+		else{
+			
+			$now = new DateTime( 'NOW' );
+			$future = new DateTime( $data_authen["updated_at"]);
+			$diffSeconds = $now->getTimestamp() - $future->getTimestamp();
+			if($diffSeconds < 300){
+				$check = 1;
+			}
+		}
+		
+		if($check == 0){
+			echo "<script>alert('실명인증을 해야 합니다.');window.history.back(1)</script>";
+			return;
+		}
+		$request_ex = $request->all();
+		if($this->user->bullet < $request_ex["bullet"]){
+			echo "<script>alert('환전하려는 당근이 충분치 않습니다..');window.history.back(1)</script>";
+			return;
+		}
         $idcard = $bankbook = "";
-        $this->validate($request, [
-            'idcard' => 'required|image|mimes:jpg,jpeg,png,svg,gif|max:2048',
-            'bankbook' => 'required|image|mimes:jpg,jpeg,png,svg,gif|max:2048'
-        ]);
+        //$this->validate($request, [
+          //  'idcard' => 'required|image|mimes:jpg,jpeg,png,svg,gif|max:2048',
+         //   'bankbook' => 'required|image|mimes:jpg,jpeg,png,svg,gif|max:2048'
+       // ]);
 
         if ($request->hasFile('idcard')) {
             $filenameWithExt = $request->file('idcard')->getClientOriginalName();
@@ -1782,12 +1889,10 @@ class MemberController extends SecondController
 
         }
 
-
         if(!Hash::check($request->post("passwd"),$this->user->password)){
             echo "<script>alert('암호가 맞지 않습니다.');window.history.go(-1)</script>";
             return;
         }
-        $request_ex = $request->all();
         $request_ex["userId"] = $this->user->userId;
         $request_ex["idcard"] = $idcard;
         $request_ex["bankbook"] = $bankbook;
@@ -1797,8 +1902,6 @@ class MemberController extends SecondController
         unset($request_ex["agree"]);
         unset($request_ex["privacyAgree1"]);
         unset($request_ex["privacyAgree2"]);
-
-
         PbMoneyReturn::insert($request_ex);
         echo "<script>alert('신청되었습니다.');location.href='/member?type=exchange';</script>";
     }
@@ -1858,5 +1961,194 @@ class MemberController extends SecondController
           "js" => "",
           "css" => ""
       ]);
-	}			
+	}
+
+	public function exchange_suc(Request $request){
+		$settings = PbSiteSettings::first();
+		$sitecode = $settings['authen_key'];			// NICE로부터 부여받은 사이트 코드
+		$sitepasswd = $settings['authen_password'];	// NICE로부터 부여받은 사이트 패스워드
+		$cb_encode_path = "D:\\CPClient.exe";
+		$returnMsg = "인증되었습니다.";
+		$enc_data = $_REQUEST["EncodeData"];		// 암호화된 결과 데이타
+		
+			//////////////////////////////////////////////// 문자열 점검///////////////////////////////////////////////
+		if(preg_match('~[^0-9a-zA-Z+/=]~', $enc_data, $match)) {echo "입력 값 확인이 필요합니다 : ".$match[0]; exit;} // 문자열 점검 추가. 
+		if(base64_encode(base64_decode($enc_data))!=$enc_data) {echo "입력 값 확인이 필요합니다"; exit;}
+
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////
+			
+		if ($enc_data != "") {
+
+			$plaindata = `$cb_encode_path DEC $sitecode $sitepasswd $enc_data`;		// 암호화된 결과 데이터의 복호화
+
+			if ($plaindata == -1){
+				$returnMsg  = "암/복호화 시스템 오류";
+			}else if ($plaindata == -4){
+				$returnMsg  = "복호화 처리 오류";
+			}else if ($plaindata == -5){
+				$returnMsg  = "HASH값 불일치 - 복호화 데이터는 리턴됨";
+			}else if ($plaindata == -6){
+				$returnMsg  = "복호화 데이터 오류";
+			}else if ($plaindata == -9){
+				$returnMsg  = "입력값 오류";
+			}else if ($plaindata == -12){
+				$returnMsg  = "사이트 비밀번호 오류";
+			}else{
+				// 복호화가 정상적일 경우 데이터를 파싱합니다.
+				$ciphertime = `$cb_encode_path CTS $sitecode $sitepasswd $enc_data`;	// 암호화된 결과 데이터 검증 (복호화한 시간획득)
+			
+				$requestnumber = GetValue($plaindata , "REQ_SEQ");
+				
+				$responsenumber = GetValue($plaindata , "RES_SEQ");
+				$authtype = GetValue($plaindata , "AUTH_TYPE");
+				$name = GetValue($plaindata , "NAME");
+				//$name = GetValue($plaindata , "UTF8_NAME"); //charset utf8 사용시 주석 해제 후 사용
+				$birthdate = GetValue($plaindata , "BIRTHDATE");
+				
+				$gender = GetValue($plaindata , "GENDER");
+				$nationalinfo = GetValue($plaindata , "NATIONALINFO");	//내/외국인정보(사용자 매뉴얼 참조)
+				
+				$dupinfo = GetValue($plaindata , "DI");
+
+				//$conninfo = GetValue($plaindata , "CI");
+				
+				$mobileno = GetValue($plaindata , "MOBILE_NO");
+				
+				$mobileco = GetValue($plaindata , "MOBILE_CO");
+				
+
+				if(strcmp(Session::get("REQ_SEQ"), $requestnumber) != 0)
+				{
+					$returnMsg = "세션값이 다릅니다. 올바른 경로로 접근하시기 바랍니다";
+					$requestnumber = "";
+					$responsenumber = "";
+					$authtype = "";
+					$name = "";
+					$birthdate = "";
+					$gender = "";
+					$nationalinfo = "";
+					$dupinfo = "";
+					$conninfo = "";
+					$mobileno = "";
+					$mobileco = "";
+				}
+				
+				if(!empty($birthdate) && !empty($gender) && !empty($mobileno)){
+					if($this->user->phoneNumber != $mobileno){
+						echo "<script>alert('전화번호가 일치하지 않습니다.');self.close();</script>";
+					}
+					else{
+						PbActivate::updateOrCreate(["userId"=>$this->user->userId],["u"=>1,"updated_at"=>date("Y-m-d H:i:s")]);
+						echo "<script>alert('인증되었습니다');self.close();</script>";
+						
+					}
+					
+				}
+			}
+		}
+		
+	}	
+	
+	public function checkplus_success(Request $request){
+		$settings = PbSiteSettings::first();
+		$sitecode = $settings['authen_key'];			// NICE로부터 부여받은 사이트 코드
+		$sitepasswd = $settings['authen_password'];	// NICE로부터 부여받은 사이트 패스워드
+		$cb_encode_path = "D:\\CPClient.exe";
+		$returnMsg = "인증되었습니다.";
+		$enc_data = $_REQUEST["EncodeData"];		// 암호화된 결과 데이타
+		
+			//////////////////////////////////////////////// 문자열 점검///////////////////////////////////////////////
+		if(preg_match('~[^0-9a-zA-Z+/=]~', $enc_data, $match)) {echo "입력 값 확인이 필요합니다 : ".$match[0]; exit;} // 문자열 점검 추가. 
+		if(base64_encode(base64_decode($enc_data))!=$enc_data) {echo "입력 값 확인이 필요합니다"; exit;}
+
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////
+			
+		if ($enc_data != "") {
+
+			$plaindata = `$cb_encode_path DEC $sitecode $sitepasswd $enc_data`;		// 암호화된 결과 데이터의 복호화
+			echo $plaindata;
+			echo "[plaindata]  " . $plaindata . "<br>";
+
+			if ($plaindata == -1){
+				$returnMsg  = "암/복호화 시스템 오류";
+			}else if ($plaindata == -4){
+				$returnMsg  = "복호화 처리 오류";
+			}else if ($plaindata == -5){
+				$returnMsg  = "HASH값 불일치 - 복호화 데이터는 리턴됨";
+			}else if ($plaindata == -6){
+				$returnMsg  = "복호화 데이터 오류";
+			}else if ($plaindata == -9){
+				$returnMsg  = "입력값 오류";
+			}else if ($plaindata == -12){
+				$returnMsg  = "사이트 비밀번호 오류";
+			}else{
+				// 복호화가 정상적일 경우 데이터를 파싱합니다.
+				$ciphertime = `$cb_encode_path CTS $sitecode $sitepasswd $enc_data`;	// 암호화된 결과 데이터 검증 (복호화한 시간획득)
+			
+				$requestnumber = GetValue($plaindata , "REQ_SEQ");
+				
+				$responsenumber = GetValue($plaindata , "RES_SEQ");
+				$authtype = GetValue($plaindata , "AUTH_TYPE");
+				$name = GetValue($plaindata , "NAME");
+				//$name = GetValue($plaindata , "UTF8_NAME"); //charset utf8 사용시 주석 해제 후 사용
+				$birthdate = GetValue($plaindata , "BIRTHDATE");
+				
+				$gender = GetValue($plaindata , "GENDER");
+				$nationalinfo = GetValue($plaindata , "NATIONALINFO");	//내/외국인정보(사용자 매뉴얼 참조)
+				
+				$dupinfo = GetValue($plaindata , "DI");
+
+				//$conninfo = GetValue($plaindata , "CI");
+				
+				$mobileno = GetValue($plaindata , "MOBILE_NO");
+				
+				$mobileco = GetValue($plaindata , "MOBILE_CO");
+				
+
+				if(strcmp(Session::get("REQ_SEQ"), $requestnumber) != 0)
+				{
+					$returnMsg = "세션값이 다릅니다. 올바른 경로로 접근하시기 바랍니다";
+					$requestnumber = "";
+					$responsenumber = "";
+					$authtype = "";
+					$name = "";
+					$birthdate = "";
+					$gender = "";
+					$nationalinfo = "";
+					$dupinfo = "";
+					$conninfo = "";
+					$mobileno = "";
+					$mobileco = "";
+				}
+				
+				if(!empty($birthdate) && !empty($gender) && !empty($mobileno)){
+					$u_m = User::where("userId","!=",$this->user->userId)->where("phoneNumber",$mobileno)->first();
+					if(!empty($u_m)){
+						$returnMsg = "이미 사용중에 있습니다.";
+					}
+					else{
+						$this->user->birthday = $birthdate;
+						$this->user->phoneNumber = $mobileno;
+						$this->user->sex = $gender;
+						$this->user->activate = 1;
+						$this->user->save();
+						PbActivate::updateOrCreate(["userId"=>$this->user->userId],["u"=>1]);
+					}
+					
+				}
+			}
+		}
+		return view('member/checkplus_success', [
+		   "msg"=>$returnMsg,
+           "js" => "",
+           "css" => ""
+      ]);
+	}
+	
+	public function checkplus_fail(Request $request){
+		return view('member/checkplus_fail', [
+          "js" => "",
+          "css" => ""
+      ]);
+	}
 }

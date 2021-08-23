@@ -19,7 +19,7 @@
         <div class="row">
             <div class="col-xs-12">
               <div class="box-tools">
-                <form method="get" action="<?=base_url("panel")?>">
+                <form method="get" action="<?=base_url("panel")?>" >
                   <input type="hidden" name="id" value="<?=$_GET['id']?>">
                   <div class="input-group" style="margin-bottom: 10px">
                     <div class="pull-right">
@@ -56,63 +56,90 @@
                 </form>
               </div>
               <div class="box">
-                <div class="box-body table-responsive no-padding">
-                  <table class="table table-hover">
-                    <tr class="thead-dark">
-                      <th>순번</th>
-                      <th>제목</th>
-                      <?php if($panel[0]->name == "photo"): ?>
-                      <th>이미지</th>
-                      <?php endif; ?>
-                      <th>작성자</th>
-                      <th>등록일</th>
-                      <th>조회수</th>
-                    </tr>
-                    <?php if(!empty($content)): ?>
-                      <?php foreach($content as $value): ?>
-                        <tr>
-                          <td><?=$tt?></td>
-                          <td>
-                            <?php if($value->reply==1): ?>
-                                <img src="<?=base_url_source()?>assets/images/powerball/icon_reply.png" style="margin-left:10px;" alt="답변글">
-                            <?php endif; ?>
-                            <?php if($value->security==1): ?>
-                              <img src="<?=base_url()?>assets/images/icon_secret.gif">
-                            <?php endif; ?>
-                            <a href="<?=base_url()?>viewReq/<?=$value->id?>?board_type=<?=$this->input->get("id")?>">
-                               <?php if($panel[0]->content=="이용후기"): ?>
-                                <span class="grey1">[<?=$value->category?>]</span>
+                <form id="frmSearch">
+                  <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                      <tr class="thead-dark">
+                        <th>
+                          순번
+                          <input type="checkbox" name="chkMemCodeAll" id="chkMemCodeAll" value="Y" 
+                          onclick="fnCkBoxAllSel( 'frmSearch', 'chkMemCodeAll', 'chkMemCode' );">
+                        </th>
+                        <th>순번</th>
+                        <th>제목</th>
+                        <?php if($panel[0]->name == "photo"): ?>
+                        <th>이미지</th>
+                        <?php endif; ?>
+                        <th>작성자</th>
+                        <th>등록일</th>
+                        <th>조회수</th>
+                      </tr>
+                      <?php if(!empty($content)): ?>
+                        <?php foreach($content as $value): ?>
+                          <tr>
+                            <td>
+                              <input type="checkbox" name="chkMemCode[]" class="chkMemCode" value="<?=$value->id?>">
+                              <?=$tt?>
+                            </td>
+                            <td>
+                              <?php if($value->reply==1): ?>
+                                  <img src="<?=base_url_source()?>assets/images/powerball/icon_reply.png" style="margin-left:10px;" alt="답변글">
                               <?php endif; ?>
-                              <?=$value->title?>
-                                <?= $value->comment_count > 0 ? "<span class='recCnt'>[".$value->comment_count."]</span>":"" ?>
-                            </a>
-                          </td>
-                          <?php if($panel[0]->name == "photo"): ?>
-                          <td class="img_50">
-                            <?php preg_match_all('/<img[^>]+>/i',$value->content, $result);
-                            if(sizeof($result) > 0){
-                              echo str_replace("/assets/upload/",base_url_source()."assets/upload/",$result[0][0]);
-                            }
-                            ?>
-                          </td>
-                          <?php endif; ?>
-                          <td>
-                            <a data-toggle="tooltip" class="hastip"  data-uname="<?=$value->UserName?>" data-userid="<?=$value->userId?>">
-                            <?=$value->UserName?>
-                            </a></td>
-                          <td><?=$value->updated_at?></td>
-                          <td><?=$value->view_count?></td>
-                        </tr>
-                        <?php $tt=$tt-1;?>
-                      <?php endforeach; ?>
-                    <?php endif; ?>
-                  </table>
-                </div><!-- /.box-body -->
+                              <?php if($value->security==1): ?>
+                                <img src="<?=base_url()?>assets/images/icon_secret.gif">
+                              <?php endif; ?>
+                              <a href="<?=base_url()?>viewReq/<?=$value->id?>?board_type=<?=$this->input->get("id")?>">
+                                 <?php if($panel[0]->content=="이용후기"): ?>
+                                  <span class="grey1">[<?=$value->category?>]</span>
+                                <?php endif; ?>
+                                <?=$value->title?>
+                                  <?= $value->comment_count > 0 ? "<span class='recCnt'>[".$value->comment_count."]</span>":"" ?>
+                              </a>
+                            </td>
+                            <?php if($panel[0]->name == "photo"): ?>
+                            <td class="img_50">
+                              <?php preg_match_all('/<img[^>]+>/i',$value->content, $result);
+                              if(sizeof($result) > 0){
+                                echo str_replace("/assets/upload/",base_url_source()."assets/upload/",$result[0][0]);
+                              }
+                              ?>
+                            </td>
+                            <?php endif; ?>
+                            <td>
+                              <a data-toggle="tooltip" class="hastip"  data-uname="<?=$value->UserName?>" data-userid="<?=$value->userId?>">
+                              <?=$value->UserName?>
+                              </a></td>
+                            <td><?=$value->updated_at?></td>
+                            <td><?=$value->view_count?></td>
+                          </tr>
+                          <?php $tt=$tt-1;?>
+                        <?php endforeach; ?>
+                      <?php endif; ?>
+                    </table>
+                  </div><!-- /.box-body -->
+                  <input type="hidden" value='http://<?=$_SERVER["HTTP_HOST"]?><?=$_SERVER["REQUEST_URI"]?>' name="sKind">
+                </form>
                 <div class="box-footer clearfix">
                   <?php echo $this->pagination->create_links(); ?>
+                  <div>
+                    <button type="button" class="btn btn-sm btn-primary" onclick="fnBoardDel();">삭제</button>
+                  </div>
                 </div>
+
               </div><!-- /.box -->
             </div>
         </div>
     </section>
 </div>
+
+<script>
+  function fnBoardDel(){
+     var frmObj = "#frmSearch";
+     if (fnSelBoxCnt($("input[class='chkMemCode']")) <= 0) {
+     alert('삭제할 아이템을 선택해주세요.');
+     return;
+     }
+     $("#frmSearch").attr("method", "post").attr("action", "/DelMessage");
+     $("#frmSearch").submit();
+   }
+</script>

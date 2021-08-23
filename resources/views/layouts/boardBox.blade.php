@@ -55,7 +55,7 @@
                     @foreach($photo as $p)
                         <li class="photo">
                             <a href="/board?board_type=none&board_category=humor&bid={{$p["id"]}}&page=1" target="mainFrame" title="">
-                                {!! extractImage($p["content"]) !!}</a>
+                                {!! extractImage($p["content"],$p['title']) !!}</a>
                         </li>
                     @endforeach
 				</ul>
@@ -130,5 +130,9 @@
 	</div>
 </div>
 <ul class="bannerBox" id="banner_main_area">
-<img src="/assets/images/ads.png" width="200" height="205">
+	@if(!empty($banner))
+	<a href="{{$banner['link']}}">
+		<img src="/assets/upload/banner/{{$banner['image']}}" width="200" height="205">
+	</a>
+	@endif
 </ul>

@@ -1183,7 +1183,7 @@ td.simu-head{
 .boardBox .listBox ul.list li.photo img {
     position: absolute;
     width: 100px;
-    height: 100px;
+    height: 100px !important;
     object-fit: cover;
 }
 

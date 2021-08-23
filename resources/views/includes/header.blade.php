@@ -3,8 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="<?=$prohited["meta_desc"]?>">
+    <meta name="keywords" content="<?=$prohited["meta_key"]?>">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="<?=$prohited["site_alias"]?>">
+    <meta property="og:description" content="<?=$prohited["meta_desc"]?>">
+    <meta property="og:image" content="https://mstball.com/assets/images/logo.png">
+    <meta property="og:url" content="<?=$prohited["site_address"]?>">
     <link rel="shortcut icon" href="assets/images/logo2.png" type="image/x-icon">
-    <meta name="description" content="">
     <title><?=$prohited["site_alias"]?></title>
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
@@ -57,18 +65,20 @@
     <div id="wrap">
         <div id="topArea">
             <div class="logo">
-                <a href="/" class="none"><img src="{{Request::root()}}/assets/images/logo.png" width="144" ></a>
+                <a href="/" class="none">
+					<img src="{{Request::root()}}/assets/images/logo.png" width="144" >
+				</a>
                 <div class="top-header-right">
                     <a href="/member?type=charge" target="mainFrame">
                         <div class="d-inline-flex align-middle" style="transform:rotate(-40deg)"><img src="/assets/images/powerball/dangun.svg" width="60" height="60"></div>
-                        <div class="d-inline-flex align-middle"><span class="header-right-1">코인을 충전하시겠어요?<br><span class="header-right-2">당근을 선물해 보세요!</span></span></div>
+                        <div class="d-inline-flex align-middle"><span class="header-right-1">코인을 충전하시겠어요?<br><h1 class="header-right-2">당근을 선물해 보세요!</h1></span></div>
                     </a>
                 </div>
             </div>
             <div class="gnb">
                 <ul>
                     <li><a href="{{route('p_analyse')}}?terms=lates&pageType=display" target="mainFrame" class="on hiddenBorard" >파워볼분석 <div class="border-half"></div></a></li>
-                    <li><a href="{{route('psadari_analyse')}}?terms=lates&pageType=display" target="mainFrame" class="hiddenBorard" >파사중계<div class="border-half"></div></a></li>
+                    <li><a href="{{route('psadari_analyse')}}?terms=lates&pageType=display" target="mainFrame" class="hiddenBorard" >파워사다리중계<div class="border-half"></div></a></li>
                     <li><a href="{{route('pick-powerball')}}" target="mainFrame" style="width:80px;text-align:center;" class="hiddenBorard">픽<div class="border-half"></div></a></li>
                     <li><a href="{{route("pick-simulator")}}" target="mainFrame" rel="hidden" class="hiddenBorard">파워시뮬레이션<div class="border-half"></div></a></li>
                     <li><a href="/pick/winning-machine"  target="mainFrame"   class="hiddenBorard">연승제조기<div class="border-half"></div></a></li>

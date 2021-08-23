@@ -81,7 +81,7 @@ class User_model extends CI_Model
      */
     function userListing($searchText = '', $page=0, $segment=0,$isDeleted=0,$st=null,$et=null,$level=null,$item=null,$content=null)
     {
-        $this->db->select('BaseTbl.userId, BaseTbl.email,BaseTbl.coin, BaseTbl.name,BaseTbl.bullet,BaseTbl.ip, BaseTbl.phoneNumber,BaseTbl.loginId,BaseTbl.nickname,BaseTbl.created_at,BaseTbl.loginId,CodeDetail.codename,IpBlocked.ip as ip_block');
+        $this->db->select('BaseTbl.userId, BaseTbl.email,BaseTbl.coin, BaseTbl.name,BaseTbl.bullet,BaseTbl.ip, BaseTbl.phoneNumber,BaseTbl.loginId,BaseTbl.nickname,BaseTbl.created_at,BaseTbl.loginId,CodeDetail.codename,IpBlocked.ip as ip_block,BaseTbl.activate');
         $this->db->from('pb_users as BaseTbl');
         $this->db->join("pb_codedetail as CodeDetail","CodeDetail.code=BaseTbl.level","left");
         $this->db->join("pb_ip_blocked as IpBlocked","IpBlocked.ip=BaseTbl.ip","left");

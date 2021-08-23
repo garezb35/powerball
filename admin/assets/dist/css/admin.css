@@ -734,8 +734,8 @@ table.order_noBd tbody td:last-child {
 }
 
 .img_50 img{
-	height: 50px;
-	width: 50px;
+	height: 50px !important;
+	width: 50px !important;
 	object-fit: cover;
 }
 
