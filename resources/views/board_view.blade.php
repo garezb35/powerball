@@ -22,6 +22,7 @@
       }
       @endphp
       <article id="bo_v">
+          @if($result['article']['active'])
           <div class="viewinfo">
               <div class="thumb">
                   @if($result["article"]["fromId"] == 0)
@@ -75,6 +76,9 @@
                   </div>
               @endif
           </section>
+          @else
+          <div style="line-height:25px;color:#999;">본 게시글은 운영 정책 위반으로 블라인드 처리되었습니다.</div>
+          @endif
       </article>
       @if($result["board"]["comment_use"] == 1)
       <aside id="bo_vc_w">
@@ -128,9 +132,16 @@
               @endif
           </ul>
           <ul class="bo_v_com">
-              @if( $result["userId"] != 0 && $result["userId"] == $result["article"]["fromId"])
+              @if(($result["userId"] != 0 && $result["userId"] == $result["article"]["fromId"]) || $is_admin)
               <li><a href="/board_write?board_type={{Request::get("board_type")}}&board_category={{Request::get("board_category")}}&page={{$page}}&bid={{Request::get("bid")}}" class="btn_b01">수정</a></li>
               <li><a href="#" class="btn_b01" onclick="del({{Request::get("bid")}}); return false;">삭제</a></li>
+              @endif
+              @if($is_admin)
+              @if($result['article']['active'])
+              <li><a href="#" class="btn_b01" onclick="blind({{Request::get("bid")}},1); return false;">블라인드</a></li>
+              @else
+              <li><a href="#" class="btn_b01" onclick="blind({{Request::get("bid")}},2); return false;">블라인드 해제</a></li>
+              @endif
               @endif
               <li><a href="/board?board_type={{Request::get("board_type")}}&board_category={{Request::get("board_category")}}&page={{Request::get("page")}}" class="btn_b01">목록</a></li>
                 @if($result["article"]["reply"] != 1 && $result["board"]["reply_use"] == 1)
@@ -212,7 +223,7 @@
                                 @if($mail["reply"] == 1)
                                     <img src="/assets/images/powerball/icon_reply.png" style="margin-left:10px;" alt="답변글">
                                 @endif
-                                @if($result["board"]["security"] == 1 && (($mail["fromId"] != 0 && $mail["fromId"] != $result["userId"]) || ($mail["toId"] != 0 && $mail["toId"] != $result["userId"])))
+                                @if($result["board"]["security"] == 1 && (($mail["fromId"] != 0 && $mail["fromId"] != $result["userId"]) || ($mail["toId"] != 0 && $mail["toId"] != $result["userId"])) && !$is_admin)
                                     <a href="/bbs/board.php?bo_table=humor&amp;wr_id=1" onclick="
                                                                                                 alertify.set('notifier','delay', 1);
                                                                                                 alertify.set('notifier','position', 'top-center');

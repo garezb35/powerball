@@ -22,12 +22,14 @@ class BoardController extends SecondController
     public function view(Request $request){
 
         $result["api_token"] = "";
+        $is_admin = 0;
         if(!$this->isLogged){
             $userId = 0;
         }
         else {
             $userId = $this->user->userId;
             $result["api_token"] = $this->user->api_token;
+            $is_admin = $this->user->user_type == '03' ? 1 : 0;
         }
 
         $result["type"] = $request->get("board_type") ?? "community";
@@ -133,7 +135,7 @@ class BoardController extends SecondController
         $result["b1"] = PbBoard::where("isDeleted",0)->where("type",1)->get()->toArray();
         $result["b2"] = PbBoard::where("isDeleted",0)->where("type",2)->get()->toArray();
         $result["b3"] = PbBoard::where("isDeleted",0)->where("type",3)->get()->toArray();
-        return view('board_view',["css"=>"board.css","js"=>"board.js","result"=>$result]);
+        return view('board_view',["css"=>"board.css","js"=>"board.js","result"=>$result,"is_admin"=>$is_admin]);
     }
 
     public function commentProcess(Request $request){
@@ -217,6 +219,10 @@ class BoardController extends SecondController
                 echo "<script>alert('존재하지 않는 게시물입니다.');window.history.back(1)</script>";
                 return;
             }
+            if($mail["fromId"] != $this->user->userId && $this->user->user_type != '03'){
+                echo "<script>alert('잘못된 요청입니다.');window.history.back(1)</script>";
+                return;
+            }
             $result["title"] = $mail["title"];
             $result["content"] = $mail["content"];
         }
@@ -248,7 +254,7 @@ class BoardController extends SecondController
             return;
         }
 
-        if(checkProhited($wr_content) || checkProhited($wr_subject)){
+        if((checkProhited($wr_content) || checkProhited($wr_subject)) && $user->user_type != '03'){
           $this->user->user_type = "00";
           $this->user->save();
           PbBlockReason::updateorCreate(
@@ -283,7 +289,17 @@ class BoardController extends SecondController
             echo "<script>location.href='/board?board_type={$board_type}&board_category={$board_category}';</script>";
         }
         else{
-            PbMessage::where("id",$wr_id)->update(["fromId"=>$user->userId,"title"=>$wr_subject,"content"=>$wr_content,"type"=>$board_category,"reply"=>$reply,"security"=>$board["security"]]);
+            $msg = PbMessage::find($wr_id);
+            if(empty($msg) || ($msg->fromId != $user->userId && $user->user_type != '03')){
+                echo "<script>alert('잘못된 요청입니다.');window.history.back(1)</script>";
+                return;
+            }
+            $msg->title = $wr_subject;
+            $msg->content = $wr_content;
+            $msg->type = $board_category;
+            $msg->reply = $reply;
+            $msg->security = $board["security"];
+            $msg->save();
             echo "<script>location.href='/board?board_type={$board_type}&board_category={$board_category}';</script>";
         }
         return;
@@ -292,22 +308,42 @@ class BoardController extends SecondController
     public function deletePost(Request $request){
         $user = $this->user;
         $id = $request->post("id");
-        $mail = PbMessage::where("id",$id)->where("fromId",$user->userId)->first();
+        $blind = $request->blind;
+        $msg = "삭제되었습니다.";
+        if($user->user_type != '03')
+            $mail = PbMessage::where("id",$id)->where("fromId",$user->userId)->first();
+        else
+            $mail = PbMessage::where("id",$id)->first();
         if(empty($mail)){
             echo json_encode(array("status"=>0,"msg"=>"존재하지 않은 게시물입니다."));
             return;
         }
-        $reply = PbMessage::where("reply",1)->where("keys",$id)->where("id","!=",$id)
-            ->where(function($query) use ($user){
-                $query->where("toId",$user->userId);
-                $query->orwhere("fromId",$user->userId);
-            })
-            ->first();
-        if(!empty($reply)){
-            echo json_encode(array("status"=>0,"msg"=>"답변이 있는 게시물은 삭제할수 없습니다."));
-            return;
+        if(empty($blind)){
+            $reply = PbMessage::where("reply",1)->where("keys",$id)->where("id","!=",$id)
+                ->where(function($query) use ($user){
+                    $query->where("toId",$user->userId);
+                    $query->orwhere("fromId",$user->userId);
+                })
+                ->first();
+            if(!empty($reply)){
+                echo json_encode(array("status"=>0,"msg"=>"답변이 있는 게시물은 삭제할수 없습니다."));
+                return;
+            }
+            PbMessage::find($id)->delete();
         }
-        PbMessage::find($id)->delete();
-        echo json_encode(array("status"=>1,"msg"=>"삭제되었습니다."));
+        else{
+            if($blind == 1)
+            {
+                PbMessage::where("id",$id)->update(["active"=>0]);
+                $msg = "처리되었습니다.";
+            }
+            else
+            {
+                PbMessage::where("id",$id)->update(["active"=>1]);
+                $msg = "해제되었습니다.";
+            }
+            
+        }
+        echo json_encode(array("status"=>1,"msg"=>"$msg"));
     }
 }

@@ -162,6 +162,22 @@ function del(id)
     }
 }
 
+function blind(id,type){
+    if(confirm("블라인드 처리하시겠습니까?")) {
+        $.ajax({
+            type: "POST",
+            url: "/api/deletePost",
+            data:{id : id,api_token:api_token,blind: type},
+            dataType:"json"
+        }).done(function(data) {
+            alertifyByCommon(data.msg)
+            if(data.status ==1){
+                location.reload()
+            }
+        })
+    }
+}
+
 $(document).ready(function (){
     setTimeout(function(){
         heightResize()

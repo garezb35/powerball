@@ -89,6 +89,7 @@ function checkInPacket(data,obj,io){
                                return_obj = {header: {type: "ERROR"}, body: {type: "NOT_LOGIN",connectList:listUsers.getUsersByRoomIdx(data.body.roomIdx),msgList:listMsg.getMsgRoomIdx(data.body.roomIdx)}};
                            }
                            else {
+
                                let item = new Array();
                                let winning_history = user[0]["winning_history"];
                                let current_win = 0;
@@ -156,7 +157,7 @@ function checkInPacket(data,obj,io){
                            else {
 
                                if(user[0]["image"] != "" && user[0]["image"] !==null)
-                                   profile_img = user[0]["image"]
+                                   //profile_img = user[0]["image"]
                                listUsers.addUser(token, user[0]["name"], user[0]["level"], user[0]["nickname"], user[0]["sex"], 0, obj.id, data.body.roomIdx,date.getTime(),"","","lobby",profile_img,user[0]["today_word"],0,"muteOff","muteOff",user[0]["mutedTime"],obj.handshake.address)
                                obj.to(data.body.roomIdx).emit("receive",{header:{type:"ListUser"},body:{users:listUsers.getUserByClientId(obj.id)}})
                                obj.emit("receive",{header:{type:"INITMSG"},body:{users:listUsers.getUsersByRoomIdx(data.body.roomIdx),connector:getCountRoom()}})
@@ -354,7 +355,7 @@ function setUserItem(data){
 
 
 function diffStrtotime(bytime){
-    var curr = strtotime(moment().format('yyyy-MM-DD hh:mm:ss'));
+    var curr = Math.floor(new Date().getTime() / 1000);
     var dif = parseInt(bytime) - curr;
     if(dif <=0 || bytime == 0) return true;
     else{

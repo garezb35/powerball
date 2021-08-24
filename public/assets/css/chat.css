@@ -665,3 +665,14 @@ img, fieldset, iframe {
 .familyNick{
   color: #e68394
 }
+
+
+#msgBox .msg-admin {
+    background-color: #4c4c4c;
+    border: 1px solid #262626;
+    min-height: 22px;
+    line-height: 22px;
+    color: #fff;
+    padding: 0 5px;
+    margin: 3px 0;
+}

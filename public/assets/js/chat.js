@@ -1,3 +1,4 @@
+level_images[30] = '/assets/images/mine/profile.png';
 var socketOption = {};
 socketOption['reconnect'] = true;
 socketOption['force new connection'] = true;
@@ -609,10 +610,10 @@ function receiveProcess(data)
                 var bPacketArr = bPacket.msg.split(' ');
                 var tnickname = bPacketArr[0];
                 printSystemMsg('system','<span>'+tnickname+'</span> 님이 <span>5분</span> 동안 벙어리 되었습니다.');
-                if(bPacket.tuseridKey == this.userIdKey)
-                {
-                    updateState(bPacket.cmd);
-                }
+                // if(bPacket.tuseridKey == this.userIdKey)
+                // {
+                //     updateState(bPacket.cmd);
+                // }
                 break;
 
             case 'muteOnTime':
@@ -622,10 +623,10 @@ function receiveProcess(data)
             var muteTime = bPacketArr[1];
             if(!muteTime) muteTime = 1;
                 printSystemMsg('system','<span>'+tnickname+'</span> 님이 <span>영구</span> 벙어리 되었습니다.');
-                if(bPacket.tuseridKey == this.userIdKey)
-                {
-                    updateState(bPacket.cmd);
-                }
+                // if(bPacket.tuseridKey == this.userIdKey)
+                // {
+                //     updateState(bPacket.cmd);
+                // }
                 break;
 
             case 'muteOnTime1':
@@ -634,18 +635,18 @@ function receiveProcess(data)
                 var muteTime = bPacketArr[1];
                 if(!muteTime) muteTime = 1;
                 printSystemMsg('system','<span>'+bPacket.tnickname+'</span> 님이 <span>1시간</span> 동안 벙어리 되었습니다.');
-                if(bPacket.tuseridKey == this.userIdKey)
-                {
-                    updateState(bPacket.cmd);
-                }
+                // if(bPacket.tuseridKey == this.userIdKey)
+                // {
+                //     updateState(bPacket.cmd);
+                // }
                 break;
 
             case 'muteOff':
                 printSystemMsg('system','<span>'+bPacket.tnickname+'</span> 님이 벙어리 해제 되었습니다.');
-                if(bPacket.tuseridKey == this.userIdKey)
-                {
-                    updateState(bPacket.cmd);
-                }
+                // if(bPacket.tuseridKey == this.userIdKey)
+                // {
+                //     updateState(bPacket.cmd);
+                // }
                 break;
 
             case 'banipOn':
@@ -658,10 +659,10 @@ function receiveProcess(data)
 
             case 'banipOff':
                 printSystemMsg('system','<span>'+bPacket.tnickname+'</span> 님이 접속 차단이 해제 되었습니다.');
-                if(bPacket.tuseridKey == this.userIdKey)
-                {
-                    updateState(bPacket.cmd);
-                }
+                // if(bPacket.tuseridKey == this.userIdKey)
+                // {
+                //     updateState(bPacket.cmd);
+                // }
                 break;
 
             case 'foreverstop':
@@ -1094,6 +1095,7 @@ function fixNotice(state,msg)
 
 function chatManager(type,nick)
 {
+    var temp = this.roomIdx;
     if(type == 'refresh')
     {
         location.reload();
@@ -1133,21 +1135,7 @@ function chatManager(type,nick)
     {
         windowOpen('/memo?type=write&nickname='+nick,600,600,550);
     }
-    else if(type == 'muteOn' || type == 'muteOff' || type == 'banOn' || type == 'banipOn' || type == 'banipOff')
-    {
-        $('#msg').val('/'+type+' '+nick);
-        $('#sendBtn').click();
-    }
-    else if(type == 'muteOnTime1')	// 벙어리(1시간)
-    {
-        $('#msg').val('/muteOnTime '+nick+' 1');
-        $('#sendBtn').click();
-    }
-    else if(type == 'muteOnTime')	// 벙어리(영구)
-    {
-        $('#msg').val('/'+type+' '+nick+' 10000');
-        $('#sendBtn').click();
-    }
+    
     else if(type == 'freezeOn')
     {
         printSystemMsg('system','운영자가 채팅창을 얼렸습니다.');
@@ -1158,6 +1146,37 @@ function chatManager(type,nick)
         printSystemMsg('system','운영자가 채팅창을 녹였습니다.');
         is_freeze = 'off';
     }
+
+    else if(type == "muteOn" || type == "muteOnTime1" || type == "muteOnTime" || type == "muteOff" || type == "banipOn" || type == "banipOff" || type == "foreverstop"){
+        url = "/api/setUserState"
+        $.ajax({
+              type: 'POST',
+              dataType: 'json',
+              url: url,
+              data: {
+                  cmd: type,
+                  roomIdx: this.roomIdx,
+                  tuseridKey : nick,
+                  api_token : userIdToken
+              },
+              success: function (data, textStatus) {
+                  if (data.status == 1) {
+                      var socket_data = {
+                          cmd: type,
+                          roomIdx: temp,
+                          tuseridKey:nick,
+                          bytime:data.bytime
+                      };
+                      sendProcess('ADMINCMD', socket_data);
+                  } else {
+                      alertify.error(data.msg)
+                  }
+              }
+          }).fail(function(xhr){
+            console.log(xhr)
+          });
+    }
+
     else if(type == 'friendList')
     {
         if(confirm('['+nick+']님을 친구 추가하시겠습니까?'))
@@ -1280,7 +1299,7 @@ function printChatMsg(level,sex,mark,useridKey,nickname,msg,item,winFixCnt)
 
     var itemView = '';
     var gasmaskClass = '';
-    var levelImg = sex+level;
+    var levelImg = level;
     if(item)
     {
         if(item.indexOf('superChat') != -1)
@@ -1333,7 +1352,7 @@ function printChatMsg(level,sex,mark,useridKey,nickname,msg,item,winFixCnt)
 
     if(level == 30)
     {
-        $('#msgBox').append('<li><p class="msg-admin">'+msg+'</p></li>');
+        $('#msgBox').append('<li><p class="msg-admin"><img src="'+level_images[level]+'" width="30" height="30"/>'+msg+'</p></li>');
     }
     else
     {
@@ -1409,12 +1428,13 @@ function setUserLayer(useridKey,nickname,e)
 
         if(roomIdx != 'lobby' && is_admin)
         {
-            str += '<li><a href="#" onclick="chatManager(\'muteOn\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">벙어리(5분)</span></a></li>';
-            str += '<li><a href="#" onclick="chatManager(\'muteOnTime1\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">벙어리(1시간)</span></a></li>';
-            str += '<li><a href="#" onclick="chatManager(\'muteOnTime\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">벙어리(영구)</span></a></li>';
-            str += '<li><a href="#" onclick="chatManager(\'muteOff\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">벙어리해제</span></a></li>';
-            str += '<li><a href="#" onclick="chatManager(\'banipOn\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">아이피차단</span></a></li>';
-            str += '<li><a href="#" onclick="chatManager(\'banipOff\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">아이피차단해제</span></a></li>';
+            str += '<li><a href="#" onclick="chatManager(\'muteOn\',\''+useridKey+'\');return false;"><em class="ico"></em><span class="txt">벙어리(5분)</span></a></li>';
+            str += '<li><a href="#" onclick="chatManager(\'muteOnTime1\',\''+useridKey+'\');return false;"><em class="ico"></em><span class="txt">벙어리(1시간)</span></a></li>';
+            str += '<li><a href="#" onclick="chatManager(\'muteOnTime\',\''+useridKey+'\');return false;"><em class="ico"></em><span class="txt">벙어리(영구)</span></a></li>';
+            str += '<li><a href="#" onclick="chatManager(\'muteOff\',\''+useridKey+'\');return false;"><em class="ico"></em><span class="txt">벙어리해제</span></a></li>';
+            str += '<li><a href="#" onclick="chatManager(\'banipOn\',\''+useridKey+'\');return false;"><em class="ico"></em><span class="txt">아이피차단</span></a></li>';
+            str += '<li><a href="#" onclick="chatManager(\'banipOff\',\''+useridKey+'\');return false;"><em class="ico"></em><span class="txt">아이피차단해제</span></a></li>';
+            str += '<li><a href="#" onclick="chatManager(\'foreverstop\',\''+useridKey+'\');return false;"><em class="ico"></em><span class="txt">영구정지</span></a></li>';
         }
 
         str += '<li><a href="#" onclick="chatManager(\'friendList\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">친구추가</span></a></li>';

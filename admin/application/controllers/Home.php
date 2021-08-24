@@ -5476,15 +5476,18 @@
       return;
     }
     if($roomIdx == "channel1"){
-      if($cmd == "muteOn")
-        $bytime =  strtotime("+5 minutes");
-      if($cmd == "muteOnTime1")
-        $bytime =  strtotime("+1 hour");
-      if($cmd == "muteOnTime")
-        $bytime =  strtotime("+10000 hours");
-      if($cmd == "muteOff")
-        $bytime =  0;
-      $this->base_model->updateDataById($tuseridKey,array("mutedTime"=>$bytime,"mutedType"=>1),"pb_users","userIdKey");
+      if(strpos($cmd,'mute') !== false){
+        if($cmd == "muteOn")
+          $bytime =  strtotime("+5 minutes");
+        if($cmd == "muteOnTime1")
+          $bytime =  strtotime("+1 hour");
+        if($cmd == "muteOnTime")
+          $bytime =  strtotime("+10000 hours");
+        if($cmd == "muteOff")
+          $bytime =  0;
+        $this->base_model->updateDataById($tuseridKey,array("mutedTime"=>$bytime,"mutedType"=>1),"pb_users","userIdKey");
+      }
+      
 
       if($cmd == "banipOn"){
         $this->base_model->deleteRecordCustom("pb_ip_blocked","ip",$pb_user[0]->ip);

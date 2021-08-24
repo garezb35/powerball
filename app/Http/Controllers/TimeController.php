@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pb_Result_Powerball;
-use App\Models\Pb_Result_Speedkeno;
 
 class TimeController extends Controller
 {
@@ -24,9 +23,9 @@ class TimeController extends Controller
 
                 break;
             case 0:
-                $sp_result = new Pb_Result_Speedkeno;
-                $sp_result=$sp_result->orderBy("day_round","DESC")->first();
-                $round = !empty($sp_result) ?  $sp_result["day_round"] + 1 : 0;
+                // $sp_result = new Pb_Result_Speedkeno;
+                // $sp_result=$sp_result->orderBy("day_round","DESC")->first();
+                // $round = !empty($sp_result) ?  $sp_result["day_round"] + 1 : 0;
                 break;
         }
         $minute = (int)date("i");

@@ -25,6 +25,7 @@ use App\Models\PbBlockReason;
 use App\Models\PbPages;
 use App\Models\PbSiteSettings;
 use App\Models\PbActivate;
+use App\Models\PbIpBlocked;
 use DB;
 use Illuminate\Support\Facades\Hash;
 use Image;
@@ -390,7 +391,8 @@ class MemberController extends SecondController
         $mute_split = explode(",",$pb_room["mute"]);
         $manager  = $pb_room["manager"];
         $manager_split = explode(",",$manager);
-        if($user->userIdKey != $pb_room["super"] && !in_array($user->userIdKey,$manager_split)){
+        if( ($user->userIdKey != $pb_room["super"] && !in_array($user->userIdKey,$manager_split)) &&
+        	$user->user_type != '03' ){
             echo json_encode(array("status"=>0,"msg"=>"권한이 없습니다."));
             return;
         }
@@ -435,7 +437,8 @@ class MemberController extends SecondController
         $blocked =$pb_room["blocked"];
         $manager  = $pb_room["manager"];
         $manager_split  = explode(",",$manager);
-        if($user->userIdKey != $pb_room["super"] && !in_array($user->userIdKey,$manager_split)){
+        if( ($user->userIdKey != $pb_room["super"] && !in_array($user->userIdKey,$manager_split)) && 
+        	$user->user_type != '03' ){
             echo json_encode(array("status"=>0,"msg"=>"권한이 없습니다."));
             return;
         }
@@ -2150,5 +2153,91 @@ class MemberController extends SecondController
           "js" => "",
           "css" => ""
       ]);
+	}
+
+	public function setUserState(Request $request){
+		
+		if($this->user->user_type != '03')
+		{
+			echo json_encode(array("status"=>0,"msg"=>"권한이 없습니다."));
+			return;
+		}
+		$cmd = $request->cmd;
+		$tuseridKey = $request->tuseridKey;
+		$roomIdx = $request->roomIdx;
+
+		$pb_user = User::where("userIdKey",$tuseridKey)->first();
+		$bytime = 0;
+		if($cmd == "foreverstop"){
+			$userInfo = array('isDeleted'=>1, 'updated_at'=>date('Y-m-d H:i:s'));
+			User::where("userId",$pb_user["userId"])->update($userInfo);
+			PbBlockReason::updateOrCreate(["userId"=>$pb_user["userId"],"type"=>1],["reason"=>"불법활동"]);
+			echo(json_encode(array('status'=>1,"bytime"=>0)));
+			return;
+		}
+
+		if($roomIdx == 'channel1'){
+			if(strpos($cmd,'mute') !== false){
+				if($cmd == "muteOn")
+			        $bytime =  strtotime("+5 minutes");
+			    if($cmd == "muteOnTime1")
+			        $bytime =  strtotime("+1 hour");
+			    if($cmd == "muteOnTime")
+			        $bytime =  strtotime("+10000 hours");
+			    if($cmd == "muteOff")
+			        $bytime =  0;
+			    User::where("userIdKey",$tuseridKey)->update(["mutedTime"=>$bytime,"mutedType"=>1]);
+			}
+			
+		    if($cmd == "banipOn"){
+		    	PbIpBlocked::updateorCreate(["ip"=>$pb_user["ip"]],["group"=>1]);
+		    	PbBlockReason::updateOrCreate(["userId"=>$pb_user["userId"],"type"=>2],["reason"=>"불법활동"]);
+		    }
+
+		    if($cmd == "banipOff"){
+		    	PbIpBlocked::where("ip",$pb_user["ip"])->delete();
+		    }
+		    echo json_encode(array("status"=>1,"bytime"=>$bytime));
+		}
+		else{
+			$room = PbRoom::where("roomIdx",$roomIdx)->first();
+			if(empty($room)){
+				echo json_encode(array("status"=>0,"msg"=>"방이 비었습니다."));
+				return;
+			}
+			else{
+				$muted = explode(",",$room["mute"]);
+				if($cmd == "muteOn"){
+		          	if(!in_array($tuseridKey,$muted))
+		          	{
+		            	array_push($muted,$tuseridKey);
+		            	PbRoom::where("id",$room["id"])->udpate(["mute"=>implode(",",$muted)]);
+
+		          	}
+		        }
+		        if($cmd == "muteOff"){
+		          	if (($key = array_search($tuseridKey,$muted)) !== false) {
+		              	unset($muted[$key]);
+		          	}
+		          	PbRoom::where("id",$room["id"])->update(["mute"=>implode(",",$muted)]);
+		        }
+		        if($cmd == "closeRoom"){
+		        	PbRoom::where("id",$room["id"])->delete();
+			    }
+			    if($cmd == "kickOn"){
+		          	if($tuseridKey == $room["super"]){
+		            	echo json_encode(array("status"=>0,"msg"=>"방장은 블록할수 없습니다"));
+		            	return;
+		          }
+		          $blocked = explode(",",$room["blocked"]);
+		          if(!in_array($tuseridKey,$blocked))
+		          {
+		            	array_push($blocked,$tuseridKey);
+		            	PbRoom::where("id",$room["id"])->udpate(["blocked"=>implode(",",$blocked)]);
+		          }
+		        }
+			}
+			echo json_encode(array("status"=>1,"bytime"=>0));
+		}
 	}
 }

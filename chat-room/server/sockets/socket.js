@@ -53,6 +53,7 @@ public.on("connection",(client) => {
       public.emit("tomiss",data)
     })
     client.on("send",(data,callback) => {
+
         if(data.header.type == "GIFT"){
             let t_user = getUserFromIdAndRoomIdx(data.body.tuseridKey,data.body.roomIdx)
             if(typeof  t_user !="undefined"){
@@ -62,6 +63,24 @@ public.on("connection",(client) => {
                 }
             }
         }
+        else if(data.header.type == "ADMINCMD"){
+          if(data.body.cmd == "muteOn" || data.body.cmd == "muteOnTime1" || data.body.cmd == "muteOnTime" || data.body.cmd == "muteOff"){
+              let result = setUserMuteById(data.body.bytime,data.body.tuseridKey,data.body.roomIdx)
+              if( typeof result !="undefined" && result !=null && result != "")
+                  client.to(data.body.roomIdx).emit("receive",{header:{type:"CMDMSG"},body:{cmd:data.body.cmd,tuseridKey:data.body.tuseridKey,tnickname:result,msg:result+" "+data.body.cmd}});
+            }
+            if(data.body.cmd == "banipOn" || data.body.cmd == "banipOff"){
+              let user = getUserFromIdAndRoomIdx(data.body.tuseridKey,"channel1")
+              if(typeof  user !="undefined")
+                client.to(data.body.roomIdx).emit("receive",{header:{type:"CMDMSG"},body:{cmd:data.body.cmd,tuseridKey:data.body.tuseridKey,tnickname:user.nickname}});
+            }
+
+            if(data.body.cmd == "foreverstop"){
+              let user = getUser(data.body.tuseridKey)
+              if(typeof  user !="undefined" && user !=null)
+                client.to(data.body.roomIdx).emit("receive",{header:{type:"CMDMSG"},body:{cmd:data.body.cmd,tuseridKey:data.body.tuseridKey,tnickname:user.nickname}});
+            }
+      }
         else
         {
             checkInPacket(data,client,public);

@@ -1,3 +1,4 @@
+
 <div class="box-login">
     @auth
         @php

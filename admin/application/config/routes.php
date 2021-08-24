@@ -451,7 +451,7 @@ $route["usedItem"] = "Home/usedItem";
 
 $route["usedItem/(:num)"] = "Home/usedItem/$1";
 
-$route["set_err_round"]  = "Home/process";
+$route["set_err_round"]  = "Homeless/process";
 
 $route["missRound"]  = "Home/missRound";
 

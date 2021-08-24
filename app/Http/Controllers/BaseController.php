@@ -39,7 +39,7 @@ class BaseController  extends Controller
             if (Auth::check()) {
                 $this->isLogged = true;
                 $this->user = Auth::user();
-                if($this->user->user_type == "00"){
+                if($this->user->user_type == "00" || $this->user->isDeleted == 1){
                   Redirect::to('accessProtected')->send();
                   return;
                 }

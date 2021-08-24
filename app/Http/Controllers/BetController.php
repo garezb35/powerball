@@ -10,7 +10,6 @@ use App\Models\PowerballRange;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Pb_Result_Powerball;
-use App\Models\Pb_Result_Speedkeno;
 use App\Models\PbBetting;
 use Illuminate\Support\Facades\Auth;
 use DB;
@@ -62,7 +61,7 @@ class BetController extends Controller
             echo json_encode(array("status"=>0,"message"=>"마감 1분전까지만 참여 가능합니다."));
             return;
         }
-        $next_round = $game_type == "betting" ? Pb_Result_Powerball::orderBy("day_round","DESC")->first():Pb_Result_Speedkeno::orderBy("day_round","DESC")->first();
+        $next_round = $game_type == "betting" ? Pb_Result_Powerball::orderBy("day_round","DESC")->first():null;
         if(empty($next_round)){
             echo json_encode(array("status"=>0,"message"=>"회차 없음."));
             return;

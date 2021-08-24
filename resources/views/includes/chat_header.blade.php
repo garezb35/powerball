@@ -17,7 +17,7 @@
         var userIdToken = "{{$api_token}}";
         var userIdKey = "{{$userIdKey}}";
         var roomIdx ="channel1";
-        var is_admin = false;
+        var is_admin = {{$is_admin}};
         var is_freeze = 'off';
         var chatHistoryNum = 0;
         var filterWordArr = "{{$prohited}}".split(',');

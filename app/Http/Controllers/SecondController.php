@@ -26,6 +26,10 @@ class SecondController  extends Controller
               if($this->isLogged && $this->user->second_use == 1 && !empty($this->user->second_password)){
                   Redirect::to('veriPass')->send();
               }
+              if($this->isLogged && ($this->user->user_type == "00" || $this->user->isDeleted == 1)){
+                Redirect::to('accessProtected')->send();
+                return;
+              }
               else{
                   return $next($request);
               }

@@ -92,7 +92,7 @@ $(document).ready(function() {
             type:'POST',
             dataType:'json',
             url:'./api/checkActiveRoom',
-            data:{api_token:userIdToken,room:$r},
+            data:{api_token:userIdToken,room:$r,is_admin:is_admin},
             success:function(data,textStatus){
                 if(data.status == '1')
                 {

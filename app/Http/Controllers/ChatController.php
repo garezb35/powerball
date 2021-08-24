@@ -27,6 +27,8 @@ class ChatController extends SecondController
         $detail = CodeDetail::where("class","0020")->where("status","Y")->orderBy("code","ASC")->get()->toArray();
         foreach ($detail as $value)
             $this->profile[$value["code"]] = $value["value3"];
+
+
     }
 
     public function index(Request $request)
@@ -40,6 +42,7 @@ class ChatController extends SecondController
             return view('chat/duplicate',["js"=>"","css"=>"","pick_visible"=>"none","p_remain"=>0]);
         }
 
+        $is_admin = 0;
         $item_count= 0;
         $api_token = "";
         $userIdKey = "";
@@ -53,21 +56,24 @@ class ChatController extends SecondController
             $userIdKey = $this->user->userIdKey;
             $nickname = $this->user->nickname;
             $bullet = $this->user->bullet;
+            $is_admin = $this->user->user_type == '03' ? 1 : 0;
         }
         $prohited = $this->prohited["prohited"];
-        return view('chat/home',["node"=>$this->prohited["node_address"],"prohited"=>$prohited,"cur_nickname"=>$nickname,"bullet"=>$bullet,"p_remain"=>TimeController::getTimer(2),"item_count"=>$item_count,"api_token"=>$api_token,"userIdKey"=>$userIdKey,"profile"=>json_encode($this->profile)]);
+        return view('chat/home',["node"=>$this->prohited["node_address"],"prohited"=>$prohited,"cur_nickname"=>$nickname,"bullet"=>$bullet,"p_remain"=>TimeController::getTimer(2),"item_count"=>$item_count,"api_token"=>$api_token,"userIdKey"=>$userIdKey,"profile"=>json_encode($this->profile),"is_admin"=>$is_admin]);
     }
 
     public function roomWait(Request $request){
         $days_ago = date('Y-m-d H:i:s', strtotime('-26  hours', strtotime("now")));
-
+        $is_admin = 0;    
         if(!$this->isLogged){
             $user = User::with("getLevel")->where("userId",3)->first();
         }
         else
         {
             $user = User::with("getLevel")->where("userId",$this->user->userId)->first();
+            $is_admin = $this->user->user_type == '03' ? 1 : 0;
         }
+
         $count = $favor_count = 0;
         $rtype = empty($request->rtype) ? "winRate" : $request->rtype;
 
@@ -139,6 +145,7 @@ class ChatController extends SecondController
             array_shift($pb_rooms);
         }
         $prohited =  $this->prohited["prohited"];
+
         return view('chat/waiting',[   "js"=>"chat-room.js",
                                             "css"=>"chat-room.css",
                                             "pick_visible"=>"none",
@@ -156,7 +163,8 @@ class ChatController extends SecondController
                                             "userIdKey"=>$user["userIdKey"],
                                             "profile"=>json_encode($this->profile),
                                             "level"=>$user["getLevel"],
-                                            "u_level"=>$user["level"]
+                                            "u_level"=>$user["level"],
+                                            "is_admin"=>$is_admin
                                             ]);
     }
 
@@ -166,6 +174,7 @@ class ChatController extends SecondController
             return;
         }
         $user = $this->user;
+        $is_admin = $this->user->user_type == '03' ? 1 : 0;
         $win_room = array();
         $pb_room = PbRoom::with("roomandpicture.getUserClass")->where("pb_room.roomIdx",$request->token)->first();
         if(empty($pb_room) || empty($pb_room["roomandpicture"])){
@@ -224,6 +233,7 @@ class ChatController extends SecondController
                                          "bullet"=>$user->bullet,
                                          "profile"=>json_encode($this->profile),
                                          "p_remain"=>TimeController::getTimer(2),
+                                         "is_admin"=>$is_admin
                                             ]);
     }
 
@@ -331,6 +341,7 @@ class ChatController extends SecondController
         $user = $this->user;
         $days_ago = date('Y-m-d H:i:s', strtotime('-26  hours', strtotime("now")));
         $checkd = PbRoom::where("roomIdx",$request->room)->where("created_at","<",$days_ago)->first();
+        $is_admin = $request->is_admin;
         if(!empty($checkd)){
             PbRoom::where("created_at","<",$days_ago)->delete();
             PbFavorRoom::where("roomIdx",$checkd["roomIdx"])->delete();
@@ -350,7 +361,8 @@ class ChatController extends SecondController
                     if( $active_room["pub"] != 1 &&
                         $active_room["password"] !="" &&
                         $active_room["super"] != $user->userIdKey &&
-                        !in_array($user->userIdKey,$fixed_list)){
+                        !in_array($user->userIdKey,$fixed_list) && 
+                        !$is_admin){
                         echo json_encode(array("status"=>0,"reason"=>"security"));
                         return;
                     }
@@ -437,7 +449,12 @@ class ChatController extends SecondController
         $user = $this->user;
         $cmd = $request->cmd;
         $roomIdx = $request->roomIdx;
-        $room = PbRoom::where("roomIdx",$roomIdx)->where("super",$user->userIdKey)->first();
+        if($user->user_type == '03'){
+            $room = PbRoom::where("roomIdx",$roomIdx)->first();
+        }
+        else{
+            $room = PbRoom::where("roomIdx",$roomIdx)->where("super",$user->userIdKey)->first();
+        }
         if(!empty($room)){
              $updating = PbRoom::find($room["id"]);
              if($cmd == "freezeOn")
@@ -469,7 +486,11 @@ class ChatController extends SecondController
     public function deleteChatRoom(Request $request){
         $user = $this->user;
         $roomIdx = $request->roomIdx;
-        $room = PbRoom::where("roomIdx",$roomIdx)->where("super",$user->userIdKey)->first();
+        if($user->user_type == '03'){
+            $room = PbRoom::where("roomIdx",$roomIdx)->first();
+        }else{
+            $room = PbRoom::where("roomIdx",$roomIdx)->where("super",$user->userIdKey)->first();
+        }
         if(!empty($room)){
             $updating = PbRoom::find($room["id"]);
             $updating->delete();

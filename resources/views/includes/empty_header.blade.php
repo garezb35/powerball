@@ -16,7 +16,12 @@
     <script>
         var remainTime = 0;
         var speedRemain = 0;
+        @if(!empty($is_admin))
+        var is_admin = true;
+        @else
         var is_admin = false;
+        @endif
+        
     </script>
     @yield('script_header')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.2/socket.io.js" ></script>

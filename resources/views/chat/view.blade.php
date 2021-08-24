@@ -9,6 +9,7 @@
         @if(!empty($profile))
         var levels = "{{$profile}}";
         var level_images = JSON.parse(levels.replace(/&quot;/g,'"'));
+        level_images[30] = "/assets/images/powerball/class/M23.gif"
         @endif
         var total_num = 0;
         var bullet = {{$bullet}};
@@ -21,8 +22,7 @@
         var blackListArr = ''.split(',');
         var is_scroll_lock = false;
         var is_scroll_lock_room = false;
-        var is_super = false;
-        var is_admin = @if($manager == 1) true @else false @endif;
+        var is_header = @if($manager == 1) true @else false @endif;
         var is_manager = @if(in_array($userIdKey,explode(",",$room["manager"]))){{true}}@else{{0}}@endif;
         var fixed = "{{$room["roomandpicture"]["fixed"]}}";
         var room_name ="{{$room["room_connect"]}}";
@@ -127,7 +127,7 @@
                 </div>
             </div>
             <ul class="pl-2 bott-menu" style="height: 39px;background: #ebeded;">
-                @if($manager == 0 && $admin == 0)
+                @if($manager == 0 && $admin == 0 && $is_admin == 0)
                     <li><a href="#" onclick="return false;" id="btn_giftBullet">당근 선물하기</a></li>
                     <li><a href="#" onclick="return false;" id="btn_recom">추천하기</a></li>
                     <li><a href="#" onclick="chatManager('clearChat');return false;">방청소</a></li>

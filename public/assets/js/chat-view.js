@@ -243,7 +243,7 @@ $(document).ready(function() {
 
     $('#layer-emoticonBox .emoticon li').click(function(){
 
-        if(is_super == false && emoticonTicket == false)
+        if(is_admin == false && emoticonTicket == false)
         {
             alertifyByCommon('[이모티콘 사용권] 아이템 보유시 사용 가능합니다.')
             return false;
@@ -346,7 +346,7 @@ $(document).ready(function() {
         $('#helpBox').slideToggle();
     });
     $(document).on('click','#btn_freezeOn',function(){
-        if(is_freeze == false && (is_admin || is_manager))
+        if(is_freeze == false && (is_header || is_manager || is_admin))
         {
             adminCmd('freezeOn');
             $(this).siblings().removeClass('on');
@@ -363,7 +363,7 @@ $(document).ready(function() {
 
     // 채팅창 녹이기
     $(document).on('click','#btn_freezeOff',function(){
-        if(is_freeze == true && (is_admin || is_manager))
+        if(is_freeze == true && (is_header || is_manager || is_admin))
         {
             adminCmd('freezeOff');
             $(this).siblings().removeClass('on');
@@ -380,7 +380,7 @@ $(document).ready(function() {
     });
 
     $('#btn_chatRoomSetting').click(function(){
-        if(is_admin)
+        if(is_header)
         {
            $("#modify-chatroom").modal("show")
         }
@@ -420,7 +420,7 @@ $(document).ready(function() {
     });
     // 채팅방 삭제
     $('#btn_chatRoomClose').click(function(){
-        if(is_admin)
+        if(is_header || is_admin)
         {
             if(confirm('채팅방을 삭제하시겠습니까?'))
             {
@@ -651,7 +651,7 @@ function receiveProcess(data)
         }
     }
     else if(hPacket.type == "INIT"){
-        if(is_super == false && is_admin == false && bPacket.users.length > JSON.parse(roomInfo).maxUser){
+        if(is_admin == false && is_header == false && bPacket.users.length > JSON.parse(roomInfo).maxUser){
             alertifyByCommon("최대인원을 초과하였습니다.");
             socket.disconnect();
             window.history.go(-1);
@@ -689,7 +689,7 @@ function receiveProcess(data)
         if(bPacket.freezeOnOff == 'on')
         {
             chatManager('freezeOn');
-            if(is_admin)
+            if(is_header)
             {
                 $('#btn_freezeOn').text('녹이기');
                 $('#btn_freezeOn').attr('id','btn_freezeOff');
@@ -1433,7 +1433,7 @@ function getChatHistory(num)
 
 function adminCmd(cmd,tuseridKey,tnickname)
 {
-    if(!is_admin && !is_manager)
+    if(!is_header && !is_manager && !is_admin)
     {
         printSystemMsg('guide','권한이 없습니다.');
         return false;
@@ -1444,6 +1444,36 @@ function adminCmd(cmd,tuseridKey,tnickname)
         {
             printSystemMsg('guide','방장을 벙어리 또는 강퇴를 할 수 없습니다.');
             return false;
+        }
+
+        else if(cmd == 'foreverstop'){
+            $.ajax({
+                type:'POST',
+                dataType:'json',
+                url:'/api/setUserState',
+                data: {
+                      cmd: "foreverstop",
+                      roomIdx: roomIdx,
+                      tuseridKey : tuseridKey,
+                      api_token : userIdToken
+                },
+                success:function(data,textStatus){
+                    if(data.status == 1)
+                    {
+                        var data = {
+                            cmd : "foreverstop",
+                            roomIdx : roomIdx,
+                            tuseridKey : tuseridKey,
+                            tnickname : tnickname
+                        };
+                        sendProcess('ADMINCMD',data);
+                    }
+                    else
+                    {
+                        alertifyByCommon(data.msg);
+                    }
+                }
+            });
         }
 
         else if(cmd == 'freezeOn' || cmd == 'freezeOff')
@@ -1560,7 +1590,7 @@ function userCmd(cmd)
 
 function pickCmd(pickDate,pickRound)
 {
-    if(!is_admin)
+    if(!is_header)
     {
         printSystemMsg('guide','권한이 없습니다.');
         return false;
@@ -1748,19 +1778,19 @@ function sendMsg()
 {
     if($('#msg').val().trim())
     {
-        if(is_super == false && is_forceFreeze == true)
+        if(is_admin == false && is_forceFreeze == true)
         {
             printSystemMsg('guide','채팅 입력이 제한됩니다.');
             return false;
         }
 
-        if(is_super == false && is_admin == false && is_manager == false && is_freeze == true)
+        if(is_admin == false && is_header == false && is_manager == false && is_freeze == true)
         {
             printSystemMsg('guide','채팅창을 녹이기 전까지 채팅 입력이 제한됩니다.');
             return false;
         }
 
-        if(is_super == false && is_admin == false && is_manager == false && $('#u-'+JSON.parse(roomInfo).useridKey).length == 0)
+        if(is_admin == false && is_header == false && is_manager == false && $('#u-'+JSON.parse(roomInfo).useridKey).length == 0)
         {
             printSystemMsg('guide','방장이 부재중이므로 채팅 입력이 제한됩니다.');
             return false;
@@ -1769,7 +1799,7 @@ function sendMsg()
         // chat history set
         setChatHistory($('#msg').val().trim());
 
-        if(is_super == false)
+        if(is_admin == false)
         {
             var filterMsg = $('#msg').val().toLowerCase();
 
@@ -1785,7 +1815,7 @@ function sendMsg()
         }
 
         // english check
-        if(is_super == false && $('#msg').val().substring(0,1) != '"' && $('#msg').val().substring(0,1) != '/')
+        if(is_admin == false && $('#msg').val().substring(0,1) != '"' && $('#msg').val().substring(0,1) != '/')
         {
             var englishPt = /[a-zA-Z]/;
             if(englishPt.test($('#msg').val()))
@@ -1797,7 +1827,7 @@ function sendMsg()
         }
 
         // special character
-        if(is_super == false && $('#msg').val().substring(0,1) != '"' && $('#msg').val().substring(0,1) != '/')
+        if(is_admin == false && $('#msg').val().substring(0,1) != '"' && $('#msg').val().substring(0,1) != '/')
         {
             var normalCharPt = /[가-힣ㄱ-ㅎㅏ-ㅣ0-9'"\[\]{}!@#$%\^&*()<>\,\.\/?|\\~`\-_\=\+;:\s]/gi;
             var msgChk = $('#msg').val().replace(normalCharPt,'');
@@ -1818,18 +1848,18 @@ function sendMsg()
             }
         }
 
-        if(is_super == false && is_admin == false && is_repeatChat == true)	// 도배 체크
+        if(is_admin == false && is_header == false && is_repeatChat == true)	// 도배 체크
         {
             var remindTime = msgStopTime - ((new Date().getTime() - lastMsgTime) / 1000);
             printSystemMsg('guide','[도배금지] ' + parseInt(remindTime) + '초간 채팅이 제한됩니다.');
             return false;
         }
-        else if(is_super == false && is_admin == false && repeatChatFilter() == true)
+        else if(is_admin == false && is_header == false && repeatChatFilter() == true)
         {
             return false;
         }
 
-        if(is_super == false && $('#msg').val().length > 80)
+        if(is_admin == false && $('#msg').val().length > 80)
         {
             printSystemMsg('guide','<span class="yellow">80자 이상</span> 은 입력할 수 없습니다.');
             $('#msg').val('');
@@ -1965,7 +1995,7 @@ function sendMsg()
         else
         {
             // emoticon
-            if(is_super == false && emoticonTicket == false)
+            if(is_admin == false && emoticonTicket == false)
             {
                 var msg = $('#msg').val().replace(/\(#&([0-9]_[0-9]*)\)/gi,'');
             }
@@ -2130,7 +2160,7 @@ function chatManager(type,nick)
         if($('#msgBox').is(':hidden') == false)
         {
             $('#msgBox').html('');
-            if(!is_admin && !is_manager)
+            if(!is_header && !is_manager && !is_admin)
                 printSystemMsg('guide','채팅창을 지웠습니다.');
             else
                 sendProcess('refreshMsg',{roomIdx:roomIdx})
@@ -2333,7 +2363,7 @@ function setUserLayer(useridKey,nickname,e,left)
     {
         str += '<ul>';
 
-        if(roomIdx != 'lobby' && is_admin && useridKey != JSON.parse(roomInfo).useridKey)
+        if(roomIdx != 'lobby' && is_header && useridKey != JSON.parse(roomInfo).useridKey)
         {
             str += '<li><a href="#" onclick="adminCmd(\'fixMemberOn\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">고정멤버임명</span></a></li>';
             str += '<li><a href="#" onclick="adminCmd(\'fixMemberOff\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">고정멤버해제</span></a></li>';
@@ -2349,6 +2379,13 @@ function setUserLayer(useridKey,nickname,e,left)
             str += '<li><a href="#" onclick="adminCmd(\'muteOff\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">벙어리 해제</span></a></li>';
             str += '<li><a href="#" onclick="adminCmd(\'kickOn\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">강퇴</span></a></li>';
             // str += '<li><a href="#" onclick="adminCmd(\'kickOff\',\''+useridKey+'\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">강퇴 해제</span></a></li>';
+        }
+        else if(is_admin && roomIdx != 'lobby'){
+            str += '<li><a href="#" onclick="adminCmd(\'muteOn\',\''+useridKey+'\',\''+nickname+'\',\''+roomIdx+'\');return false;"><em class="ico"></em><span class="txt">벙어리</span></a></li>';
+            str += '<li><a href="#" onclick="adminCmd(\'muteOff\',\''+useridKey+'\',\''+nickname+'\',\''+roomIdx+'\');return false;"><em class="ico"></em><span class="txt">벙어리 해제</span></a></li>';
+            str += '<li><a href="#" onclick="adminCmd(\'kickOn\',\''+useridKey+'\',\''+nickname+'\',\''+roomIdx+'\');return false;"><em class="ico"></em><span class="txt">강퇴</span></a></li>';
+            str += '<li><a href="#" onclick="adminCmd(\'closeRoom\',\''+useridKey+'\',\''+nickname+'\',\''+roomIdx+'\');return false;"><em class="ico"></em><span class="txt">채팅방 삭제하기</span></a></li>';
+            str += '<li><a href="#" onclick="adminCmd(\'foreverstop\',\''+useridKey+'\',\''+nickname+'\',\''+roomIdx+'\');return false;"><em class="ico"></em><span class="txt">영구정지</span></a></li>';
         }
         str += '<li><a href="#" onclick="chatManager(\'friendList\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">친구추가</span></a></li>';
         str += '<li><a href="#" onclick="chatManager(\'blackList\',\''+nickname+'\');return false;"><em class="ico"></em><span class="txt">블랙리스트</span></a></li>';

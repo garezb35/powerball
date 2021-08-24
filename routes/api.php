@@ -57,6 +57,7 @@ Route::group(array('middleware' => 'forceSSL'), function() {
       Route::post("/getWinningMachine",[App\Http\Controllers\PowerballController::class,'getWinningMachine'])->name("getWinningMachine");
       Route::post("/getLogData",[App\Http\Controllers\PowerballController::class,'getLogData'])->name("getLogData");
       Route::post("/user_logout",[App\Http\Controllers\PowerballController::class,'userLogout']);
+      Route::post("/setUserState",[App\Http\Controllers\MemberController::class,'setUserState']);
   });
 
   Route::post("/get_more/powerball",[App\Http\Controllers\PowerballController::class,'resultList']);
