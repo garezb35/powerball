@@ -9,7 +9,7 @@
         @if(!empty($profile))
         var levels = "{{$profile}}";
         var level_images = JSON.parse(levels.replace(/&quot;/g,'"'));
-        level_images[30] = "/assets/images/powerball/class/M23.gif"
+        level_images[30] = "/assets/images/powerball/class/M30.gif"
         @endif
         var total_num = 0;
         var bullet = {{$bullet}};

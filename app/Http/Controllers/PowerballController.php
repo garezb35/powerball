@@ -140,6 +140,8 @@ class PowerballController extends SecondController
 
                 if(!empty($request->toRound))
                     $current = $request->toRound;
+                if($current == 289)
+                    $current = 73;
                 $next = $current + 1;
                 if($next > 288)
                     $next = 1;

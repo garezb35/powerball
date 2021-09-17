@@ -50,12 +50,12 @@ $(document).ready(function(){
             pattern_header["nb_uo"] = data.result.nuo;
             pattern_header["nb_size"] = data.result.nsize;
 
-            // compileJson("#all-date","#all_datesanalyse",data.result);
-        }
-        moreClick();
-        ajaxPattern('pb_oe','','',limit);
-        compileJson("#chart-data",".chart-power",data.result)
-        douPie([pattern_header["nb_size"].count[3],pattern_header["nb_size"].count[2],pattern_header["nb_size"].count[1]],"chart-area");
+            moreClick(function(){
+                ajaxPattern('pb_oe','','',limit);
+                compileJson("#chart-data",".chart-power",data.result)
+                douPie([pattern_header["nb_size"].count[3],pattern_header["nb_size"].count[2],pattern_header["nb_size"].count[1]],"chart-area");
+            });
+        }    
     });
 
 
@@ -144,7 +144,7 @@ function ajaxSixPattern(cnt,type)
     $("#sixBox .content").animate({scrollLeft:10000},1000);
 }
 
-function moreClick()
+function moreClick(callback = null)
 {
     if(loading == false)
     {
@@ -166,6 +166,8 @@ function moreClick()
                     pagination = pagination + 30;
                     compileJson("#see-data",".see-t",data.result,2);
                 }
+                if (typeof callback == "function")
+                    callback();
             }
         }).done(function(data){
             moreLoad(0)

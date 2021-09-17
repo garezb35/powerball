@@ -3,9 +3,9 @@
       <title>몬스터파워볼</title>
    </head>
    <body onload="">
-      <div style="position:relative;margin:10px auto;" class="pcVersion">
+      <div style="position:relative;margin:50px auto;" class="pcVersion">
          <div>
-            <a href="/" class="none"><img src="https://simg.powerballgame.co.kr/images/logo.gif" width="190" height="70"></a>
+            <a href="/" class="none"><img src="/assets/images/logo.png" width="190" height="70"></a>
          </div>
          <div class="guide">
             <div class="header">
@@ -74,7 +74,7 @@ hr{display:none;}
 
 .pcVersion {width:400px;}
 
-.guide {position:relative;border:3px solid #9e9e9e;background-color:#F7F7F7;margin:0 auto;}
+.guide {position:relative;background-color:#F7F7F7;margin:0 auto;}
 
 .guide .header {position:relative;height:50px;line-height: 50px;border:none;background-color:#E8E8E8;}
 .guide .header h1 {font-size:12px;color:#2B2B2B;margin-left:20px;}

@@ -7,23 +7,26 @@
       <div class="row">
          <div class="col-xs-12">
            <table class="table table-bordered table-striped">
-              <tr class="thead-dark">
-                 <th class="text-center align-middle">아이디</th>
-                 <th class="text-center align-middle">아이템명</th>
+              <thead>
+                  <tr class="thead-dark">
+                   <th class="text-center align-middle">아이디</th>
+                   <th class="text-center align-middle">아이템명</th>
 
-                 <th class="text-center align-middle">보너스(경험치)</th>
-                 <th class="text-center align-middle">이미지</th>
-                 <th class="text-center align-middle">HOT 아이콘</th>
-                 <th class="text-center align-middle">가격</th>
-                 <th class="text-center align-middle">선물사용</th>
-                 <th class="text-center align-middle">묶음단위</th>
-                 <th class="text-center align-middle">사용기간</th>
-                 <th class="text-center align-middle">상태</th>
-                 <th class="text-center align-middle"></th>
-              </tr>
+                   <th class="text-center align-middle">보너스(경험치)</th>
+                   <th class="text-center align-middle">이미지</th>
+                   <th class="text-center align-middle">HOT 아이콘</th>
+                   <th class="text-center align-middle">가격</th>
+                   <th class="text-center align-middle">선물사용</th>
+                   <th class="text-center align-middle">묶음단위</th>
+                   <th class="text-center align-middle">사용기간</th>
+                   <th class="text-center align-middle">상태</th>
+                   <th class="text-center align-middle"></th>
+                </tr>
+              </thead>
               <?php if(!empty($items)): ?>
+              <tbody class="wrap">
               <?php foreach($items as $item): ?>
-                <tr>
+                <tr class="wrap_tr" data-id="<?=$item->id?>">
                    <td class="text-center align-middle"><?=$item->id?></td>
                    <td class="text-center align-middle"><?=$item->name?></td>
 
@@ -59,12 +62,14 @@
                    </td>
                 </tr>
               <?php endforeach;?>
+              </tbody>
               <?php endif;?>
             </table>
          </div>
        </div>
     </section>
 </div>
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script> 
 <style>
 .align-middle{
   vertical-align: middle !important;
@@ -86,4 +91,28 @@
     });
   })
 
+</script>
+
+<script type="text/javascript">
+  var hitURL =  baseURL + "updateOrderItem";
+  var art = new Array();
+  $(".wrap").sortable({
+  update: function(event, ui) {
+    var wrap_tr = $(".wrap_tr");
+    art = new Array();
+     wrap_tr.each(function( index ) {
+      art.push($(this).data("id"));
+    }).promise().done( function(){ 
+      jQuery.ajax({
+      type : "POST",
+      url : hitURL,
+      data : { ids : art } 
+      }).done(function(data){
+        console.log(data);
+      }).always(function(jqXHR, textStatus) {
+        console.log(textStatus);
+      });
+    });
+  }
+});
 </script>

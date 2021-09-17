@@ -406,5 +406,33 @@ class Base_model extends CI_Model
         return  $results;
     }
 
+    public function getips($limit1=20,$limit2=0,$search=''){
+        $this->db->select('BaseTbl.*');
+        $this->db->from("pb_ip_blocked as BaseTbl");
+        $this->db->like('BaseTbl.ip', $search,'both');
+        $this->db->order_by('BaseTbl.updated_at','DESC');
+        if($limit1 ==null)  $this->db->limit(20,0);
+        else $this->db->limit($limit1,$limit2);
+        $query = $this->db->get();
+        $results = $query->result();
+        return  $results;
+    }
+
+    public function getAutoGames($limit1 = 20,$limit2 = 0,$start_date = '',$end_date = '',$nickname = '',$bet_type = '',$state = ''){
+        $this->db->select("BaseTbl.*,User.nickname");
+        $this->db->from("pb_auto_setting as BaseTbl");
+        $this->db->join("pb_users as User","User.userId = BaseTbl.userId","left");
+        $this->db->order_by("BaseTbl.created_at","DESC");
+        if(trim($start_date) != "") $this->db->like("BaseTbl.created_at",$start_date,"both");
+        if(trim($end_date) != "") $this->db->like("BaseTbl.updated_at",$end_date,"both");
+        if(trim($nickname) != "") $this->db->like("User.nickname",$nickname,"both");
+        if(trim($bet_type) != "") $this->db->like("BaseTbl.betting_type",$bet_type,"both");
+        if(trim($state) != "") $this->db->like("BaseTbl.state",$state,"both");
+        if($limit1 ==null)  $this->db->limit(20,0);
+        else $this->db->limit($limit1,$limit2);
+        $query = $this->db->get();
+        $results = $query->result();
+        return  $results;
+    }
 }
 ?>

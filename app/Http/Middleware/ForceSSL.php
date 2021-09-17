@@ -17,10 +17,11 @@ class ForceSSL
      public function handle($request, Closure $next)
      {
 
-         if (!$request->secure()) {
-             return redirect()->secure($request->getRequestUri());
-         }
+        $domain = $request->root();
+        if (!$request->secure() && strpos($domain,"mstball.com") !== false) {
+            return redirect()->secure($request->getRequestUri());
+        }
 
-         return $next($request);
+        return $next($request);
      }
 }

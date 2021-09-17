@@ -1,4 +1,4 @@
-level_images[30] = '/assets/images/mine/profile.png';
+level_images[30] = '/assets/images/powerball/class/M30.gif';
 var socketOption = {};
 socketOption['reconnect'] = true;
 socketOption['force new connection'] = true;
@@ -815,7 +815,6 @@ function receiveProcess(data)
     }
     else if(hPacket.type == 'INITMSG')
     {
-        console.log(bPacket.connectList)
         compileJson("#users","#connectList",bPacket.connectList,1,false);
         total_num = bPacket.connectList.length;
         $("#connectUserCnt").html(number_format(total_num.toString()));
@@ -1352,7 +1351,7 @@ function printChatMsg(level,sex,mark,useridKey,nickname,msg,item,winFixCnt)
 
     if(level == 30)
     {
-        $('#msgBox').append('<li><p class="msg-admin"><img src="'+level_images[level]+'" width="30" height="30"/>'+msg+'</p></li>');
+        $('#msgBox').append('<li><p class="msg-admin"><img src="'+level_images[level]+'" width="30" height="30"/>&nbsp;<strong><a href="#" onclick="return false;" title="'+nickname+'" rel="'+useridKey+'" class="uname">'+nickname+'</a></strong>'+msg+'</p></li>');
     }
     else
     {

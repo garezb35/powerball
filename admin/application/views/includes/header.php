@@ -124,7 +124,7 @@
         <section class="sidebar">
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
-            <li class="treeview <?php echo activate_menu("/addNew/registerDepoit/userListing/exitMember/memberLevel/registerDeposit/returnDeposit/deposithistory/editOld/editmemberL/charge/exchange/classList/");?>">
+            <li class="treeview <?php echo activate_menu("/addNew/registerDepoit/userListing/exitMember/memberLevel/registerDeposit/returnDeposit/deposithistory/editOld/editmemberL/charge/exchange/classList/ipblocked/");?>">
               <a href="<?php echo base_url(); ?>">
                 <i class="fa fa-users"></i>
                 <span>회원관리</span>
@@ -143,7 +143,13 @@
                   <i class="fa fa-circle-o"></i>계급관리</a>
                 </li>
                 <li><a href="<?php echo base_url()."exitMember"  ?>"><i class="fa fa-circle-o"></i>탈퇴회원</a></li>
+                <li><a href="<?php echo base_url()."ipblocked"  ?>"><i class="fa fa-circle-o"></i>아이피블록</a></li>
               </ul>
+            </li>
+            <li class="<?php echo activate_menu("autogames");?>">
+              <a href="<?=base_url()?>autogames">
+                <i class="fa fa-heart"></i> <span>파워시물레이션</span></i>
+              </a>
             </li>
             <li class="treeview <?php echo activate_menu("/listItem/purchasedUsr/mondayGift/usedItem/");?>">
               <a href="">
