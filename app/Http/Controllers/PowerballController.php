@@ -34,8 +34,6 @@ class PowerballController extends SecondController
 
     public function view(Request $request)
     {
-
-
         if (!$request->has("terms"))
             $key = "date";
         else
